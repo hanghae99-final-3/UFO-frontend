@@ -4,11 +4,14 @@ import { combineReducers } from "redux";
 import { createBrowserHistory } from "history";
 import { connectRouter } from "connected-react-router";
 
+//모듈 불러오기
+
 export const history = createBrowserHistory();
 
 //리듀서 전달하기
 const reducer = combineReducers({
     router: connectRouter(history),
+    // user: User
 });
 
 const middlewares = [];
