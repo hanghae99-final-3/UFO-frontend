@@ -43,7 +43,6 @@ const useStyles = makeStyles({
 
 const Signup = props => {
     const isSignupSuccess = useSelector(state => state.user.isSignupSuccess);
-    console.log(props);
     React.useEffect(() => {
         if (isSignupSuccess) {
             dispatch(resetSignupSuccess());

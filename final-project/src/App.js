@@ -12,6 +12,7 @@ import Signup from "./Pages/Signup"; // 회원가입페이지
 import Login from "./Pages/Login"; //로그인페이지
 import FreeBoard from "./Pages/FreeBoard"; //자유게시판페이지
 import FreeBoardDetail from "./Pages/FreeBoardDetail"; //자유게시판 게시글상세페이지
+import FreeBoardWrite from "./Pages/FreeBoardWrite"; //자유게시판 게시글작성페이지 or 게시글수정페이지
 import UnivBoard from "./Pages/UnivBoard"; //대학게시판
 import UnivBoardDetail from "./Pages/UnivBoardDetail"; //대학게시판 게시글상세페이지
 
@@ -26,10 +27,21 @@ function App() {
                         <Route path="/login" exact component={Login} />
                         <Route path="/freeboard" exact component={FreeBoard} />
                         <Route
-                            path="/freeboard/:id"
+                            path="/freeboard/detail/:id"
                             exact
                             component={FreeBoardDetail}
                         />
+                        <Route
+                            path="/freeboard/write"
+                            exact
+                            component={FreeBoardWrite}
+                        />
+                        <Route
+                            path="/freeboard/edit/:id"
+                            exact
+                            component={FreeBoardWrite}
+                        />
+
                         <Route path="/univboard" exact component={UnivBoard} />
                         <Route
                             path="/univboard/:id"

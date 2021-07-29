@@ -45,6 +45,7 @@ const userSlice = createSlice({
         [loginUserDB.fulfilled]: (state, { payload: user }) => {
             state.isFetching = false;
             state.user = user;
+            state.isLoggedIn = true;
             state.errorMessage = "";
         },
         [loginUserDB.rejected]: (state, { payload: errorMessage }) => {

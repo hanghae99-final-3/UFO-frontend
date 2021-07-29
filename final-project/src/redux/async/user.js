@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { userApi } from "../../Api";
+import { userApi } from "../../api";
 import jwt from "jwt-decode";
 
 /**
