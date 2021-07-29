@@ -6,13 +6,15 @@ import { connectRouter } from "connected-react-router";
 
 //모듈 불러오기
 import freeBoardSlice from "./modules/freeBoardSlice";
+import userSlice from "./modules/userSlice";
+
 export const history = createBrowserHistory();
 
 //리듀서 전달하기
 const reducer = combineReducers({
     router: connectRouter(history),
     freeBoard: freeBoardSlice.reducer,
-    // user: User
+    user: userSlice.reducer,
 });
 
 const middlewares = [];

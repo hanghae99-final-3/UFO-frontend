@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { freeBoardApi } from "../Api";
+import { freeBoardApi } from "../api";
 import { history } from "../redux/configureStore";
 import { deleteFreePostDB } from "../redux/async/freeBoard";
 import Comment from "../Components/Comment";

@@ -58,9 +58,9 @@ const freeBoardSlice = createSlice({
         //----자유게시판 특정 게시물 수정하는 리듀서
         [editFreePostDB.fulfilled]: (state, { payload }) => {
             //payload에는 수정되어서 변경된 게시물 데이터가 들어오며, 기존 state.list와 같은 idx를 찾아서 변경해준다.
-            let idx = state.list.findIndex(
-                post => post.post_id === payload.post_id,
-            );
+            let idx = state.list.findIndex(post => {
+                return post.post_id === payload.post_id;
+            });
             state.list[idx] = payload;
             state.isFetching = false;
             state.errorMessage = null;

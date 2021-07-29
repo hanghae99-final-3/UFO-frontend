@@ -15,7 +15,6 @@ const FreeBoard = () => {
     //----자유게시판 목록 불러와서 state에 주입하기
     const dispatch = useDispatch();
     const list = useSelector(state => state.freeBoard.list);
-    console.log(list);
     useEffect(() => {
         //자유게시판 목록 가져오기
         dispatch(getFreeListDB());
@@ -54,7 +53,7 @@ const FreeBoard = () => {
                                 <span>{ele.content}</span>
                             </div>
                             <div>
-                                <span>{ele.user_id}</span>
+                                <span>{ele.post_id}</span>
                             </div>
                         </TableRow>
                     ))}

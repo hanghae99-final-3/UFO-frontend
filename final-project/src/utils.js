@@ -5,3 +5,10 @@ export const logger = msg => {
     }
     console.log(msg);
 };
+
+export const getToken = async () => {
+    const token = await localStorage.getItem("token");
+    if (token) {
+        return token;
+    }
+};

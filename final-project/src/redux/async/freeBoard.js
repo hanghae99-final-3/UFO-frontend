@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { history } from "../configureStore";
-import { freeBoardApi } from "../../Api";
+import { freeBoardApi } from "../../api";
 
 /**
  * @author kwonjiyeong
@@ -31,9 +31,9 @@ export const getFreeListDB = createAsyncThunk(
 export const addFreePostDB = createAsyncThunk(
     "freeBoard/addList",
     async (data, thunkAPI) => {
-        console.log(data);
         try {
             const response = await freeBoardApi.addPost(data);
+            history.push("/freeboard");
             if (response.data.ok) return response.data.result;
         } catch (err) {
             return thunkAPI.rejectWithValue(err.response.message);
@@ -55,7 +55,7 @@ export const editFreePostDB = createAsyncThunk(
             const response = await freeBoardApi.editPost(data);
             if (response.data.ok) {
                 history.push("/freeboard");
-                return response.data.result;
+                return response.data.result[0]; //서버에서 온 값이 배열로 묶여져서 들어와서 인덱스 처리했음.
             }
         } catch (err) {
             return thunkAPI.rejectWithValue(err.response.message);

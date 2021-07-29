@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
-import { freeBoardApi } from "../Api";
+import { freeBoardApi } from "../api";
 
 import { history } from "../redux/configureStore";
 
