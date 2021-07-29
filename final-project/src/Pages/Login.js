@@ -1,12 +1,15 @@
 import React from "react";
+import { useDispatch } from "react-redux";
 
-import { Grid, Typography, Button } from "@material-ui/core";
-import { makeStyles } from "@material-ui/styles";
 import * as Yup from "yup";
 import { Formik, Form } from "formik";
-import { LoginTextField } from "../Elements/LoginTextField";
 
 import Kakao from "../assets/pngegg.png";
+import { loginUserDB } from "../redux/async/user";
+
+import { makeStyles } from "@material-ui/styles";
+import { LoginTextField } from "../Elements/LoginTextField";
+import { Grid, Typography, Button } from "@material-ui/core";
 
 const useStyles = makeStyles({
     mainContainer: {
@@ -40,6 +43,7 @@ const useStyles = makeStyles({
 });
 
 const Login = () => {
+    const dispatch = useDispatch();
     const classes = useStyles();
     const validate = Yup.object({
         email: Yup.string()
@@ -69,8 +73,8 @@ const Login = () => {
                             email,
                             password,
                         };
-                        console.log(data);
-                        // dispatch(loginUserDB(data));
+
+                        dispatch(loginUserDB(data));
                     }}
                 >
                     {formik => (
@@ -101,6 +105,7 @@ const Login = () => {
                                     로그인
                                 </Button>
                                 <Button
+                                    // onClick={() => dispatch(kakaoLogin())}
                                     style={{
                                         marginTop: "20px",
                                         width: "320px",
@@ -120,7 +125,9 @@ const Login = () => {
                                         />
                                     }
                                 >
-                                    카카오 로그인
+                                    <a href="http://3.36.90.60/api/kakao">
+                                        로그인
+                                    </a>
                                 </Button>
                             </Form>
                         </Grid>
