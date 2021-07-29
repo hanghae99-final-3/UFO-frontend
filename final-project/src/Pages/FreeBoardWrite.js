@@ -39,7 +39,6 @@ const FreeBoardWrite = props => {
             content: post.content,
             country_id: post.country_id,
             post_id: post.post_id,
-            is_fixed: false, //관리자이면 true로 바꿔줘야한다.
         };
         dispatch(editFreePostDB(req));
     };
