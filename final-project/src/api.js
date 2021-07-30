@@ -11,8 +11,8 @@ instance.interceptors.request.use(async config => {
     config.headers["content-type"] = "application/json; charset=utf-8";
     config.headers["X-Requested-With"] = "XMLHttpRequest";
     config.headers["Accept"] = "*/*";
-    //getToken는 로컬 스토리지에 토큰이 있다면 반환한다.
-    config.headers["authorization"] = `Bearer ${await getToken()}`;
+    //getToken는 로컬 스토리지에 토큰이 있다면 반환한다 없다면 null 값 반환
+    config.headers["authorization"] = await getToken();
     return config;
 });
 
@@ -24,12 +24,29 @@ export const userApi = {
             nickname: data.nickname,
             password: data.password,
         }),
+    editUserProfile: ({ nickname, email, password, userId }) =>
+        instance.put(`api/user/${userId}`, {
+            email,
+            nickname,
+            password,
+        }),
     login: data =>
         instance.post("auth/login", {
             email: data.email,
             password: data.password,
         }),
     getUser: userId => instance.get(`api/user/${userId}`),
+    verifyUniEmail: email =>
+        instance.post("/auth/email", {
+            school_email: email,
+        }),
+    checkVerifyCode: ({ userId, email }) =>
+        instance.post("/auth/email/check", {
+            user_id: userId,
+            school_email: email,
+        }),
+    deleteAccount: userId => instance.delete(`api/user/${userId}`),
+
     kakaoLogin: () => instance.get("api/kakao"),
 };
 
