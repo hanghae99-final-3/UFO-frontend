@@ -134,6 +134,16 @@ const Login = () => {
                     )}
                 </Formik>
             </Grid>
+            {/* --------------------------여기서부터 소셜 로그인---------------------- */}
+            <div style={{ marginTop: "30px" }}>
+                <button>구글 로그인</button>
+                <button>
+                    <a href="http://3.36.90.60/auth/kakao">카카오 로그인</a>
+                </button>
+                <button>
+                    <a href="http://3.36.90.60/auth/google">구글 로그인</a>
+                </button>
+            </div>
         </Grid>
     );
 };
