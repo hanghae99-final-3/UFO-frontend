@@ -43,9 +43,6 @@ export const freeBoardApi = {
     //게시물 불러오기
     getPost: post_id => instance.get(`free/post/${post_id}`),
 
-    //게시물 댓글불러오기
-    getComment: post_id => instance.get(`free/comment/${post_id}`),
-
     //게시물 수정하기
     editPost: post => {
         return instance.put(`free/post/${post.post_id}`, post);
@@ -55,6 +52,29 @@ export const freeBoardApi = {
         instance.delete(`free/post/${id_list.post_id}`, {
             data: { user_id: id_list.user_id },
         }),
+
+    //게시물 댓글불러오기
+    getPostCommentList: post_id => instance.get(`free/comment/${post_id}`),
+
+    //게시물 댓글추가하기
+    addPostComment: comment => instance.post("free/comment", comment),
+
+    //게시물 댓글수정하기
+    editPostComment: comment =>
+        instance.put(`free/comment/${comment.comment_id}`, {
+            user_id: comment.user_id,
+            content: comment.content,
+        }),
+
+    //게시물 댓글삭제하기
+    deletePostComment: comment => {
+        console.log(comment);
+        return instance.delete(`free/comment/${comment.comment_id}`, {
+            data: {
+                user_id: comment.user_id,
+            },
+        });
+    },
 };
 
 export const freeCommentApi = {};

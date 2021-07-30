@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
 import styled from "styled-components";
-import { freeBoardApi } from "../api";
+import { getFreeCommentListDB, addFreeCommentDB } from "../redux/async/comment";
+import { useDispatch, useSelector } from "react-redux";
 
-import { history } from "../redux/configureStore";
+import TableContent from "./TableContent";
 
 /**
  * @author kwonjiyeong
@@ -14,16 +14,40 @@ import { history } from "../redux/configureStore";
  */
 
 const Comment = ({ postId }) => {
-    const [list, setList] = useState([]);
+    const dispatch = useDispatch();
+    const commentList = useSelector(state => state.comment.list);
+    const user = useSelector(state => state.user.user);
+    const [content, setContent] = useState(""); //댓글 입력값
     useEffect(() => {
         //특정게시물 댓글 가져오기
-        freeBoardApi.getComment(postId).then(res => setList(res.data.result));
+        dispatch(getFreeCommentListDB(postId));
     }, []);
+    const addComment = () => {
+        //댓글을 추가하는 기능
+        const req = {
+            user_id: user.user_id,
+            post_id: postId,
+            content: content,
+        };
+        dispatch(addFreeCommentDB(req));
+        setContent("");
+    };
+
     return (
         <>
-            {list && list.length > 0 && (
+            <CommentWrite>
+                <input
+                    type="text"
+                    onChange={e => setContent(e.target.value)}
+                    onKeyPress={e => e.key === "Enter" && addComment()} //엔터키를 눌렀을 때, 코멘트가 추가되도록 설정!
+                    value={content} //나중에 댓글을 추가하고 value 값을 지울 때, ref를 사용하지 않고, state를 활용하여 지우기 위해 value props를 설정!
+                    placeholder="댓글을 입력해주세요!"
+                />
+                <button onClick={addComment}>등록</button>
+            </CommentWrite>
+            {commentList && commentList.length > 0 && (
                 <>
-                    <h3>댓글 {list.length}개</h3>
+                    <h3>댓글 {commentList.length}개</h3>
                     <CommentTable>
                         <TableRow>
                             <div>
@@ -36,27 +60,10 @@ const Comment = ({ postId }) => {
                                 <span>컨트롤러</span>
                             </div>
                         </TableRow>
-                        {list &&
-                            list.map(ele => (
-                                <TableRow
-                                    key={ele.post_id}
-                                    style={{ cursor: "pointer" }}
-                                    onClick={() => {
-                                        history.push(
-                                            `/freeboard/detail/${ele.post_id}`,
-                                        );
-                                    }}
-                                >
-                                    <div>
-                                        <span>{ele.user.nickname}</span>
-                                    </div>
-                                    <div>
-                                        <span>{ele.content}</span>
-                                    </div>
-                                    <div>
-                                        <button>수정</button>
-                                        <button>삭제</button>
-                                    </div>
+                        {commentList &&
+                            commentList.map(comment => (
+                                <TableRow key={comment.comment_id}>
+                                    <TableContent {...comment} />
                                 </TableRow>
                             ))}
                     </CommentTable>
@@ -65,6 +72,8 @@ const Comment = ({ postId }) => {
         </>
     );
 };
+
+const CommentWrite = styled.div``;
 
 const CommentTable = styled.div`
     border: 2px solid gray;
