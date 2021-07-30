@@ -69,6 +69,62 @@ export const loginUserDB = createAsyncThunk(
     },
 );
 
+/**
+ * @author jangheesung
+ * @param token = JWT token
+ * @returns 토큰으로 서버 요청이후 로그인 유저 정보 반환
+ * @역할 로그인 유지
+ * @필수값 token
+ */
+
+export const checkLoggedInUser = createAsyncThunk(
+    "user/check/login",
+    async (data, thunkAPI) => {
+        // 로컬 스토리지 토큰 불러온다.
+        const token = localStorage.getItem("token");
+        // 토큰 decode를 통해서 현재 로그인한 유저 id 가져오기
+        const { user_id: userId } = jwt(token);
+        try {
+            // 서버에 유저 정보 요청
+            const loggedInUser = await userApi.getUser(userId);
+            if (loggedInUser.data.ok) {
+                const user = loggedInUser.data.result;
+                return user;
+            }
+        } catch (error) {
+            // 에러 발생시 에러 메세지 반환
+            return thunkAPI.rejectWithValue(error.response.data.message);
+        }
+    },
+);
+
+export const editUserProfileDB = createAsyncThunk(
+    "user/edit/profile",
+    async (data, thunkAPI) => {
+        try {
+            const response = await userApi.editUserProfile(data);
+            if (response.data.ok) {
+                const response = await userApi.getUser(data.userId);
+                if (response.data.ok) {
+                    const updatedUser = response.data.result;
+                    return updatedUser;
+                }
+            }
+        } catch (error) {
+            return thunkAPI.rejectWithValue(error.response.data.message);
+        }
+    },
+);
+
+export const deleteAccountDB = createAsyncThunk(
+    "user/delete/account",
+    async ({ userId }, thunkAPI) => {
+        const response = await userApi.deleteAccount(userId).then(res => {
+            console.log(res);
+        });
+    },
+);
+
 //카카오 로그인 미들웨어
 export const kakaoLogin = createAsyncThunk(
     "user/kakao",
