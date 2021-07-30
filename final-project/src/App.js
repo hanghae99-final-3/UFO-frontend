@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 import { ConnectedRouter } from "connected-react-router";
 import { history } from "./redux/configureStore";
+import { useDispatch } from "react-redux";
 
 //컴포넌트
 import Layout from "./Components/Layout"; // 앱의 헤더나 푸터같이 큰 틀을 담당하는 컴포넌트
@@ -15,8 +16,20 @@ import FreeBoardDetail from "./Pages/FreeBoardDetail"; //자유게시판 게시�
 import FreeBoardWrite from "./Pages/FreeBoardWrite"; //자유게시판 게시글작성페이지 or 게시글수정페이지
 import UnivBoard from "./Pages/UnivBoard"; //대학게시판
 import UnivBoardDetail from "./Pages/UnivBoardDetail"; //대학게시판 게시글상세페이지
+import { checkLoggedInUser } from "./redux/async/user";
+import MyPage from "./Pages/MyPage";
 
 function App() {
+    const dispatch = useDispatch();
+
+    const is_token = localStorage.getItem("token") ? true : false;
+
+    useEffect(() => {
+        if (is_token) {
+            dispatch(checkLoggedInUser());
+        }
+    }, []);
+
     return (
         <>
             <ConnectedRouter history={history}>
@@ -48,6 +61,7 @@ function App() {
                             exact
                             component={UnivBoardDetail}
                         />
+                        <Route path="/mypage" exact component={MyPage} />
                         <Redirect from="*" to="/" />
                     </Switch>
                 </Layout>
