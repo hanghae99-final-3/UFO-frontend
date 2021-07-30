@@ -1,5 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { signupUserDB, loginUserDB } from "../async/user";
+import {
+    signupUserDB,
+    loginUserDB,
+    checkLoggedInUser,
+    editUserProfileDB,
+} from "../async/user";
 
 /**
  * @initialState 사용자 정보
@@ -21,6 +26,10 @@ const userSlice = createSlice({
         //회원가입 성공, 로그인 창으로 이동후 회원가입 상태 초기화
         resetSignupSuccess: state => {
             state.isSignupSuccess = "";
+        },
+        logoutUser: state => {
+            state.user = {};
+            state.isLoggedIn = false;
         },
     },
     extraReducers: {
@@ -53,9 +62,40 @@ const userSlice = createSlice({
             state.errorMessage = errorMessage;
         },
         //--------------------------------------------------------
+        //┏-----------------로그인 체크 Reducer----------------------┓
+        [checkLoggedInUser.pending]: (state, action) => {
+            state.isFetching = true;
+        },
+        [checkLoggedInUser.fulfilled]: (
+            state,
+            { payload: { password, ...user } },
+        ) => {
+            state.isFetching = false;
+            state.user = user;
+            state.isLoggedIn = true;
+            state.errorMessage = "";
+        },
+        [checkLoggedInUser.rejected]: (state, { payload: errorMessage }) => {
+            state.isFetching = false;
+            state.errorMessage = errorMessage;
+        },
+        //--------------------------------------------------------
+        //┏-----------------유저 프로필 정보 수정 Reducer----------------------┓
+        [editUserProfileDB.pending]: (state, action) => {
+            state.isFetching = true;
+        },
+        [editUserProfileDB.fulfilled]: (state, { payload: updatedUser }) => {
+            state.isFetching = false;
+            state.user = updatedUser;
+            state.errorMessage = "";
+        },
+        [editUserProfileDB.rejected]: (state, { payload: errorMessage }) => {
+            state.isFetching = false;
+            state.errorMessage = errorMessage;
+        },
     },
 });
 
-export const { resetSignupSuccess } = userSlice.actions;
+export const { resetSignupSuccess, logoutUser } = userSlice.actions;
 
 export default userSlice;
