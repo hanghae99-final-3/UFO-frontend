@@ -4,6 +4,7 @@ import {
     loginUserDB,
     checkLoggedInUser,
     editUserProfileDB,
+    deleteAccountDB,
 } from "../async/user";
 
 /**
@@ -92,6 +93,10 @@ const userSlice = createSlice({
         [editUserProfileDB.rejected]: (state, { payload: errorMessage }) => {
             state.isFetching = false;
             state.errorMessage = errorMessage;
+        },
+        [deleteAccountDB.fulfilled]: (state, action) => {
+            state.user = {};
+            state.isLoggedIn = false;
         },
     },
 });
