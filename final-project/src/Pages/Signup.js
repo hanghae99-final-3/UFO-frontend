@@ -42,6 +42,7 @@ const useStyles = makeStyles({
 });
 
 const Signup = props => {
+    const dispatch = useDispatch();
     const isSignupSuccess = useSelector(state => state.user.isSignupSuccess);
     React.useEffect(() => {
         if (isSignupSuccess) {
@@ -49,8 +50,8 @@ const Signup = props => {
             alert("성공");
             props.history.replace("/login");
         }
-    }, [isSignupSuccess]);
-    const dispatch = useDispatch();
+    }, [isSignupSuccess, props.history, dispatch]);
+
     const classes = useStyles();
     const validate = Yup.object({
         nickname: Yup.string()
