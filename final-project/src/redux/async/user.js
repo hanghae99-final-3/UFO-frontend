@@ -98,14 +98,25 @@ export const checkLoggedInUser = createAsyncThunk(
     },
 );
 
+/**
+ * @author jangheesung
+ * @param data = {email, userId, password, nickname}
+ * @returns updated user
+ * @역할 유저 정보 변경
+ * @필수값 data
+ */
+
 export const editUserProfileDB = createAsyncThunk(
     "user/edit/profile",
     async (data, thunkAPI) => {
         try {
+            // 유저 정보 변경 api 요청
             const response = await userApi.editUserProfile(data);
             if (response.data.ok) {
+                // 서버 유저 정보 변경 성공시 수정된 유저 정보 요청
                 const response = await userApi.getUser(data.userId);
                 if (response.data.ok) {
+                    // 유저 정보 변경이 반영된 새로운 유저 정보 반환
                     const updatedUser = response.data.result;
                     return updatedUser;
                 }
