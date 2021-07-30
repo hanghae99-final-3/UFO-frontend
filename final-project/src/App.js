@@ -44,7 +44,7 @@ function App() {
 
                         <Route path="/univboard" exact component={UnivBoard} />
                         <Route
-                            path="/univboard/:id"
+                            path="/univboard/detail/:id"
                             exact
                             component={UnivBoardDetail}
                         />

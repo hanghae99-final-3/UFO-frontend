@@ -61,7 +61,30 @@ export const freeCommentApi = {};
 
 export const issueApi = {};
 
-export const univBoardApi = {};
+export const univBoardApi = {
+    //UnivBoard 목록 불러오기
+    getList : ()=>{
+        return instance.get('/univ/post')
+    },
+
+    //UnivBoard 포스트 작성하기
+    addList : ({title,content})=>{
+        return instance.post('/univ/post',{
+            title,
+            category : 1,
+            is_flexed : false,
+            user_id : 1,
+            content
+        })
+    },
+
+    //게시물 상세보기
+    getPost : (post_id)=>{
+        return instance.get(`/univ/post/${post_id}`)
+    },
+
+    //게시물 삭제하기
+};
 
 export const univCommentApi = {};
 
