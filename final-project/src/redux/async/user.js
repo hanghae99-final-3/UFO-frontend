@@ -127,12 +127,20 @@ export const editUserProfileDB = createAsyncThunk(
     },
 );
 
+/**
+ * @author jangheesung
+ * @param userId
+ * @returns none
+ * @역할 회원 탈퇴
+ * @필수값 userId
+ */
+
 export const deleteAccountDB = createAsyncThunk(
     "user/delete/account",
     async ({ userId }, thunkAPI) => {
-        const response = await userApi.deleteAccount(userId).then(res => {
-            console.log(res);
-        });
+        // 유저 삭제 요청
+        const response = await userApi.deleteAccount(userId);
+        // 예외처리 추가 필요함
     },
 );
 
