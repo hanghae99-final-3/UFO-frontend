@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { history } from "../redux/configureStore";
 import { getFreePostDB, deleteFreePostDB } from "../redux/async/freeBoard";
@@ -13,13 +13,14 @@ import FreeBoardComment from "../Components/FreeBoardComment";
  */
 
 const FreeBoardDetail = props => {
+    //---- 게시물 정보를 불러와서 post에 저장한다.
     const dispatch = useDispatch();
     const postId = Number(props.match.params.id);
     const post = useSelector(state => state.freeBoard.post);
-
     useEffect(() => {
         dispatch(getFreePostDB(postId));
     }, []);
+    //----
 
     const deleteFreePost = () => {
         //서버에 필요한 정보를 정리하고, 포스트를 삭제하는 미들웨어 함수로 보낸다.

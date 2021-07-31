@@ -1,6 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { history } from "../configureStore";
-import { freeBoardApi } from "../../api";
+import { freeCommentApi } from "../../api";
 
 /**
  * @author kwonjiyeong
@@ -13,7 +12,7 @@ export const getFreeCommentListDB = createAsyncThunk(
     "comment/getList",
     async (data, thunkAPI) => {
         try {
-            const response = await freeBoardApi.getPostCommentList(data);
+            const response = await freeCommentApi.getPostCommentList(data);
             if (response.data.ok) return response.data.result;
         } catch (err) {
             return thunkAPI.rejectWithValue(err.response.message);
@@ -32,7 +31,7 @@ export const addFreeCommentDB = createAsyncThunk(
     "comment/addComment",
     async (data, thunkAPI) => {
         try {
-            const response = await freeBoardApi.addPostComment(data);
+            const response = await freeCommentApi.addPostComment(data);
             const user = thunkAPI.getState().user;
             if (response.data.ok) return { ...response.data.result, ...user };
         } catch (err) {
@@ -52,7 +51,7 @@ export const editFreeCommentDB = createAsyncThunk(
     "comment/editComment",
     async (data, thunkAPI) => {
         try {
-            const response = await freeBoardApi.editPostComment(data);
+            const response = await freeCommentApi.editPostComment(data);
             if (response.data.ok) {
                 return { comment_id: data.comment_id, content: data.content }; //서버에서 넘겨지는 값이 없어서 임시조치!
             }
@@ -73,7 +72,7 @@ export const deleteFreeCommentDB = createAsyncThunk(
     "comment/deleteComment",
     async (data, thunkAPI) => {
         try {
-            const response = await freeBoardApi.deletePostComment(data);
+            const response = await freeCommentApi.deletePostComment(data);
 
             if (response.data.ok) {
                 return data.comment_id;

@@ -10,17 +10,15 @@ import categories from "../categories";
  * @param props={history,location,match}
  * @returns 자유게시판 게시글 작성페이지 or 자유게시판 특정 게시글 수정페이지
  * @역할 props.match.params.id이 없으면 게시글 작성페이지, 있으면 수정페이지로 렌더링.
- * @필수값 props.match.params.id
+ * @필수값 postId(게시글 아이디)
  */
 
 const FreeBoardWrite = props => {
     //┏-----------------게시글 수정파트-----------------┓
-    //----state에서 자유게시판 게시물 단일정보 불러오기
     const dispatch = useDispatch();
-    const postFromState = useSelector(state => state.freeBoard.post);
+    const postFromState = useSelector(state => state.freeBoard.post); //state에 있는 post 정보 불러오기.
     const postId = Number(props.match.params.id);
     let [post, setPost] = useState(postFromState ? postFromState : null); //state에서 단일정보를 불러오지 못하면 post는 null 값이 된다.
-    //----
 
     useEffect(() => {
         //----state로부터 post값을 얻어올 수 있으면 중지하고, 아니면 서버로부터 post값을 받아온다.

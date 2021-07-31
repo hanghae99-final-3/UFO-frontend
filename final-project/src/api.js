@@ -52,7 +52,9 @@ export const freeBoardApi = {
         instance.delete(`free/post/${id_list.post_id}`, {
             data: { user_id: id_list.user_id },
         }),
+};
 
+export const freeCommentApi = {
     //게시물 댓글불러오기
     getPostCommentList: post_id => instance.get(`free/comment/${post_id}`),
 
@@ -67,17 +69,13 @@ export const freeBoardApi = {
         }),
 
     //게시물 댓글삭제하기
-    deletePostComment: comment => {
-        console.log(comment);
-        return instance.delete(`free/comment/${comment.comment_id}`, {
+    deletePostComment: comment =>
+        instance.delete(`free/comment/${comment.comment_id}`, {
             data: {
                 user_id: comment.user_id,
             },
-        });
-    },
+        }),
 };
-
-export const freeCommentApi = {};
 
 export const issueApi = {};
 
