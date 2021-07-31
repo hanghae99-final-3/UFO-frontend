@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { history } from "../redux/configureStore";
 import { getFreePostDB, deleteFreePostDB } from "../redux/async/freeBoard";
-import Comment from "../Components/Comment";
+import FreeBoardComment from "../Components/FreeBoardComment";
 
 /**
  * @author kwonjiyeong
@@ -49,7 +49,7 @@ const FreeBoardDetail = props => {
                     <button onClick={deleteFreePost}>삭제하기</button>
                 </>
             )}
-            <Comment postId={postId} />
+            <FreeBoardComment postId={postId} />
         </>
     );
 };
