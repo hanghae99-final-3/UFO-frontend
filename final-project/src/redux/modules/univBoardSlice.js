@@ -1,5 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
-import {getUnivBoardDB, detailUnivBoardDB} from '../async/univBoardAsync'
+import {
+    getUnivBoardDB,
+    detailUnivBoardDB,
+    addUnivBoardPostDB,
+} from "../async/univBoardAsync";
 
 //et getTemplates; // 아래 extraReducers 예제를 위한 임의의 변수, 무시
 
@@ -10,10 +14,10 @@ import {getUnivBoardDB, detailUnivBoardDB} from '../async/univBoardAsync'
  */
 
 const initialState = {
-    list : [],
-    postDetail : {},
-    isFetching : false,
-    errorMessage : null,
+    list: [],
+    postDetail: {},
+    isFetching: false,
+    errorMessage: null,
 };
 
 // reducer이름과 함수가 포함된 초기 상태와 lookup테이블을 받아 액션 생성자 함수, 액션 유형 문자열 및 리듀서 함수를 자동으로 생성한다.
@@ -27,23 +31,33 @@ const univBoardSlice = createSlice({
         [getUnivBoardDB.pending]: (state, { payload }) => {
             state.isFetching = true;
         },
-        [getUnivBoardDB.fulfilled]: (state, { payload:univBoardList }) => {
+        [getUnivBoardDB.fulfilled]: (state, { payload: univBoardList }) => {
             state.list = univBoardList;
             state.isFetching = false;
         },
-        [getUnivBoardDB.rejected]: (state, { payload : errorMessage }) => {
+        [getUnivBoardDB.rejected]: (state, { payload: errorMessage }) => {
             state.errorMessage = errorMessage;
         },
-        [detailUnivBoardDB.pending] : (state, {payload}) =>{
+        [detailUnivBoardDB.pending]: (state, { payload }) => {
             state.isFetching = true;
         },
-        [detailUnivBoardDB.fulfilled] :  (state, {payload : detail}) =>{
+        [detailUnivBoardDB.fulfilled]: (state, { payload: detail }) => {
             state.postDetail = detail;
         },
-        [detailUnivBoardDB.rejected] : (state, {payload})=>{
+        [detailUnivBoardDB.rejected]: (state, { payload }) => {
             state.errorMessage = payload;
-        }
-
+        },
+        //---------------------------작성--------------------
+        [addUnivBoardPostDB.pending]: (state, action) => {
+            state.isFetching = true;
+        },
+        [addUnivBoardPostDB.fulfilled]: (state, { payload: newPost }) => {
+            state.isFetching = false;
+            state.list.push(newPost);
+        },
+        [addUnivBoardPostDB.rejected]: (state, action) => {
+            state.isFetching = false;
+        },
     },
 });
 
