@@ -47,7 +47,7 @@ const univBoardSlice = createSlice({
         [detailUnivBoardDB.rejected]: (state, { payload }) => {
             state.errorMessage = payload;
         },
-        //---------------------------작성--------------------
+        //---------------------------작성-----------------------
         [addUnivBoardPostDB.pending]: (state, action) => {
             state.isFetching = true;
         },
@@ -58,6 +58,7 @@ const univBoardSlice = createSlice({
         [addUnivBoardPostDB.rejected]: (state, action) => {
             state.isFetching = false;
         },
+        //---------------------------수정------------------------
     },
 });
 
