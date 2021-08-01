@@ -1,64 +1,168 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
     getUnivBoardDB,
-    detailUnivBoardDB,
+    detailUnivBoardPostDB,
     addUnivBoardPostDB,
+    getCommentDB,
+    deleteUnivBoardPostDB,
+    addUniBoardCommentDB,
+    editUniBoardCommentDB,
+    deleteUniBoardCommentDB,
+    editUnivBoardPostDB,
 } from "../async/univBoardAsync";
-
-//et getTemplates; // 아래 extraReducers 예제를 위한 임의의 변수, 무시
-
-/**
- * @initialState 초기 리덕스 상태값 넣어주기
- * @역할 무엇을 위한 Slice인지 적어주기
- * @필수값 컴포넌트 사용을 위해 어떤 props가 필요한지 명시해주기
- */
 
 const initialState = {
     list: [],
     postDetail: {},
+    commentList: [],
     isFetching: false,
-    errorMessage: null,
+    errorMessage: "",
+    addRequestErrorMessage: "",
+    deleteRequestErrorMessage: "",
+    editRequestErrorMessage: "",
+    addCommentErrorMessage: "",
+    editCommentErrorMessage: "",
+    getCommentErrorMessage: "",
+    getUnivBoardErrorMessage: "",
+    getDetailBoardErrorMessage: "",
 };
 
-// reducer이름과 함수가 포함된 초기 상태와 lookup테이블을 받아 액션 생성자 함수, 액션 유형 문자열 및 리듀서 함수를 자동으로 생성한다.
 const univBoardSlice = createSlice({
-    name: "univBoard", // 액션 타입 문자열의 prefix로 사용됨
-    initialState: initialState, // 초기 state 값
-    reducers: {}, // 리듀서 맵. key는 액션 타입 문자열이 되고(ex. template/addTodo), 함수는 액션이 dispatch 될 때 실행되는 reducer
-
-    //extraReducers 외부 작업을 참조(e.g 비동기 처리)
+    name: "univBoard",
+    initialState: initialState,
+    reducers: {},
     extraReducers: {
+        //┏---------------대학교 게시판 게시글 불러오기 reducer------------┓
         [getUnivBoardDB.pending]: (state, { payload }) => {
             state.isFetching = true;
         },
         [getUnivBoardDB.fulfilled]: (state, { payload: univBoardList }) => {
             state.list = univBoardList;
             state.isFetching = false;
+            state.getUnivBoardErrorMessage = "";
         },
         [getUnivBoardDB.rejected]: (state, { payload: errorMessage }) => {
-            state.errorMessage = errorMessage;
+            state.getUnivBoardErrorMessage = errorMessage;
         },
-        [detailUnivBoardDB.pending]: (state, { payload }) => {
+        //------------------------------------------------------------------
+
+        //┏----------대학교 게시판 게시글 상세정보 불러오기 reducer-----------┓
+        [detailUnivBoardPostDB.pending]: (state, action) => {
             state.isFetching = true;
         },
-        [detailUnivBoardDB.fulfilled]: (state, { payload: detail }) => {
+        [detailUnivBoardPostDB.fulfilled]: (state, { payload: detail }) => {
+            state.isFetching = false;
             state.postDetail = detail;
+            state.getDetailBoardErrorMessage = "";
         },
-        [detailUnivBoardDB.rejected]: (state, { payload }) => {
-            state.errorMessage = payload;
+        [detailUnivBoardPostDB.rejected]: (state, { payload }) => {
+            state.isFetching = false;
+            state.getDetailBoardErrorMessage = payload; // 에러 메세지
         },
-        //---------------------------작성-----------------------
+        //-----------------------------------------------------------------
+
+        //┏---------------대학교 게시판 게시글 작성 reducer-----------------┓
         [addUnivBoardPostDB.pending]: (state, action) => {
             state.isFetching = true;
         },
         [addUnivBoardPostDB.fulfilled]: (state, { payload: newPost }) => {
             state.isFetching = false;
             state.list.push(newPost);
+            state.addRequestErrorMessage = "";
         },
-        [addUnivBoardPostDB.rejected]: (state, action) => {
+        [addUnivBoardPostDB.rejected]: (state, { payload: errorMessage }) => {
             state.isFetching = false;
+            state.addRequestErrorMessage = errorMessage;
         },
-        //---------------------------수정------------------------
+        //----------------------------------------------------------------
+
+        //┏---------------대학교 게시판 게시글 작성 reducer-----------------┓
+        [editUnivBoardPostDB.pending]: (state, action) => {
+            state.isFetching = true;
+        },
+        [editUnivBoardPostDB.fulfilled]: (state, { payload: updatedPost }) => {
+            state.isFetching = false;
+            state.postDetail.title = updatedPost.title;
+            state.postDetail.content = updatedPost.content;
+            state.postDetail.category = updatedPost.category;
+            state.postDetail.is_fixed = updatedPost.is_fixed;
+            state.editRequestErrorMessage = "";
+        },
+        [editUnivBoardPostDB.rejected]: (state, { payload: errorMessage }) => {
+            state.isFetching = false;
+            state.editRequestErrorMessage = errorMessage;
+        },
+
+        //----------------------------------------------------------------
+        //┏---------------대학교 게시판 게시글  삭제 reducer----------------┓
+        [deleteUnivBoardPostDB.pending]: (state, action) => {
+            state.isFetching = true;
+        },
+        [deleteUnivBoardPostDB.fulfilled]: (state, action) => {
+            state.isFetching = false;
+            state.deleteRequestErrorMessage = "";
+        },
+        [deleteUnivBoardPostDB.rejected]: (state, { payload }) => {
+            state.isFetching = false;
+            state.deleteRequestErrorMessage = payload;
+        },
+        //----------------------------------------------------------------
+
+        //┏------------대학교 게시판 게시글  댓글 생성 reducer---------------┓
+        [addUniBoardCommentDB.pending]: (state, action) => {
+            state.isFetching = true;
+        },
+        [addUniBoardCommentDB.fulfilled]: (state, action) => {
+            state.isFetching = false;
+            state.addCommentErrorMessage = "";
+        },
+        [addUniBoardCommentDB.rejected]: (state, { payload }) => {
+            state.isFetching = false;
+            state.addCommentErrorMessage = payload;
+        },
+        //----------------------------------------------------------------
+
+        //┏------------대학교 게시판 게시글  댓글 수정 reducer--------------┓
+        [editUniBoardCommentDB.pending]: (state, action) => {
+            state.isFetching = true;
+        },
+        [editUniBoardCommentDB.fulfilled]: (state, action) => {
+            state.isFetching = false;
+            state.editCommentErrorMessage = "";
+        },
+        [editUniBoardCommentDB.rejected]: (state, { payload }) => {
+            state.isFetching = false;
+            state.editCommentErrorMessage = payload;
+        },
+        //-----------------------------------------------------------------
+
+        //---------------------------게시물 댓글 불러오기--------------------
+        [getCommentDB.pending]: (state, action) => {
+            state.isFetching = true;
+        },
+        [getCommentDB.fulfilled]: (state, { payload: commentList }) => {
+            state.isFetching = false;
+            state.commentList = commentList;
+            state.getCommentErrorMessage = "";
+        },
+        [getCommentDB.rejected]: (state, { payload: errorMessage }) => {
+            state.isFetching = false;
+            state.getCommentErrorMessage = errorMessage;
+        },
+        //----------------------------------------------------------------
+
+        //--------------------------게시글 댓글 삭제------------------------
+        [deleteUniBoardCommentDB.pending]: (state, action) => {
+            state.isFetching = true;
+        },
+        [deleteUniBoardCommentDB.fulfilled]: (state, action) => {
+            state.isFetching = false;
+            state.deleteCommentErrorMessage = "";
+        },
+        [deleteUniBoardCommentDB.rejected]: (state, { payload }) => {
+            state.isFetching = false;
+            state.deleteCommentErrorMessage = payload; //errorMessage
+        },
     },
 });
 
