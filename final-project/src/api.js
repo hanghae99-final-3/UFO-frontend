@@ -67,7 +67,7 @@ export const univBoardApi = {
         return instance.get("/univ/post");
     },
 
-    //UnivBoard 포스트 작성하기
+    //대학 게시판 게시글 작성하기
     addPost: ({ title, content, category, userId }) =>
         instance.post("/univ/post", {
             title,
@@ -78,12 +78,53 @@ export const univBoardApi = {
             univ_id: 1, //테스트 마치면 수정 필요함
         }),
 
-    //게시물 상세보기
-    getPost: post_id => {
+    // 대학 게시판 게시물 수정
+    editPost: data =>
+        instance.put(`univ/post/${data.postId}`, {
+            user_id: data.userId,
+            univ_id: 3,
+            title: data.title,
+            content: data.content,
+            is_fixed: true,
+            category: data.category,
+        }),
+
+    //게시물 상제정보 불러오기
+    getPostDetail: post_id => {
         return instance.get(`/univ/post/${post_id}`);
     },
 
     //게시물 삭제하기
+    deletePost: ({ postId, userId }) =>
+        instance.delete(`univ/post/${postId}`, {
+            data: {
+                user_id: userId,
+            },
+        }),
+
+    // 게시물 댓글 생성
+    addComment: ({ postId, userId, content }) =>
+        instance.post("univ/comment", {
+            user_id: userId,
+            post_id: postId,
+            content, // 게시물 댓글 내용
+        }),
+
+    // 게시물 댓글 수정
+    editComment: ({ commentId, userId, content }) =>
+        instance.put(`univ/comment/${commentId}`, {
+            user_id: userId,
+            content, // 게시물 댓글 내용
+        }),
+
+    //게시물 댓글 삭제
+    deleteComment: ({ commentId, userId }) =>
+        instance.delete(`univ/comment/${commentId}`, {
+            data: { user_id: userId },
+        }),
+
+    // 게시물 모든 댓글 불러오기
+    getComment: postId => instance.get(`univ/comment/${postId}`),
 };
 
 export const univCommentApi = {};
