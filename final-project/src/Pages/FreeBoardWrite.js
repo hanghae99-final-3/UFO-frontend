@@ -71,7 +71,6 @@ const FreeBoardWrite = props => {
     };
     //┗-----------------게시글 작성파트-----------------┛
 
-    console.log(post);
     if (isEdit && post) {
         return (
             //게시글 수정모드
