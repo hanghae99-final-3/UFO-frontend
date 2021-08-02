@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import {univBoardApi} from '../../api'
+import {univBoardApi, univCommentApi} from '../../api'
 
 //const axios = () => {}; // template 예제를 위한 임의의 함수, 무시
 
@@ -12,7 +12,7 @@ export const getUnivBoardDB = createAsyncThunk(
     async (data, thunkAPI) => {
         try {
             const response = await univBoardApi.getList();
-            console.log('response',response)
+            console.log('get univ board response',response)
             if(response.data.ok){
                 return response.data.result
             }
@@ -36,14 +36,47 @@ export const addUnivBoardDB = createAsyncThunk(
     }
 );
 
+//UnivBoard 수정하기
+export const updateUnivBoardDB = createAsyncThunk(
+    "univBoard/updateUnivBoardDB",
+    async(data, thunkAPI) =>{
+        console.log('data',data)
+        try{
+        const response = await univBoardApi.updatePost(data)
+        console.log('update response',response)
+        } catch(err) {
+            console.log(err)
+        }
+    }
+)
 
 //UnivBoard 상세보기
 export const detailUnivBoardDB = createAsyncThunk(
     'univBoard/post/detail',
     async(data,thunkAPI) =>{
         const response = await univBoardApi.getPost(data)
-        console.log('response',response)
+        console.log('univ detail response',response)
         return response.data.result
+    }
+)
+
+//UnivComment 불러오기
+export const getUnivBoardCommentDB = createAsyncThunk(
+    'univBoard/detail/getcomment',
+    async(data,thunkAPI) =>{
+        const response = await univCommentApi.getUnivComment()
+        console.log('get commentDB response = ',response)
+        return(response)
+    }
+)
+//UnivComment 추가하기
+export const addUnivCommentDB = createAsyncThunk(
+    'univBoard/detail/addcomment',
+    async(data, thunkAPI) =>{
+        console.log('comment data = ',data)
+        // const response = await univCommentApi.addUnivComment()
+        // console.log(response)
+        // return (response)
     }
 )
 
