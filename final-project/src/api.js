@@ -11,8 +11,8 @@ instance.interceptors.request.use(async config => {
     config.headers["content-type"] = "application/json; charset=utf-8";
     config.headers["X-Requested-With"] = "XMLHttpRequest";
     config.headers["Accept"] = "*/*";
-    //getToken는 로컬 스토리지에 토큰이 있다면 반환한다.
-    config.headers["authorization"] = `Bearer ${await getToken()}`;
+    //getToken는 로컬 스토리지에 토큰이 있다면 반환한다 없다면 null 값 반환
+    config.headers["authorization"] = await getToken();
     return config;
 });
 
@@ -24,12 +24,29 @@ export const userApi = {
             nickname: data.nickname,
             password: data.password,
         }),
+    editUserProfile: ({ nickname, email, password, userId }) =>
+        instance.put(`api/user/${userId}`, {
+            email,
+            nickname,
+            password,
+        }),
     login: data =>
         instance.post("auth/login", {
             email: data.email,
             password: data.password,
         }),
     getUser: userId => instance.get(`api/user/${userId}`),
+    verifyUniEmail: email =>
+        instance.post("/auth/email", {
+            school_email: email,
+        }),
+    checkVerifyCode: ({ userId, email }) =>
+        instance.post("/auth/email/check", {
+            user_id: userId,
+            school_email: email,
+        }),
+    deleteAccount: userId => instance.delete(`api/user/${userId}`),
+
     kakaoLogin: () => instance.get("api/kakao"),
 };
 
@@ -43,9 +60,6 @@ export const freeBoardApi = {
     //게시물 불러오기
     getPost: post_id => instance.get(`free/post/${post_id}`),
 
-    //게시물 댓글불러오기
-    getComment: post_id => instance.get(`free/comment/${post_id}`),
-
     //게시물 수정하기
     editPost: post => {
         return instance.put(`free/post/${post.post_id}`, post);
@@ -57,11 +71,108 @@ export const freeBoardApi = {
         }),
 };
 
-export const freeCommentApi = {};
+export const freeCommentApi = {
+    //게시물 댓글불러오기
+    getPostCommentList: post_id => instance.get(`free/comment/${post_id}`),
+
+    //게시물 댓글추가하기
+    addPostComment: comment => instance.post("free/comment", comment),
+
+    //게시물 댓글수정하기
+    editPostComment: comment =>
+        instance.put(`free/comment/${comment.comment_id}`, {
+            user_id: comment.user_id,
+            content: comment.content,
+        }),
+
+    //게시물 댓글삭제하기
+    deletePostComment: comment =>
+        instance.delete(`free/comment/${comment.comment_id}`, {
+            data: {
+                user_id: comment.user_id,
+            },
+        }),
+};
 
 export const issueApi = {};
 
-export const univBoardApi = {};
+export const univBoardApi = {
+    //UnivBoard 목록 불러오기
+    getList: () => {
+        return instance.get("/univ/post");
+    },
+
+    //대학 게시판 게시글 작성하기
+    addPost: ({ title, content, category, userId }) =>
+        instance.post("/univ/post", {
+            title,
+            content,
+            category,
+            user_id: userId,
+            is_fixed: false, // 테스트 마치면 수정 필요함
+            univ_id: 1, //테스트 마치면 수정 필요함
+        }),
+
+    // 대학 게시판 게시물 수정
+    editPost: data =>
+        instance.put(`univ/post/${data.postId}`, {
+            user_id: data.userId,
+            univ_id: 3,
+            title: data.title,
+            content: data.content,
+            is_fixed: true,
+            category: data.category,
+        }),
+
+    //게시물 상제정보 불러오기
+    getPostDetail: post_id => {
+        return instance.get(`/univ/post/${post_id}`);
+    },
+
+    //게시물 수정하기
+    updatePost: data => {
+        return instance.put(`/univ/post/${data.post_id}`, {
+            // data값 보내기
+            user_id: 1,
+            univ_id: 3,
+            title: data.title,
+            category: 1,
+            content: data.content,
+            is_fixed: false,
+        });
+    },
+    //게시물 삭제하기
+    deletePost: ({ postId, userId }) =>
+        instance.delete(`univ/post/${postId}`, {
+            data: {
+                user_id: userId,
+            },
+        }),
+
+    // 게시물 댓글 생성
+    addComment: ({ postId, userId, content }) =>
+        instance.post("univ/comment", {
+            user_id: userId,
+            post_id: postId,
+            content, // 게시물 댓글 내용
+        }),
+
+    // 게시물 댓글 수정
+    editComment: ({ commentId, userId, content }) =>
+        instance.put(`univ/comment/${commentId}`, {
+            user_id: userId,
+            content, // 게시물 댓글 내용
+        }),
+
+    //게시물 댓글 삭제
+    deleteComment: ({ commentId, userId }) =>
+        instance.delete(`univ/comment/${commentId}`, {
+            data: { user_id: userId },
+        }),
+
+    // 게시물 모든 댓글 불러오기
+    getComment: postId => instance.get(`univ/comment/${postId}`),
+};
 
 export const univCommentApi = {};
 

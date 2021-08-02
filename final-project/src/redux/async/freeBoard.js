@@ -23,6 +23,25 @@ export const getFreeListDB = createAsyncThunk(
 
 /**
  * @author kwonjiyeong
+ * @param 없음
+ * @returns 서버연결 성공시, 자유게시판의 특정게시물 / 서버연결 실패시, 에러메세지
+ * @역할 자유게시판 특정게시물 불러오기
+ * @필수값 없음
+ */
+export const getFreePostDB = createAsyncThunk(
+    "freeBoard/getPost",
+    async (data, thunkAPI) => {
+        try {
+            const response = await freeBoardApi.getPost(data);
+            if (response.data.ok) return response.data.result;
+        } catch (err) {
+            return thunkAPI.rejectWithValue(err.response.message);
+        }
+    },
+);
+
+/**
+ * @author kwonjiyeong
  * @param data = {user_id, category, country_id, title, content}
  * @returns 서버연결 성공시, 자유게시판 목록에 추가할 포스트 / 서버연결 실패시, 에러메세지
  * @역할 자유게시판 게시물 추가하기
