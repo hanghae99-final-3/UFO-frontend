@@ -31,13 +31,6 @@ body{
   &::-webkit-scrollbar {
     display: none;
   }
-  .container {
-    max-width: 1140px;
-    margin: 0 auto;
-    position: relative;
-    @media (max-width: 1200px) {
-        width: calc(100% - 50px);
-    }
-  }
 }
+
 `;
