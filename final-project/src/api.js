@@ -130,7 +130,7 @@ export const univBoardApi = {
     },
 
     //게시물 수정하기
-    updatePost : (data)=>{
+    updatePost: data => {
         return instance.put(`/univ/post/${data.post_id}`, {
             // data값 보내기
             user_id: 1,
@@ -138,8 +138,8 @@ export const univBoardApi = {
             title: data.title,
             category: 1,
             content: data.content,
-            is_fixed: false
-        })
+            is_fixed: false,
+        });
     },
     //게시물 삭제하기
     deletePost: ({ postId, userId }) =>
@@ -174,20 +174,7 @@ export const univBoardApi = {
     getComment: postId => instance.get(`univ/comment/${postId}`),
 };
 
-export const univCommentApi = {
-
-    //댓글 불러오기
-    getUnivComment : ()=>{
-        return instance.get('univ/comment/:post_id')
-    },
-
-    //댓글 추가하기
-    addUnivComment : (data) =>{
-        return instance.post('univ/comment',{
-            content : data.content //아직 안찍어봄
-        })
-    }
-};
+export const univCommentApi = {};
 
 export const electionApi = {};
 
