@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 import { history } from "../redux/configureStore";
 import { getFreePostDB, deleteFreePostDB } from "../redux/async/freeBoard";
@@ -36,7 +37,11 @@ const FreeBoardDetail = props => {
             {post && (
                 <>
                     <h1>{post.title}</h1>
-                    <p>{post.content}</p>
+                    <TextBox
+                        //HTML형태인 content 데이터를 InnerHTML해서 보여줍니다.
+                        className="ck-content"
+                        dangerouslySetInnerHTML={{ __html: post.content }}
+                    ></TextBox>
                     <button onClick={() => history.push("/freeboard")}>
                         뒤로가기
                     </button>
@@ -48,11 +53,29 @@ const FreeBoardDetail = props => {
                         수정하기
                     </button>
                     <button onClick={deleteFreePost}>삭제하기</button>
+                    <Test />
                 </>
             )}
             <FreeBoardComment postId={postId} />
         </>
     );
 };
+
+const TextBox = styled.div`
+    padding: 20px;
+    border-radius: 10px;
+    border: 2px solid gray;
+`;
+
+const Test = styled.div`
+    height: 200px;
+    background: black;
+    @include tablet {
+        background: yellow;
+    }
+    @include desktop {
+        background: green;
+    }
+`;
 
 export default FreeBoardDetail;

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
+import styled from "styled-components";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-editor-classic/src/classiceditor";
-import BalloonEditor from "@ckeditor/ckeditor5-editor-balloon/src/ballooneditor";
 
 import Essentials from "@ckeditor/ckeditor5-essentials/src/essentials"; //
 import Paragraph from "@ckeditor/ckeditor5-paragraph/src/paragraph"; //
@@ -147,22 +147,53 @@ const editorConfiguration = {
     placeholder: "글을 입력해보세요!",
 };
 
-const EditorTest = () => {
-    const [content, setContent] = useState("");
-    console.log(content);
+const Editor = ({ getContentFromEditor, originContent }) => {
+    //수정모드
+    if (originContent)
+        return (
+            <StyledEditor>
+                <CKEditor
+                    editor={ClassicEditor}
+                    config={editorConfiguration}
+                    data={originContent}
+                    onChange={(event, editor) => {
+                        const data = editor.getData();
+                        getContentFromEditor(data);
+                    }}
+                />
+            </StyledEditor>
+        );
+
     return (
-        <div>
+        //작성모드
+        <StyledEditor>
             <CKEditor
                 editor={ClassicEditor}
                 config={editorConfiguration}
                 onChange={(event, editor) => {
                     const data = editor.getData();
                     // console.log({ event, editor, data });
-                    setContent(data);
+                    getContentFromEditor(data);
                 }}
             />
-        </div>
+        </StyledEditor>
     );
 };
 
-export default EditorTest;
+const StyledEditor = styled.div`
+    padding: 10px;
+    .ck-toolbar {
+        padding: 10px;
+        border-radius: 10px 10px 0 0 !important;
+    }
+    .ck-content {
+        border-radius: 0 0 10px 10px !important;
+    }
+`;
+
+Editor.defaultProps = {
+    getContentFromEditor: () => {},
+    originContent: null,
+};
+
+export default Editor;

@@ -4,6 +4,7 @@ import { history } from "../redux/configureStore";
 import { freeBoardApi } from "../api";
 import { addFreePostDB, editFreePostDB } from "../redux/async/freeBoard";
 import categories from "../categories";
+import Editor from "../Components/Editor";
 
 /**
  * @author kwonjiyeong
@@ -14,8 +15,12 @@ import categories from "../categories";
  */
 
 const FreeBoardWrite = props => {
-    //┏-----------------게시글 수정파트-----------------┓
     const dispatch = useDispatch();
+    const getContentFromEditor = content =>
+        //에디터로부터 content 값 가져오기
+        setPost({ ...post, content: content });
+
+    //┏-----------------게시글 수정파트-----------------┓
     const postFromState = useSelector(state => state.freeBoard.post); //state에 있는 post 정보 불러오기.
     const postId = Number(props.match.params.id);
     let [post, setPost] = useState(postFromState ? postFromState : null); //state에서 단일정보를 불러오지 못하면 post는 null 값이 된다.
@@ -49,6 +54,7 @@ const FreeBoardWrite = props => {
     // ----
     const addPost = () => {
         //서버에 필요한 정보를 정리하고, 포스트를 추가하는 미들웨어 함수로 보낸다.
+        console.log(post.content);
         if (!userId) return alert("로그인을 해주세요!");
         if (userId && !post.country_id) return alert("국가를 설정해주세요!");
         if (userId && !post.category) return alert("카테고리를 설정해주세요!");
@@ -65,6 +71,7 @@ const FreeBoardWrite = props => {
     };
     //┗-----------------게시글 작성파트-----------------┛
 
+    console.log(post);
     if (isEdit && post) {
         return (
             //게시글 수정모드
@@ -73,12 +80,11 @@ const FreeBoardWrite = props => {
                     onChange={e => setPost({ ...post, title: e.target.value })}
                     value={post.title}
                 />
-                <input
-                    onChange={e =>
-                        setPost({ ...post, content: e.target.value })
-                    }
-                    value={post.content}
+                <Editor
+                    originContent={post.content}
+                    getContentFromEditor={getContentFromEditor}
                 />
+
                 <button
                     onClick={() => history.push(`/freeboard/detail/${postId}`)} //뒤로가기를 누르면 원래 상세페이지로 돌아갑니다.
                 >
@@ -90,7 +96,7 @@ const FreeBoardWrite = props => {
     }
 
     return (
-        // 글쓰기 모드
+        // 게시글 작성모드
         <>
             <div>
                 {/* 카테고리 중 국가 선택하기 */}
@@ -127,9 +133,8 @@ const FreeBoardWrite = props => {
             <input
                 onChange={e => setPost({ ...post, title: e.target.value })}
             />
-            <input
-                onChange={e => setPost({ ...post, content: e.target.value })}
-            />
+            <Editor getContentFromEditor={getContentFromEditor} />
+
             <button onClick={() => history.push("/freeboard")}>뒤로가기</button>
             <button onClick={addPost}>제출완료</button>
         </>
