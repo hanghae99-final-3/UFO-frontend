@@ -46,7 +46,7 @@ export const addUnivBoardPostDB = createAsyncThunk(
                 return thunkAPI.rejectWithValue(response.data.message);
             }
         } catch (error) {
-            return thunkAPI.rejectWithValue(error.response.message);
+            return thunkAPI.rejectWithValue("게시글 작성 실패");
         }
     },
 );

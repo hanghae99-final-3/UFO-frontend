@@ -26,7 +26,7 @@ const UniboardWrite = () => {
                 title,
                 content,
                 category,
-                userId: user.user.user_id,
+                univId: user.user.univ_id,
             };
             dispatch(addUnivBoardPostDB(data));
             setTitle("");
