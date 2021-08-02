@@ -15,6 +15,7 @@ import FreeBoardDetail from "./Pages/FreeBoardDetail"; //자유게시판 게시�
 import FreeBoardWrite from "./Pages/FreeBoardWrite"; //자유게시판 게시글작성페이지 or 게시글수정페이지
 import UnivBoard from "./Pages/UnivBoard"; //대학게시판
 import UnivBoardDetail from "./Pages/UnivBoardDetail"; //대학게시판 게시글상세페이지
+import UpdateUnivBoard from "./Pages/UpdateUnivBoard";
 
 function App() {
     return (
@@ -43,11 +44,13 @@ function App() {
                         />
 
                         <Route path="/univboard" exact component={UnivBoard} />
+                        
                         <Route
                             path="/univboard/detail/:id"
                             exact
                             component={UnivBoardDetail}
                         />
+                        <Route path="/updateuniv/:id" exact component={UpdateUnivBoard}/>
                         <Redirect from="*" to="/" />
                     </Switch>
                 </Layout>
