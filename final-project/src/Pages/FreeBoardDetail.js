@@ -53,7 +53,6 @@ const FreeBoardDetail = props => {
                         수정하기
                     </button>
                     <button onClick={deleteFreePost}>삭제하기</button>
-                    <Test />
                 </>
             )}
             <FreeBoardComment postId={postId} />
@@ -65,17 +64,6 @@ const TextBox = styled.div`
     padding: 20px;
     border-radius: 10px;
     border: 2px solid gray;
-`;
-
-const Test = styled.div`
-    height: 200px;
-    background: black;
-    @include tablet {
-        background: yellow;
-    }
-    @include desktop {
-        background: green;
-    }
 `;
 
 export default FreeBoardDetail;
