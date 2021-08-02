@@ -7,8 +7,10 @@ export const logger = msg => {
 };
 
 export const getToken = async () => {
-    const token = await localStorage.getItem("token");
+    const token = localStorage.getItem("token");
     if (token) {
-        return token;
+        return `Bearer ${token}`;
+    } else {
+        return null;
     }
 };
