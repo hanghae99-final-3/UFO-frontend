@@ -24,7 +24,6 @@ const UnivBoardDetail = props => {
 
     const handleDelete = () => {
         const data = {
-            userId: user.user.user_id,
             postId: post.post_id,
         };
         dispatch(deleteUnivBoardPostDB(data));
@@ -39,7 +38,6 @@ const UnivBoardDetail = props => {
     };
     const handleCommentSubmit = () => {
         const data = {
-            userId: user.user.user_id,
             postId,
             content: comment,
         };
@@ -59,7 +57,7 @@ const UnivBoardDetail = props => {
             category,
             title,
             content,
-            userId: user.user.user_id,
+            univId: user.user.univ_id,
         };
         dispatch(editUnivBoardPostDB(data));
         setIsEditing(false);

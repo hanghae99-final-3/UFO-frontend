@@ -42,6 +42,7 @@ export const signupUserDB = createAsyncThunk(
 export const loginUserDB = createAsyncThunk(
     "user/login",
     async (data, thunkAPI) => {
+        console.log(data);
         try {
             //로그인 요청이후 성공시 jwt 토큰을 발급 받는다.
             const response = await userApi.login(data);
@@ -90,6 +91,8 @@ export const checkLoggedInUser = createAsyncThunk(
             if (loggedInUser.data.ok) {
                 const user = loggedInUser.data.result;
                 return user;
+            } else {
+                return thunkAPI.rejectWithValue(loggedInUser.data.errorMessage);
             }
         } catch (error) {
             // 에러 발생시 에러 메세지 반환

@@ -23,7 +23,6 @@ const UnivboardComment = ({ comment, user, post }) => {
 
     const handleEditing = () => {
         const data = {
-            userId: user.user.user_id,
             commentId: comment.comment_id,
             content,
             postId: post.post_id,
@@ -33,7 +32,6 @@ const UnivboardComment = ({ comment, user, post }) => {
     };
     const handleDelete = () => {
         const data = {
-            userId: user.user.user_id,
             commentId: comment.comment_id,
             postId: post.post_id,
         };

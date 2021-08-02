@@ -1,10 +1,22 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
+import SearchBox from "../Components/SearchBox";
+import { useDispatch, useSelector } from "react-redux";
+import { getFreeListDB } from "../redux/async/freeBoard";
 
 const Home = () => {
+    const dispatch = useDispatch();
+    const freeBoardPostList = useSelector(state => state.freeBoard.list);
+    useEffect(() => {
+        dispatch(getFreeListDB());
+    }, []);
     return (
         <HomeContainer>
-            <SearchContainer></SearchContainer>
+            <SearchContainer>
+                <SearchBox
+                    freeBoardPostList={freeBoardPostList && freeBoardPostList}
+                />
+            </SearchContainer>
             <BoardContainer>
                 <div></div>
                 <div></div>
@@ -19,7 +31,6 @@ const Home = () => {
 const HomeContainer = styled.div``;
 const SearchContainer = styled.div`
     padding: 20px 0;
-    background: pink;
 `;
 const BoardContainer = styled.div`
     display: grid;
