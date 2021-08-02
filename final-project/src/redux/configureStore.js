@@ -7,6 +7,7 @@ import { connectRouter } from "connected-react-router";
 //모듈 불러오기
 import freeBoardSlice from "./modules/freeBoardSlice";
 import userSlice from "./modules/userSlice";
+import univBoardSlice from "./modules/univBoardSlice";
 
 export const history = createBrowserHistory();
 
@@ -14,6 +15,7 @@ export const history = createBrowserHistory();
 const reducer = combineReducers({
     router: connectRouter(history),
     freeBoard: freeBoardSlice.reducer,
+    univBoard: univBoardSlice.reducer,
     user: userSlice.reducer,
 });
 

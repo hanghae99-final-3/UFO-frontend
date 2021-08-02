@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { history } from "../redux/configureStore";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,15 +8,14 @@ import { getFreeListDB } from "../redux/async/freeBoard";
  * @author kwonjiyeong
  * @param 없음
  * @returns 자유게시판 뷰
- * @역할 자유게시판 뷰 렌더링
+ * @역할 자유게시판 뷰 렌더링, 자유게시판 CRUD 기능 중 R
  * @필수값 없음
  */
 const FreeBoard = () => {
-    //----자유게시판 목록 불러와서 state에 주입하기
+    //----자유게시판 목록 불러와서 list에 저장하기
     const dispatch = useDispatch();
     const list = useSelector(state => state.freeBoard.list);
     useEffect(() => {
-        //자유게시판 목록 가져오기
         dispatch(getFreeListDB());
     }, []);
     //----

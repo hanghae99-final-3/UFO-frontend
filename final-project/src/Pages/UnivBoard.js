@@ -1,7 +1,15 @@
 import React from "react";
+import UnivBoardList from './UnivBoardList'
+import UnivBoardWrite from './UnivBoardWrite'
 
 const UnivBoard = () => {
-    return <>대학게시판</>;
-};
+    return (
+        <>
+            <h1>Univ Board</h1>
+            <UnivBoardWrite/>
+            <UnivBoardList/>
+        </>
+    )
+}
 
 export default UnivBoard;

@@ -1,8 +1,14 @@
 import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { logoutUser } from "../redux/modules/userSlice";
+import { history } from "../redux/configureStore";
 
 const Header = () => {
+    const dispatch = useDispatch();
+    const isLoggedIn = useSelector(state => state.user.isLoggedIn);
+
     return (
         <HeaderContainer>
             <Controls>
@@ -20,6 +26,21 @@ const Header = () => {
                 </Control>
                 <Control>
                     <Link to="/univboard">대학게시판</Link>
+                </Control>
+                <Control>
+                    <Link to="/mypage">마이 페이지</Link>
+                </Control>
+                <Control>
+                    {isLoggedIn && (
+                        <button
+                            onClick={() => {
+                                dispatch(logoutUser());
+                                localStorage.removeItem("token");
+                            }}
+                        >
+                            로그아웃
+                        </button>
+                    )}
                 </Control>
             </Controls>
         </HeaderContainer>
