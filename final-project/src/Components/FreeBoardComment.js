@@ -7,7 +7,7 @@ import {
     addFreeCommentDB,
     editFreeCommentDB,
     deleteFreeCommentDB,
-} from "../redux/async/comment";
+} from "../redux/async/freeBoard";
 
 /**
  * @author kwonjiyeong
@@ -20,7 +20,7 @@ import {
 const FreeBoardComment = ({ postId }) => {
     const dispatch = useDispatch();
     const user = useSelector(state => state.user.user); //유저정보
-    const commentList = useSelector(state => state.comment.list); //댓글목록
+    const commentList = useSelector(state => state.freeBoard.commentList); //댓글목록
     const [content, setContent] = useState(""); //댓글 입력값을 넣을 공간
 
     useEffect(() => {

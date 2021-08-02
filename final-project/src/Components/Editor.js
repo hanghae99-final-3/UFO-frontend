@@ -3,32 +3,33 @@ import styled from "styled-components";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-editor-classic/src/classiceditor";
 
-import Essentials from "@ckeditor/ckeditor5-essentials/src/essentials"; //
-import Paragraph from "@ckeditor/ckeditor5-paragraph/src/paragraph"; //
-import Bold from "@ckeditor/ckeditor5-basic-styles/src/bold"; //
-import Italic from "@ckeditor/ckeditor5-basic-styles/src/italic"; //
-import Underline from "@ckeditor/ckeditor5-basic-styles/src/underline"; //
-import Strikethrough from "@ckeditor/ckeditor5-basic-styles/src/strikethrough"; //
-import BlockQuote from "@ckeditor/ckeditor5-block-quote/src/blockquote"; //
-import Link from "@ckeditor/ckeditor5-link/src/link"; //
-import PasteFromOffice from "@ckeditor/ckeditor5-paste-from-office/src/pastefromoffice"; //
-import Heading from "@ckeditor/ckeditor5-heading/src/heading"; //
-import Font from "@ckeditor/ckeditor5-font/src/font"; //
-import Image from "@ckeditor/ckeditor5-image/src/image"; //
-import ImageStyle from "@ckeditor/ckeditor5-image/src/imagestyle"; //
-import ImageToolbar from "@ckeditor/ckeditor5-image/src/imagetoolbar"; //
-import ImageUpload from "@ckeditor/ckeditor5-image/src/imageupload"; //
-import ImageResize from "@ckeditor/ckeditor5-image/src/imageresize"; //
-import List from "@ckeditor/ckeditor5-list/src/list"; //
-import Alignment from "@ckeditor/ckeditor5-alignment/src/alignment"; //
-import Table from "@ckeditor/ckeditor5-table/src/table"; //
-import TableToolbar from "@ckeditor/ckeditor5-table/src/tabletoolbar"; //
+//플러그인
+import Essentials from "@ckeditor/ckeditor5-essentials/src/essentials";
+import Paragraph from "@ckeditor/ckeditor5-paragraph/src/paragraph";
+import Bold from "@ckeditor/ckeditor5-basic-styles/src/bold";
+import Italic from "@ckeditor/ckeditor5-basic-styles/src/italic";
+import Underline from "@ckeditor/ckeditor5-basic-styles/src/underline";
+import Strikethrough from "@ckeditor/ckeditor5-basic-styles/src/strikethrough";
+import BlockQuote from "@ckeditor/ckeditor5-block-quote/src/blockquote";
+import Link from "@ckeditor/ckeditor5-link/src/link";
+import PasteFromOffice from "@ckeditor/ckeditor5-paste-from-office/src/pastefromoffice";
+import Heading from "@ckeditor/ckeditor5-heading/src/heading";
+import Font from "@ckeditor/ckeditor5-font/src/font";
+import Image from "@ckeditor/ckeditor5-image/src/image";
+import ImageStyle from "@ckeditor/ckeditor5-image/src/imagestyle";
+import ImageToolbar from "@ckeditor/ckeditor5-image/src/imagetoolbar";
+import ImageUpload from "@ckeditor/ckeditor5-image/src/imageupload";
+import ImageResize from "@ckeditor/ckeditor5-image/src/imageresize";
+import List from "@ckeditor/ckeditor5-list/src/list";
+import Alignment from "@ckeditor/ckeditor5-alignment/src/alignment";
+import Table from "@ckeditor/ckeditor5-table/src/table";
+import TableToolbar from "@ckeditor/ckeditor5-table/src/tabletoolbar";
 import TextTransformation from "@ckeditor/ckeditor5-typing/src/texttransformation";
-import Indent from "@ckeditor/ckeditor5-indent/src/indent"; //
-import IndentBlock from "@ckeditor/ckeditor5-indent/src/indentblock"; //
-import TableProperties from "@ckeditor/ckeditor5-table/src/tableproperties"; //
-import TableCellProperties from "@ckeditor/ckeditor5-table/src/tablecellproperties"; //
-import Base64UploadAdapter from "@ckeditor/ckeditor5-upload/src/adapters/base64uploadadapter"; //
+import Indent from "@ckeditor/ckeditor5-indent/src/indent";
+import IndentBlock from "@ckeditor/ckeditor5-indent/src/indentblock";
+import TableProperties from "@ckeditor/ckeditor5-table/src/tableproperties";
+import TableCellProperties from "@ckeditor/ckeditor5-table/src/tablecellproperties";
+import Base64UploadAdapter from "@ckeditor/ckeditor5-upload/src/adapters/base64uploadadapter";
 
 const editorConfiguration = {
     language: "ko",
@@ -123,12 +124,11 @@ const editorConfiguration = {
         resizeUnit: "px",
         toolbar: [
             "imageStyle:alignLeft",
-            "imageStyle:full",
             "imageStyle:alignRight",
             "|",
             "imageTextAlternative",
         ],
-        styles: ["full", "alignLeft", "alignRight"],
+        styles: ["alignLeft", "alignRight"],
         type: ["JPEG", "JPG", "GIF", "PNG"],
     },
     typing: {
@@ -172,7 +172,6 @@ const Editor = ({ getContentFromEditor, originContent }) => {
                 config={editorConfiguration}
                 onChange={(event, editor) => {
                     const data = editor.getData();
-                    // console.log({ event, editor, data });
                     getContentFromEditor(data);
                 }}
             />

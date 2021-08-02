@@ -5,6 +5,9 @@ const Main = ({ children }) => {
     return <MainContainer>{children}</MainContainer>;
 };
 
-const MainContainer = styled.main``;
+const MainContainer = styled.main`
+    width: 1060px;
+    margin: auto;
+`;
 
 export default Main;
