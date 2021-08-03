@@ -91,7 +91,7 @@ const UnivBoardDetail = props => {
                     onChange={onEditChange}
                 ></input>
             ) : (
-                <span>title :{post.title}/</span>
+                <span>title :{post && post.title}/</span>
             )}
             {isEditing ? (
                 <input
@@ -100,7 +100,7 @@ const UnivBoardDetail = props => {
                     onChange={onEditChange}
                 ></input>
             ) : (
-                <span>content :{post.content}/</span>
+                <span>content :{post && post.content}/</span>
             )}
 
             <span>nickname :{post && post.user && post.user.nickname}</span>
