@@ -15,7 +15,7 @@ const BoardBox = ({ postList, title, tag }) => {
     return (
         <BoardContentContainer>
             <Header>
-                {tag && <Tag>{tag}</Tag>}
+                {tag && <Tag># {tag}</Tag>}
                 {title && <TitleHeading>{title}</TitleHeading>}
                 <More>더보기</More>
             </Header>
