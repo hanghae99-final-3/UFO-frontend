@@ -31,6 +31,8 @@ const UniboardWrite = () => {
             dispatch(addUnivBoardPostDB(data));
             setTitle("");
             setContent("");
+        } else if (!user.isLoggedIn) {
+            alert("게시글 작성은 로그인이 필요합니다.");
         }
     };
 
