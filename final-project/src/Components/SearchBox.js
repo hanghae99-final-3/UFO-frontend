@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import Input from "@material-ui/core/Input";
 import styled from "styled-components";
-import { TabScrollButton } from "@material-ui/core";
 
 const SearchBox = props => {
     const posts = props.freeBoardPostList;
@@ -86,14 +85,16 @@ const SearchBox = props => {
 export default SearchBox;
 
 const SearchBoxContainer = styled.div`
-    margin-top: 30px;
     padding: 0 20px;
 `;
 
-const TagContainer = styled.div``;
+const TagContainer = styled.div`
+    width: max-content;
+    margin: 0 auto;
+`;
 
 const InputContainer = styled.div`
-    width: "100%";
+    width: 100%;
 `;
 
 const TagButton = styled.button`

@@ -13,6 +13,7 @@ export const getUnivBoardDB = createAsyncThunk(
     "univBoard/getUnivList",
     async (data, thunkAPI) => {
         try {
+            // 게시물 조회 요청
             const response = await univBoardApi.getList();
             if (response.data.ok) {
                 return response.data.result;
@@ -20,7 +21,9 @@ export const getUnivBoardDB = createAsyncThunk(
                 return thunkAPI.rejectWithValue(response.data.message);
             }
         } catch (error) {
-            return thunkAPI.rejectWithValue(error.data.message);
+            alert("앗..네트워크 오류가 발생했습니다. 다시 시도해주세요😓 ");
+            history.push("/");
+            return thunkAPI.rejectWithValue(error.response.data.message);
         }
     },
 );
@@ -38,6 +41,7 @@ export const addUnivBoardPostDB = createAsyncThunk(
         try {
             // 게시물 생성 api 요청
             const response = await univBoardApi.addPost(data);
+            console.log(response);
             if (response.data.ok) {
                 // 게시물 생성 성공시 새롭게 생성된 게시물 정보 반환
                 const newPost = response.data.result;
@@ -46,7 +50,8 @@ export const addUnivBoardPostDB = createAsyncThunk(
                 return thunkAPI.rejectWithValue(response.data.message);
             }
         } catch (error) {
-            return thunkAPI.rejectWithValue("게시글 작성 실패");
+            alert("인증된 회원만 사용 가능합니다.");
+            return thunkAPI.rejectWithValue(error.response.data.message);
         }
     },
 );
@@ -71,7 +76,8 @@ export const editUnivBoardPostDB = createAsyncThunk(
                 return thunkAPI.rejectWithValue(response.data.message);
             }
         } catch (error) {
-            return thunkAPI.rejectWithValue(error.data.message);
+            alert("게시글 수정 실패😭 다시 시도해주세요.");
+            return thunkAPI.rejectWithValue(error.response.data.message);
         }
     },
 );
@@ -93,7 +99,9 @@ export const detailUnivBoardPostDB = createAsyncThunk(
                 return response.data.result;
             }
         } catch (error) {
-            return thunkAPI.rejectWithValue(error.data.message);
+            alert("앗..네트워크 오류가 발생했습니다. 다시 시도해주세요😓 ");
+            history.push("/univboard");
+            return thunkAPI.rejectWithValue(error.response.data.message);
         }
     },
 );
@@ -121,9 +129,9 @@ export const deleteUnivBoardPostDB = createAsyncThunk(
             }
         } catch (error) {
             // 요청 및 서버 에러 반환
-            return thunkAPI.rejectWithValue(error.data.message);
+            alert("게시글 삭제 실패😭 다시 시도해주세요.");
+            return thunkAPI.rejectWithValue(error.response.data.message);
         }
-        history.replace("/univBoard");
     },
 );
 
@@ -149,7 +157,8 @@ export const addUniBoardCommentDB = createAsyncThunk(
                 return thunkAPI.rejectWithValue(response.data.message);
             }
         } catch (error) {
-            return thunkAPI.rejectWithValue(error.data.message);
+            alert("댓글 달기 실패😭 다시 시도해주세요.");
+            return thunkAPI.rejectWithValue(error.response.data.message);
         }
     },
 );
@@ -172,7 +181,8 @@ export const editUniBoardCommentDB = createAsyncThunk(
                 return thunkAPI.rejectWithValue(response.data.message);
             }
         } catch (error) {
-            return thunkAPI.rejectWithValue(error.data.message);
+            alert("댓글 수정 실패😭 다시 시도해주세요.");
+            return thunkAPI.rejectWithValue(error.response.data.message);
         }
     },
 );
@@ -195,7 +205,7 @@ export const getCommentDB = createAsyncThunk(
                 return response.data.result;
             }
         } catch (error) {
-            return thunkAPI.rejectWithValue(error.data.message);
+            return thunkAPI.rejectWithValue(error.response.data.message);
         }
     },
 );
@@ -220,7 +230,8 @@ export const deleteUniBoardCommentDB = createAsyncThunk(
                 return thunkAPI.rejectWithValue(response.data.message);
             }
         } catch (error) {
-            return thunkAPI.rejectWithValue(error.data.message);
+            alert("댓글 삭제 실패😭 다시 시도해주세요.");
+            return thunkAPI.rejectWithValue(error.response.data.message);
         }
     },
 );
