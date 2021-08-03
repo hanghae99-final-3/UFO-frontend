@@ -3,7 +3,6 @@ import Input from "@material-ui/core/Input";
 import styled from "styled-components";
 
 const SearchBox = props => {
-    const posts = props.freeBoardPostList;
     const [selectedTag, setSelectedTag] = useState([]); // 태그 state
     const [searchTerm, setSearchTerm] = useState(""); // 검색어 state
     const tags = [
