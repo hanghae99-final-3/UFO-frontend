@@ -1,9 +1,10 @@
 import React from "react";
 import styled from "styled-components";
+import SelectCountry from "./SelectCountry";
+import { logoutUser } from "../redux/modules/userSlice";
+
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { logoutUser } from "../redux/modules/userSlice";
-import { history } from "../redux/configureStore";
 
 const Header = () => {
     const dispatch = useDispatch();
@@ -14,6 +15,7 @@ const Header = () => {
         <HeaderContainer>
             <LeftColumn>
                 <Logo>로고</Logo>
+                <SelectCountry />
             </LeftColumn>
             <RightColumn>
                 <UserName>{userName}님</UserName>
@@ -63,7 +65,9 @@ const HeaderContainer = styled.header`
     align-items: center;
 `;
 
-const LeftColumn = styled.div``;
+const LeftColumn = styled.div`
+    display: flex;
+`;
 
 const Logo = styled.div`
     border: 1px solid #d2d2d2;
