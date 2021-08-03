@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getUnivBoardDB } from "../redux/async/univBoardAsync";
 import { history } from "../redux/configureStore";
+import BoardBox from "../Components/BoardBox";
 const UniBoardList = props => {
     const dispatch = useDispatch();
     const postList = useSelector(state => state.univBoard.list);
@@ -33,23 +34,7 @@ const UniBoardList = props => {
                         </div>
                     );
                 })}
-            <table>
-                <thead>
-                    <tr>
-                        <th>Number / </th>
-                        <th>Title / </th>
-                        <th>Category</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>title</td>
-                        <td>category</td>
-                    </tr>
-                    <tr></tr>
-                </tbody>
-            </table>
+            <BoardBox/>
         </React.Fragment>
     );
 };

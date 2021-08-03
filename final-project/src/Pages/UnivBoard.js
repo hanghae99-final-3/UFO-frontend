@@ -1,7 +1,6 @@
 import React from "react";
 import UnivBoardList from './UnivBoardList'
 import UnivBoardWrite from './UnivBoardWrite'
-
 const UnivBoard = () => {
     return (
         <>
