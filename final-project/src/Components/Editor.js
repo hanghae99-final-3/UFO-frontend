@@ -31,6 +31,83 @@ import TableProperties from "@ckeditor/ckeditor5-table/src/tableproperties";
 import TableCellProperties from "@ckeditor/ckeditor5-table/src/tablecellproperties";
 import Base64UploadAdapter from "@ckeditor/ckeditor5-upload/src/adapters/base64uploadadapter";
 
+//파이어베이스
+import { firebase } from "../firebase";
+
+class MyUploadAdapter {
+    constructor(loader) {
+        this.loader = loader;
+    }
+    // Starts the upload process.
+    upload() {
+        return this.loader.file.then(
+            file =>
+                new Promise((resolve, reject) => {
+                    console.log(file);
+                    console.log("firebase", firebase);
+                    let storageRef = firebase.storage().ref("images/");
+                    let uploadTask = storageRef.child(file.name).put(file);
+                    console.log(uploadTask);
+                    uploadTask.on(
+                        firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
+                        function (snapshot) {
+                            // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+                            var progress =
+                                (snapshot.bytesTransferred /
+                                    snapshot.totalBytes) *
+                                100;
+                            console.log("Upload is " + progress + "% done");
+                            switch (snapshot.state) {
+                                case firebase.storage.TaskState.PAUSED: // or 'paused'
+                                    console.log("Upload is paused");
+                                    break;
+                                case firebase.storage.TaskState.RUNNING: // or 'running'
+                                    console.log("Upload is running");
+                                    break;
+                            }
+                        },
+                        function (error) {
+                            // A full list of error codes is available at
+                            // https://firebase.google.com/docs/storage/web/handle-errors
+                            // eslint-disable-next-line default-case
+                            switch (error.code) {
+                                case "storage/unauthorized":
+                                    reject(
+                                        " User doesn't have permission to access the object",
+                                    );
+                                    break;
+
+                                case "storage/canceled":
+                                    reject("User canceled the upload");
+                                    break;
+
+                                case "storage/unknown":
+                                    reject(
+                                        "Unknown error occurred, inspect error.serverResponse",
+                                    );
+                                    break;
+                            }
+                        },
+                        function () {
+                            // Upload completed successfully, now we can get the download URL
+                            uploadTask.snapshot.ref
+                                .getDownloadURL()
+                                .then(function (downloadURL) {
+                                    console.log(
+                                        "File available at",
+                                        downloadURL,
+                                    );
+                                    resolve({
+                                        default: downloadURL,
+                                    });
+                                });
+                        },
+                    );
+                }),
+        );
+    }
+}
+
 const editorConfiguration = {
     language: "ko",
     plugins: [
@@ -61,6 +138,7 @@ const editorConfiguration = {
         TableCellProperties,
         TextTransformation,
     ],
+    extraPlgins: [],
     toolbar: [
         "heading",
         "|",
@@ -148,6 +226,7 @@ const editorConfiguration = {
 };
 
 const Editor = ({ getContentFromEditor, originContent }) => {
+    let imgList = ["hello"];
     //수정모드
     if (originContent)
         return (
@@ -173,6 +252,13 @@ const Editor = ({ getContentFromEditor, originContent }) => {
                 onChange={(event, editor) => {
                     const data = editor.getData();
                     getContentFromEditor(data);
+                }}
+                onReady={editor => {
+                    editor.plugins.get("FileRepository").createUploadAdapter =
+                        loader => {
+                            console.log(imgList);
+                            return new MyUploadAdapter(loader);
+                        };
                 }}
             />
         </StyledEditor>
