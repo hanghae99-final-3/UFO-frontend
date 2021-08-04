@@ -17,7 +17,7 @@ const BoardBox = ({ postList, title, tag }) => {
             <Header>
                 {tag && <Tag># {tag}</Tag>}
                 {title && <TitleHeading>{title}</TitleHeading>}
-                <More>더보기</More>
+                {(title || tag) && <More>더보기</More>}
             </Header>
             <Content>
                 {postList &&

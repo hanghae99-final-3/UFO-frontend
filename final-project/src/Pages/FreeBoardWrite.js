@@ -30,6 +30,7 @@ const FreeBoardWrite = props => {
         if (post) return;
         freeBoardApi.getPost(postId).then(res => setPost(res.data.result));
         //----
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const editfreePost = () => {
