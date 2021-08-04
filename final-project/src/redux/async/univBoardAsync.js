@@ -156,8 +156,8 @@ export const addUniBoardCommentDB = createAsyncThunk(
                 return thunkAPI.rejectWithValue(response.data.message);
             }
         } catch (error) {
-            alert("댓글 달기 실패😭 다시 시도해주세요.");
-            return thunkAPI.rejectWithValue(error.response.data.message);
+            alert(error.response.data.errorMessage);
+            return thunkAPI.rejectWithValue(error.response.data.errorMessage);
         }
     },
 );
