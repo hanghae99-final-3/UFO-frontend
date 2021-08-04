@@ -1,4 +1,5 @@
 import React from "react";
+import { withRouter } from "react-router-dom";
 import UnivBoardList from "../Components/UnivBoardList";
 import UnivBoardWrite from "./UnivBoardWrite";
 const UnivBoard = () => {
@@ -11,4 +12,4 @@ const UnivBoard = () => {
     );
 };
 
-export default UnivBoard;
+export default withRouter(UnivBoard);
