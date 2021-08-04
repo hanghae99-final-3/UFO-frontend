@@ -7,7 +7,7 @@ const UniBoardList = props => {
     const postList = useSelector(state => state.univBoard.list);
     useEffect(() => {
         dispatch(getUnivBoardDB());
-    }, []);
+    }, [dispatch]);
     return (
         <React.Fragment>
             {postList &&
