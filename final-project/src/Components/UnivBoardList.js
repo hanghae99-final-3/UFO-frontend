@@ -6,7 +6,7 @@ import { BiHeart } from "react-icons/bi";
 import { MdComment } from "react-icons/md";
 import { BiShareAlt } from "react-icons/bi";
 import styled from "styled-components";
-import SearchBox from "../Components/SearchBox";
+import SearchBox from "./SearchBox";
 
 const UniBoardList = props => {
     const dispatch = useDispatch();
@@ -16,7 +16,7 @@ const UniBoardList = props => {
     }, [dispatch]);
     return (
         <React.Fragment>
-            <SearchBox/>
+            {/* <SearchBox /> */}
             <BoardContentContainer>
                 <Header>
                     {/* <Tag>#태그</Tag> */}
@@ -24,33 +24,37 @@ const UniBoardList = props => {
                 </Header>
                 <Content>
                     {/* map 돌려서 return 값으로 postContainer을 넣어주고, history.push에 path 넣어주세요!! */}
-                    {postList && postList.map((post,idx)=>{
-                        return(
-                    <PostContainer onClick={() => {
-                        history.push(
-                            `/univBoard/detail/${post.post_id}`,
-                        );
-                    }}>
-                        <Title>
-                            <SmallTag>#정보</SmallTag>
-                            <p>title : {post.title}</p>
-                        </Title>
-                        <IconContainer>
-                            <Icon>
-                                <BiHeart />
-                                <span>5개</span>
-                            </Icon>
-                            <Icon>
-                                <MdComment />
-                                <span>3개</span>
-                            </Icon>
-                            <Icon>
-                                <BiShareAlt />
-                                <span>7개</span>
-                            </Icon>
-                        </IconContainer>
-                    </PostContainer>
-                    )})}
+                    {postList &&
+                        postList.map((post, idx) => {
+                            return (
+                                <PostContainer
+                                    onClick={() => {
+                                        history.push(
+                                            `/univBoard/detail/${post.post_id}`,
+                                        );
+                                    }}
+                                >
+                                    <Title>
+                                        <SmallTag>#정보</SmallTag>
+                                        <p>title : {post.title}</p>
+                                    </Title>
+                                    <IconContainer>
+                                        <Icon>
+                                            <BiHeart />
+                                            <span>5개</span>
+                                        </Icon>
+                                        <Icon>
+                                            <MdComment />
+                                            <span>3개</span>
+                                        </Icon>
+                                        <Icon>
+                                            <BiShareAlt />
+                                            <span>7개</span>
+                                        </Icon>
+                                    </IconContainer>
+                                </PostContainer>
+                            );
+                        })}
                 </Content>
             </BoardContentContainer>
         </React.Fragment>
