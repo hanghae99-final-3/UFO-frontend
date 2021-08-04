@@ -9,6 +9,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import UnivboardComment from "../Components/UnivboardComment";
 import { history } from "../redux/configureStore";
+import { withRouter } from "react-router-dom";
 
 const UnivBoardDetail = props => {
     const dispatch = useDispatch();
@@ -135,4 +136,4 @@ const UnivBoardDetail = props => {
     );
 };
 
-export default UnivBoardDetail;
+export default withRouter(UnivBoardDetail);
