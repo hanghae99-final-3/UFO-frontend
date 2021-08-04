@@ -1,12 +1,13 @@
-import React, { useEffect } from "react";
-import styled from "styled-components";
-import { history } from "../redux/configureStore";
-import { useDispatch, useSelector } from "react-redux";
-import { BiHeart } from "react-icons/bi";
-import { MdComment } from "react-icons/md";
-import { BiShareAlt } from "react-icons/bi";
+import React from "react";
 
-const BoardBox = ({ title, tag }) => {
+import categories from "../categories";
+import styled from "styled-components";
+
+import { BiHeart } from "react-icons/bi";
+import { BiShareAlt } from "react-icons/bi";
+import { MdComment } from "react-icons/md";
+
+const BoardBox = ({ postList, title, tag }) => {
     const _onClick = () => {
         window.alert("이동!");
     };
@@ -14,75 +15,40 @@ const BoardBox = ({ title, tag }) => {
     return (
         <BoardContentContainer>
             <Header>
-                <Tag>#태그</Tag>
-                <More>더보기</More>
+                {tag && <Tag># {tag}</Tag>}
+                {title && <TitleHeading>{title}</TitleHeading>}
+                {(title || tag) && <More>더보기</More>}
             </Header>
             <Content>
-                {/* map 돌려서 return 값으로 postContainer을 넣어주고, history.push에 path 넣어주세요!! */}
-                <PostContainer onClick={_onClick}>
-                    <Title>
-                        <SmallTag>#정보</SmallTag>
-                        <p>제목을 만들어 봅시다</p>
-                    </Title>
-                    <IconContainer>
-                        <Icon>
-                            <BiHeart />
-                            <span>n개</span>
-                        </Icon>
-                        <Icon>
-                            <MdComment />
-                            <span>n개</span>
-                        </Icon>
-                        <Icon>
-                            <BiShareAlt />
-                            <span>n개</span>
-                        </Icon>
-                    </IconContainer>
-                </PostContainer>
-                <PostContainer onClick={_onClick}>
-                    <Title>
-                        <span>
-                            <SmallTag>#정보</SmallTag>
-                        </span>
-                        <p>제목을 만들어 봅시다</p>
-                    </Title>
-                    <IconContainer>
-                        <Icon>
-                            <BiHeart />
-                            <span>n개</span>
-                        </Icon>
-                        <Icon>
-                            <MdComment />
-                            <span>n개</span>
-                        </Icon>
-                        <Icon>
-                            <BiShareAlt />
-                            <span>n개</span>
-                        </Icon>
-                    </IconContainer>
-                </PostContainer>
-                <PostContainer onClick={_onClick}>
-                    <Title>
-                        <span>
-                            <SmallTag>#정보</SmallTag>
-                        </span>
-                        <p>제목을 만들어 봅시다</p>
-                    </Title>
-                    <IconContainer>
-                        <Icon>
-                            <BiHeart />
-                            <span>n개</span>
-                        </Icon>
-                        <Icon>
-                            <MdComment />
-                            <span>n개</span>
-                        </Icon>
-                        <Icon>
-                            <BiShareAlt />
-                            <span>n개</span>
-                        </Icon>
-                    </IconContainer>
-                </PostContainer>
+                {postList &&
+                    postList.map((post, idx) => (
+                        <PostContainer key={idx} onClick={_onClick}>
+                            <Title>
+                                <SmallTag>
+                                    #{" "}
+                                    {
+                                        categories.freeCategory[post.category]
+                                            .categoryName
+                                    }
+                                </SmallTag>
+                                <p>{post.title}</p>
+                            </Title>
+                            <IconContainer>
+                                <Icon>
+                                    <BiHeart />
+                                    <span>5개</span>
+                                </Icon>
+                                <Icon>
+                                    <MdComment />
+                                    <span>3개</span>
+                                </Icon>
+                                <Icon>
+                                    <BiShareAlt />
+                                    <span>2개</span>
+                                </Icon>
+                            </IconContainer>
+                        </PostContainer>
+                    ))}
             </Content>
         </BoardContentContainer>
     );
@@ -155,6 +121,10 @@ const Icon = styled.div`
         font-size: 20px;
         margin: 0 5px 0 10px;
     }
+`;
+
+const TitleHeading = styled.span`
+    font-size: 30px;
 `;
 
 export default BoardBox;

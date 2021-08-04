@@ -22,13 +22,25 @@ const initialState = {
     commentList: null,
     isFetching: false,
     errorMessage: null,
+    selectedCountry: 0,
+    selectedTags: [],
 };
 
 //
 const freeBoardSlice = createSlice({
     name: "freeBoard",
     initialState: initialState,
-    reducers: {},
+    reducers: {
+        setCountryReducer: (state, { payload: countryId }) => {
+            state.selectedCountry = countryId;
+        },
+        setTagReducer: (state, { payload }) => {
+            state.selectedTags = payload;
+        },
+        resetTagReducer: (state, action) => {
+            state.selectedTags = [];
+        },
+    },
 
     //extraReducers 외부 작업을 참조(e.g 비동기 처리)
     extraReducers: {
@@ -186,5 +198,8 @@ const freeBoardSlice = createSlice({
         //----
     },
 });
+
+export const { setCountryReducer, setTagReducer, resetTagReducer } =
+    freeBoardSlice.actions;
 
 export default freeBoardSlice;

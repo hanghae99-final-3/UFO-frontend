@@ -1,32 +1,38 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Input from "@material-ui/core/Input";
 import styled from "styled-components";
 
-const SearchBox = props => {
-    const posts = props.freeBoardPostList;
+import { useDispatch } from "react-redux";
+import {
+    resetTagReducer,
+    setTagReducer,
+} from "../redux/modules/freeBoardSlice";
+
+const SearchBox = ({ searchTag }) => {
+    const dispatch = useDispatch();
     const [selectedTag, setSelectedTag] = useState([]); // 태그 state
     const [searchTerm, setSearchTerm] = useState(""); // 검색어 state
-    const tags = [
-        "질문",
-        "정보",
-        "주거",
-        "취업",
-        "연애",
-        "게임",
-        "유머",
-        "코로나",
-        "장터",
-        "취미",
-        "기타",
-    ];
+
+    useEffect(() => {
+        dispatch(setTagReducer(selectedTag));
+    }, [dispatch, selectedTag]);
 
     const handleTagSelect = e => {
-        if (!selectedTag.includes(e.target.value)) {
+        if (!selectedTag.includes(parseInt(e.target.value))) {
             // 초기 배열 값이 태그를 포함하지 않을 경우 추가
-            setSelectedTag(prev => [...prev, e.target.value]);
+            setSelectedTag(prev => [...prev, parseInt(e.target.value)]);
         } else {
             // 배열 값이 태그를 포함하고 있을 경우 제거
-            setSelectedTag(prev => prev.filter(tag => tag !== e.target.value));
+            setSelectedTag(prev =>
+                prev.filter(tag => tag !== parseInt(e.target.value)),
+            );
+        }
+    };
+
+    const handleReset = e => {
+        if (e.target.name === "reset") {
+            setSelectedTag([]);
+            dispatch(resetTagReducer());
         }
     };
 
@@ -36,29 +42,27 @@ const SearchBox = props => {
 
     const handleSearch = e => {
         e.preventDefault();
-        let tagIndex = [];
+
         if (searchTerm === "") {
             return window.alert("검색어를 입력해 주세요.");
         }
-        if (selectedTag.length > 0) {
-            selectedTag.map(tag => {
-                const index = tags.indexOf(tag);
-                return tagIndex.push(index);
-            });
-        }
-        console.log(tagIndex);
-        console.log(searchTerm);
+
+        console.log("태그", selectedTag);
+        console.log("검색어", searchTerm);
     };
 
     return (
         <React.Fragment>
             <SearchBoxContainer>
                 <TagContainer>
-                    {tags.map((tag, idx) => {
+                    <TagButton name="reset" onClick={handleReset}>
+                        X
+                    </TagButton>
+                    {searchTag.map((tag, idx) => {
                         return (
                             <TagButton
-                                selected={selectedTag.includes(tag)}
-                                value={tag}
+                                selected={selectedTag.includes(idx)}
+                                value={idx}
                                 onClick={handleTagSelect}
                                 key={idx}
                             >
@@ -84,9 +88,7 @@ const SearchBox = props => {
 
 export default SearchBox;
 
-const SearchBoxContainer = styled.div`
-    padding: 0 20px;
-`;
+const SearchBoxContainer = styled.div``;
 
 const TagContainer = styled.div`
     width: max-content;

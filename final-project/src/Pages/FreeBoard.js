@@ -1,8 +1,15 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
+
+import categories from "../categories";
+import BoardBox from "../Components/BoardBox";
+import SearchBox from "../Components/SearchBox";
+
 import { history } from "../redux/configureStore";
-import { useDispatch, useSelector } from "react-redux";
+
+import Pagination from "@material-ui/lab/Pagination";
 import { getFreeListDB } from "../redux/async/freeBoard";
+import { useDispatch, useSelector } from "react-redux";
 
 /**
  * @author kwonjiyeong
@@ -14,72 +21,60 @@ import { getFreeListDB } from "../redux/async/freeBoard";
 const FreeBoard = () => {
     //----자유게시판 목록 불러와서 list에 저장하기
     const dispatch = useDispatch();
-    const list = useSelector(state => state.freeBoard.list);
+    const freeBoardPostList = useSelector(state => state.freeBoard.list);
+    const selectedTags = useSelector(state => state.freeBoard.selectedTags);
     useEffect(() => {
         dispatch(getFreeListDB());
-    }, []);
+    }, [dispatch]);
     //----
 
     return (
         <>
-            <FreeBoardTable>
-                <TableRow>
-                    <div>
-                        <span>제목</span>
-                    </div>
-                    <div>
-                        <span>내용</span>
-                    </div>
-                    <div>
-                        <span>ID</span>
-                    </div>
-                </TableRow>
-                {list &&
-                    list.map(ele => (
-                        <TableRow
-                            key={ele.post_id}
-                            style={{ cursor: "pointer" }}
-                            onClick={() => {
-                                history.push(
-                                    `/freeboard/detail/${ele.post_id}`,
-                                );
-                            }}
-                        >
-                            <div>
-                                <span>{ele.title}</span>
-                            </div>
-                            <div>
-                                <span>{ele.content}</span>
-                            </div>
-                            <div>
-                                <span>{ele.post_id}</span>
-                            </div>
-                        </TableRow>
-                    ))}
-            </FreeBoardTable>
-            <button onClick={() => history.push("/freeboard/write")}>
+            <Title>자유게시판</Title>
+            <SearchBox searchTag={categories.freeBoardTags} />
+            <BoardBoxContainer>
+                {selectedTags.length > 0 ? (
+                    <BoardBox
+                        postList={
+                            freeBoardPostList &&
+                            freeBoardPostList
+                                .filter(post =>
+                                    selectedTags.includes(post.category),
+                                )
+                                .slice(0, 10)
+                        }
+                    />
+                ) : (
+                    <BoardBox
+                        postList={
+                            freeBoardPostList && freeBoardPostList.slice(0, 10)
+                        }
+                    />
+                )}
+            </BoardBoxContainer>
+            <PaginationContainer>
+                <Pagination count={10} />
+            </PaginationContainer>
+            {/* <button onClick={() => history.push("/freeboard/write")}>
                 작성하기
-            </button>
+            </button> */}
         </>
     );
 };
 
-const FreeBoardTable = styled.div`
-    border: 2px solid gray;
-    > div:not(:last-child) {
-        border-bottom: 1px solid gray;
-    }
+const Title = styled.span`
+    font-size: 40px;
+    color: #707070;
+    margin-bottom: 20px;
+    display: block;
 `;
 
-const TableRow = styled.div`
-    display: grid;
-    grid-template-columns: 1fr 2fr 1fr;
-    > div {
-        padding: 20px;
-    }
-    > div:not(:last-child) {
-        border-right: 1px solid gray;
-    }
+const BoardBoxContainer = styled.div``;
+const PaginationContainer = styled.div`
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+    margin-bottom: 100px;
 `;
 
 export default FreeBoard;

@@ -41,7 +41,6 @@ export const addUnivBoardPostDB = createAsyncThunk(
         try {
             // 게시물 생성 api 요청
             const response = await univBoardApi.addPost(data);
-            console.log(response);
             if (response.data.ok) {
                 // 게시물 생성 성공시 새롭게 생성된 게시물 정보 반환
                 const newPost = response.data.result;
