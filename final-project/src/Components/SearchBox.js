@@ -14,8 +14,8 @@ import styled from "styled-components";
 /**
  * @author heesung
  * @param searchTag
- * @returns 게시글 with 게시글 layout
- * @역할 게시글 view component
+ * @returns 검색창 view
+ * @역할 검색 / 태그 선택
  * @필수값  searchTag 검색창 위에 보여지는 tag 배열
  */
 
