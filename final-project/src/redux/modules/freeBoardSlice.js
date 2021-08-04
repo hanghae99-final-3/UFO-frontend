@@ -23,6 +23,7 @@ const initialState = {
     isFetching: false,
     errorMessage: null,
     selectedCountry: 0,
+    selectedTags: [],
 };
 
 //
@@ -32,6 +33,12 @@ const freeBoardSlice = createSlice({
     reducers: {
         setCountryReducer: (state, { payload: countryId }) => {
             state.selectedCountry = countryId;
+        },
+        setTagReducer: (state, { payload }) => {
+            state.selectedTags = payload;
+        },
+        resetTagReducer: (state, action) => {
+            state.selectedTags = [];
         },
     },
 
@@ -192,6 +199,7 @@ const freeBoardSlice = createSlice({
     },
 });
 
-export const { setCountryReducer } = freeBoardSlice.actions;
+export const { setCountryReducer, setTagReducer, resetTagReducer } =
+    freeBoardSlice.actions;
 
 export default freeBoardSlice;
