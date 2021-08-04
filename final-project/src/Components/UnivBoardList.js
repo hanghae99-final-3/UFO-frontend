@@ -28,9 +28,10 @@ const UniBoardList = props => {
                         postList.map((post, idx) => {
                             return (
                                 <PostContainer
+                                    key={idx}
                                     onClick={() => {
                                         history.push(
-                                            `/univBoard/detail/${post.post_id}`,
+                                            `/univboard/detail/${post.post_id}`,
                                         );
                                     }}
                                 >
