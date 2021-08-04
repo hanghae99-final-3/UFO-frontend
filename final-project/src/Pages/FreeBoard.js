@@ -43,12 +43,14 @@ const FreeBoard = () => {
                                 )
                                 .slice(0, 10)
                         }
+                        preview={true}
                     />
                 ) : (
                     <BoardBox
                         postList={
                             freeBoardPostList && freeBoardPostList.slice(0, 10)
                         }
+                        preview={true}
                     />
                 )}
             </BoardBoxContainer>

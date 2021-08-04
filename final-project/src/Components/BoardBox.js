@@ -7,7 +7,7 @@ import { BiHeart } from "react-icons/bi";
 import { BiShareAlt } from "react-icons/bi";
 import { MdComment } from "react-icons/md";
 
-const BoardBox = ({ postList, title, tag }) => {
+const BoardBox = ({ postList, title, tag, preview }) => {
     const _onClick = () => {
         window.alert("이동!");
     };
@@ -33,6 +33,12 @@ const BoardBox = ({ postList, title, tag }) => {
                                 </SmallTag>
                                 <p>{post.title}</p>
                             </Title>
+                            <ContentContainer>
+                                {preview && (
+                                    <PostContent>{post.content}</PostContent>
+                                )}
+                            </ContentContainer>
+
                             <IconContainer>
                                 <Icon>
                                     <BiHeart />
@@ -127,4 +133,7 @@ const TitleHeading = styled.span`
     font-size: 30px;
 `;
 
+const ContentContainer = styled.div``;
+
+const PostContent = styled.span``;
 export default BoardBox;
