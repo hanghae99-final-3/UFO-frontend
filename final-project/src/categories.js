@@ -36,7 +36,28 @@ const freeCategoryForMainPage = [
     { categoryId: 10, categoryName: "기타" },
 ];
 
+const freeBoardTags = [
+    "질문",
+    "정보",
+    "주거",
+    "취업",
+    "연애",
+    "게임",
+    "유머",
+    "코로나",
+    "장터",
+    "취미",
+    "기타",
+];
+const uniBoardTags = ["수업", "맛집", "스터디", "알바", "익명", "기타"];
+
 //카테고리를 작성하시고, 아래의 중괄호 안에 넣어주어야 사용할 수 있어요!
-const categories = { country, freeCategory, freeCategoryForMainPage };
+const categories = {
+    country,
+    freeCategory,
+    freeCategoryForMainPage,
+    freeBoardTags,
+    uniBoardTags,
+};
 
 export default categories;

@@ -29,7 +29,8 @@ function App() {
         if (is_token) {
             dispatch(checkLoggedInUser());
         }
-    }, []);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [dispatch]);
 
     return (
         <>
@@ -56,9 +57,7 @@ function App() {
                             exact
                             component={FreeBoardWrite}
                         />
-
-                        <Route path="/univboard" exact component={UnivBoard} />
-
+                        (<Route path="/univboard" exact component={UnivBoard} />
                         <Route
                             path="/univboard/detail/:id"
                             exact
