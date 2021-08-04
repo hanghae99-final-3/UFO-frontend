@@ -1,7 +1,13 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getUnivBoardDB } from "../redux/async/univBoardAsync";
 import { history } from "../redux/configureStore";
+import { BiHeart } from "react-icons/bi";
+import { MdComment } from "react-icons/md";
+import { BiShareAlt } from "react-icons/bi";
+import styled from "styled-components";
+import SearchBox from "../Components/SearchBox";
+
 const UniBoardList = props => {
     const dispatch = useDispatch();
     const postList = useSelector(state => state.univBoard.list);
@@ -10,48 +16,104 @@ const UniBoardList = props => {
     }, [dispatch]);
     return (
         <React.Fragment>
-            {postList &&
-                postList.map((post, idx) => {
-                    return (
-                        <div
-                            key={idx}
-                            onClick={() => {
-                                history.push(
-                                    `/univBoard/detail/${post.post_id}`,
-                                );
-                            }}
-                            style={{
-                                margin: "10px",
-                                display: "flex",
-                                border: "1px solid",
-                                cursor: "pointer",
-                            }}
-                        >
-                            <span>title : {post.title}/</span>
-                            <span>content : {post.content}/</span>
-                            <span>id : {post.post_id}</span>
-                        </div>
-                    );
-                })}
-            <table>
-                <thead>
-                    <tr>
-                        <th>Number / </th>
-                        <th>Title / </th>
-                        <th>Category</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>title</td>
-                        <td>category</td>
-                    </tr>
-                    <tr></tr>
-                </tbody>
-            </table>
+            <SearchBox/>
+            <BoardContentContainer>
+                <Header>
+                    {/* <Tag>#태그</Tag> */}
+                    {/* <More>더보기</More> */}
+                </Header>
+                <Content>
+                    {/* map 돌려서 return 값으로 postContainer을 넣어주고, history.push에 path 넣어주세요!! */}
+                    {postList && postList.map((post,idx)=>{
+                        return(
+                    <PostContainer onClick={() => {
+                        history.push(
+                            `/univBoard/detail/${post.post_id}`,
+                        );
+                    }}>
+                        <Title>
+                            <SmallTag>#정보</SmallTag>
+                            <p>title : {post.title}</p>
+                        </Title>
+                        <IconContainer>
+                            <Icon>
+                                <BiHeart />
+                                <span>5개</span>
+                            </Icon>
+                            <Icon>
+                                <MdComment />
+                                <span>3개</span>
+                            </Icon>
+                            <Icon>
+                                <BiShareAlt />
+                                <span>7개</span>
+                            </Icon>
+                        </IconContainer>
+                    </PostContainer>
+                    )})}
+                </Content>
+            </BoardContentContainer>
         </React.Fragment>
     );
 };
+const BoardContentContainer = styled.div`
+    width: 100%;
+`;
+const Header = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+`;
+const Tag = styled.span`
+    padding: 0 1rem 0 1rem;
+    border: none;
+    border-radius: 5rem;
+    background-color: #717171;
+    color: white;
+    font-size: 1.5rem;
+`;
+const More = styled.div`
+    :hover {
+        cursor: pointer;
+    }
+`;
+const Content = styled.div``;
+const PostContainer = styled.div`
+    padding: 20px 0;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 2px solid #fff;
+    transition: 0.5s ease;
+    :hover {
+        cursor: pointer;
+        border-bottom: 2px solid #e7e7e7;
+    }
+`;
+const Title = styled.div`
+    display: flex;
+`;
+const SmallTag = styled.span`
+    padding: 0 10px;
+    margin-right: 10px;
+    border: 1px solid #3b3b3b;
+    border-radius: 10px;
+    background-color: white;
+    color: #505050;
+`;
+const IconContainer = styled.div`
+    display: flex;
+`;
+const Icon = styled.div`
+    display: flex;
+    align-items: center;
+    span {
+        line-height: 1;
+    }
+    svg {
+        font-size: 20px;
+        margin: 0 5px 0 10px;
+    }
+`;
 
 export default UniBoardList;
