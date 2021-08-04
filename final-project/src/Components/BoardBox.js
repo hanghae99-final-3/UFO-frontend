@@ -7,11 +7,18 @@ import { BiHeart } from "react-icons/bi";
 import { BiShareAlt } from "react-icons/bi";
 import { MdComment } from "react-icons/md";
 
+/**
+ * @author heesung && junghoo
+ * @param postList, title, tag, preview
+ * @returns 게시글 with 게시글 layout
+ * @역할 게시글 view component
+ * @필수값 postList, title, tag, preview
+ */
+
 const BoardBox = ({ postList, title, tag, preview }) => {
     const _onClick = () => {
         window.alert("이동!");
     };
-
     return (
         <BoardContentContainer>
             <Header>
