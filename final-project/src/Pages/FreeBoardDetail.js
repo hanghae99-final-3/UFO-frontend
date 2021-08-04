@@ -20,7 +20,8 @@ const FreeBoardDetail = props => {
     const post = useSelector(state => state.freeBoard.post);
     useEffect(() => {
         dispatch(getFreePostDB(postId));
-    }, []);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [dispatch]);
     //----
 
     const deleteFreePost = () => {

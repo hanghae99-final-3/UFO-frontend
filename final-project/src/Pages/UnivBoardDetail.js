@@ -20,7 +20,8 @@ const UnivBoardDetail = props => {
     useEffect(() => {
         dispatch(detailUnivBoardPostDB(postId));
         dispatch(getCommentDB(postId));
-    }, []);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [dispatch]);
 
     const handleDelete = () => {
         const data = {
