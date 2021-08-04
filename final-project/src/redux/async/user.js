@@ -43,7 +43,6 @@ export const signupUserDB = createAsyncThunk(
 export const loginUserDB = createAsyncThunk(
     "user/login",
     async (data, thunkAPI) => {
-        console.log(data);
         try {
             //로그인 요청이후 성공시 jwt 토큰을 발급 받는다.
             const response = await userApi.login(data);
@@ -145,7 +144,7 @@ export const deleteAccountDB = createAsyncThunk(
     "user/delete/account",
     async ({ userId }, thunkAPI) => {
         // 유저 삭제 요청
-        const response = await userApi.deleteAccount(userId);
+        await userApi.deleteAccount(userId);
         // 예외처리 추가 필요함
     },
 );
