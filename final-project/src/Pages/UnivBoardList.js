@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getUnivBoardDB } from "../redux/async/univBoardAsync";
 import { history } from "../redux/configureStore";
@@ -6,6 +6,7 @@ import { BiHeart } from "react-icons/bi";
 import { MdComment } from "react-icons/md";
 import { BiShareAlt } from "react-icons/bi";
 import styled from "styled-components";
+import SearchBox from "../Components/SearchBox";
 
 const UniBoardList = props => {
     const dispatch = useDispatch();
@@ -15,6 +16,7 @@ const UniBoardList = props => {
     }, []);
     return (
         <React.Fragment>
+            <SearchBox/>
             <BoardContentContainer>
                 <Header>
                     {/* <Tag>#태그</Tag> */}
