@@ -40,7 +40,7 @@ const UniBoardList = props => {
             {/* <SearchBox /> */}
             <SearchForm>
                 <Input
-                    placeholder="키워드 태그를 설정 후 검색해보세요!"
+                    placeholder="제목을 검색해보세요!"
                     fullWidth
                     onChange={(e) => {setSearch(e.target.value)}}
                 />

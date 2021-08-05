@@ -15,7 +15,7 @@ import { MdComment } from "react-icons/md";
  * @필수값 postList, title, tag, preview
  */
 
-const BoardBox = ({ postList, title, tag, preview }) => {
+const BoardBox = ({ postList, title, tag, preview}) => {
     const _onClick = () => {
         window.alert("이동!");
     };
