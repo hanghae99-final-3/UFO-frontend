@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import SelectCountry from "./SelectCountry";
 import { logoutUser } from "../redux/modules/userSlice";
+import MenuIcon from "@material-ui/icons/Menu";
+import ClearIcon from "@material-ui/icons/Clear";
 
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
@@ -10,6 +12,7 @@ const Header = () => {
     const dispatch = useDispatch();
     const isLoggedIn = useSelector(state => state.user.isLoggedIn);
     const userName = useSelector(state => state.user.user.nickname);
+    const [menuOn, setMenuOn] = useState(false);
 
     return (
         <HeaderContainer>
@@ -19,7 +22,11 @@ const Header = () => {
             </LeftColumn>
             <RightColumn>
                 <UserName>{userName}님</UserName>
-                <Controls>
+                <MenuBtn onClick={() => setMenuOn(!menuOn)}>
+                    {/* 메뉴버튼 on&off 토글설정 */}
+                    {menuOn ? <ClearIcon /> : <MenuIcon />}
+                </MenuBtn>
+                <Controls menuOn={menuOn}>
                     <Control>
                         <Link to="/">홈</Link>
                     </Control>
@@ -63,6 +70,7 @@ const HeaderContainer = styled.header`
     display: flex;
     justify-content: space-between;
     align-items: center;
+    position: relative;
 `;
 
 const LeftColumn = styled.div`
@@ -83,9 +91,20 @@ const UserName = styled.span`
     margin-right: 20px;
 `;
 
+const MenuBtn = styled.button`
+    background: inherit;
+`;
+
 const Controls = styled.ul`
-    display: flex;
-    padding: 0;
+    ${props => (props.menuOn ? "display:flex;" : "display:none;")}
+    top: 100px;
+    right: 0px;
+    position: absolute;
+    z-index: 99;
+    flex-direction: column;
+    background: #fff;
+    border: 1px solid #d2d2d2;
+    padding: 20px;
 `;
 const Control = styled.li`
     list-style: none;

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addUnivBoardPostDB } from "../redux/async/univBoardAsync";
+import { addUnivBoardPostDB } from "../redux/async/univBoard";
 
 const UniboardWrite = () => {
     const dispatch = useDispatch();

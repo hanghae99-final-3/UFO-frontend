@@ -52,7 +52,13 @@ export const userApi = {
 
 export const freeBoardApi = {
     //모든 자유게시판리스트 불러오기
-    getList: () => instance.get("free/post"),
+    getList: data =>
+        instance.get("free/post", {
+            params: {
+                pageSize: data.pageSize,
+                pageNum: data.pageNum,
+            },
+        }),
 
     //게시물추가하기
     addPost: post => instance.post("free/post", post),
@@ -90,8 +96,13 @@ export const issueApi = {};
 
 export const univBoardApi = {
     //UnivBoard 목록 불러오기
-    getList: () => {
-        return instance.get("/univ/post");
+    getList: data => {
+        return instance.get("/univ/post", {
+            params: {
+                pageNum: data.pageNum,
+                pageSize: data.pageSize,
+            },
+        });
     },
 
     //대학 게시판 게시글 작성하기

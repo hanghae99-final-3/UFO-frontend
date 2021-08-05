@@ -4,7 +4,7 @@ import SearchBox from "../Components/SearchBox";
 import { useDispatch, useSelector } from "react-redux";
 import { getFreeListDB } from "../redux/async/freeBoard";
 import BoardBox from "../Components/BoardBox";
-import { getUnivBoardDB } from "../redux/async/univBoardAsync";
+import { getUnivBoardDB } from "../redux/async/univBoard";
 import categories from "../categories";
 
 const Home = () => {
@@ -23,10 +23,20 @@ const Home = () => {
         state => state.freeBoard.selectedCountry,
     );
 
+    const postListQueryData = {
+        pageSize: 200,
+        pageNum: 1,
+    };
+    const UnivListQueryData = {
+        pageSize: 200,
+        pageNum: 1,
+    };
+
     // 학교 게시판 / 자유 게시판 thunk dispatch--------
     useEffect(() => {
-        dispatch(getFreeListDB());
-        dispatch(getUnivBoardDB());
+        dispatch(getFreeListDB(postListQueryData));
+        dispatch(getUnivBoardDB(UnivListQueryData));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [dispatch]);
     //----
 
