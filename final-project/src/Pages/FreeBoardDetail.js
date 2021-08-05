@@ -18,6 +18,7 @@ const FreeBoardDetail = props => {
     const dispatch = useDispatch();
     const postId = Number(props.match.params.id);
     const post = useSelector(state => state.freeBoard.post);
+    const userId = useSelector(state => state.user.user.user_id);
     useEffect(() => {
         dispatch(getFreePostDB(postId));
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -46,14 +47,19 @@ const FreeBoardDetail = props => {
                     <button onClick={() => history.push("/freeboard")}>
                         뒤로가기
                     </button>
-                    <button
-                        onClick={() =>
-                            history.push(`/freeboard/edit/${postId}`)
-                        }
-                    >
-                        수정하기
-                    </button>
-                    <button onClick={deleteFreePost}>삭제하기</button>
+                    {userId === post.user.user_id && (
+                        // userId가 글 작성자가 맞으면 수정하기, 삭제하기 버튼 나타나게 하기!
+                        <>
+                            <button
+                                onClick={() =>
+                                    history.push(`/freeboard/edit/${postId}`)
+                                }
+                            >
+                                수정하기
+                            </button>
+                            <button onClick={deleteFreePost}>삭제하기</button>
+                        </>
+                    )}
                 </>
             )}
             <FreeBoardComment postId={postId} />
