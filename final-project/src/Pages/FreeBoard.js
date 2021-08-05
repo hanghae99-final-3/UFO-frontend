@@ -39,7 +39,13 @@ const FreeBoard = () => {
 
     return (
         <>
-            <Title>자유게시판</Title>
+            <Title>
+                <span>자유게시판</span>
+                <button onClick={() => history.push("/freeboard/write")}>
+                    {/* 작성하기 페이지로 이동! */}
+                    작성하기
+                </button>
+            </Title>
             <SearchBox searchTag={categories.freeBoardTags} />
             <BoardBoxContainer>
                 {selectedTags.length > 0 ? (
@@ -68,18 +74,24 @@ const FreeBoard = () => {
             <PaginationContainer>
                 <Pagination count={10} page={page} onChange={handlePage} />
             </PaginationContainer>
-            <button onClick={() => history.push("/freeboard/write")}>
-                작성하기
-            </button>
         </>
     );
 };
 
-const Title = styled.span`
-    font-size: 40px;
-    color: #707070;
+const Title = styled.div`
     margin-bottom: 20px;
-    display: block;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    span {
+        font-size: 40px;
+        color: #707070;
+    }
+    button {
+        height: 40px;
+        padding: 0 20px;
+        border-radius: 10px;
+    }
 `;
 
 const BoardBoxContainer = styled.div``;
