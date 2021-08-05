@@ -52,7 +52,7 @@ const Home = () => {
                     postList={
                         freeBoardPostList && freeBoardPostList.slice(0, 5)
                     }
-                    page="freeBoard"
+                    boardName="freeBoard"
                 />
                 {/* 학교 게시판 불러오기*/}
                 <BoardBox
@@ -60,7 +60,7 @@ const Home = () => {
                     postList={
                         univBoardPostList && univBoardPostList.slice(0, 5)
                     }
-                    page="univBoard"
+                    boardName="univBoard"
                 />
                 {/* 자유 게시판 불러오기*/}
                 {selectedCountry === 0 ? (
@@ -70,7 +70,7 @@ const Home = () => {
                         postList={
                             freeBoardPostList && freeBoardPostList.slice(0, 5)
                         }
-                        page="freeBoard"
+                        boardName="freeBoard"
                     />
                 ) : (
                     //  유저가 특정 국가를 선택했을 경우, 자유 게시판을 해당 국의 게시글로 필터링하여 props로 전달한다.
@@ -82,7 +82,7 @@ const Home = () => {
                                 post => post.country_id === selectedCountry,
                             )
                         }
-                        page="freeBoard"
+                        boardName="freeBoard"
                     />
                 )}
                 {/* 카테고리별 게시판 불러오기*/}

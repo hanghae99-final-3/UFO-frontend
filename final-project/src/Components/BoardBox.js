@@ -16,10 +16,10 @@ import { MdComment } from "react-icons/md";
  * @필수값 postList, title, tag, preview
  */
 
-const BoardBox = ({ postList, title, tag, preview, page }) => {
+const BoardBox = ({ postList, title, tag, preview, boardName }) => {
     const _onClick = postId => {
         //자유게시판일때,
-        if (page === "freeBoard")
+        if (boardName === "freeBoard")
             return history.push(`freeboard/detail/${postId}`);
         //학교게시판일때,
         return history.push(`univBoard/detail/${postId}`);
@@ -30,7 +30,7 @@ const BoardBox = ({ postList, title, tag, preview, page }) => {
                 {tag && <Tag># {tag}</Tag>}
                 {title && <TitleHeading>{title}</TitleHeading>}
                 {(title || tag) && (
-                    <More onClick={() => history.push(page)}>더보기</More>
+                    <More onClick={() => history.push(boardName)}>더보기</More>
                 )}
             </Header>
             <Content>

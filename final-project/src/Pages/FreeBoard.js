@@ -64,6 +64,7 @@ const FreeBoard = () => {
                 <BoardBox
                     postList={freeBoardPostList && freeBoardPostList}
                     preview={true}
+                    boardName="freeBoard"
                 />
             </BoardBoxContainer>
             <PaginationContainer>
