@@ -22,6 +22,17 @@ const freeCategory = [
     { categoryId: 9, categoryName: "취미" },
     { categoryId: 10, categoryName: "기타" },
 ];
+
+const univCategory = [
+    { categoryId: 0, categoryName: "수업" },
+    { categoryId: 1, categoryName: "맛집" },
+    { categoryId: 2, categoryName: "스터디" },
+    { categoryId: 3, categoryName: "알바" },
+    { categoryId: 4, categoryName: "익명" },
+    { categoryId: 5, categoryName: "기타" },
+]
+
+
 const freeCategoryForMainPage = [
     { categoryId: 0, categoryName: "질문" },
     { categoryId: 1, categoryName: "정보" },
@@ -35,6 +46,8 @@ const freeCategoryForMainPage = [
     { categoryId: 9, categoryName: "취미" },
     { categoryId: 10, categoryName: "기타" },
 ];
+
+
 
 const freeBoardTags = [
     "질문",
@@ -58,6 +71,7 @@ const categories = {
     freeCategoryForMainPage,
     freeBoardTags,
     uniBoardTags,
+    univCategory
 };
 
 export default categories;

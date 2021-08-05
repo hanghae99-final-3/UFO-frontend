@@ -6,13 +6,14 @@ const instance = axios.create({
     baseURL: "http://3.36.90.60/",
 });
 
+
 //┏----------interceptor를 통한 header 설정----------┓
 instance.interceptors.request.use(async config => {
     config.headers["content-type"] = "application/json; charset=utf-8";
     config.headers["X-Requested-With"] = "XMLHttpRequest";
     config.headers["Accept"] = "*/*";
     //getToken는 로컬 스토리지에 토큰이 있다면 반환한다 없다면 null 값 반환
-    config.headers["authorization"] = await getToken();
+    config.headers["authorization"] = await getToken() 
     return config;
 });
 
@@ -37,6 +38,7 @@ export const userApi = {
         instance.post("auth/login", {
             email: data.email,
             password: data.password,
+            
         }),
     // 유저 정보 조회
     getUser: userId => instance.get(`api/user/${userId}`),
@@ -107,6 +109,8 @@ export const univBoardApi = {
             params: {
                 pageNum: data.pageNum,
                 pageSize: data.pageSize,
+                univ_id:data.univ_id,
+                category: data?.category
             },
         });
     },
