@@ -9,7 +9,7 @@ import {
     editUniBoardCommentDB,
     deleteUniBoardCommentDB,
     editUnivBoardPostDB,
-} from "../async/univBoardAsync";
+} from "../async/univBoard";
 
 const initialState = {
     list: [],

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getUnivBoardDB } from "../redux/async/univBoardAsync";
+import { getUnivBoardDB } from "../redux/async/univBoard";
 import { history } from "../redux/configureStore";
 import { BiHeart } from "react-icons/bi";
 import { MdComment } from "react-icons/md";
@@ -28,9 +28,10 @@ const UniBoardList = props => {
                         postList.map((post, idx) => {
                             return (
                                 <PostContainer
+                                    key={idx}
                                     onClick={() => {
                                         history.push(
-                                            `/univBoard/detail/${post.post_id}`,
+                                            `/univboard/detail/${post.post_id}`,
                                         );
                                     }}
                                 >

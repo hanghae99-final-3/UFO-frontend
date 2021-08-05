@@ -12,7 +12,7 @@ import { getFreeListDB } from "../redux/async/freeBoard";
 import { useDispatch, useSelector } from "react-redux";
 
 /**
- * @author kwonjiyeong
+ * @author kwonjiyeong & heesung
  * @param 없음
  * @returns 자유게시판 뷰
  * @역할 자유게시판 뷰 렌더링, 자유게시판 CRUD 기능 중 R
@@ -21,12 +21,21 @@ import { useDispatch, useSelector } from "react-redux";
 const FreeBoard = () => {
     //----자유게시판 목록 불러와서 list에 저장하기
     const dispatch = useDispatch();
+    const [page, setPage] = React.useState(1);
     const freeBoardPostList = useSelector(state => state.freeBoard.list);
     const selectedTags = useSelector(state => state.freeBoard.selectedTags);
     useEffect(() => {
-        dispatch(getFreeListDB());
-    }, [dispatch]);
+        const postListQueryData = {
+            pageSize: 10,
+            pageNum: page,
+        };
+        dispatch(getFreeListDB(postListQueryData));
+    }, [dispatch, page]);
     //----
+
+    const handlePage = (e, value) => {
+        setPage(value);
+    };
 
     return (
         <>
@@ -43,17 +52,19 @@ const FreeBoard = () => {
                                 )
                                 .slice(0, 10)
                         }
+                        preview={true}
                     />
                 ) : (
                     <BoardBox
                         postList={
                             freeBoardPostList && freeBoardPostList.slice(0, 10)
                         }
+                        preview={true}
                     />
                 )}
             </BoardBoxContainer>
             <PaginationContainer>
-                <Pagination count={10} />
+                <Pagination count={10} page={page} onChange={handlePage} />
             </PaginationContainer>
             {/* <button onClick={() => history.push("/freeboard/write")}>
                 작성하기

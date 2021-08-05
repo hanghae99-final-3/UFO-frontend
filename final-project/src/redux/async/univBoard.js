@@ -14,7 +14,7 @@ export const getUnivBoardDB = createAsyncThunk(
     async (data, thunkAPI) => {
         try {
             // 게시물 조회 요청
-            const response = await univBoardApi.getList();
+            const response = await univBoardApi.getList(data);
             if (response.data.ok) {
                 return response.data.result;
             } else if (!response.data.ok) {
@@ -156,8 +156,8 @@ export const addUniBoardCommentDB = createAsyncThunk(
                 return thunkAPI.rejectWithValue(response.data.message);
             }
         } catch (error) {
-            alert("댓글 달기 실패😭 다시 시도해주세요.");
-            return thunkAPI.rejectWithValue(error.response.data.message);
+            alert(error.response.data.errorMessage);
+            return thunkAPI.rejectWithValue(error.response.data.errorMessage);
         }
     },
 );
