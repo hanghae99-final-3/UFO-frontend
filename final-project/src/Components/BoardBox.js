@@ -40,11 +40,11 @@ const BoardBox = ({ postList, title, tag, preview }) => {
                                 </SmallTag>
                                 <p>{post.title}</p>
                             </Title>
-                            <ContentContainer>
+                            {/* <ContentContainer>
                                 {preview && (
                                     <PostContent>{post.content}</PostContent>
                                 )}
-                            </ContentContainer>
+                            </ContentContainer> */}
 
                             <IconContainer>
                                 <Icon>
@@ -54,10 +54,6 @@ const BoardBox = ({ postList, title, tag, preview }) => {
                                 <Icon>
                                     <MdComment />
                                     <span>3개</span>
-                                </Icon>
-                                <Icon>
-                                    <BiShareAlt />
-                                    <span>2개</span>
                                 </Icon>
                             </IconContainer>
                         </PostContainer>

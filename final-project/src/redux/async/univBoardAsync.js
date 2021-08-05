@@ -14,7 +14,7 @@ export const getUnivBoardDB = createAsyncThunk(
     async (data, thunkAPI) => {
         try {
             // 게시물 조회 요청
-            const response = await univBoardApi.getList();
+            const response = await univBoardApi.getList(data);
             if (response.data.ok) {
                 return response.data.result;
             } else if (!response.data.ok) {
