@@ -99,8 +99,8 @@ export const univBoardApi = {
     getList: data => {
         return instance.get("/univ/post", {
             params: {
-                pageNum: data.pageNum,
                 pageSize: data.pageSize,
+                pageNum: data.pageNum,
             },
         });
     },
