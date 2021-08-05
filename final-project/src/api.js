@@ -90,8 +90,13 @@ export const issueApi = {};
 
 export const univBoardApi = {
     //UnivBoard 목록 불러오기
-    getList: () => {
-        return instance.get("/univ/post");
+    getList: (data) => {
+        return instance.get("/univ/post",{
+                params:{
+                    pageSize:data.pageSize,
+                    pageNum:data.pageNum
+                }
+        });
     },
 
     //대학 게시판 게시글 작성하기

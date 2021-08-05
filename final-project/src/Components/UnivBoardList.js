@@ -6,17 +6,45 @@ import { BiHeart } from "react-icons/bi";
 import { MdComment } from "react-icons/md";
 import { BiShareAlt } from "react-icons/bi";
 import styled from "styled-components";
-import SearchBox from "./SearchBox";
+import Pagination from "@material-ui/lab/Pagination";
+import Input from "@material-ui/core/Input";
 
 const UniBoardList = props => {
+    const [search, setSearch] = useState('')
+    const [page, setPage] = useState(1)
     const dispatch = useDispatch();
-    const postList = useSelector(state => state.univBoard.list);
+    let postList = useSelector(state => state.univBoard.list);
     useEffect(() => {
-        dispatch(getUnivBoardDB());
-    }, [dispatch]);
+        const univBoardQueryDB ={
+            pageSize : 10,
+            pageNum : page
+        }
+        dispatch(getUnivBoardDB(univBoardQueryDB));
+    }, [dispatch, page]);
+    
+    const handlePage = (e,value)=>{
+        setPage(value)
+    }
+    const CommentCnt = useSelector(state=> state.univBoard.commentList.length)
+    console.log('Comment Cnt',CommentCnt)
+
+    // search에 해당하는 애들을 filter를 돌린다.
+    // filter 내에서는 includes or findIndex > -1 인 경우로 로직을 잡는다.
+    // filter처리가 된 변수를 map을 돌린다.
+    
+    const a = postList.filter((c) => {
+        return c.title.includes(search)
+            })
     return (
         <React.Fragment>
             {/* <SearchBox /> */}
+            <SearchForm>
+                <Input
+                    placeholder="키워드 태그를 설정 후 검색해보세요!"
+                    fullWidth
+                    onChange={(e) => {setSearch(e.target.value)}}
+                />
+            </SearchForm>
             <BoardContentContainer>
                 <Header>
                     {/* <Tag>#태그</Tag> */}
@@ -25,7 +53,7 @@ const UniBoardList = props => {
                 <Content>
                     {/* map 돌려서 return 값으로 postContainer을 넣어주고, history.push에 path 넣어주세요!! */}
                     {postList &&
-                        postList.map((post, idx) => {
+                        a.map((post, idx) => {
                             return (
                                 <PostContainer
                                     onClick={() => {
@@ -36,7 +64,7 @@ const UniBoardList = props => {
                                 >
                                     <Title>
                                         <SmallTag>#정보</SmallTag>
-                                        <p>title : {post.title}</p>
+                                        <p>{post.title}</p>
                                     </Title>
                                     <IconContainer>
                                         <Icon>
@@ -57,9 +85,20 @@ const UniBoardList = props => {
                         })}
                 </Content>
             </BoardContentContainer>
+            <PaginationContainer>
+                <Pagination count={10} page={page} onChange={handlePage}/>
+            </PaginationContainer>
         </React.Fragment>
     );
 };
+const SearchForm = styled.form``;
+
+const PaginationContainer = styled.div`
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+    margin-bottom: 100px;
+`;
 const BoardContentContainer = styled.div`
     width: 100%;
 `;
@@ -78,7 +117,7 @@ const Tag = styled.span`
     font-size: 1.5rem;
 `;
 const More = styled.div`
-    :hover {
+    & :hover {
         cursor: pointer;
     }
 `;
@@ -111,10 +150,10 @@ const IconContainer = styled.div`
 const Icon = styled.div`
     display: flex;
     align-items: center;
-    span {
+    & span {
         line-height: 1;
     }
-    svg {
+    & svg {
         font-size: 20px;
         margin: 0 5px 0 10px;
     }
