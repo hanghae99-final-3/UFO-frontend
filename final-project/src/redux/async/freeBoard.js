@@ -14,7 +14,7 @@ export const getFreeListDB = createAsyncThunk(
     "freeBoard/getList",
     async (data, thunkAPI) => {
         try {
-            const response = await freeBoardApi.getList(data);
+            const response = await freeBoardApi.getList(data)
             if (response.data.ok) return response.data.result;
         } catch (err) {
             return thunkAPI.rejectWithValue(err.response.message);
