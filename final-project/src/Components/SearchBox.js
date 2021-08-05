@@ -6,11 +6,9 @@ import {
     setTagReducer,
 } from "../redux/modules/freeBoardSlice";
 import { useDispatch } from "react-redux";
-
 // material Ui
 import Input from "@material-ui/core/Input";
 import styled from "styled-components";
-
 /**
  * @author heesung
  * @param searchTag
