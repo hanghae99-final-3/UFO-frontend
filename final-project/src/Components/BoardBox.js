@@ -1,12 +1,13 @@
 import React from "react";
 import { history } from "../redux/configureStore";
 
-import categories from "../categories";
 import styled from "styled-components";
+import categories from "../categories";
 
 import { BiHeart } from "react-icons/bi";
 import { BiShareAlt } from "react-icons/bi";
 import { MdComment } from "react-icons/md";
+import VisibilityIcon from '@material-ui/icons/Visibility';
 
 /**
  * @author heesung && junghoo
@@ -45,10 +46,8 @@ const BoardBox = ({ postList, title, tag, preview, page }) => {
                             <Title>
                                 <SmallTag>
                                     #{" "}
-                                    {
-                                        categories.freeCategory[post.category]
-                                            .categoryName
-                                    }
+                                    {(page==="freeBoard")? categories.freeCategory[post.category]?.categoryName
+                                    :categories.univCategory[post.category]?.categoryName }
                                 </SmallTag>
                                 <p>{post.title}</p>
                             </Title>
@@ -57,7 +56,6 @@ const BoardBox = ({ postList, title, tag, preview, page }) => {
                                     <PostContent>{post.content}</PostContent>
                                 )}
                             </ContentContainer> */}
-
                             <IconContainer>
                                 <Icon>
                                     <BiHeart />
@@ -65,7 +63,11 @@ const BoardBox = ({ postList, title, tag, preview, page }) => {
                                 </Icon>
                                 <Icon>
                                     <MdComment />
-                                    <span>3개</span>
+                                    <span>{post.coment_count}</span>
+                                </Icon>
+                                <Icon>
+                                <VisibilityIcon/>
+                                <span>{post.view_count}</span>
                                 </Icon>
                             </IconContainer>
                         </PostContainer>
