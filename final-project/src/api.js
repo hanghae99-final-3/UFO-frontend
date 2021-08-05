@@ -18,36 +18,41 @@ instance.interceptors.request.use(async config => {
 
 // 사용자 관련 axios API 통신
 export const userApi = {
+    // 회원 가입
     signup: data =>
         instance.post("api/user", {
             email: data.email,
             nickname: data.nickname,
             password: data.password,
         }),
+    // 유저 프로필 변경
     editUserProfile: ({ nickname, email, password, userId }) =>
         instance.put(`api/user/${userId}`, {
             email,
             nickname,
             password,
         }),
+    // 로그인
     login: data =>
         instance.post("auth/login", {
             email: data.email,
             password: data.password,
         }),
+    // 유저 정보 조회
     getUser: userId => instance.get(`api/user/${userId}`),
+    // 이메일 인증 코드 발송
     verifyUniEmail: email =>
         instance.post("/auth/email", {
             school_email: email,
         }),
+    // 인증 코드 확인
     checkVerifyCode: ({ userId, email }) =>
         instance.post("/auth/email/check", {
             user_id: userId,
             school_email: email,
         }),
+    // 계정 삭제
     deleteAccount: userId => instance.delete(`api/user/${userId}`),
-
-    kakaoLogin: () => instance.get("api/kakao"),
 };
 
 export const freeBoardApi = {
@@ -57,6 +62,7 @@ export const freeBoardApi = {
             params: {
                 pageSize: data.pageSize,
                 pageNum: data.pageNum,
+                category: data?.category,
             },
         }),
 
@@ -99,8 +105,8 @@ export const univBoardApi = {
     getList: data => {
         return instance.get("/univ/post", {
             params: {
-                pageSize: data.pageSize,
                 pageNum: data.pageNum,
+                pageSize: data.pageSize,
             },
         });
     },

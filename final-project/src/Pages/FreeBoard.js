@@ -21,21 +21,34 @@ import { useDispatch, useSelector } from "react-redux";
 const FreeBoard = () => {
     //----자유게시판 목록 불러와서 list에 저장하기
     const dispatch = useDispatch();
-    const [page, setPage] = React.useState(1);
-    const freeBoardPostList = useSelector(state => state.freeBoard.list);
-    const selectedTags = useSelector(state => state.freeBoard.selectedTags);
+    const [page, setPage] = React.useState(1); // pagination의  현재 페이지 값 설정
+    const freeBoardPostList = useSelector(state => state.freeBoard.list); // 자유 게시판 게시글 구독
+    const selectedTag = useSelector(state => state.freeBoard.selectedTag); // 현재 선택된 카테고리 구독
     useEffect(() => {
-        const postListQueryData = {
-            pageSize: 10,
-            pageNum: page,
-        };
-        dispatch(getFreeListDB(postListQueryData));
-    }, [dispatch, page]);
+        // 선택된 카테고리가 없다면, 게시글 리스트 조회 요청에 카테고리 query string 제외
+        if (selectedTag === null) {
+            const postListQueryData = {
+                pageSize: 10,
+                pageNum: page,
+            };
+            dispatch(getFreeListDB(postListQueryData));
+        } else {
+            // 선택된 카테고리가  있다면, 게시글 리스트 조회 요청에 카테고리 query string 추가
+            const postListQueryData = {
+                pageSize: 10,
+                pageNum: page,
+                category: selectedTag,
+            };
+            dispatch(getFreeListDB(postListQueryData));
+        }
+    }, [dispatch, page, selectedTag]); // 페이지 변경, 카테고리(태그) 변화시 useEffect 실행
     //----
 
+    // pagination 상태 값 업데이트
     const handlePage = (e, value) => {
         setPage(value);
     };
+    //----
 
     return (
         <>
@@ -48,28 +61,10 @@ const FreeBoard = () => {
             </Title>
             <SearchBox searchTag={categories.freeBoardTags} />
             <BoardBoxContainer>
-                {selectedTags.length > 0 ? (
-                    <BoardBox
-                        postList={
-                            freeBoardPostList &&
-                            freeBoardPostList
-                                .filter(post =>
-                                    selectedTags.includes(post.category),
-                                )
-                                .slice(0, 10)
-                        }
-                        preview={true}
-                        page="freeBoard"
-                    />
-                ) : (
-                    <BoardBox
-                        postList={
-                            freeBoardPostList && freeBoardPostList.slice(0, 10)
-                        }
-                        preview={true}
-                        page="freeBoard"
-                    />
-                )}
+                <BoardBox
+                    postList={freeBoardPostList && freeBoardPostList}
+                    preview={true}
+                />
             </BoardBoxContainer>
             <PaginationContainer>
                 <Pagination count={10} page={page} onChange={handlePage} />

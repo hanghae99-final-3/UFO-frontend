@@ -23,7 +23,7 @@ const initialState = {
     isFetching: false,
     errorMessage: null,
     selectedCountry: 0,
-    selectedTags: [],
+    selectedTag: null,
 };
 
 //
@@ -35,10 +35,10 @@ const freeBoardSlice = createSlice({
             state.selectedCountry = countryId;
         },
         setTagReducer: (state, { payload }) => {
-            state.selectedTags = payload;
+            state.selectedTag = payload;
         },
         resetTagReducer: (state, action) => {
-            state.selectedTags = [];
+            state.selectedTag = null;
         },
     },
 
