@@ -7,7 +7,7 @@ import {
     addFreeCommentDB,
     editFreeCommentDB,
     deleteFreeCommentDB,
-} from "../redux/async/comment";
+} from "../redux/async/freeBoard";
 
 /**
  * @author kwonjiyeong
@@ -20,12 +20,13 @@ import {
 const FreeBoardComment = ({ postId }) => {
     const dispatch = useDispatch();
     const user = useSelector(state => state.user.user); //유저정보
-    const commentList = useSelector(state => state.comment.list); //댓글목록
+    const commentList = useSelector(state => state.freeBoard.commentList); //댓글목록
     const [content, setContent] = useState(""); //댓글 입력값을 넣을 공간
 
     useEffect(() => {
         dispatch(getFreeCommentListDB(postId)); //특정게시물의 댓글목록 가져오는 함수
-    }, []);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [dispatch]);
 
     const addComment = () => {
         //서버에 필요한 정보를 정리하고, 댓글을 추가하는 미들웨어 함수로 보낸다.

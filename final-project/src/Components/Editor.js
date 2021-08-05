@@ -3,32 +3,110 @@ import styled from "styled-components";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-editor-classic/src/classiceditor";
 
-import Essentials from "@ckeditor/ckeditor5-essentials/src/essentials"; //
-import Paragraph from "@ckeditor/ckeditor5-paragraph/src/paragraph"; //
-import Bold from "@ckeditor/ckeditor5-basic-styles/src/bold"; //
-import Italic from "@ckeditor/ckeditor5-basic-styles/src/italic"; //
-import Underline from "@ckeditor/ckeditor5-basic-styles/src/underline"; //
-import Strikethrough from "@ckeditor/ckeditor5-basic-styles/src/strikethrough"; //
-import BlockQuote from "@ckeditor/ckeditor5-block-quote/src/blockquote"; //
-import Link from "@ckeditor/ckeditor5-link/src/link"; //
-import PasteFromOffice from "@ckeditor/ckeditor5-paste-from-office/src/pastefromoffice"; //
-import Heading from "@ckeditor/ckeditor5-heading/src/heading"; //
-import Font from "@ckeditor/ckeditor5-font/src/font"; //
-import Image from "@ckeditor/ckeditor5-image/src/image"; //
-import ImageStyle from "@ckeditor/ckeditor5-image/src/imagestyle"; //
-import ImageToolbar from "@ckeditor/ckeditor5-image/src/imagetoolbar"; //
-import ImageUpload from "@ckeditor/ckeditor5-image/src/imageupload"; //
-import ImageResize from "@ckeditor/ckeditor5-image/src/imageresize"; //
-import List from "@ckeditor/ckeditor5-list/src/list"; //
-import Alignment from "@ckeditor/ckeditor5-alignment/src/alignment"; //
-import Table from "@ckeditor/ckeditor5-table/src/table"; //
-import TableToolbar from "@ckeditor/ckeditor5-table/src/tabletoolbar"; //
+//플러그인
+import Essentials from "@ckeditor/ckeditor5-essentials/src/essentials";
+import Paragraph from "@ckeditor/ckeditor5-paragraph/src/paragraph";
+import Bold from "@ckeditor/ckeditor5-basic-styles/src/bold";
+import Italic from "@ckeditor/ckeditor5-basic-styles/src/italic";
+import Underline from "@ckeditor/ckeditor5-basic-styles/src/underline";
+import Strikethrough from "@ckeditor/ckeditor5-basic-styles/src/strikethrough";
+import BlockQuote from "@ckeditor/ckeditor5-block-quote/src/blockquote";
+import Link from "@ckeditor/ckeditor5-link/src/link";
+import PasteFromOffice from "@ckeditor/ckeditor5-paste-from-office/src/pastefromoffice";
+import Heading from "@ckeditor/ckeditor5-heading/src/heading";
+import Font from "@ckeditor/ckeditor5-font/src/font";
+import Image from "@ckeditor/ckeditor5-image/src/image";
+import ImageStyle from "@ckeditor/ckeditor5-image/src/imagestyle";
+import ImageToolbar from "@ckeditor/ckeditor5-image/src/imagetoolbar";
+import ImageUpload from "@ckeditor/ckeditor5-image/src/imageupload";
+import ImageResize from "@ckeditor/ckeditor5-image/src/imageresize";
+import List from "@ckeditor/ckeditor5-list/src/list";
+import Alignment from "@ckeditor/ckeditor5-alignment/src/alignment";
+import Table from "@ckeditor/ckeditor5-table/src/table";
+import TableToolbar from "@ckeditor/ckeditor5-table/src/tabletoolbar";
 import TextTransformation from "@ckeditor/ckeditor5-typing/src/texttransformation";
-import Indent from "@ckeditor/ckeditor5-indent/src/indent"; //
-import IndentBlock from "@ckeditor/ckeditor5-indent/src/indentblock"; //
-import TableProperties from "@ckeditor/ckeditor5-table/src/tableproperties"; //
-import TableCellProperties from "@ckeditor/ckeditor5-table/src/tablecellproperties"; //
-import Base64UploadAdapter from "@ckeditor/ckeditor5-upload/src/adapters/base64uploadadapter"; //
+import Indent from "@ckeditor/ckeditor5-indent/src/indent";
+import IndentBlock from "@ckeditor/ckeditor5-indent/src/indentblock";
+import TableProperties from "@ckeditor/ckeditor5-table/src/tableproperties";
+import TableCellProperties from "@ckeditor/ckeditor5-table/src/tablecellproperties";
+import Base64UploadAdapter from "@ckeditor/ckeditor5-upload/src/adapters/base64uploadadapter";
+
+//파이어베이스
+import { firebase } from "../firebase";
+
+class MyUploadAdapter {
+    constructor(loader) {
+        this.loader = loader;
+    }
+    // Starts the upload process.
+    upload() {
+        return this.loader.file.then(
+            file =>
+                new Promise((resolve, reject) => {
+                    console.log(file);
+                    console.log("firebase", firebase);
+                    let storageRef = firebase.storage().ref("images/");
+                    let uploadTask = storageRef.child(file.name).put(file);
+                    console.log(uploadTask);
+                    uploadTask.on(
+                        firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
+                        function (snapshot) {
+                            // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+                            var progress =
+                                (snapshot.bytesTransferred /
+                                    snapshot.totalBytes) *
+                                100;
+                            console.log("Upload is " + progress + "% done");
+                            switch (snapshot.state) {
+                                case firebase.storage.TaskState.PAUSED: // or 'paused'
+                                    console.log("Upload is paused");
+                                    break;
+                                case firebase.storage.TaskState.RUNNING: // or 'running'
+                                    console.log("Upload is running");
+                                    break;
+                            }
+                        },
+                        function (error) {
+                            // A full list of error codes is available at
+                            // https://firebase.google.com/docs/storage/web/handle-errors
+                            // eslint-disable-next-line default-case
+                            switch (error.code) {
+                                case "storage/unauthorized":
+                                    reject(
+                                        " User doesn't have permission to access the object",
+                                    );
+                                    break;
+
+                                case "storage/canceled":
+                                    reject("User canceled the upload");
+                                    break;
+
+                                case "storage/unknown":
+                                    reject(
+                                        "Unknown error occurred, inspect error.serverResponse",
+                                    );
+                                    break;
+                            }
+                        },
+                        function () {
+                            // Upload completed successfully, now we can get the download URL
+                            uploadTask.snapshot.ref
+                                .getDownloadURL()
+                                .then(function (downloadURL) {
+                                    console.log(
+                                        "File available at",
+                                        downloadURL,
+                                    );
+                                    resolve({
+                                        default: downloadURL,
+                                    });
+                                });
+                        },
+                    );
+                }),
+        );
+    }
+}
 
 const editorConfiguration = {
     language: "ko",
@@ -60,6 +138,7 @@ const editorConfiguration = {
         TableCellProperties,
         TextTransformation,
     ],
+    extraPlgins: [],
     toolbar: [
         "heading",
         "|",
@@ -123,12 +202,11 @@ const editorConfiguration = {
         resizeUnit: "px",
         toolbar: [
             "imageStyle:alignLeft",
-            "imageStyle:full",
             "imageStyle:alignRight",
             "|",
             "imageTextAlternative",
         ],
-        styles: ["full", "alignLeft", "alignRight"],
+        styles: ["alignLeft", "alignRight"],
         type: ["JPEG", "JPG", "GIF", "PNG"],
     },
     typing: {
@@ -148,6 +226,7 @@ const editorConfiguration = {
 };
 
 const Editor = ({ getContentFromEditor, originContent }) => {
+    let imgList = ["hello"];
     //수정모드
     if (originContent)
         return (
@@ -172,8 +251,14 @@ const Editor = ({ getContentFromEditor, originContent }) => {
                 config={editorConfiguration}
                 onChange={(event, editor) => {
                     const data = editor.getData();
-                    // console.log({ event, editor, data });
                     getContentFromEditor(data);
+                }}
+                onReady={editor => {
+                    editor.plugins.get("FileRepository").createUploadAdapter =
+                        loader => {
+                            console.log(imgList);
+                            return new MyUploadAdapter(loader);
+                        };
                 }}
             />
         </StyledEditor>

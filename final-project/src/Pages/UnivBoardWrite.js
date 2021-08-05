@@ -26,11 +26,13 @@ const UniboardWrite = () => {
                 title,
                 content,
                 category,
-                userId: user.user.user_id,
+                univId: user.user.univ_id,
             };
             dispatch(addUnivBoardPostDB(data));
             setTitle("");
             setContent("");
+        } else if (!user.isLoggedIn) {
+            alert("게시글 작성은 로그인이 필요합니다.");
         }
     };
 

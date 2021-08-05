@@ -30,6 +30,7 @@ const FreeBoardWrite = props => {
         if (post) return;
         freeBoardApi.getPost(postId).then(res => setPost(res.data.result));
         //----
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const editfreePost = () => {
@@ -71,7 +72,6 @@ const FreeBoardWrite = props => {
     };
     //┗-----------------게시글 작성파트-----------------┛
 
-    console.log(post);
     if (isEdit && post) {
         return (
             //게시글 수정모드

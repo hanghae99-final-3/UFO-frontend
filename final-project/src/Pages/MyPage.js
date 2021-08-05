@@ -27,14 +27,11 @@ const MyPage = props => {
                 userId: user.user_id,
                 email,
             };
-            const response = await userApi.checkVerifyCode(data);
+            await userApi.checkVerifyCode(data);
         }
     };
 
     const handleSubmit = async () => {
-        const data = {
-            email,
-        };
         if (email) {
             setIsVerifyRequested(true);
             const {

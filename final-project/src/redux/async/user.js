@@ -1,4 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import { history } from "../configureStore";
 import { userApi } from "../../api";
 import jwt from "jwt-decode";
 
@@ -54,6 +55,8 @@ export const loginUserDB = createAsyncThunk(
                 const getUserResponse = await userApi.getUser(userId);
                 if (getUserResponse.data.ok) {
                     const user = getUserResponse.data.result;
+                    window.alert("로그인 성공");
+                    history.replace("/");
                     return user;
                 } else {
                     // 서버 로그인 실패 에러 메세지 반환
@@ -90,6 +93,8 @@ export const checkLoggedInUser = createAsyncThunk(
             if (loggedInUser.data.ok) {
                 const user = loggedInUser.data.result;
                 return user;
+            } else {
+                return thunkAPI.rejectWithValue(loggedInUser.data.errorMessage);
             }
         } catch (error) {
             // 에러 발생시 에러 메세지 반환
@@ -139,7 +144,7 @@ export const deleteAccountDB = createAsyncThunk(
     "user/delete/account",
     async ({ userId }, thunkAPI) => {
         // 유저 삭제 요청
-        const response = await userApi.deleteAccount(userId);
+        await userApi.deleteAccount(userId);
         // 예외처리 추가 필요함
     },
 );
