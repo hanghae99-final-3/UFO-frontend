@@ -19,7 +19,7 @@ const Home = () => {
     //----
 
     // 로그인 유저 -----------------------------------
-    const univId = useSelector(state => state.user?.user?.univ_id)
+    const univId = useSelector(state => state.user?.user?.univ_id);
 
     // 유저가 선택한 국가 페이지-------------------------
     const selectedCountry = useSelector(
@@ -33,15 +33,15 @@ const Home = () => {
     const UnivListQueryData = {
         pageSize: 200,
         pageNum: 1,
-        univ_id: univId
+        univ_id: univId,
     };
 
     // 학교 게시판 / 자유 게시판 thunk dispatch--------
     useEffect(() => {
         dispatch(getFreeListDB(postListQueryData));
         // 유저에게 등록된 univId가 있다면 대학 게시판 게시글 조회 요청
-        if(univId){
-        dispatch(getUnivBoardDB(UnivListQueryData));
+        if (univId) {
+            dispatch(getUnivBoardDB(UnivListQueryData));
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [dispatch, univId]);
@@ -109,7 +109,7 @@ const Home = () => {
                                                 category.categoryId,
                                         )
                                         .slice(0, 5)}
-                                        page="freeBoard"
+                                    boardName="freeBoard"
                                 />
                             );
                         } else {
@@ -118,6 +118,7 @@ const Home = () => {
                                 <BoardBox
                                     key={idx}
                                     tag={category.categoryName}
+                                    boardName="freeBoard"
                                     postList={freeBoardPostList
                                         .filter(
                                             post =>

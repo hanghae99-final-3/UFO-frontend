@@ -7,7 +7,7 @@ import categories from "../categories";
 import { BiHeart } from "react-icons/bi";
 import { BiShareAlt } from "react-icons/bi";
 import { MdComment } from "react-icons/md";
-import VisibilityIcon from '@material-ui/icons/Visibility';
+import VisibilityIcon from "@material-ui/icons/Visibility";
 
 /**
  * @author heesung && junghoo
@@ -46,8 +46,11 @@ const BoardBox = ({ postList, title, tag, preview, boardName }) => {
                             <Title>
                                 <SmallTag>
                                     #{" "}
-                                    {(page==="freeBoard")? categories.freeCategory[post.category]?.categoryName
-                                    :categories.univCategory[post.category]?.categoryName }
+                                    {boardName === "freeBoard"
+                                        ? categories.freeCategory[post.category]
+                                              ?.categoryName
+                                        : categories.univCategory[post.category]
+                                              ?.categoryName}
                                 </SmallTag>
                                 <p>{post.title}</p>
                             </Title>
@@ -66,8 +69,8 @@ const BoardBox = ({ postList, title, tag, preview, boardName }) => {
                                     <span>{post.coment_count}</span>
                                 </Icon>
                                 <Icon>
-                                <VisibilityIcon/>
-                                <span>{post.view_count}</span>
+                                    <VisibilityIcon />
+                                    <span>{post.view_count}</span>
                                 </Icon>
                             </IconContainer>
                         </PostContainer>
