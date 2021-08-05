@@ -17,7 +17,7 @@ import {
  */
 
 const initialState = {
-    list: null,
+    list: [],
     post: null,
     commentList: null,
     isFetching: false,
@@ -76,7 +76,7 @@ const freeBoardSlice = createSlice({
 
         //----자유게시판 게시물 추가하는 리듀서
         [addFreePostDB.fulfilled]: (state, { payload }) => {
-            state.list.push(payload);
+            state.list.unshift(payload);
             state.isFetching = false;
             state.errorMessage = null;
         },
