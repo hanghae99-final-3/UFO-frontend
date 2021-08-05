@@ -53,6 +53,7 @@ const FreeBoard = () => {
                                 .slice(0, 10)
                         }
                         preview={true}
+                        page="freeBoard"
                     />
                 ) : (
                     <BoardBox
@@ -60,15 +61,16 @@ const FreeBoard = () => {
                             freeBoardPostList && freeBoardPostList.slice(0, 10)
                         }
                         preview={true}
+                        page="freeBoard"
                     />
                 )}
             </BoardBoxContainer>
             <PaginationContainer>
                 <Pagination count={10} page={page} onChange={handlePage} />
             </PaginationContainer>
-            {/* <button onClick={() => history.push("/freeboard/write")}>
+            <button onClick={() => history.push("/freeboard/write")}>
                 작성하기
-            </button> */}
+            </button>
         </>
     );
 };

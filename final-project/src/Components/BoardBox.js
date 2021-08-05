@@ -1,4 +1,5 @@
 import React from "react";
+import { history } from "../redux/configureStore";
 
 import categories from "../categories";
 import styled from "styled-components";
@@ -15,9 +16,13 @@ import { MdComment } from "react-icons/md";
  * @필수값 postList, title, tag, preview
  */
 
-const BoardBox = ({ postList, title, tag, preview }) => {
-    const _onClick = () => {
-        window.alert("이동!");
+const BoardBox = ({ postList, title, tag, preview, page }) => {
+    const _onClick = postId => {
+        //자유게시판일때,
+        if (page === "freeBoard")
+            return history.push(`freeboard/detail/${postId}`);
+        //학교게시판일때,
+        return history.push(`univBoard/detail/${postId}`);
     };
     return (
         <BoardContentContainer>
@@ -29,7 +34,12 @@ const BoardBox = ({ postList, title, tag, preview }) => {
             <Content>
                 {postList &&
                     postList.map((post, idx) => (
-                        <PostContainer key={idx} onClick={_onClick}>
+                        <PostContainer
+                            key={idx}
+                            onClick={() => {
+                                _onClick(post.post_id);
+                            }}
+                        >
                             <Title>
                                 <SmallTag>
                                     #{" "}
