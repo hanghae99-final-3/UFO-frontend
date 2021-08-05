@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-editor-classic/src/classiceditor";
@@ -226,7 +226,6 @@ const editorConfiguration = {
 };
 
 const Editor = ({ getContentFromEditor, originContent }) => {
-    let imgList = ["hello"];
     //수정모드
     if (originContent)
         return (
@@ -238,6 +237,15 @@ const Editor = ({ getContentFromEditor, originContent }) => {
                     onChange={(event, editor) => {
                         const data = editor.getData();
                         getContentFromEditor(data);
+                    }}
+                    onReady={editor => {
+                        if (editor?.plugins) {
+                            editor.plugins.get(
+                                "FileRepository",
+                            ).createUploadAdapter = loader => {
+                                return new MyUploadAdapter(loader);
+                            };
+                        }
                     }}
                 />
             </StyledEditor>
@@ -254,11 +262,13 @@ const Editor = ({ getContentFromEditor, originContent }) => {
                     getContentFromEditor(data);
                 }}
                 onReady={editor => {
-                    editor.plugins.get("FileRepository").createUploadAdapter =
-                        loader => {
-                            console.log(imgList);
+                    if (editor?.plugins) {
+                        editor.plugins.get(
+                            "FileRepository",
+                        ).createUploadAdapter = loader => {
                             return new MyUploadAdapter(loader);
                         };
+                    }
                 }}
             />
         </StyledEditor>

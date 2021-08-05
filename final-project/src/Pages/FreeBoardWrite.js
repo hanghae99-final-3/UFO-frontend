@@ -27,10 +27,9 @@ const FreeBoardWrite = props => {
 
     useEffect(() => {
         //----state로부터 post값을 얻어올 수 있으면 중지하고, 아니면 서버로부터 post값을 받아온다.
-        if (post) return;
-        freeBoardApi.getPost(postId).then(res => setPost(res.data.result));
+        if (postId && !postFromState)
+            freeBoardApi.getPost(postId).then(res => setPost(res.data.result));
         //----
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const editfreePost = () => {
@@ -51,11 +50,11 @@ const FreeBoardWrite = props => {
     // ----게시글 수정모드인지 확인하고, 수정모드가 아니면 user_id를 추가시켜준다.
     const isEdit = props.match.params.id ? true : false;
     const userId = useSelector(state => state.user.user.user_id);
-    if (!isEdit) post = { ...post, user_id: userId }; //이렇게 하면 useState 중 post를 let으로 설정해야 한다! 불변성 유지 잘 시켜주자!
+    if (!isEdit) post = { user_id: userId }; //이렇게 하면 useState 중 post를 let으로 설정해야 한다! 불변성 유지 잘 시켜주자!
     // ----
+    console.log(post);
     const addPost = () => {
         //서버에 필요한 정보를 정리하고, 포스트를 추가하는 미들웨어 함수로 보낸다.
-        console.log(post.content);
         if (!userId) return alert("로그인을 해주세요!");
         if (userId && !post.country_id) return alert("국가를 설정해주세요!");
         if (userId && !post.category) return alert("카테고리를 설정해주세요!");

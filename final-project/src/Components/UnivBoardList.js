@@ -8,82 +8,64 @@ import { BiShareAlt } from "react-icons/bi";
 import styled from "styled-components";
 import Pagination from "@material-ui/lab/Pagination";
 import Input from "@material-ui/core/Input";
+import SearchBox from './SearchBox'
+import categories from "../categories";
+import BoardBox from './BoardBox'
 
 const UniBoardList = props => {
-    const [search, setSearch] = useState('')
-    const [page, setPage] = useState(1)
-    const dispatch = useDispatch();
-    let postList = useSelector(state => state.univBoard.list);
-    useEffect(() => {
-        const univBoardQueryDB ={
-            pageSize : 10,
-            pageNum : page
-        }
-        dispatch(getUnivBoardDB(univBoardQueryDB));
-    }, [dispatch, page]);
+    const dispatch = useDispatch(); 
+    const [page, setPage] = useState(1) // pagination 현재 페이지 값
+    const [searchTerm, setSearchTerm] = useState('') // 유저 검색어 input 값
     
+    const univId = useSelector(state => state.user?.user?.univ_id) // 로그인의 인증 대학교 아이디
+    const UnivPostList = useSelector(state => state.univBoard.list); // 대학교 게시판 게시글
+    const selectedTag = useSelector(state => state.freeBoard.selectedTag); // 현재 선택된 카테고리 구독
+
+    // 현재 페이지가 변하면 useEffect 발동, 다음 페이지 대학 게시글 요청
+    useEffect(() => {
+    // 유저가 대학교 아이디 값을 가지고 있을 경우에만 실행
+        if(univId){
+            if(selectedTag===null){
+                const univBoardQueryDB ={
+                    pageSize : 10,
+                    pageNum : page,
+                    univ_id :univId
+                }
+                dispatch(getUnivBoardDB(univBoardQueryDB));
+            }else{
+                const univBoardQueryDB ={
+                    pageSize : 10,
+                    pageNum : page,
+                    univ_id :univId,
+                    category:selectedTag
+                }
+                dispatch(getUnivBoardDB(univBoardQueryDB));
+            }
+        }
+    }, [dispatch, page, univId, selectedTag]);
+    
+    // 페이지 이동 이벤트 핸들링
     const handlePage = (e,value)=>{
         setPage(value)
     }
-    const CommentCnt = useSelector(state=> state.univBoard.commentList.length)
-    console.log('Comment Cnt',CommentCnt)
 
-    // search에 해당하는 애들을 filter를 돌린다.
-    // filter 내에서는 includes or findIndex > -1 인 경우로 로직을 잡는다.
-    // filter처리가 된 변수를 map을 돌린다.
-    
-    const a = postList.filter((c) => {
-        return c.title.includes(search)
-            })
     return (
         <React.Fragment>
             {/* <SearchBox /> */}
-            <SearchForm>
-                <Input
-                    placeholder="제목을 검색해보세요!"
-                    fullWidth
-                    onChange={(e) => {setSearch(e.target.value)}}
-                />
-            </SearchForm>
+            
+            <SearchBox searchTag={categories.uniBoardTags}/>
+            
             <BoardContentContainer>
                 <Header>
                     {/* <Tag>#태그</Tag> */}
                     {/* <More>더보기</More> */}
                 </Header>
                 <Content>
-                    {/* map 돌려서 return 값으로 postContainer을 넣어주고, history.push에 path 넣어주세요!! */}
-                    {postList &&
-                        a.map((post, idx) => {
-                            return (
-                                <PostContainer
-                                    key={idx}
-                                    onClick={() => {
-                                        history.push(
-                                            `/univboard/detail/${post.post_id}`,
-                                        );
-                                    }}
-                                >
-                                    <Title>
-                                        <SmallTag>#정보</SmallTag>
-                                        <p>{post.title}</p>
-                                    </Title>
-                                    <IconContainer>
-                                        <Icon>
-                                            <BiHeart />
-                                            <span>5개</span>
-                                        </Icon>
-                                        <Icon>
-                                            <MdComment />
-                                            <span>3개</span>
-                                        </Icon>
-                                        <Icon>
-                                            <BiShareAlt />
-                                            <span>7개</span>
-                                        </Icon>
-                                    </IconContainer>
-                                </PostContainer>
-                            );
-                        })}
+                <BoardBox
+                    postList={UnivPostList && UnivPostList}
+                    preview={true}
+                    page={"univBoard"}
+                />
                 </Content>
             </BoardContentContainer>
             <PaginationContainer>
@@ -92,7 +74,7 @@ const UniBoardList = props => {
         </React.Fragment>
     );
 };
-const SearchForm = styled.form``;
+
 
 const PaginationContainer = styled.div`
     display: flex;

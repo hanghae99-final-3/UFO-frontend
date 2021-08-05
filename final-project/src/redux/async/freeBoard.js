@@ -49,7 +49,7 @@ export const getFreePostDB = createAsyncThunk(
  * @필수값 data
  */
 export const addFreePostDB = createAsyncThunk(
-    "freeBoard/addList",
+    "freeBoard/addPost",
     async (data, thunkAPI) => {
         try {
             const response = await freeBoardApi.addPost(data);

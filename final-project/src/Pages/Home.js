@@ -18,6 +18,9 @@ const Home = () => {
     const univBoardPostList = useSelector(state => state.univBoard.list);
     //----
 
+    // 로그인 유저 -----------------------------------
+    const univId = useSelector(state => state.user?.user?.univ_id)
+
     // 유저가 선택한 국가 페이지-------------------------
     const selectedCountry = useSelector(
         state => state.freeBoard.selectedCountry,
@@ -30,14 +33,18 @@ const Home = () => {
     const UnivListQueryData = {
         pageSize: 200,
         pageNum: 1,
+        univ_id: univId
     };
 
     // 학교 게시판 / 자유 게시판 thunk dispatch--------
     useEffect(() => {
         dispatch(getFreeListDB(postListQueryData));
+        // 유저에게 등록된 univId가 있다면 대학 게시판 게시글 조회 요청
+        if(univId){
         dispatch(getUnivBoardDB(UnivListQueryData));
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [dispatch]);
+    }, [dispatch, univId]);
     //----
 
     return (
@@ -52,7 +59,7 @@ const Home = () => {
                     postList={
                         freeBoardPostList && freeBoardPostList.slice(0, 5)
                     }
-                    page="freeBoard"
+                    boardName="freeBoard"
                 />
                 {/* 학교 게시판 불러오기*/}
                 <BoardBox
@@ -60,7 +67,7 @@ const Home = () => {
                     postList={
                         univBoardPostList && univBoardPostList.slice(0, 5)
                     }
-                    page="univBoard"
+                    boardName="univBoard"
                 />
                 {/* 자유 게시판 불러오기*/}
                 {selectedCountry === 0 ? (
@@ -70,7 +77,7 @@ const Home = () => {
                         postList={
                             freeBoardPostList && freeBoardPostList.slice(0, 5)
                         }
-                        page="freeBoard"
+                        boardName="freeBoard"
                     />
                 ) : (
                     //  유저가 특정 국가를 선택했을 경우, 자유 게시판을 해당 국의 게시글로 필터링하여 props로 전달한다.
@@ -82,7 +89,7 @@ const Home = () => {
                                 post => post.country_id === selectedCountry,
                             )
                         }
-                        page="freeBoard"
+                        boardName="freeBoard"
                     />
                 )}
                 {/* 카테고리별 게시판 불러오기*/}
@@ -102,6 +109,7 @@ const Home = () => {
                                                 category.categoryId,
                                         )
                                         .slice(0, 5)}
+                                        page="freeBoard"
                                 />
                             );
                         } else {
