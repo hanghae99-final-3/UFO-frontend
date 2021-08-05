@@ -29,7 +29,9 @@ const BoardBox = ({ postList, title, tag, preview, page }) => {
             <Header>
                 {tag && <Tag># {tag}</Tag>}
                 {title && <TitleHeading>{title}</TitleHeading>}
-                {(title || tag) && <More>더보기</More>}
+                {(title || tag) && (
+                    <More onClick={() => history.push(page)}>더보기</More>
+                )}
             </Header>
             <Content>
                 {postList &&

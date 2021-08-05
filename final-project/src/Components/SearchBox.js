@@ -22,7 +22,7 @@ import styled from "styled-components";
 const SearchBox = ({ searchTag }) => {
     const dispatch = useDispatch();
     // 현재 선택되어있는 태그의 index값을 selectedTag 배열에 저장한다.
-    const [selectedTag, setSelectedTag] = useState([]);
+    const [selectedTag, setSelectedTag] = useState(null);
     // 유저가 검색어 입력창에 입력한 값을 searchTerm에 저장한다.
     const [searchTerm, setSearchTerm] = useState("");
 
@@ -33,22 +33,14 @@ const SearchBox = ({ searchTag }) => {
 
     //----------------태그 클릭 이벤트 핸들링----------------------
     const handleTagSelect = e => {
-        if (!selectedTag.includes(parseInt(e.target.value))) {
-            // 초기 배열 값이 태그를 포함하지 않을 경우 추가
-            setSelectedTag(prev => [...prev, parseInt(e.target.value)]);
-        } else {
-            // 배열 값이 태그를 포함하고 있을 경우 제거
-            setSelectedTag(prev =>
-                prev.filter(tag => tag !== parseInt(e.target.value)),
-            );
-        }
+        setSelectedTag(parseInt(e.target.value));
     };
     //----
 
     //---------태그 리셋 버튼 이벤트 핸들링---------
     const handleReset = e => {
         if (e.target.name === "reset") {
-            setSelectedTag([]);
+            setSelectedTag(null);
             dispatch(resetTagReducer());
         }
     };
@@ -85,7 +77,7 @@ const SearchBox = ({ searchTag }) => {
                         return (
                             <TagButton
                                 // 선택 여부로 styled component에서 조건부 css 적용(아래 TagButton styled component 참고)
-                                selected={selectedTag.includes(idx)}
+                                selected={selectedTag === idx}
                                 value={idx}
                                 onClick={handleTagSelect}
                                 key={idx}
