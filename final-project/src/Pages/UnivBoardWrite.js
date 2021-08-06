@@ -1,13 +1,17 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addUnivBoardPostDB } from "../redux/async/univBoard";
+import {
+    addUnivBoardPostDB,
+    editUniBoardCommentDB,
+} from "../redux/async/univBoard";
+import categories from "../categories";
 
-const UniboardWrite = () => {
+const UnivboardWrite = () => {
     const dispatch = useDispatch();
     const user = useSelector(state => state.user);
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
-    const [category, setCategory] = useState(0);
+    const [category, setCategory] = useState(undefined);
 
     const onChange = e => {
         const {
@@ -21,6 +25,7 @@ const UniboardWrite = () => {
     };
 
     const handleSubmit = () => {
+        if (category === undefined) return alert("카테고리를 설정해주세요!");
         if (title && content && user.isLoggedIn) {
             const data = {
                 title,
@@ -39,12 +44,16 @@ const UniboardWrite = () => {
     return (
         <React.Fragment>
             <div>
-                <button onClick={() => setCategory(0)}>수업</button>
-                <button onClick={() => setCategory(1)}>맛집</button>
-                <button onClick={() => setCategory(2)}>스터디</button>
-                <button onClick={() => setCategory(3)}>알바</button>
-                <button onClick={() => setCategory(4)}>익명</button>
-                <button onClick={() => setCategory(5)}>기타</button>
+                {categories.univCategory.map(ele => (
+                    <button
+                        key={ele.categoryId}
+                        onClick={() => {
+                            setCategory(ele.categoryId);
+                        }}
+                    >
+                        {ele.categoryName}
+                    </button>
+                ))}
             </div>
             <div>
                 <input
@@ -67,4 +76,4 @@ const UniboardWrite = () => {
     );
 };
 
-export default UniboardWrite;
+export default UnivboardWrite;
