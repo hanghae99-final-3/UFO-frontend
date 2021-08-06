@@ -102,11 +102,13 @@ const SearchBox = ({ searchTag, deactivateSearch }) => {
 
 export default SearchBox;
 
-const SearchBoxContainer = styled.div``;
+const SearchBoxContainer = styled.div`
+    margin: 30px 0;
+`;
 
 const TagContainer = styled.div`
-    width: max-content;
-    margin: 0 auto;
+    display: flex;
+    justify-content: flex-start;
 `;
 
 const InputContainer = styled.div`

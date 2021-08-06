@@ -9,6 +9,7 @@ const country = [
     { countryId: 4, countryName: "캐나다" },
     { countryId: 5, countryName: "영국" },
 ];
+
 const freeCategory = [
     { categoryId: 0, categoryName: "질문" },
     { categoryId: 1, categoryName: "정보" },
