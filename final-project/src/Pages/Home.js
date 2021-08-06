@@ -95,7 +95,7 @@ const Home = () => {
                 {/* 카테고리별 게시판 불러오기*/}
                 {freeBoardPostList &&
                     // 자유 게시판의 게시글들을 카테고리별로 map을 돌려서 Boarder Box를 랜러딩. tag props로 카테고리의 이름을 전달한다.
-                    categories.freeCategoryForMainPage.map((category, idx) => {
+                    categories.freeCategory.map((category, idx) => {
                         if (selectedCountry === 0) {
                             // 특정 국가 선택이 되어있지 않은 경우, 전체 게시글 props로 전달.
                             return (
