@@ -75,7 +75,6 @@ const FreeBoard = () => {
 };
 
 const Title = styled.div`
-    margin-bottom: 20px;
     display: flex;
     justify-content: space-between;
     align-items: flex-end;

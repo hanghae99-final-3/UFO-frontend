@@ -7,7 +7,7 @@ const Main = ({ children }) => {
 
 const MainContainer = styled.main`
     width: 1060px;
-    margin: auto;
+    margin: 0 auto 50px auto;
 `;
 
 export default Main;

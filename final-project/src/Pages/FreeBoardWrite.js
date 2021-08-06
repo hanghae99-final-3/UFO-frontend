@@ -26,15 +26,15 @@ const FreeBoardWrite = props => {
     //┏-----------------게시글 수정파트-----------------┓
     const postFromState = useSelector(state => state.freeBoard.post); //state에 있는 post 정보 불러오기.
     const postId = Number(props.match.params.id);
-    let [post, setPost] = useState(postFromState ? postFromState : null); //state에서 단일정보를 불러오지 못하면 post는 null 값이 된다.
+    let [post, setPost] = useState(null);
 
     useEffect(() => {
         //----state로부터 post값을 얻어올 수 있으면 중지하고, 아니면 서버로부터 post값을 받아온다.
+        if (postId && postFromState) setPost(postFromState); //디테일페이지에 갔다가 수정페이지에오면 디테일페이지에 있는 내용들이 state에 실리게 되어서 마운트가 되고, 원본값을 넣기로 함!
         if (postId && !postFromState)
             freeBoardApi.getPost(postId).then(res => setPost(res.data.result));
         //----
     }, []);
-
     const editfreePost = () => {
         //서버에 필요한 정보를 정리하고, 포스트를 수정하는 미들웨어 함수로 보낸다.
         if (!userId) return alert("로그인을 해주세요!");
@@ -63,7 +63,10 @@ const FreeBoardWrite = props => {
         //서버에 필요한 정보를 정리하고, 포스트를 추가하는 미들웨어 함수로 보낸다.
         if (!userId) return alert("로그인을 해주세요!");
         if (userId && !post.country_id) return alert("국가를 설정해주세요!");
-        if (userId && !post.category) return alert("카테고리를 설정해주세요!");
+        if (userId && (post.category === null || undefined))
+            //카테고리 중 0이 falsy한 값이라서 이렇게 설정해주었다.
+            return alert("카테고리를 설정해주세요!");
+
         if (userId && !post.title) return alert("제목을 적어주세요!");
         if (userId && !post.content) return alert("내용을 적어주세요!");
         const req = {
@@ -124,12 +127,12 @@ const FreeBoardWrite = props => {
                 {categories.freeCategory.map(ele => (
                     <button
                         key={ele.categoryId}
-                        onClick={() =>
+                        onClick={() => {
                             setPost({
                                 ...post,
                                 category: ele.categoryId,
-                            })
-                        }
+                            });
+                        }}
                     >
                         {ele.categoryName}
                     </button>

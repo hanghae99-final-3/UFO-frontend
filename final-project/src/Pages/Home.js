@@ -95,7 +95,7 @@ const Home = () => {
                 {/* 카테고리별 게시판 불러오기*/}
                 {freeBoardPostList &&
                     // 자유 게시판의 게시글들을 카테고리별로 map을 돌려서 Boarder Box를 랜러딩. tag props로 카테고리의 이름을 전달한다.
-                    categories.freeCategoryForMainPage.map((category, idx) => {
+                    categories.freeCategory.map((category, idx) => {
                         if (selectedCountry === 0) {
                             // 특정 국가 선택이 되어있지 않은 경우, 전체 게시글 props로 전달.
                             return (
@@ -139,14 +139,13 @@ const Home = () => {
 
 const HomeContainer = styled.div``;
 const SearchContainer = styled.div`
-    padding: 50px 0;
+    margin: 50px 0;
 `;
 const BoardContainer = styled.div`
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     background: #d2d2d2;
     gap: 2px;
-    margin: 20px 0;
     border: 2px solid #d2d2d2;
     > div {
         background: #fff;
