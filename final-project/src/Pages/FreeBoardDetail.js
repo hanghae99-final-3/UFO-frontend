@@ -2,8 +2,13 @@ import React, { useEffect } from "react";
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 import { history } from "../redux/configureStore";
-import { getFreePostDB, deleteFreePostDB } from "../redux/async/freeBoard";
+import {
+    getFreePostDB,
+    deleteFreePostDB,
+    getFreeCommentListDB,
+} from "../redux/async/freeBoard";
 import FreeBoardComment from "../Components/FreeBoardComment";
+import BoardComment from "../Components/BoardComment";
 
 /**
  * @author kwonjiyeong
@@ -18,9 +23,11 @@ const FreeBoardDetail = props => {
     const dispatch = useDispatch();
     const postId = Number(props.match.params.id);
     const post = useSelector(state => state.freeBoard.post);
+    const commentList = useSelector(state => state.freeBoard.commentList);
     const userId = useSelector(state => state.user.user.user_id);
     useEffect(() => {
         dispatch(getFreePostDB(postId));
+        dispatch(getFreeCommentListDB(postId));
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [dispatch]);
     //----
@@ -62,7 +69,11 @@ const FreeBoardDetail = props => {
                     )}
                 </>
             )}
-            <FreeBoardComment postId={postId} />
+            <BoardComment
+                boardName="freeboard"
+                postId={postId}
+                commentList={commentList}
+            />
         </>
     );
 };

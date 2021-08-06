@@ -12,7 +12,7 @@ import { history } from "../redux/configureStore";
 import { withRouter } from "react-router-dom";
 import categories from "../categories";
 import Editor from "../Components/Editor";
-import ConversionHelpers from "@ckeditor/ckeditor5-engine/src/conversion/conversionhelpers";
+import BoardComment from "../Components/BoardComment";
 
 const UnivBoardDetail = props => {
     const dispatch = useDispatch();
@@ -148,16 +148,11 @@ const UnivBoardDetail = props => {
             </div>
 
             {/* ----------------------댓글 보여주기------------------------- */}
-            {commentList &&
-                commentList.length > 0 &&
-                commentList.map((comment, idx) => (
-                    <UnivboardComment
-                        key={idx}
-                        comment={comment}
-                        user={user}
-                        post={postFromState}
-                    />
-                ))}
+            <BoardComment
+                boardName="univboard"
+                postId={postId}
+                commentList={commentList}
+            />
         </>
     );
 };
