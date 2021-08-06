@@ -182,11 +182,14 @@ const Editor = ({ getContentFromEditor, originContent }) => {
 
 const StyledEditor = styled.div`
     padding: 10px 0;
+    min-height: 100px;
+
     .ck-toolbar {
         padding: 10px;
         border-radius: 10px 10px 0 0 !important;
     }
     .ck-content {
+        min-height: 200px;
         border-radius: 0 0 10px 10px !important;
     }
 `;
