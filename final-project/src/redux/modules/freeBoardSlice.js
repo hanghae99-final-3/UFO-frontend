@@ -17,13 +17,13 @@ import {
  */
 
 const initialState = {
-    list: null,
+    list: [],
     post: null,
     commentList: null,
     isFetching: false,
     errorMessage: null,
     selectedCountry: 0,
-    selectedTags: [],
+    selectedTag: null,
 };
 
 //
@@ -35,10 +35,10 @@ const freeBoardSlice = createSlice({
             state.selectedCountry = countryId;
         },
         setTagReducer: (state, { payload }) => {
-            state.selectedTags = payload;
+            state.selectedTag = payload;
         },
         resetTagReducer: (state, action) => {
-            state.selectedTags = [];
+            state.selectedTag = null;
         },
     },
 
@@ -76,7 +76,7 @@ const freeBoardSlice = createSlice({
 
         //----자유게시판 게시물 추가하는 리듀서
         [addFreePostDB.fulfilled]: (state, { payload }) => {
-            state.list.push(payload);
+            state.list.unshift(payload);
             state.isFetching = false;
             state.errorMessage = null;
         },

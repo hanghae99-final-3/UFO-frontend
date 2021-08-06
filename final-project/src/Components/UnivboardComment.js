@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import {
     deleteUniBoardCommentDB,
     editUniBoardCommentDB,
-} from "../redux/async/univBoardAsync";
+} from "../redux/async/univBoard";
 
 const UnivboardComment = ({ comment, user, post }) => {
     const dispatch = useDispatch();

@@ -14,7 +14,7 @@ export const getFreeListDB = createAsyncThunk(
     "freeBoard/getList",
     async (data, thunkAPI) => {
         try {
-            const response = await freeBoardApi.getList();
+            const response = await freeBoardApi.getList(data);
             if (response.data.ok) return response.data.result;
         } catch (err) {
             return thunkAPI.rejectWithValue(err.response.message);
@@ -49,7 +49,7 @@ export const getFreePostDB = createAsyncThunk(
  * @필수값 data
  */
 export const addFreePostDB = createAsyncThunk(
-    "freeBoard/addList",
+    "freeBoard/addPost",
     async (data, thunkAPI) => {
         try {
             const response = await freeBoardApi.addPost(data);

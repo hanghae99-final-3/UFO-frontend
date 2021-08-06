@@ -18,41 +18,53 @@ instance.interceptors.request.use(async config => {
 
 // 사용자 관련 axios API 통신
 export const userApi = {
+    // 회원 가입
     signup: data =>
         instance.post("api/user", {
             email: data.email,
             nickname: data.nickname,
             password: data.password,
         }),
+    // 유저 프로필 변경
     editUserProfile: ({ nickname, email, password, userId }) =>
         instance.put(`api/user/${userId}`, {
             email,
             nickname,
             password,
         }),
+    // 로그인
     login: data =>
         instance.post("auth/login", {
             email: data.email,
             password: data.password,
         }),
+    // 유저 정보 조회
     getUser: userId => instance.get(`api/user/${userId}`),
+    // 이메일 인증 코드 발송
     verifyUniEmail: email =>
         instance.post("/auth/email", {
             school_email: email,
         }),
+    // 인증 코드 확인
     checkVerifyCode: ({ userId, email }) =>
         instance.post("/auth/email/check", {
             user_id: userId,
             school_email: email,
         }),
+    // 계정 삭제
     deleteAccount: userId => instance.delete(`api/user/${userId}`),
-
-    kakaoLogin: () => instance.get("api/kakao"),
 };
 
 export const freeBoardApi = {
     //모든 자유게시판리스트 불러오기
-    getList: () => instance.get("free/post"),
+    getList: data =>
+        instance.get("free/post", {
+            params: {
+                pageSize: data.pageSize,
+                pageNum: data.pageNum,
+                category: data?.category,
+            },
+        }),
 
     //게시물추가하기
     addPost: post => instance.post("free/post", post),
@@ -90,8 +102,15 @@ export const issueApi = {};
 
 export const univBoardApi = {
     //UnivBoard 목록 불러오기
-    getList: () => {
-        return instance.get("/univ/post");
+    getList: data => {
+        return instance.get("/univ/post", {
+            params: {
+                pageNum: data.pageNum,
+                pageSize: data.pageSize,
+                univ_id: data.univ_id,
+                category: data?.category,
+            },
+        });
     },
 
     //대학 게시판 게시글 작성하기
@@ -143,7 +162,19 @@ export const univBoardApi = {
     getComment: postId => instance.get(`univ/comment/${postId}`),
 };
 
-export const univCommentApi = {};
+export const searchApi = {
+    // 게시글 검색
+    searchBySearchTerm: data =>
+        instance.get("free/search", {
+            params: {
+                pageSize: data.pageSize,
+                pageNum: data.pageNum,
+                category: data?.category,
+                country_id: data?.country_id,
+                keyword: data.keyword,
+            },
+        }),
+};
 
 export const electionApi = {};
 

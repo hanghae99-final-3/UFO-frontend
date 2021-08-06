@@ -1,38 +1,64 @@
 import React from "react";
+import { history } from "../redux/configureStore";
 
-import categories from "../categories";
 import styled from "styled-components";
+import categories from "../categories";
 
 import { BiHeart } from "react-icons/bi";
 import { BiShareAlt } from "react-icons/bi";
 import { MdComment } from "react-icons/md";
+import VisibilityIcon from "@material-ui/icons/Visibility";
 
-const BoardBox = ({ postList, title, tag }) => {
-    const _onClick = () => {
-        window.alert("이동!");
+/**
+ * @author heesung && junghoo
+ * @param postList, title, tag, preview
+ * @returns 게시글 with 게시글 layout
+ * @역할 게시글 view component
+ * @필수값 postList, title, tag, preview
+ */
+
+const BoardBox = ({ postList, title, tag, preview, boardName }) => {
+    const _onClick = postId => {
+        //자유게시판일때,
+        if (boardName === "freeBoard")
+            return history.push(`freeboard/detail/${postId}`);
+        //학교게시판일때,
+        return history.push(`univBoard/detail/${postId}`);
     };
-
     return (
         <BoardContentContainer>
             <Header>
                 {tag && <Tag># {tag}</Tag>}
                 {title && <TitleHeading>{title}</TitleHeading>}
-                {(title || tag) && <More>더보기</More>}
+                {(title || tag) && (
+                    <More onClick={() => history.push(boardName)}>더보기</More>
+                )}
             </Header>
             <Content>
                 {postList &&
                     postList.map((post, idx) => (
-                        <PostContainer key={idx} onClick={_onClick}>
+                        <PostContainer
+                            key={idx}
+                            onClick={() => {
+                                _onClick(post.post_id);
+                            }}
+                        >
                             <Title>
                                 <SmallTag>
                                     #{" "}
-                                    {
-                                        categories.freeCategory[post.category]
-                                            .categoryName
-                                    }
+                                    {boardName === "freeBoard"
+                                        ? categories.freeCategory[post.category]
+                                              ?.categoryName
+                                        : categories.univCategory[post.category]
+                                              ?.categoryName}
                                 </SmallTag>
                                 <p>{post.title}</p>
                             </Title>
+                            {/* <ContentContainer>
+                                {preview && (
+                                    <PostContent>{post.content}</PostContent>
+                                )}
+                            </ContentContainer> */}
                             <IconContainer>
                                 <Icon>
                                     <BiHeart />
@@ -40,11 +66,11 @@ const BoardBox = ({ postList, title, tag }) => {
                                 </Icon>
                                 <Icon>
                                     <MdComment />
-                                    <span>3개</span>
+                                    <span>{post.coment_count}</span>
                                 </Icon>
                                 <Icon>
-                                    <BiShareAlt />
-                                    <span>2개</span>
+                                    <VisibilityIcon />
+                                    <span>{post.view_count}</span>
                                 </Icon>
                             </IconContainer>
                         </PostContainer>
@@ -87,10 +113,11 @@ const PostContainer = styled.div`
     display: flex;
     justify-content: space-between;
     border-bottom: 2px solid #fff;
-    transition: 0.5s ease;
+    transition: 0.3s ease;
     :hover {
         cursor: pointer;
         border-bottom: 2px solid #e7e7e7;
+        box-shadow: 0px 8px 7px -9px #34495e;
     }
 `;
 
@@ -127,4 +154,7 @@ const TitleHeading = styled.span`
     font-size: 30px;
 `;
 
+const ContentContainer = styled.div``;
+
+const PostContent = styled.span``;
 export default BoardBox;

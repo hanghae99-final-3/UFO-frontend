@@ -16,9 +16,12 @@ import Editor from "../Components/Editor";
 
 const FreeBoardWrite = props => {
     const dispatch = useDispatch();
-    const getContentFromEditor = content =>
+    const userId = useSelector(state => state.user.user.user_id);
+
+    const getContentFromEditor = content => {
         //에디터로부터 content 값 가져오기
         setPost({ ...post, content: content });
+    };
 
     //┏-----------------게시글 수정파트-----------------┓
     const postFromState = useSelector(state => state.freeBoard.post); //state에 있는 post 정보 불러오기.
@@ -27,14 +30,18 @@ const FreeBoardWrite = props => {
 
     useEffect(() => {
         //----state로부터 post값을 얻어올 수 있으면 중지하고, 아니면 서버로부터 post값을 받아온다.
-        if (post) return;
-        freeBoardApi.getPost(postId).then(res => setPost(res.data.result));
+        if (postId && !postFromState)
+            freeBoardApi.getPost(postId).then(res => setPost(res.data.result));
         //----
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const editfreePost = () => {
         //서버에 필요한 정보를 정리하고, 포스트를 수정하는 미들웨어 함수로 보낸다.
+        if (!userId) return alert("로그인을 해주세요!");
+        if (userId && !post.title) return alert("제목을 적어주세요!");
+        if (userId && typeof post.content === "object")
+            //CKEditor 특성상 입력값 없음은 객체다.
+            return alert("내용을 적어주세요!");
         const req = {
             user_id: post.user_id,
             title: post.title,
@@ -50,12 +57,10 @@ const FreeBoardWrite = props => {
     //┏-----------------게시글 작성파트-----------------┓
     // ----게시글 수정모드인지 확인하고, 수정모드가 아니면 user_id를 추가시켜준다.
     const isEdit = props.match.params.id ? true : false;
-    const userId = useSelector(state => state.user.user.user_id);
     if (!isEdit) post = { ...post, user_id: userId }; //이렇게 하면 useState 중 post를 let으로 설정해야 한다! 불변성 유지 잘 시켜주자!
     // ----
     const addPost = () => {
         //서버에 필요한 정보를 정리하고, 포스트를 추가하는 미들웨어 함수로 보낸다.
-        console.log(post.content);
         if (!userId) return alert("로그인을 해주세요!");
         if (userId && !post.country_id) return alert("국가를 설정해주세요!");
         if (userId && !post.category) return alert("카테고리를 설정해주세요!");
