@@ -10,23 +10,50 @@ import { useDispatch, useSelector } from "react-redux";
 import UnivboardComment from "../Components/UnivboardComment";
 import { history } from "../redux/configureStore";
 import { withRouter } from "react-router-dom";
+import categories from "../categories";
+import Editor from "../Components/Editor";
+import ConversionHelpers from "@ckeditor/ckeditor5-engine/src/conversion/conversionhelpers";
 
 const UnivBoardDetail = props => {
     const dispatch = useDispatch();
-    const post = useSelector(state => state.univBoard.postDetail);
+    const postFromState = useSelector(state => state.univBoard.postDetail);
     const user = useSelector(state => state.user);
     const commentList = useSelector(state => state.univBoard.commentList);
+    const postId = Number(props.match.params.id);
+    const [isEditing, setIsEditing] = useState(false);
 
-    const postId = props.match.params.id;
+    const getContentFromEditor = content => {
+        //에디터로부터 content 값 가져오기
+        setContent(content);
+    };
+
     useEffect(() => {
-        dispatch(detailUnivBoardPostDB(postId));
-        dispatch(getCommentDB(postId));
+        //state로부터 post 정보를 받아오면, 바로 넣어주기!
+        //isEditing이 바뀔 때마다 아래의 항목이 실행된다.\
+        if (isEditing && postFromState) {
+            console.log("state들에게 setState 해주는 중!");
+            //isEditing이랑 postFromState가 있을때마다 setstate를 해주고있으므로, 따로 리셋 처리 안해줘도 됨!
+            setCategory(postFromState.category);
+            setTitle(postFromState.title);
+            setContent(postFromState.content);
+            return;
+        }
+        if (!postFromState.title && postFromState.post_id !== postId) {
+            console.log(
+                "post 값이 없거나 id가 일치하는 게시글이 아니면 실행됨!",
+            );
+            console.log(postFromState.post_id, postId);
+            // 그냥 !postFromState를 하니까 있는 걸로 판단해서 .title 까지 넣어줌.
+            dispatch(detailUnivBoardPostDB(postId));
+            dispatch(getCommentDB(postId));
+        }
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [dispatch]);
+    }, [isEditing]);
 
     const handleDelete = () => {
         const data = {
-            postId: post.post_id,
+            postId: postFromState.post_id,
         };
         dispatch(deleteUnivBoardPostDB(data));
         history.replace("/univBoard");
@@ -48,14 +75,13 @@ const UnivBoardDetail = props => {
     };
 
     //----------------------------수정------------------------
-    const [category, setCategory] = useState(0);
-    const [isEditing, setIsEditing] = useState(false);
-    const [title, setTitle] = useState(post?.title);
-    const [content, setContent] = useState(post?.content);
+    const [category, setCategory] = useState(undefined);
+    const [title, setTitle] = useState(undefined);
+    const [content, setContent] = useState(undefined);
 
     const handleEditSubmit = () => {
         const data = {
-            postId: post.post_id,
+            postId: postFromState.post_id,
             category,
             title,
             content,
@@ -64,53 +90,53 @@ const UnivBoardDetail = props => {
         dispatch(editUnivBoardPostDB(data));
         setIsEditing(false);
     };
-    const onEditChange = e => {
-        const {
-            target: { name, value },
-        } = e;
-        if (name === "title") {
-            setTitle(value);
-        } else {
-            setContent(value);
-        }
-    };
-    return (
-        <React.Fragment>
-            {isEditing && (
+
+    if (isEditing)
+        return (
+            // 수정페이지
+            <>
                 <div>
-                    <button onClick={() => setCategory(0)}>수업</button>
-                    <button onClick={() => setCategory(1)}>맛집</button>
-                    <button onClick={() => setCategory(2)}>스터디</button>
-                    <button onClick={() => setCategory(3)}>알바</button>
-                    <button onClick={() => setCategory(4)}>익명</button>
-                    <button onClick={() => setCategory(5)}>기타</button>
+                    {categories.univCategory.map(ele => (
+                        <button
+                            key={ele.categoryId}
+                            onClick={() => {
+                                setCategory(ele.categoryId);
+                            }}
+                        >
+                            {ele.categoryName}
+                        </button>
+                    ))}
                 </div>
-            )}
-            {isEditing ? (
                 <input
                     name="title"
-                    value={title}
-                    onChange={onEditChange}
+                    value={title || ""}
+                    onChange={e => setTitle(e.target.value)}
                 ></input>
-            ) : (
-                <span>title :{post && post.title}/</span>
-            )}
-            {isEditing ? (
-                <input
-                    name="content"
-                    value={content}
-                    onChange={onEditChange}
-                ></input>
-            ) : (
-                <span>content :{post && post.content}/</span>
-            )}
+                <Editor
+                    originContent={content || ""}
+                    getContentFromEditor={getContentFromEditor}
+                />
+                <button onClick={handleEditSubmit}>수정완료</button>
+                <button onClick={() => setIsEditing(!isEditing)}>
+                    뒤로가기
+                </button>
+            </>
+        );
 
-            <span>nickname :{post && post.user && post.user.nickname}</span>
-            {post && post.user_id && post.user_id === user.user.user_id && (
-                <button onClick={handleDelete}>삭제</button>
-            )}
+    return (
+        //디테일페이지
+        <>
+            <span>title :{postFromState && postFromState.title}/</span>
+
+            <span>content :{postFromState && postFromState.content}/</span>
+
             <button onClick={() => setIsEditing(!isEditing)}>수정</button>
-            <button onClick={handleEditSubmit}>수정 완료</button>
+            {postFromState &&
+                postFromState.user_id &&
+                postFromState.user_id === user.user.user_id && (
+                    <button onClick={handleDelete}>삭제</button>
+                )}
+
             {/* ----------------------댓글 작성------------------------- */}
             <div style={{ marginTop: "20px" }}>
                 <input
@@ -129,10 +155,10 @@ const UnivBoardDetail = props => {
                         key={idx}
                         comment={comment}
                         user={user}
-                        post={post}
+                        post={postFromState}
                     />
                 ))}
-        </React.Fragment>
+        </>
     );
 };
 
