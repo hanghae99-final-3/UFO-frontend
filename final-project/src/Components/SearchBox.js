@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-
+import { history } from "../redux/configureStore";
 // redux
 import {
     resetTagReducer,
@@ -17,7 +17,7 @@ import styled from "styled-components";
  * @필수값  searchTag 검색창 위에 보여지는 tag 배열
  */
 
-const SearchBox = ({ searchTag }) => {
+const SearchBox = ({ searchTag, deactivateSearch }) => {
     const dispatch = useDispatch();
     // 현재 선택되어있는 태그의 index값을 selectedTag 배열에 저장한다.
     const [selectedTag, setSelectedTag] = useState(null);
@@ -57,9 +57,7 @@ const SearchBox = ({ searchTag }) => {
         if (searchTerm === "") {
             return window.alert("검색어를 입력해 주세요.");
         }
-        // api 요청으로 변경 예정
-        console.log("태그", selectedTag);
-        console.log("검색어", searchTerm);
+        history.push(`/search/${searchTerm}`);
     };
     //----
 
@@ -85,16 +83,18 @@ const SearchBox = ({ searchTag }) => {
                         );
                     })}
                 </TagContainer>
-                <InputContainer>
-                    <SearchForm onSubmit={handleSearch}>
-                        <Input
-                            placeholder="키워드 태그를 설정 후 검색해보세요!"
-                            fullWidth
-                            value={searchTerm}
-                            onChange={onSearchTermChange}
-                        />
-                    </SearchForm>
-                </InputContainer>
+                {!deactivateSearch && (
+                    <InputContainer>
+                        <SearchForm onSubmit={handleSearch}>
+                            <Input
+                                placeholder="키워드 태그를 설정 후 검색해보세요!"
+                                fullWidth
+                                value={searchTerm}
+                                onChange={onSearchTermChange}
+                            />
+                        </SearchForm>
+                    </InputContainer>
+                )}
             </SearchBoxContainer>
         </React.Fragment>
     );

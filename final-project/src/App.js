@@ -22,6 +22,7 @@ import UnivBoardDetail from "./Pages/UnivBoardDetail"; //대학게시판 게시�
 
 //utils
 import { checkLoggedInUser } from "./redux/async/user"; // 로그인 체크
+import SearchResult from "./Pages/SearchResult";
 
 function App() {
     // redux dispatch
@@ -62,6 +63,11 @@ function App() {
                             path="/freeboard/edit/:id"
                             exact
                             component={FreeBoardWrite}
+                        />
+                        <Route
+                            path="/search/:param"
+                            exact
+                            component={SearchResult}
                         />
                         <Route path="/mypage" exact component={MyPage} />
 

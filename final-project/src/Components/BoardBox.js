@@ -113,10 +113,11 @@ const PostContainer = styled.div`
     display: flex;
     justify-content: space-between;
     border-bottom: 2px solid #fff;
-    transition: 0.5s ease;
+    transition: 0.3s ease;
     :hover {
         cursor: pointer;
         border-bottom: 2px solid #e7e7e7;
+        box-shadow: 0px 8px 7px -9px #34495e;
     }
 `;
 
