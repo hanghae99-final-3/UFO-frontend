@@ -5,6 +5,7 @@ import {
     editUniBoardCommentDB,
 } from "../redux/async/univBoard";
 import categories from "../categories";
+import Editor from "../Components/Editor";
 
 const UnivboardWrite = () => {
     const dispatch = useDispatch();
@@ -12,16 +13,16 @@ const UnivboardWrite = () => {
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
     const [category, setCategory] = useState(undefined);
+    console.log(
+        `title:::${title}, content:::${content}, category:::${category}`,
+    );
+    const getContentFromEditor = content => {
+        //에디터로부터 content 값 가져오기
+        setContent(content);
+    };
 
     const onChange = e => {
-        const {
-            target: { name, value },
-        } = e;
-        if (name === "title") {
-            setTitle(value);
-        } else {
-            setContent(value);
-        }
+        setTitle(e.target.value);
     };
 
     const handleSubmit = () => {
@@ -63,14 +64,8 @@ const UnivboardWrite = () => {
                     value={title}
                 />
             </div>
-            <div>
-                <input
-                    name="content"
-                    placeholder={"CONTENT"}
-                    onChange={onChange}
-                    value={content}
-                />
-            </div>
+            <Editor getContentFromEditor={getContentFromEditor} />
+
             <button onClick={handleSubmit}>입력</button>
         </React.Fragment>
     );
