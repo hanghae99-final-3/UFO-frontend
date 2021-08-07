@@ -135,7 +135,30 @@ export const deleteUnivBoardPostDB = createAsyncThunk(
 );
 
 /**
- * @author heesung & junghoo
+ * @author heesung & junghoo & jiyeong
+ * @param data = postId
+ * @returns 해당 게시물의 모든 댓글 (배열)
+ * @역할 게시글의 달린 댓글 불러온다.
+ * @필수값 data = 게시글 아이디
+ */
+export const getCommentDB = createAsyncThunk(
+    "univBoard/get/comment",
+    async (post_id, thunkAPI) => {
+        try {
+            // 게시글의 댓글 요청
+            const response = await univBoardApi.getComment(post_id);
+            if (response.data.ok) {
+                // 요청 성공시 댓글 리스트(배열) 반환
+                return response.data.result;
+            }
+        } catch (error) {
+            return thunkAPI.rejectWithValue(error.response.data.message);
+        }
+    },
+);
+
+/**
+ * @author heesung & junghoo & jiyeong
  * @param data = postId, userId, content
  * @returns 상태 메세지
  * @역할 대학 게시판 게시물 댓글 생성
@@ -163,8 +186,8 @@ export const addUniBoardCommentDB = createAsyncThunk(
 );
 
 /**
- * @author heesung & junghoo
- * @param data = commentId, userId, content
+ * @author heesung & junghoo & jiyeong
+ * @param data = commentId, user_id, content, post_id
  * @returns 상태 메세지
  * @역할 대학 게시판 게시물 댓글 수정
  * @필수값 data
@@ -175,7 +198,8 @@ export const editUniBoardCommentDB = createAsyncThunk(
         try {
             const response = await univBoardApi.editComment(data);
             if (response.data.ok) {
-                thunkAPI.dispatch(getCommentDB(data.postId));
+                console.log(data);
+                thunkAPI.dispatch(getCommentDB(data.post_id));
             } else if (!response.data.ok) {
                 return thunkAPI.rejectWithValue(response.data.message);
             }
@@ -187,30 +211,7 @@ export const editUniBoardCommentDB = createAsyncThunk(
 );
 
 /**
- * @author heesung & junghoo
- * @param data = postId
- * @returns 해당 게시물의 모든 댓글 (배열)
- * @역할 게시글의 달린 댓글 불러온다.
- * @필수값 data = 게시글 아이디
- */
-export const getCommentDB = createAsyncThunk(
-    "univBoard/get/comment",
-    async (postId, thunkAPI) => {
-        try {
-            // 게시글의 댓글 요청
-            const response = await univBoardApi.getComment(postId);
-            if (response.data.ok) {
-                // 요청 성공시 댓글 리스트(배열) 반환
-                return response.data.result;
-            }
-        } catch (error) {
-            return thunkAPI.rejectWithValue(error.response.data.message);
-        }
-    },
-);
-
-/**
- * @author heesung & junghoo
+ * @author heesung & junghoo & jiyeong
  * @param data = commentId, userId
  * @returns 댓글 삭제후 해당 댓글이 제거된 댓글 리스트 배열 반환
  * @역할 게시물 댓글 삭제
@@ -224,7 +225,7 @@ export const deleteUniBoardCommentDB = createAsyncThunk(
             const response = await univBoardApi.deleteComment(data);
             if (response.data.ok) {
                 // 댓글 삭제 성공시 최신 댓글 리스트 배열 요청
-                thunkAPI.dispatch(getCommentDB(data.postId));
+                thunkAPI.dispatch(getCommentDB(data.post_id));
             } else if (!response.data.ok) {
                 return thunkAPI.rejectWithValue(response.data.message);
             }

@@ -80,6 +80,7 @@ const BoardComment = ({ commentList, boardName, postId }) => {
                                     key={comment.comment_id}
                                     comment={comment}
                                     boardName={boardName}
+                                    postId={postId}
                                 />
                             ))}
                     </CommentBox>
@@ -123,10 +124,10 @@ const CommentCnt = styled.div`
  * @param props : 댓글 리스트 중 댓글에 한 개에 대한 정보가 들어있다.
  * @returns 자유게시판 특정 게시물의 특정 댓글 뷰
  * @역할 자유게시판 특정 게시물의 특정 댓글 뷰 렌더링, 댓글 CRUD 기능 중 UD
- * @필수값 props (부모컴포넌트로부터 하나의 댓글 정보가 담겨져서 온다.)
+ * @필수값 boardName:게시판명, comment:특정댓글정보, postId:댓글들이있는 post의 id
  */
 
-const Comment = ({ comment, boardName }) => {
+const Comment = ({ comment, boardName, postId }) => {
     const dispatch = useDispatch();
     const [isEdit, setIsEdit] = useState(false); //수정모드인지 아닌지 판별해주는 스위치입니다.
     const [content, setContent] = useState(comment.content); //댓글 입력값을 저장할 곳입니다.
@@ -149,6 +150,7 @@ const Comment = ({ comment, boardName }) => {
         const req = {
             comment_id: comment.comment_id,
             content: content,
+            post_id: postId,
         };
 
         if (boardName === "freeboard") {
@@ -171,6 +173,7 @@ const Comment = ({ comment, boardName }) => {
         //서버로 보낼 데이터를 정리하여, 댓글을 삭제하는 미들웨어함수로 보내줍니다.
         const req = {
             comment_id: comment.comment_id,
+            post_id: postId,
         };
 
         if (boardName === "freeboard") {

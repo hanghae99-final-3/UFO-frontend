@@ -142,24 +142,24 @@ export const univBoardApi = {
     deletePost: ({ postId }) => instance.delete(`univ/post/${postId}`),
 
     // 게시물 댓글 생성
-    addComment: ({ postId, content }) =>
+    addComment: ({ post_id, content }) =>
         instance.post("univ/comment", {
-            post_id: postId,
+            post_id,
             content, // 게시물 댓글 내용
         }),
 
     // 게시물 댓글 수정
-    editComment: ({ commentId, content }) =>
-        instance.put(`univ/comment/${commentId}`, {
+    editComment: ({ comment_id, content }) =>
+        instance.put(`univ/comment/${comment_id}`, {
             content, // 게시물 댓글 내용
         }),
 
     //게시물 댓글 삭제
-    deleteComment: ({ commentId }) =>
-        instance.delete(`univ/comment/${commentId}`),
+    deleteComment: ({ comment_id }) =>
+        instance.delete(`univ/comment/${comment_id}`),
 
     // 게시물 모든 댓글 불러오기
-    getComment: postId => instance.get(`univ/comment/${postId}`),
+    getComment: post_id => instance.get(`univ/comment/${post_id}`),
 };
 
 export const searchApi = {

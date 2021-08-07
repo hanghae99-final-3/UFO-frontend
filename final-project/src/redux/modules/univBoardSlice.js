@@ -108,6 +108,21 @@ const univBoardSlice = createSlice({
         },
         //----------------------------------------------------------------
 
+        //---------------------------게시물 댓글 불러오기--------------------
+        [getCommentDB.pending]: (state, action) => {
+            state.isFetching = true;
+        },
+        [getCommentDB.fulfilled]: (state, { payload: commentList }) => {
+            state.isFetching = false;
+            state.commentList = commentList;
+            state.getCommentErrorMessage = "";
+        },
+        [getCommentDB.rejected]: (state, { payload: errorMessage }) => {
+            state.isFetching = false;
+            state.getCommentErrorMessage = errorMessage;
+        },
+        //----------------------------------------------------------------
+
         //┏------------대학교 게시판 게시글  댓글 생성 reducer---------------┓
         [addUniBoardCommentDB.pending]: (state, action) => {
             state.isFetching = true;
@@ -135,21 +150,6 @@ const univBoardSlice = createSlice({
             state.editCommentErrorMessage = payload;
         },
         //-----------------------------------------------------------------
-
-        //---------------------------게시물 댓글 불러오기--------------------
-        [getCommentDB.pending]: (state, action) => {
-            state.isFetching = true;
-        },
-        [getCommentDB.fulfilled]: (state, { payload: commentList }) => {
-            state.isFetching = false;
-            state.commentList = commentList;
-            state.getCommentErrorMessage = "";
-        },
-        [getCommentDB.rejected]: (state, { payload: errorMessage }) => {
-            state.isFetching = false;
-            state.getCommentErrorMessage = errorMessage;
-        },
-        //----------------------------------------------------------------
 
         //--------------------------게시글 댓글 삭제------------------------
         [deleteUniBoardCommentDB.pending]: (state, action) => {
