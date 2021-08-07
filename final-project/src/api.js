@@ -15,6 +15,19 @@ instance.interceptors.request.use(async config => {
     config.headers["authorization"] = await getToken();
     return config;
 });
+//┏----------interceptor를 통한 response 설정----------┓
+axios.interceptors.response.use(
+    response => {
+        return response;
+    },
+    async error => {
+        const {
+            config,
+            response: { status },
+        } = error;
+        console.log(status);
+    },
+);
 
 // 사용자 관련 axios API 통신
 export const userApi = {
@@ -63,6 +76,7 @@ export const freeBoardApi = {
                 pageSize: data.pageSize,
                 pageNum: data.pageNum,
                 category: data?.category,
+                country_id: data?.country_id,
             },
         }),
 
@@ -142,24 +156,24 @@ export const univBoardApi = {
     deletePost: ({ postId }) => instance.delete(`univ/post/${postId}`),
 
     // 게시물 댓글 생성
-    addComment: ({ postId, content }) =>
+    addComment: ({ post_id, content }) =>
         instance.post("univ/comment", {
-            post_id: postId,
+            post_id,
             content, // 게시물 댓글 내용
         }),
 
     // 게시물 댓글 수정
-    editComment: ({ commentId, content }) =>
-        instance.put(`univ/comment/${commentId}`, {
+    editComment: ({ comment_id, content }) =>
+        instance.put(`univ/comment/${comment_id}`, {
             content, // 게시물 댓글 내용
         }),
 
     //게시물 댓글 삭제
-    deleteComment: ({ commentId }) =>
-        instance.delete(`univ/comment/${commentId}`),
+    deleteComment: ({ comment_id }) =>
+        instance.delete(`univ/comment/${comment_id}`),
 
     // 게시물 모든 댓글 불러오기
-    getComment: postId => instance.get(`univ/comment/${postId}`),
+    getComment: post_id => instance.get(`univ/comment/${post_id}`),
 };
 
 export const searchApi = {
@@ -171,7 +185,7 @@ export const searchApi = {
                 pageNum: data.pageNum,
                 category: data?.category,
                 country_id: data?.country_id,
-                keyword: data.keyword,
+                keyword: data?.keyword,
             },
         }),
 };

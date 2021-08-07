@@ -136,11 +136,21 @@ const Controls = styled.ul`
     flex-direction: column;
     background: #fff;
     border: 1px solid #d2d2d2;
-    padding: 20px;
+    padding: 30px;
+    font-size: 40px;
+    font-weight: 300;
+    height: calc(100vh - 100px);
+    li:not(:last-child) {
+        margin-bottom: 20px;
+    }
 `;
 const Control = styled.li`
     list-style: none;
     margin-right: 10px;
     cursor: pointer;
+
+    a {
+        color: #707070;
+    }
 `;
 export default Header;

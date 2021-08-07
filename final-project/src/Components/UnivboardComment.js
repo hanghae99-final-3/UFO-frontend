@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import {
-    deleteUniBoardCommentDB,
-    editUniBoardCommentDB,
+    deleteUnivBoardCommentDB,
+    editUnivBoardCommentDB,
 } from "../redux/async/univBoard";
 
 const UnivboardComment = ({ comment, user, post }) => {
@@ -27,7 +27,7 @@ const UnivboardComment = ({ comment, user, post }) => {
             content,
             postId: post.post_id,
         };
-        dispatch(editUniBoardCommentDB(data));
+        dispatch(editUnivBoardCommentDB(data));
         toggleEdit();
     };
     const handleDelete = () => {
@@ -35,7 +35,7 @@ const UnivboardComment = ({ comment, user, post }) => {
             commentId: comment.comment_id,
             postId: post.post_id,
         };
-        dispatch(deleteUniBoardCommentDB(data));
+        dispatch(deleteUnivBoardCommentDB(data));
         // toggleEdit();
     };
     return (

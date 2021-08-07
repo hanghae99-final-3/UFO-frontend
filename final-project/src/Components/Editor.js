@@ -143,15 +143,15 @@ const Editor = ({ getContentFromEditor, originContent }) => {
                             getContentFromEditor({}); //CKEditor는 값이 없으면 객체로 처리해야되는 것 같음.
                         }
                     }}
-                    // onReady={editor => {
-                    //     if (editor?.plugins) {
-                    //         editor.plugins.get(
-                    //             "FileRepository",
-                    //         ).createUploadAdapter = loader => {
-                    //             return new MyUploadAdapter(loader);
-                    //         };
-                    //     }
-                    // }}
+                    onReady={editor => {
+                        if (editor?.plugins) {
+                            editor.plugins.get(
+                                "FileRepository",
+                            ).createUploadAdapter = loader => {
+                                return new MyUploadAdapter(loader);
+                            };
+                        }
+                    }}
                 />
             </StyledEditor>
         );
@@ -181,12 +181,15 @@ const Editor = ({ getContentFromEditor, originContent }) => {
 };
 
 const StyledEditor = styled.div`
-    padding: 10px;
+    padding: 10px 0;
+    min-height: 100px;
+
     .ck-toolbar {
         padding: 10px;
         border-radius: 10px 10px 0 0 !important;
     }
     .ck-content {
+        min-height: 200px;
         border-radius: 0 0 10px 10px !important;
     }
 `;

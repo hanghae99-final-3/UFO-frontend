@@ -157,7 +157,7 @@ export const editFreeCommentDB = createAsyncThunk(
         try {
             const response = await freeCommentApi.editPostComment(data);
             if (response.data.ok) {
-                return { comment_id: data.comment_id, content: data.content }; //서버에서 넘겨지는 값이 없어서 임시조치!
+                return response.data.result;
             }
         } catch (err) {
             return thunkAPI.rejectWithValue(err.response.message);

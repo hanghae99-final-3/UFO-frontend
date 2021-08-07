@@ -46,14 +46,14 @@ const freeBoardTags = [
     "취미",
     "기타",
 ];
-const uniBoardTags = ["수업", "맛집", "스터디", "알바", "익명", "기타"];
+const univBoardTags = ["수업", "맛집", "스터디", "알바", "익명", "기타"];
 
 //카테고리를 작성하시고, 아래의 중괄호 안에 넣어주어야 사용할 수 있어요!
 const categories = {
     country,
     freeCategory,
     freeBoardTags,
-    uniBoardTags,
+    univBoardTags,
     univCategory,
 };
 

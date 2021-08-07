@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
     addUnivBoardPostDB,
-    editUniBoardCommentDB,
+    editUnivBoardCommentDB,
 } from "../redux/async/univBoard";
 import categories from "../categories";
 import Editor from "../Components/Editor";
@@ -37,6 +37,7 @@ const UnivboardWrite = () => {
             dispatch(addUnivBoardPostDB(data));
             setTitle("");
             setContent("");
+            setCategory(undefined);
         } else if (!user.isLoggedIn) {
             alert("게시글 작성은 로그인이 필요합니다.");
         }

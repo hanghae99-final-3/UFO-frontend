@@ -33,7 +33,6 @@ const FreeBoardComment = ({ postId }) => {
         if (user.user_id === undefined) return alert("로그인을 해주세요!"); //유저정보가 없으면 return 합니다.
         if (user.user_id && !content) return alert("댓글을 입력해주세요!");
         const req = {
-            user_id: user.user_id,
             post_id: postId,
             content: content,
         };
@@ -142,7 +141,6 @@ const TableContent = props => {
         //서버로 보낼 데이터를 정리하여, 댓글을 수정하는 미들웨어함수로 보내줍니다.
         const req = {
             comment_id: props.comment_id,
-            user_id: props.user.user_id,
             content: content,
         };
         dispatch(editFreeCommentDB(req));
@@ -154,7 +152,6 @@ const TableContent = props => {
         //서버로 보낼 데이터를 정리하여, 댓글을 삭제하는 미들웨어함수로 보내줍니다.
         const req = {
             comment_id: props.comment_id,
-            user_id: props.user.user_id,
         };
         dispatch(deleteFreeCommentDB(req));
         setIsEdit(false);
