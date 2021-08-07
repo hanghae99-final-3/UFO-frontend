@@ -15,6 +15,19 @@ instance.interceptors.request.use(async config => {
     config.headers["authorization"] = await getToken();
     return config;
 });
+//┏----------interceptor를 통한 response 설정----------┓
+axios.interceptors.response.use(
+    response => {
+        return response;
+    },
+    async error => {
+        const {
+            config,
+            response: { status },
+        } = error;
+        console.log(status);
+    },
+);
 
 // 사용자 관련 axios API 통신
 export const userApi = {
@@ -63,6 +76,7 @@ export const freeBoardApi = {
                 pageSize: data.pageSize,
                 pageNum: data.pageNum,
                 category: data?.category,
+                country_id: data?.country_id,
             },
         }),
 
@@ -171,7 +185,7 @@ export const searchApi = {
                 pageNum: data.pageNum,
                 category: data?.category,
                 country_id: data?.country_id,
-                keyword: data.keyword,
+                keyword: data?.keyword,
             },
         }),
 };

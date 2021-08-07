@@ -141,7 +141,7 @@ export const deleteUnivBoardPostDB = createAsyncThunk(
  * @역할 게시글의 달린 댓글 불러온다.
  * @필수값 data = 게시글 아이디
  */
-export const getCommentDB = createAsyncThunk(
+export const getUnivBoardCommentDB = createAsyncThunk(
     "univBoard/get/comment",
     async (post_id, thunkAPI) => {
         try {
@@ -164,7 +164,7 @@ export const getCommentDB = createAsyncThunk(
  * @역할 대학 게시판 게시물 댓글 생성
  * @필수값 data
  */
-export const addUniBoardCommentDB = createAsyncThunk(
+export const addUnivBoardCommentDB = createAsyncThunk(
     "univBoard/add/comment",
     async (data, thunkAPI) => {
         try {
@@ -173,7 +173,7 @@ export const addUniBoardCommentDB = createAsyncThunk(
             const postId = response.data.result.post_id;
             if (response.data.ok) {
                 // 요청 성공시 댓글 리스트 최신화
-                thunkAPI.dispatch(getCommentDB(postId));
+                thunkAPI.dispatch(getUnivBoardCommentDB(postId));
             } else if (!response.data.ok) {
                 // 댓글 작성 실패시 메세지 반환
                 return thunkAPI.rejectWithValue(response.data.message);
@@ -192,14 +192,14 @@ export const addUniBoardCommentDB = createAsyncThunk(
  * @역할 대학 게시판 게시물 댓글 수정
  * @필수값 data
  */
-export const editUniBoardCommentDB = createAsyncThunk(
+export const editUnivBoardCommentDB = createAsyncThunk(
     "univBoard/edit/comment",
     async (data, thunkAPI) => {
         try {
             const response = await univBoardApi.editComment(data);
             if (response.data.ok) {
                 console.log(data);
-                thunkAPI.dispatch(getCommentDB(data.post_id));
+                thunkAPI.dispatch(getUnivBoardCommentDB(data.post_id));
             } else if (!response.data.ok) {
                 return thunkAPI.rejectWithValue(response.data.message);
             }
@@ -217,7 +217,7 @@ export const editUniBoardCommentDB = createAsyncThunk(
  * @역할 게시물 댓글 삭제
  * @필수값 data = 댓글 아이디, 유저 아이디
  */
-export const deleteUniBoardCommentDB = createAsyncThunk(
+export const deleteUnivBoardCommentDB = createAsyncThunk(
     "univBoard/delete/comment",
     async (data, thunkAPI) => {
         try {
@@ -225,7 +225,7 @@ export const deleteUniBoardCommentDB = createAsyncThunk(
             const response = await univBoardApi.deleteComment(data);
             if (response.data.ok) {
                 // 댓글 삭제 성공시 최신 댓글 리스트 배열 요청
-                thunkAPI.dispatch(getCommentDB(data.post_id));
+                thunkAPI.dispatch(getUnivBoardCommentDB(data.post_id));
             } else if (!response.data.ok) {
                 return thunkAPI.rejectWithValue(response.data.message);
             }

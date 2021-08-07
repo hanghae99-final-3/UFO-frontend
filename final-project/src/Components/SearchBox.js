@@ -17,7 +17,7 @@ import styled from "styled-components";
  * @필수값  searchTag 검색창 위에 보여지는 tag 배열
  */
 
-const SearchBox = ({ searchTag, deactivateSearch }) => {
+const SearchBox = ({ searchTag, deactivateSearch, page }) => {
     const dispatch = useDispatch();
     // 현재 선택되어있는 태그의 index값을 selectedTag 배열에 저장한다.
     const [selectedTag, setSelectedTag] = useState(null);
@@ -64,6 +64,20 @@ const SearchBox = ({ searchTag, deactivateSearch }) => {
     return (
         <React.Fragment>
             <SearchBoxContainer>
+                {page && (
+                    <Title>
+                        <span>
+                            {page === "freeboard"
+                                ? "자유 게시판"
+                                : "대학 게시판"}
+                        </span>
+                        <button onClick={() => history.push(`/${page}/write`)}>
+                            {/* 작성하기 페이지로 이동! */}
+                            작성하기
+                        </button>
+                    </Title>
+                )}
+
                 <TagContainer>
                     <TagButton name="reset" onClick={handleReset}>
                         X
@@ -129,3 +143,19 @@ const TagButton = styled.button`
 `;
 
 const SearchForm = styled.form``;
+
+const Title = styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 30px;
+    span {
+        font-size: 40px;
+        color: #707070;
+    }
+    button {
+        height: 40px;
+        padding: 0 20px;
+        border-radius: 10px;
+    }
+`;

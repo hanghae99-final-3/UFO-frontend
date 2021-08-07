@@ -1,17 +1,20 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router";
 
 import {
+    getFreeCommentListDB,
     addFreeCommentDB,
     editFreeCommentDB,
     deleteFreeCommentDB,
 } from "../redux/async/freeBoard";
 
 import {
-    addUniBoardCommentDB,
-    editUniBoardCommentDB,
-    deleteUniBoardCommentDB,
+    getUnivBoardCommentDB,
+    addUnivBoardCommentDB,
+    editUnivBoardCommentDB,
+    deleteUnivBoardCommentDB,
 } from "../redux/async/univBoard";
 
 /**
@@ -19,13 +22,24 @@ import {
  * @param post: 포스트정보, boardName: 게시판이름
  * @returns 게시판 디테일페이지 댓글리스트 뷰
  * @역할 게시판 디테일페이지 댓글리스트 뷰 렌더링, 댓글 CRUD 기능 중 CR
- * @필수값 postId : 포스트아이디, boardName : 자유게시판이면 freeboard이고 대학게시판이면 univboard, commentList : 댓글리스트
+ * @필수값 postId : 포스트아이디, boardName : 자유게시판이면 freeboard이고 대학게시판이면 univboard,
  */
-const BoardComment = ({ commentList, boardName, postId }) => {
+const BoardComment = ({ boardName }) => {
     const dispatch = useDispatch();
+    const { id: postId } = useParams();
     const user = useSelector(state => state.user.user); //유저정보
+    const commentList = useSelector(state =>
+        boardName === "freeboard"
+            ? state.freeBoard.commentList
+            : state.univBoard.commentList,
+    );
 
     const [content, setContent] = useState(""); //댓글 입력값을 넣을 공간
+    useEffect(() => {
+        if (boardName === "freeboard")
+            return dispatch(getFreeCommentListDB(postId));
+        dispatch(getUnivBoardCommentDB(postId));
+    }, []);
 
     const addComment = () => {
         //서버에 필요한 정보를 정리하고, 댓글을 추가하는 미들웨어 함수로 보내줍니다.
@@ -46,7 +60,7 @@ const BoardComment = ({ commentList, boardName, postId }) => {
             //대학게시판과 연결되는 미들웨어함수로 보내줍니다.
             if (!user.univ_id)
                 return alert("마이페이지에서 대학 인증을 해주세요!");
-            dispatch(addUniBoardCommentDB(req));
+            dispatch(addUnivBoardCommentDB(req));
         }
 
         setContent(""); //댓글을 추가하고, 댓글입력칸은 지워줍니다!
@@ -162,7 +176,7 @@ const Comment = ({ comment, boardName, postId }) => {
             //대학게시판과 연결되는 미들웨어함수로 보내줍니다.
             if (!user.univ_id)
                 return alert("마이페이지에서 대학 인증을 해주세요!");
-            dispatch(editUniBoardCommentDB(req));
+            dispatch(editUnivBoardCommentDB(req));
         }
 
         setIsEdit(false);
@@ -185,7 +199,7 @@ const Comment = ({ comment, boardName, postId }) => {
             //대학게시판과 연결되는 미들웨어함수로 보내줍니다.
             if (!user.univ_id)
                 return alert("마이페이지에서 대학 인증을 해주세요!");
-            dispatch(deleteUniBoardCommentDB(req));
+            dispatch(deleteUnivBoardCommentDB(req));
         }
 
         setIsEdit(false);

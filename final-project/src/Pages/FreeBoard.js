@@ -4,9 +4,6 @@ import styled from "styled-components";
 import categories from "../categories";
 import BoardBox from "../Components/BoardBox";
 import SearchBox from "../Components/SearchBox";
-
-import { history } from "../redux/configureStore";
-
 import Pagination from "@material-ui/lab/Pagination";
 import { getFreeListDB } from "../redux/async/freeBoard";
 import { useDispatch, useSelector } from "react-redux";
@@ -24,24 +21,24 @@ const FreeBoard = () => {
     const [page, setPage] = React.useState(1); // pagination의  현재 페이지 값 설정
     const freeBoardPostList = useSelector(state => state.freeBoard.list); // 자유 게시판 게시글 구독
     const selectedTag = useSelector(state => state.freeBoard.selectedTag); // 현재 선택된 카테고리 구독
+    const selectedCountry = useSelector(
+        state => state.freeBoard.selectedCountry,
+    ); // 현재 선택된 국가 코드
+
     useEffect(() => {
         // 선택된 카테고리가 없다면, 게시글 리스트 조회 요청에 카테고리 query string 제외
-        if (selectedTag === null) {
-            const postListQueryData = {
-                pageSize: 10,
-                pageNum: page,
-            };
-            dispatch(getFreeListDB(postListQueryData));
-        } else {
-            // 선택된 카테고리가  있다면, 게시글 리스트 조회 요청에 카테고리 query string 추가
-            const postListQueryData = {
-                pageSize: 10,
-                pageNum: page,
-                category: selectedTag,
-            };
-            dispatch(getFreeListDB(postListQueryData));
-        }
-    }, [dispatch, page, selectedTag]); // 페이지 변경, 카테고리(태그) 변화시 useEffect 실행
+        // 선택된 카테고리가  있다면, 게시글 리스트 조회 요청에 카테고리 query string 추가
+
+        // 선택된 국가 없다면, 게시글 리스트 조회 요청에  국가 코드 query string 제외
+        // 선택된 국가 있다면, 게시글 리스트 조회 요청에  국가 코드 query string 추가
+        const postListQueryData = {
+            pageSize: 10,
+            pageNum: page,
+            category: selectedTag === null ? undefined : selectedTag,
+            country_id: selectedCountry === 0 ? undefined : selectedCountry,
+        };
+        dispatch(getFreeListDB(postListQueryData));
+    }, [dispatch, page, selectedTag, selectedCountry]);
     //----
 
     // pagination 상태 값 업데이트
@@ -52,21 +49,12 @@ const FreeBoard = () => {
 
     return (
         <>
-            <Title>
-                <span>자유게시판</span>
-                <button onClick={() => history.push("/freeboard/write")}>
-                    {/* 작성하기 페이지로 이동! */}
-                    작성하기
-                </button>
-            </Title>
-            <SearchBox searchTag={categories.freeBoardTags} />
-            <BoardBoxContainer>
-                <BoardBox
-                    postList={freeBoardPostList && freeBoardPostList}
-                    preview={true}
-                    boardName="freeBoard"
-                />
-            </BoardBoxContainer>
+            <SearchBox searchTag={categories.freeBoardTags} page="freeboard" />
+            <BoardBox
+                postList={freeBoardPostList && freeBoardPostList}
+                preview={true}
+                boardName="freeBoard"
+            />
             <PaginationContainer>
                 <Pagination count={10} page={page} onChange={handlePage} />
             </PaginationContainer>
@@ -74,22 +62,6 @@ const FreeBoard = () => {
     );
 };
 
-const Title = styled.div`
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    span {
-        font-size: 40px;
-        color: #707070;
-    }
-    button {
-        height: 40px;
-        padding: 0 20px;
-        border-radius: 10px;
-    }
-`;
-
-const BoardBoxContainer = styled.div``;
 const PaginationContainer = styled.div`
     display: flex;
     justify-content: center;

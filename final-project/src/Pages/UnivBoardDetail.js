@@ -1,18 +1,19 @@
 import React, { useState, useEffect } from "react";
 import {
-    addUniBoardCommentDB,
+    addUnivBoardCommentDB,
     deleteUnivBoardPostDB,
     detailUnivBoardPostDB,
     editUnivBoardPostDB,
-    getCommentDB,
+    getUnivBoardCommentDB,
 } from "../redux/async/univBoard";
 import { useDispatch, useSelector } from "react-redux";
-import UnivboardComment from "../Components/UnivboardComment";
 import { history } from "../redux/configureStore";
 import { withRouter } from "react-router-dom";
 import categories from "../categories";
 import Editor from "../Components/Editor";
 import BoardComment from "../Components/BoardComment";
+import SearchBox from "../Components/SearchBox";
+import BoardDetail from "../Components/BoardDetail";
 
 const UnivBoardDetail = props => {
     const dispatch = useDispatch();
@@ -45,7 +46,7 @@ const UnivBoardDetail = props => {
             console.log(postFromState.post_id, postId);
             // 그냥 !postFromState를 하니까 있는 걸로 판단해서 .title 까지 넣어줌.
             dispatch(detailUnivBoardPostDB(postId));
-            dispatch(getCommentDB(postId));
+            dispatch(getUnivBoardCommentDB(postId));
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -70,7 +71,7 @@ const UnivBoardDetail = props => {
             postId,
             content: comment,
         };
-        dispatch(addUniBoardCommentDB(data));
+        dispatch(addUnivBoardCommentDB(data));
         setComment("");
     };
 
@@ -126,28 +127,8 @@ const UnivBoardDetail = props => {
     return (
         //디테일페이지
         <>
-            <span>title :{postFromState && postFromState.title}/</span>
-
-            <span>content :{postFromState && postFromState.content}/</span>
-
-            <button onClick={() => setIsEditing(!isEditing)}>수정</button>
-            {postFromState &&
-                postFromState.user_id &&
-                postFromState.user_id === user.user.user_id && (
-                    <button onClick={handleDelete}>삭제</button>
-                )}
-
-            {/* ----------------------댓글 작성------------------------- */}
-            <div style={{ marginTop: "20px" }}>
-                <input
-                    name="comment"
-                    value={comment}
-                    onChange={handleCommentChange}
-                ></input>
-                <button onClick={handleCommentSubmit}>댓글 작성</button>
-            </div>
-
-            {/* ----------------------댓글 보여주기------------------------- */}
+            <SearchBox searchTag={categories.univBoardTags} page="univboard" />
+            <BoardDetail page="univboard" />
             <BoardComment
                 boardName="univboard"
                 postId={postId}

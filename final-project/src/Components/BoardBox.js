@@ -5,7 +5,6 @@ import styled from "styled-components";
 import categories from "../categories";
 
 import { BiHeart } from "react-icons/bi";
-import { BiShareAlt } from "react-icons/bi";
 import { MdComment } from "react-icons/md";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 

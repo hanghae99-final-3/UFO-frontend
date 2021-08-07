@@ -48,14 +48,7 @@ const UnivBoard = () => {
 
     return (
         <>
-            <Title>
-                <span>대학 게시판</span>
-                <button onClick={() => history.push("/univboard/write")}>
-                    {/* 작성하기 페이지로 이동! */}
-                    작성하기
-                </button>
-            </Title>
-            <SearchBox searchTag={categories.uniBoardTags} />
+            <SearchBox searchTag={categories.univBoardTags} page="univboard" />
             <BoardContentContainer>
                 <BoardBox
                     postList={UnivPostList && UnivPostList}
