@@ -120,8 +120,7 @@ export const deleteUnivBoardPostDB = createAsyncThunk(
             const response = await univBoardApi.deletePost(data);
             if (response.data.ok) {
                 // 요청 성공시 redux 게시글 리스트 최신화
-                thunkAPI.dispatch(getUnivBoardDB());
-                return response.data.message;
+                history.push("/univboard");
             } else if (!response.data.ok) {
                 // 삭제 실패시  에러 메세지 반환
                 return thunkAPI.rejectWithValue(response.data.message);

@@ -104,7 +104,6 @@ const BoardDetail = ({ page }) => {
     const deletePost = () => {
         const req = {
             post_id: post.post_id,
-            user_id: post.user.user_id,
         };
         dispatch(
             page === "freeboard"

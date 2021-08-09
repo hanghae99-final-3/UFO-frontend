@@ -167,7 +167,7 @@ export const univBoardApi = {
     },
 
     //게시물 삭제하기
-    deletePost: ({ postId }) => instance.delete(`univ/post/${postId}`),
+    deletePost: ({ post_id }) => instance.delete(`univ/post/${post_id}`),
 
     // 게시물 댓글 생성
     addComment: ({ post_id, content }) =>
