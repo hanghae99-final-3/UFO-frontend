@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 import { history } from "../redux/configureStore";
 import { useParams } from "react-router";
@@ -159,7 +160,8 @@ const BoardWrite = ({ boardName }) => {
         return (
             //게시글 수정모드
             <>
-                <input
+                <InputTitle
+                    placeholder="제목을 입력해주세요!"
                     onChange={e => setPost({ ...post, title: e.target.value })}
                     value={post.title}
                 />
@@ -168,8 +170,10 @@ const BoardWrite = ({ boardName }) => {
                     getContentFromEditor={getContentFromEditor}
                 />
 
-                <button onClick={goBackPostDetail}>뒤로가기</button>
-                <button onClick={editfreePost}>수정완료</button>
+                <Controls>
+                    <button onClick={goBackPostDetail}>취소</button>
+                    <button onClick={editfreePost}>수정</button>
+                </Controls>
             </>
         );
     }
@@ -177,50 +181,106 @@ const BoardWrite = ({ boardName }) => {
     return (
         // 게시글 작성모드
         <>
-            {/* 자유게시판이면 국가선택란이 나타난다. */}
-            {boardName === "freeboard" && (
-                <div>
-                    {categories.country.map(ele => (
-                        <button
-                            key={ele.countryId}
-                            onClick={() =>
+            <SelectBox>
+                {boardName === "freeboard" && (
+                    <CountrySelect>
+                        {/* 자유게시판이면 국가선택란이 나타난다. */}
+                        <span>국가 설정</span>
+                        {categories.country.map(ele => (
+                            <SelectBtn
+                                selected={post?.country_id === ele.countryId}
+                                key={ele.countryId}
+                                onClick={() =>
+                                    setPost({
+                                        ...post,
+                                        country_id: ele.countryId,
+                                    })
+                                }
+                            >
+                                {ele.countryName}
+                            </SelectBtn>
+                        ))}
+                    </CountrySelect>
+                )}
+                <TagSelect>
+                    {/* 카테고리 중 카테고리 선택하기 */}
+                    <span>태그 설정</span>
+                    {categoryList.map(ele => (
+                        <SelectBtn
+                            selected={Number(post?.category) === ele.categoryId}
+                            key={ele.categoryId}
+                            onClick={() => {
                                 setPost({
                                     ...post,
-                                    country_id: ele.countryId,
-                                })
-                            }
+                                    category: `${ele.categoryId}`,
+                                });
+                            }}
                         >
-                            {ele.countryName}
-                        </button>
+                            #{ele.categoryName}
+                        </SelectBtn>
                     ))}
-                </div>
-            )}
-
-            <div>
-                {/* 카테고리 중 카테고리 선택하기 */}
-                {categoryList.map(ele => (
-                    <button
-                        key={ele.categoryId}
-                        onClick={() => {
-                            setPost({
-                                ...post,
-                                category: `${ele.categoryId}`,
-                            });
-                        }}
-                    >
-                        {ele.categoryName}
-                    </button>
-                ))}
-            </div>
-            <input
+                </TagSelect>
+            </SelectBox>
+            <InputTitle
+                placeholder="제목을 입력해주세요!"
                 onChange={e => setPost({ ...post, title: e.target.value })}
             />
             <Editor getContentFromEditor={getContentFromEditor} />
-
-            <button onClick={goBackBoard}>뒤로가기</button>
-            <button onClick={addPost}>제출완료</button>
+            <Controls>
+                <button onClick={goBackBoard}>취소</button>
+                <button onClick={addPost}>등록</button>
+            </Controls>
         </>
     );
 };
+
+const SelectBox = styled.div`
+    padding: 20px;
+    border-top: 2px solid #707070;
+    border-bottom: 2px solid #707070;
+
+    span {
+        margin-right: 10px;
+    }
+`;
+
+const CountrySelect = styled.div`
+    margin-bottom: 10px;
+    margin-bottom: 10px;
+`;
+
+const TagSelect = styled.div``;
+
+const SelectBtn = styled.button`
+    padding: 0 10px;
+    margin-right: 10px;
+    border: 1px solid #3b3b3b;
+    border-radius: 10px;
+    color: ${props => (props.selected ? "#fff" : "#505050")};
+    cursor: pointer;
+    background: ${props => (props.selected ? "#3b3b3b" : "#fff")};
+`;
+
+const InputTitle = styled.input`
+    all: unset;
+    border-bottom: 1px solid #000;
+    font-size: 30px;
+    margin: 20px;
+    width: calc(100% - 40px);
+`;
+
+const Controls = styled.div`
+    display: flex;
+    justify-content: center;
+    button {
+        border: 1px solid #e7e7e7;
+        background: white;
+        padding: 5px 25px;
+        font-size: 12px;
+        :not(:last-child) {
+            margin-right: 10px;
+        }
+    }
+`;
 
 export default BoardWrite;
