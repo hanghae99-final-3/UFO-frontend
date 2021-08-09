@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { history } from "../redux/configureStore";
 import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
+import { setViewReducer } from "../redux/modules/freeBoardSlice";
 import {
     getFreePostDB,
     deleteFreePostDB,
@@ -79,6 +80,9 @@ const BoardDetail = ({ page }) => {
                 await instance.get(`free/post/${postId}/view_count`);
             } else {
                 await instance.get(`univ/post/${postId}/view_count`);
+            }
+            if (page === "freeboard" && cookies.viewCookie !== `f${postId}`) {
+                dispatch(setViewReducer());
             }
         };
         // 쿠키 설정을 통해서 조회수 증가는 20분으로 제한한다.

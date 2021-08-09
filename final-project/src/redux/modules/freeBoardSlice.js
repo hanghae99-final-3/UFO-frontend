@@ -40,6 +40,9 @@ const freeBoardSlice = createSlice({
         resetTagReducer: (state, action) => {
             state.selectedTag = null;
         },
+        setViewReducer: (state, action) => {
+            state.post.view_count += 1;
+        },
     },
 
     //extraReducers 외부 작업을 참조(e.g 비동기 처리)
@@ -196,7 +199,11 @@ const freeBoardSlice = createSlice({
     },
 });
 
-export const { setCountryReducer, setTagReducer, resetTagReducer } =
-    freeBoardSlice.actions;
+export const {
+    setCountryReducer,
+    setTagReducer,
+    resetTagReducer,
+    setViewReducer,
+} = freeBoardSlice.actions;
 
 export default freeBoardSlice;
