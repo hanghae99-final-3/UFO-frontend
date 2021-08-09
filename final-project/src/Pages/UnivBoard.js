@@ -53,7 +53,7 @@ const UnivBoard = () => {
                 <BoardBox
                     postList={UnivPostList && UnivPostList}
                     preview={true}
-                    boardName="univBoard"
+                    boardName="univboard"
                 />
             </BoardContentContainer>
             <PaginationContainer>
