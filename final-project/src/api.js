@@ -206,7 +206,7 @@ export const searchApi = {
 
 export const electionApi = {
     getElectionList: () => instance.get("election"),
-    getElection: ({ election_id }) => instance.get(`election/${election_id}`),
+    getElection: election_id => instance.get(`election/${election_id}`),
     addElection: ({
         name,
         content,

@@ -20,11 +20,12 @@ import FreeBoardWrite from "./Pages/FreeBoardWrite"; //자유게시판 게시글
 import UnivBoard from "./Pages/UnivBoard"; //대학게시판
 import UnivBoardDetail from "./Pages/UnivBoardDetail"; //대학게시판 게시글상세페이지
 import UnivboardWrite from "./Pages/UnivBoardWrite";
+import Election from "./Pages/Election"; //선거게시판
+import ElectionDetail from "./Pages/ElectionDetail"; //선거게시판 게시글상세페이지
 
 //utils
 import { checkLoggedInUser } from "./redux/async/user"; // 로그인 체크
 import SearchResult from "./Pages/SearchResult";
-import Election from "./Pages/Election";
 
 function App() {
     // redux dispatch
@@ -99,6 +100,11 @@ function App() {
                             component={UnivboardWrite}
                         />
                         <Route path="/election" exact component={Election} />
+                        <Route
+                            path="/election/detail/:id"
+                            exact
+                            component={ElectionDetail}
+                        />
                         <Redirect from="*" to="/" />
                     </Switch>
                 </Layout>
