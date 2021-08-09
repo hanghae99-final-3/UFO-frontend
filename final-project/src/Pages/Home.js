@@ -54,15 +54,13 @@ const Home = () => {
             <SearchContainer>
                 <SearchBox searchTag={categories.freeBoardTags} />
             </SearchContainer>
+            {/* 인기 게시판 불러오기*/}
+            <BoardBox
+                title="인기 게시판"
+                postList={freeBoardPostList && freeBoardPostList.slice(0, 5)}
+                boardName="freeBoard"
+            />
             <BoardContainer>
-                {/* 인기 게시판 불러오기*/}
-                <BoardBox
-                    title="인기 게시판"
-                    postList={
-                        freeBoardPostList && freeBoardPostList.slice(0, 5)
-                    }
-                    boardName="freeBoard"
-                />
                 {/* 학교 게시판 불러오기*/}
                 <BoardBox
                     title="학교 게시판"
@@ -153,7 +151,9 @@ const BoardContainer = styled.div`
         background: #fff;
         padding: 50px;
     }
-    > div:nth-child(3) {
+
+    > div:first-child,
+    > div:nth-child(2) {
         grid-column: 1/-1;
     }
 `;
