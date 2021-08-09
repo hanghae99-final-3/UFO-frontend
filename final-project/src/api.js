@@ -30,12 +30,12 @@ instance.interceptors.response.use(
         }
         return response;
     },
-    async error => {
-        const {
-            config,
-            response: { status },
-        } = error;
-    },
+    // async error => {
+    //     const {
+    //         config,
+    //         response: { status },
+    //     } = error;
+    // },
 );
 
 // 사용자 관련 axios API 통신
@@ -101,6 +101,11 @@ export const freeBoardApi = {
     },
     //게시물 삭제하기
     deletePost: id_list => instance.delete(`free/post/${id_list.post_id}`),
+
+    //게시물 좋아요 갯수 불러오기
+    postLikeToggle: post_id => {
+        return instance.get(`/free/post/${post_id}/like`);
+    },
 };
 
 export const freeCommentApi = {
@@ -137,23 +142,23 @@ export const univBoardApi = {
     },
 
     //대학 게시판 게시글 작성하기
-    addPost: ({ title, content, category, univId }) =>
+    addPost: ({ title, content, category, is_fixed, univ_id }) =>
         instance.post("/univ/post", {
             title,
             content,
             category,
-            is_fixed: false, // 테스트 마치면 수정 필요함
-            univ_id: univId, //테스트 마치면 수정 필요함
+            is_fixed, // 테스트 마치면 수정 필요함
+            univ_id, //테스트 마치면 수정 필요함
         }),
 
     // 대학 게시판 게시물 수정
-    editPost: data =>
-        instance.put(`univ/post/${data.postId}`, {
-            univ_id: data.univId,
-            title: data.title,
-            content: data.content,
-            is_fixed: true,
-            category: data.category,
+    editPost: ({ title, content, category, is_fixed, univ_id, post_id }) =>
+        instance.put(`univ/post/${post_id}`, {
+            univ_id,
+            title,
+            content,
+            is_fixed,
+            category,
         }),
 
     //게시물 상제정보 불러오기
@@ -162,7 +167,7 @@ export const univBoardApi = {
     },
 
     //게시물 삭제하기
-    deletePost: ({ postId }) => instance.delete(`univ/post/${postId}`),
+    deletePost: ({ post_id }) => instance.delete(`univ/post/${post_id}`),
 
     // 게시물 댓글 생성
     addComment: ({ post_id, content }) =>

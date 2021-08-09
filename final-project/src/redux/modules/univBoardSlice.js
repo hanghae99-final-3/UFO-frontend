@@ -13,7 +13,7 @@ import {
 
 const initialState = {
     list: [],
-    postDetail: {},
+    postDetail: null,
     commentList: [],
     isFetching: false,
     errorMessage: "",
@@ -86,10 +86,7 @@ const univBoardSlice = createSlice({
         },
         [editUnivBoardPostDB.fulfilled]: (state, { payload: updatedPost }) => {
             state.isFetching = false;
-            state.postDetail.title = updatedPost.title;
-            state.postDetail.content = updatedPost.content;
-            state.postDetail.category = updatedPost.category;
-            state.postDetail.is_fixed = updatedPost.is_fixed;
+            state.postDetail = updatedPost;
             state.editRequestErrorMessage = "";
         },
         [editUnivBoardPostDB.rejected]: (state, { payload: errorMessage }) => {

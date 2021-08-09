@@ -40,6 +40,9 @@ const freeBoardSlice = createSlice({
         resetTagReducer: (state, action) => {
             state.selectedTag = null;
         },
+        setViewReducer: (state, action) => {
+            if (state.post) state.post.view_count += 1;
+        },
     },
 
     //extraReducers 외부 작업을 참조(e.g 비동기 처리)
@@ -92,10 +95,7 @@ const freeBoardSlice = createSlice({
         //----자유게시판 특정 게시물 수정하는 리듀서
         [editFreePostDB.fulfilled]: (state, { payload }) => {
             //payload에는 수정되어서 변경된 게시물 데이터가 들어오며, 기존 state.list와 같은 idx를 찾아서 변경해준다.
-            let idx = state.list.findIndex(
-                post => post.post_id === payload.post_id,
-            );
-            state.list[idx] = payload;
+            state.post = payload;
             state.isFetching = false;
             state.errorMessage = null;
         },
@@ -199,7 +199,11 @@ const freeBoardSlice = createSlice({
     },
 });
 
-export const { setCountryReducer, setTagReducer, resetTagReducer } =
-    freeBoardSlice.actions;
+export const {
+    setCountryReducer,
+    setTagReducer,
+    resetTagReducer,
+    setViewReducer,
+} = freeBoardSlice.actions;
 
 export default freeBoardSlice;

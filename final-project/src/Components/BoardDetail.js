@@ -4,10 +4,12 @@ import styled from "styled-components";
 import { history } from "../redux/configureStore";
 import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
+import { setViewReducer } from "../redux/modules/freeBoardSlice";
 import {
     getFreePostDB,
     deleteFreePostDB,
     getFreeCommentListDB,
+    postLikeToggleDB,
 } from "../redux/async/freeBoard";
 import {
     deleteUnivBoardPostDB,
@@ -79,6 +81,9 @@ const BoardDetail = ({ page }) => {
             } else {
                 await instance.get(`univ/post/${postId}/view_count`);
             }
+            if (page === "freeboard" && cookies.viewCookie !== `f${postId}`) {
+                dispatch(setViewReducer());
+            }
         };
         // 쿠키 설정을 통해서 조회수 증가는 20분으로 제한한다.
         if (page === "freeboard" && cookies.viewCookie !== `f${postId}`) {
@@ -99,7 +104,6 @@ const BoardDetail = ({ page }) => {
     const deletePost = () => {
         const req = {
             post_id: post.post_id,
-            user_id: post.user.user_id,
         };
         dispatch(
             page === "freeboard"
@@ -116,6 +120,19 @@ const BoardDetail = ({ page }) => {
         document.execCommand("copy");
         document.body.removeChild(el);
         toast("게시물 링크가 클립보드에 복사되었습니다!");
+    };
+
+    //-----------------게시글 좋아요
+
+    //게시물 좋아요 / 취소 토글
+    const Likeit = () => {
+        if (page === "freeboard") {
+            console.log("freeboard detail liked");
+            dispatch(postLikeToggleDB(postId));
+        } else if (page === "univboard") {
+            console.log("univboard detail liked");
+            dispatch(postLikeToggleDB(postId));
+        }
     };
 
     return (
@@ -146,8 +163,11 @@ const BoardDetail = ({ page }) => {
                         </Mbutton>
 
                         <Icon>
-                            <BiHeart />
-                            <span>5개</span>
+                            <BiHeart
+                                onClick={Likeit}
+                                style={{ cursor: "pointer" }}
+                            />
+                            <span>{}</span>
                         </Icon>
                         <Icon>
                             <VisibilityIcon />

@@ -35,7 +35,8 @@ export const getFreePostDB = createAsyncThunk(
     async (data, thunkAPI) => {
         try {
             const response = await freeBoardApi.getPost(data);
-            if (response.data.ok) return response.data.result;
+            if (response.data.ok)
+                return { ...response.data.like, ...response.data.result };
         } catch (err) {
             return thunkAPI.rejectWithValue(err.response.message);
         }
@@ -75,7 +76,6 @@ export const editFreePostDB = createAsyncThunk(
         try {
             const response = await freeBoardApi.editPost(data);
             if (response.data.ok) {
-                history.push("/freeboard");
                 return response.data.result[0]; //서버에서 온 값이 배열로 묶여져서 들어와서 인덱스 처리했음.
             }
         } catch (err) {
@@ -187,6 +187,19 @@ export const deleteFreeCommentDB = createAsyncThunk(
             if (response.data.ok) {
                 return data.comment_id;
             }
+        } catch (err) {
+            return thunkAPI.rejectWithValue(err.response.message);
+        }
+    },
+);
+
+export const postLikeToggleDB = createAsyncThunk(
+    "freeBoard/like/post",
+    async (data, thunkAPI) => {
+        try {
+            const response = await freeBoardApi.postLikeToggle(data);
+            console.log("freepost like response", response.data);
+            if (response.data.ok) return response.data.result;
         } catch (err) {
             return thunkAPI.rejectWithValue(err.response.message);
         }

@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { univBoardApi } from "../../api";
+import { univBoardApi, likeApi } from "../../api";
 import { history } from "../configureStore";
 
 /**
@@ -29,8 +29,8 @@ export const getUnivBoardDB = createAsyncThunk(
 );
 
 /**
- * @author heesung & junghoo
- * @param data = { title, content,category, userId, is_fixed, univ_id
+ * @author heesung & junghoo & jiyeong
+ * @param data = { title, content,category, userId, is_fixed, univ_id }
  * @returns 생성된 게시물 정보
  * @역할 대학 게시판 게시물 생성
  * @필수값 data
@@ -56,8 +56,8 @@ export const addUnivBoardPostDB = createAsyncThunk(
 );
 
 /**
- * @author heesung & junghoo
- * @param data = title, content,category, userId, is_fixed univ_id
+ * @author heesung & junghoo & jiyeong
+ * @param data = {title, content,category, userId, is_fixed univ_id}
  * @returns 수정 게시물 정보
  * @역할 대학 게시판 게시물 수정
  * @필수값 data
@@ -70,7 +70,7 @@ export const editUnivBoardPostDB = createAsyncThunk(
             const response = await univBoardApi.editPost(data);
             if (response.data.ok) {
                 //성공시 수정된 게시물 정보 반환
-                return response.data.result[0];
+                return response.data.result;
             } else if (!response.data.ok) {
                 return thunkAPI.rejectWithValue(response.data.message);
             }
@@ -106,7 +106,7 @@ export const detailUnivBoardPostDB = createAsyncThunk(
 );
 
 /**
- * @author heesung & junghoo
+ * @author heesung & junghoo & jiyeong
  * @param data = userId, postId
  * @returns status message
  * @역할 대학교 게시판 게시글 삭제
@@ -120,8 +120,7 @@ export const deleteUnivBoardPostDB = createAsyncThunk(
             const response = await univBoardApi.deletePost(data);
             if (response.data.ok) {
                 // 요청 성공시 redux 게시글 리스트 최신화
-                thunkAPI.dispatch(getUnivBoardDB());
-                return response.data.message;
+                history.push("/univboard");
             } else if (!response.data.ok) {
                 // 삭제 실패시  에러 메세지 반환
                 return thunkAPI.rejectWithValue(response.data.message);
@@ -135,7 +134,7 @@ export const deleteUnivBoardPostDB = createAsyncThunk(
 );
 
 /**
- * @author heesung & junghoo & jiyeong
+ * @author heesung & junghoo
  * @param data = postId
  * @returns 해당 게시물의 모든 댓글 (배열)
  * @역할 게시글의 달린 댓글 불러온다.

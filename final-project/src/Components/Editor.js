@@ -16,6 +16,14 @@ import Base64UploadAdapter from "@ckeditor/ckeditor5-upload/src/adapters/base64u
 //파이어베이스
 import { firebase } from "../firebase";
 
+/**
+ * @author jiyeong
+ * @param  getContentFromEditor:부모컴포넌트로 content 값을 올려보내주는 함수, originContent:원본content값
+ * @returns CK에디터
+ * @역할 CK에디터를 렌더링하여 작성, 수정을 가능케 함. 유저가 이미지를 업로드하면 firebase storage에 업로드하고, 그 url을 서버에게 반환.
+ * @필수값 getContentFromEditor, originContent, firebase
+ */
+
 class MyUploadAdapter {
     constructor(loader) {
         this.loader = loader;
