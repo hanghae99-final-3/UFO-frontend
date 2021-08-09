@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import SelectCountry from "./SelectCountry";
 import { logoutUser } from "../redux/modules/userSlice";
 import MenuIcon from "@material-ui/icons/Menu";
 import ClearIcon from "@material-ui/icons/Clear";
+import { useLocation } from "react-router";
 
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
@@ -24,6 +25,14 @@ const Header = () => {
     const isLoggedIn = useSelector(state => state.user.isLoggedIn);
     const userName = useSelector(state => state.user.user.nickname);
     const [menuOn, setMenuOn] = useState(false);
+    const { pathname } = useLocation();
+
+    //----pathname이 변화하면 메뉴를 닫을 수 있도록 합니다
+    useEffect(() => {
+        setMenuOn(false);
+    }, [pathname]);
+    //----
+
     return (
         <HeaderContainer>
             <LeftColumn>
@@ -43,30 +52,19 @@ const Header = () => {
                 </MenuBtn>
                 <Controls menuOn={menuOn}>
                     <Control>
-                        <Link to="/" onClick={e => setMenuOn(false)}>
-                            홈
-                        </Link>
+                        <Link to="/">홈</Link>
                     </Control>
 
                     <Control>
-                        <Link to="/freeboard" onClick={e => setMenuOn(false)}>
-                            자유게시판
-                        </Link>
+                        <Link to="/freeboard">자유게시판</Link>
                     </Control>
                     <Control>
-                        <Link to="/univboard" onClick={e => setMenuOn(false)}>
-                            대학게시판
-                        </Link>
+                        <Link to="/univboard">대학게시판</Link>
                     </Control>
                     {isLoggedIn ? (
                         <>
                             <Control>
-                                <Link
-                                    to="/mypage"
-                                    onClick={e => setMenuOn(false)}
-                                >
-                                    마이 페이지
-                                </Link>
+                                <Link to="/mypage">마이 페이지</Link>
                             </Control>
                             <Control>
                                 <Link
@@ -75,7 +73,6 @@ const Header = () => {
                                         dispatch(logoutUser());
                                         dispatch(onLogout());
                                         localStorage.removeItem("token");
-                                        setMenuOn(false);
                                         history.replace("/");
                                     }}
                                 >
@@ -86,20 +83,10 @@ const Header = () => {
                     ) : (
                         <>
                             <Control>
-                                <Link
-                                    to="/login"
-                                    onClick={e => setMenuOn(false)}
-                                >
-                                    로그인
-                                </Link>
+                                <Link to="/login">로그인</Link>
                             </Control>
                             <Control>
-                                <Link
-                                    to="/signup"
-                                    onClick={e => setMenuOn(false)}
-                                >
-                                    회원가입
-                                </Link>
+                                <Link to="/signup">회원가입</Link>
                             </Control>
                         </>
                     )}
