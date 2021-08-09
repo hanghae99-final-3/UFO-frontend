@@ -41,7 +41,7 @@ const freeBoardSlice = createSlice({
             state.selectedTag = null;
         },
         setViewReducer: (state, action) => {
-            state.post.view_count += 1;
+            if (state.post) state.post.view_count += 1;
         },
     },
 
