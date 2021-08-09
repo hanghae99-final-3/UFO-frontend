@@ -7,6 +7,7 @@ import SearchBox from "../Components/SearchBox";
 import Pagination from "@material-ui/lab/Pagination";
 import { getFreeListDB } from "../redux/async/freeBoard";
 import { useDispatch, useSelector } from "react-redux";
+import instance, { freeBoardApi } from "../api";
 
 /**
  * @author kwonjiyeong & heesung
@@ -36,8 +37,26 @@ const FreeBoard = () => {
     }, [dispatch, page, selectedTag, selectedCountry]);
 
     // pagination 상태 값 업데이트
-    const handlePage = (e, value) => {
-        setPage(value);
+    const handlePage = async (e, value) => {
+        if (
+            freeBoardPostList &&
+            freeBoardPostList.length < 10 &&
+            value > page
+        ) {
+            return alert("마지막 페이지");
+        }
+        const postListQueryData = {
+            pageSize: 10,
+            pageNum: value,
+            category: selectedTag === null ? undefined : selectedTag,
+            country_id: selectedCountry === 0 ? undefined : selectedCountry,
+        };
+        const response = await freeBoardApi.getList(postListQueryData);
+        if (response.data.result.length === 0) {
+            return alert("게시물이 없는 페이지 입니다.");
+        } else {
+            setPage(value);
+        }
     };
     //----
 
