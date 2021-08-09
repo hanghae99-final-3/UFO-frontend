@@ -24,6 +24,7 @@ import UnivboardWrite from "./Pages/UnivBoardWrite";
 //utils
 import { checkLoggedInUser } from "./redux/async/user"; // 로그인 체크
 import SearchResult from "./Pages/SearchResult";
+import Election from "./Pages/Election";
 
 function App() {
     // redux dispatch
@@ -97,6 +98,7 @@ function App() {
                             exact
                             component={UnivboardWrite}
                         />
+                        <Route path="/election" exact component={Election} />
                         <Redirect from="*" to="/" />
                     </Switch>
                 </Layout>
