@@ -82,6 +82,9 @@ const BoardBox = ({ postList, title, tag, preview, boardName }) => {
 const BoardContentContainer = styled.div`
     width: 100%;
 `;
+const timebox = styled.div`
+    font-size: 30px;
+`;
 
 const Header = styled.div`
     display: flex;
