@@ -61,7 +61,9 @@ const BoardBox = ({ postList, title, tag, preview, boardName }) => {
                             <IconContainer>
                                 <Icon>
                                     <BiHeart />
-                                    <span>5개</span>
+                                    <span>
+                                        {post.like && post.like.all_like}
+                                    </span>
                                 </Icon>
                                 <Icon>
                                     <MdComment />

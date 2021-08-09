@@ -35,6 +35,7 @@ export const getFreePostDB = createAsyncThunk(
     async (data, thunkAPI) => {
         try {
             const response = await freeBoardApi.getPost(data);
+            // window.alert(response.data.like.all_like);
             if (response.data.ok) return response.data.result;
         } catch (err) {
             return thunkAPI.rejectWithValue(err.response.message);
@@ -187,6 +188,19 @@ export const deleteFreeCommentDB = createAsyncThunk(
             if (response.data.ok) {
                 return data.comment_id;
             }
+        } catch (err) {
+            return thunkAPI.rejectWithValue(err.response.message);
+        }
+    },
+);
+
+export const postLikeToggleDB = createAsyncThunk(
+    "freeBoard/like/post",
+    async (data, thunkAPI) => {
+        try {
+            const response = await freeBoardApi.postLikeToggle(data);
+            console.log("freepost like response", response.data);
+            if (response.data.ok) return response.data.result;
         } catch (err) {
             return thunkAPI.rejectWithValue(err.response.message);
         }

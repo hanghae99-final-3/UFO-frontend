@@ -101,6 +101,11 @@ export const freeBoardApi = {
     },
     //게시물 삭제하기
     deletePost: id_list => instance.delete(`free/post/${id_list.post_id}`),
+
+    //게시물 좋아요 갯수 불러오기
+    postLikeToggle: post_id => {
+        return instance.get(`/free/post/${post_id}/like`);
+    },
 };
 
 export const freeCommentApi = {
