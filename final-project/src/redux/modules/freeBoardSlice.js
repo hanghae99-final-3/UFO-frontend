@@ -159,7 +159,7 @@ const freeBoardSlice = createSlice({
         },
         //----
 
-        //----자유게시판 특정게시물 댓글목록 불러오는 리듀서
+        //----선거게시글 목록 불러오는 리듀서
         [editFreeCommentDB.fulfilled]: (state, { payload }) => {
             //payload에는 comment_id와 content가 들어있고, comment_id로 특정 댓글찾아서, content를 바꿔줍니다.
             let idx = state.commentList.findIndex(
@@ -178,13 +178,27 @@ const freeBoardSlice = createSlice({
         },
         //----
 
-        //----자유게시판 특정게시물 댓글목록 불러오는 리듀서
+        //----특정 선거게시글 불러오는 리듀서
         [deleteFreeCommentDB.fulfilled]: (state, { payload }) => {
             //payload에는 comment_id가 들어있고, 전체 state.list에서 comment_id가 포함되는 것을 빼고, state.list를 반환합니다.
             const freeBoardCommentList = state.commentList.filter(
                 comment => comment.comment_id !== payload,
             );
             state.commentList = freeBoardCommentList;
+            state.isFetching = false;
+            state.errorMessage = null;
+        },
+        [deleteFreeCommentDB.pending]: (state, { payload }) => {
+            state.isFetching = true;
+        },
+        [deleteFreeCommentDB.rejected]: (state, { payload: errorMessage }) => {
+            state.isFetching = false;
+            state.errorMessage = errorMessage;
+        },
+        //----
+
+        //----특정 선거게시글 삭제하는 리듀서
+        [deleteFreeCommentDB.fulfilled]: (state, { payload }) => {
             state.isFetching = false;
             state.errorMessage = null;
         },

@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router";
-import { getElectionDB } from "../redux/async/election";
+import { getElectionDB, deleteElectionDB } from "../redux/async/election";
 
 const ElectionDetail = () => {
     const dispatch = useDispatch();
@@ -12,7 +12,18 @@ const ElectionDetail = () => {
         dispatch(getElectionDB(electionId));
     }, []);
 
-    return <div>디테일</div>;
+    const deletePost = () => {
+        const req = {
+            election_id: electionId,
+        };
+        dispatch(deleteElectionDB(req));
+    };
+
+    return (
+        <>
+            <button onClick={deletePost}>삭제하기</button>
+        </>
+    );
 };
 
 export default ElectionDetail;

@@ -15,17 +15,19 @@ const Election = () => {
     console.log(electionList);
     return (
         <ElectionContainer>
-            {electionList.map(ele => (
-                <Post
-                    key={ele.election_id}
-                    onClick={() =>
-                        history.push(`/election/detail/${ele.election_id}`)
-                    }
-                >
-                    <h3>{ele.name}</h3>
-                    <span>content:{ele.content}</span>
-                </Post>
-            ))}
+            {electionList &&
+                electionList.map(ele => (
+                    <Post
+                        key={ele.election_id}
+                        onClick={() =>
+                            history.push(`/election/detail/${ele.election_id}`)
+                        }
+                    >
+                        <h3>{ele.name}</h3>
+                        <span>content:{ele.content}</span>
+                        <span>candi:{ele.candidates.length}</span>
+                    </Post>
+                ))}
             {/* <input type="file" onChange={e => console.log(e.target.files[0])} />
             <Freeview>
                 <img src="" alt="" />
