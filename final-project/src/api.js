@@ -204,7 +204,40 @@ export const searchApi = {
         }),
 };
 
-export const electionApi = {};
+export const electionApi = {
+    getElectionList: () => instance.get("election"),
+    getElection: ({ election_id }) => instance.get(`election/${election_id}`),
+    addElection: ({
+        name,
+        content,
+        country_id,
+        univ_id,
+        candidates,
+        start_date,
+        end_date,
+    }) =>
+        instance.post("election", {
+            name,
+            content,
+            country_id,
+            univ_id,
+            candidates,
+            start_date,
+            end_date,
+        }),
+    editElection: ({ election_id, name, content, end_date }) =>
+        instance.put(`election/${election_id}`, {
+            name,
+            content,
+            end_date,
+        }),
+    deleteElection: ({ election_id }) =>
+        instance.delete(`election/${election_id}`),
+    addVote: ({ election_id, vote_num }) =>
+        instance.post(`election/vote/${election_id}`, { vote_num }),
+    getResult: ({ election_id }) =>
+        instance.get(`election/${election_id}/result`),
+};
 
 export const voteApi = {};
 
