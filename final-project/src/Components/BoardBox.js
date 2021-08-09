@@ -20,9 +20,9 @@ const BoardBox = ({ postList, title, tag, preview, boardName }) => {
     const _onClick = postId => {
         //자유게시판일때,
         if (boardName === "freeBoard")
-            return history.push(`freeboard/detail/${postId}`);
+            return history.push(`/freeboard/detail/${postId}`);
         //학교게시판일때,
-        return history.push(`univBoard/detail/${postId}`);
+        return history.push(`/univBoard/detail/${postId}`);
     };
     return (
         <BoardContentContainer>
@@ -153,7 +153,4 @@ const TitleHeading = styled.span`
     font-size: 30px;
 `;
 
-const ContentContainer = styled.div``;
-
-const PostContent = styled.span``;
 export default BoardBox;
