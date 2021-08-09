@@ -1,9 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-    addUnivBoardPostDB,
-    editUnivBoardCommentDB,
-} from "../redux/async/univBoard";
+import { addUnivBoardPostDB } from "../redux/async/univBoard";
 import categories from "../categories";
 import Editor from "../Components/Editor";
 

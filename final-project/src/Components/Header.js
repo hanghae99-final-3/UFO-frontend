@@ -7,6 +7,9 @@ import ClearIcon from "@material-ui/icons/Clear";
 
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
+import { history } from "../redux/configureStore";
+import { checkLoggedInUser } from "../redux/async/user";
+import { onLogout } from "../redux/modules/univBoardSlice";
 
 const Header = () => {
     const dispatch = useDispatch();
@@ -58,14 +61,18 @@ const Header = () => {
                                 </Link>
                             </Control>
                             <Control>
-                                <a
+                                <Link
+                                    to=""
                                     onClick={() => {
                                         dispatch(logoutUser());
+                                        dispatch(onLogout());
                                         localStorage.removeItem("token");
+                                        setMenuOn(false);
+                                        history.replace("/");
                                     }}
                                 >
                                     로그아웃
-                                </a>
+                                </Link>
                             </Control>
                         </>
                     ) : (

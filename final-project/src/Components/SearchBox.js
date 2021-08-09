@@ -26,6 +26,7 @@ const SearchBox = ({ searchTag, deactivateSearch, page }) => {
 
     useEffect(() => {
         // selectedTag 상태를 리덕스 스토어의 상태와 동기화
+
         dispatch(setTagReducer(selectedTag));
     }, [dispatch, selectedTag]);
 
@@ -71,6 +72,7 @@ const SearchBox = ({ searchTag, deactivateSearch, page }) => {
                                 ? "자유 게시판"
                                 : "대학 게시판"}
                         </span>
+
                         <button onClick={() => history.push(`/${page}/write`)}>
                             {/* 작성하기 페이지로 이동! */}
                             작성하기

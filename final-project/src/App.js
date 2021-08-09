@@ -31,14 +31,14 @@ function App() {
     // 로컬 스토리지 토큰 확인
     const is_token = localStorage.getItem("token") ? true : false;
     // 유저 대학교 이메일 인증 여부 확인
-    const isAuthenticated = useSelector(state => state.user?.user.school_auth);
+    const isLoggedIn = useSelector(state => state.user.isLoggedIn);
 
     useEffect(() => {
         if (is_token) {
             dispatch(checkLoggedInUser());
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [dispatch]);
+    }, [dispatch, isLoggedIn]);
 
     return (
         <>
