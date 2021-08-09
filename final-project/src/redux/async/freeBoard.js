@@ -35,7 +35,8 @@ export const getFreePostDB = createAsyncThunk(
     async (data, thunkAPI) => {
         try {
             const response = await freeBoardApi.getPost(data);
-            if (response.data.ok) return response.data.result;
+            if (response.data.ok)
+                return { ...response.data.like, ...response.data.result };
         } catch (err) {
             return thunkAPI.rejectWithValue(err.response.message);
         }
