@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
+import TimeCounting from "time-counting";
+import moment from "moment";
 
 import {
     getFreeCommentListDB,
@@ -148,6 +150,16 @@ const Comment = ({ comment, boardName, postId }) => {
     const user = useSelector(state => state.user.user); //유저정보
     const isAuthor = user.user_id === comment.user_id ? true : false; //댓글의 작성자 인지 아닌지 판별해주는 값
 
+    // 댓글 작성 시간 표기 기본 옵션 설정
+    const timeOption = {
+        lang: "ko",
+        // objectTime: "2020-08-10 06:00:00",
+        objectTime: moment().format(`YYYY-MM-DD HH:mm:ss`),
+        calculate: {
+            justNow: 61,
+        },
+    };
+
     const clickEditBtn = () => {
         //isEdit가 false가 되면 text가 나타나고, true면 input이 나타나게 하는 스위치작동함수
         setIsEdit(!isEdit);
@@ -219,7 +231,7 @@ const Comment = ({ comment, boardName, postId }) => {
                     <span>{comment.user.nickname}</span>
 
                     {/* 현재시간과 댓글생성시간과 비교한 시간 (지금은 댓글생성시간으로 표기됨) */}
-                    <span>{comment.createdAt}</span>
+                    <span>{TimeCounting(comment.createdAt, timeOption)}</span>
 
                     <Controls>
                         {/* 댓글의 작성자가 아니면 답글버튼이 나타납니다. */}
