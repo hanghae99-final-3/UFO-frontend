@@ -8,6 +8,7 @@ import {
     getFreePostDB,
     deleteFreePostDB,
     getFreeCommentListDB,
+    postLikeToggleDB,
 } from "../redux/async/freeBoard";
 import {
     deleteUnivBoardPostDB,
@@ -118,6 +119,19 @@ const BoardDetail = ({ page }) => {
         toast("게시물 링크가 클립보드에 복사되었습니다!");
     };
 
+    //-----------------게시글 좋아요
+
+    //게시물 좋아요 / 취소 토글
+    const Likeit = () => {
+        if (page === "freeboard") {
+            console.log("freeboard detail liked");
+            dispatch(postLikeToggleDB(postId));
+        } else if (page === "univboard") {
+            console.log("univboard detail liked");
+            dispatch(postLikeToggleDB(postId));
+        }
+    };
+
     return (
         <MainContentContainer>
             <ContentHeaderContainer>
@@ -146,8 +160,11 @@ const BoardDetail = ({ page }) => {
                         </Mbutton>
 
                         <Icon>
-                            <BiHeart />
-                            <span>5개</span>
+                            <BiHeart
+                                onClick={Likeit}
+                                style={{ cursor: "pointer" }}
+                            />
+                            <span>{}</span>
                         </Icon>
                         <Icon>
                             <VisibilityIcon />
