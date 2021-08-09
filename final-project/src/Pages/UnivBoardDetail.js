@@ -38,6 +38,7 @@ const UnivBoardDetail = props => {
             setContent(postFromState.content);
             return;
         }
+        //여기 물어봐야지(정후)
         if (!postFromState.title && postFromState.post_id !== postId) {
             console.log(
                 "post 값이 없거나 id가 일치하는 게시글이 아니면 실행됨!",

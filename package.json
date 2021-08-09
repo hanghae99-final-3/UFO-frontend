@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "dateformat": "^4.5.1",
+    "react-moment": "^1.1.1",
+    "time-counting": "^2.0.2",
+    "time-left-ago": "^2.0.2"
+  }
+}
