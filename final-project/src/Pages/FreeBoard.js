@@ -26,11 +26,6 @@ const FreeBoard = () => {
     ); // 현재 선택된 국가 코드
 
     useEffect(() => {
-        // 선택된 카테고리가 없다면, 게시글 리스트 조회 요청에 카테고리 query string 제외
-        // 선택된 카테고리가  있다면, 게시글 리스트 조회 요청에 카테고리 query string 추가
-
-        // 선택된 국가 없다면, 게시글 리스트 조회 요청에  국가 코드 query string 제외
-        // 선택된 국가 있다면, 게시글 리스트 조회 요청에  국가 코드 query string 추가
         const postListQueryData = {
             pageSize: 10,
             pageNum: page,
@@ -39,7 +34,6 @@ const FreeBoard = () => {
         };
         dispatch(getFreeListDB(postListQueryData));
     }, [dispatch, page, selectedTag, selectedCountry]);
-    //----
 
     // pagination 상태 값 업데이트
     const handlePage = (e, value) => {

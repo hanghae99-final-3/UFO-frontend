@@ -198,7 +198,6 @@ export const editUnivBoardCommentDB = createAsyncThunk(
         try {
             const response = await univBoardApi.editComment(data);
             if (response.data.ok) {
-                console.log(data);
                 thunkAPI.dispatch(getUnivBoardCommentDB(data.post_id));
             } else if (!response.data.ok) {
                 return thunkAPI.rejectWithValue(response.data.message);

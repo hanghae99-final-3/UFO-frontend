@@ -30,7 +30,11 @@ const initialState = {
 const univBoardSlice = createSlice({
     name: "univBoard",
     initialState: initialState,
-    reducers: {},
+    reducers: {
+        onLogout: state => {
+            state.list = [];
+        },
+    },
     extraReducers: {
         //┏---------------대학교 게시판 게시글 불러오기 reducer------------┓
         [getUnivBoardDB.pending]: (state, { payload }) => {
@@ -171,5 +175,7 @@ const univBoardSlice = createSlice({
         },
     },
 });
+
+export const { onLogout } = univBoardSlice.actions;
 
 export default univBoardSlice;

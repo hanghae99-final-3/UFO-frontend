@@ -15,9 +15,19 @@ instance.interceptors.request.use(async config => {
     config.headers["authorization"] = await getToken();
     return config;
 });
-//┏----------interceptor를 통한 response 설정----------┓
-axios.interceptors.response.use(
+// ┏----------interceptor를 통한 response 설정----------┓
+instance.interceptors.response.use(
     response => {
+        if (response.data.message === "new token") {
+            const { config } = response;
+            const originalRequest = config;
+            const newAccessToken = response.data.myNewToken;
+
+            // localStorage.setItem("token", newAccessToken);
+            // axios.defaults.headers.common.Authorization = `Bearer ${newAccessToken}`;
+            // originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+            // return axios(originalRequest);
+        }
         return response;
     },
     async error => {
@@ -25,7 +35,6 @@ axios.interceptors.response.use(
             config,
             response: { status },
         } = error;
-        console.log(status);
     },
 );
 
@@ -193,3 +202,5 @@ export const searchApi = {
 export const electionApi = {};
 
 export const voteApi = {};
+
+export default instance;

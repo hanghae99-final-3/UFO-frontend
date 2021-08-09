@@ -59,11 +59,12 @@ const FreeBoardWrite = props => {
     const isEdit = props.match.params.id ? true : false;
     if (!isEdit) post = { ...post, user_id: userId }; //이렇게 하면 useState 중 post를 let으로 설정해야 한다! 불변성 유지 잘 시켜주자!
     // ----
+    console.log(post);
     const addPost = () => {
         //서버에 필요한 정보를 정리하고, 포스트를 추가하는 미들웨어 함수로 보낸다.
         if (!userId) return alert("로그인을 해주세요!");
         if (userId && !post.country_id) return alert("국가를 설정해주세요!");
-        if (userId && (post.category === null || undefined))
+        if (userId && !post.category)
             //카테고리 중 0이 falsy한 값이라서 이렇게 설정해주었다.
             return alert("카테고리를 설정해주세요!");
 
@@ -130,7 +131,7 @@ const FreeBoardWrite = props => {
                         onClick={() => {
                             setPost({
                                 ...post,
-                                category: ele.categoryId,
+                                category: `${ele.categoryId}`,
                             });
                         }}
                     >

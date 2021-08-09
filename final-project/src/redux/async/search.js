@@ -1,6 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { searchApi } from "../../api";
-import { history } from "../configureStore";
 
 /**
  * @author heesung
@@ -11,7 +10,7 @@ import { history } from "../configureStore";
  */
 
 export const getSearchResult = createAsyncThunk(
-    "freeBoard/getList",
+    "search/getSearchResult",
     async (data, thunkAPI) => {
         try {
             const response = await searchApi.searchBySearchTerm(data);

@@ -2,6 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { history } from "../configureStore";
 import { freeBoardApi } from "../../api";
 import { freeCommentApi } from "../../api";
+import moment from "moment";
 
 /**
  * @author kwonjiyeong
@@ -137,7 +138,12 @@ export const addFreeCommentDB = createAsyncThunk(
         try {
             const response = await freeCommentApi.addPostComment(data);
             const user = thunkAPI.getState().user;
-            if (response.data.ok) return { ...response.data.result, ...user };
+            if (response.data.ok)
+                return {
+                    ...response.data.result,
+                    ...user,
+                    createdAt: moment().format(`YYYY-MM-DD HH:mm:ss`), // 여기는 지영님 맘대로 하세요~~
+                };
         } catch (err) {
             return thunkAPI.rejectWithValue(err.response.message);
         }

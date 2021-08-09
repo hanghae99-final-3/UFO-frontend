@@ -20,6 +20,7 @@ const Home = () => {
 
     // 로그인 유저 -----------------------------------
     const univId = useSelector(state => state.user?.user?.univ_id);
+    const isLoggedIn = useSelector(state => state.user.isLoggedIn);
 
     // 유저가 선택한 국가 페이지-------------------------
     const selectedCountry = useSelector(
@@ -40,9 +41,10 @@ const Home = () => {
     useEffect(() => {
         dispatch(getFreeListDB(postListQueryData));
         // 유저에게 등록된 univId가 있다면 대학 게시판 게시글 조회 요청
-        if (univId) {
+        if (isLoggedIn && univId) {
             dispatch(getUnivBoardDB(UnivListQueryData));
         }
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [dispatch, univId]);
     //----

@@ -32,18 +32,14 @@ const UnivBoardDetail = props => {
         //state로부터 post 정보를 받아오면, 바로 넣어주기!
         //isEditing이 바뀔 때마다 아래의 항목이 실행된다.\
         if (isEditing && postFromState) {
-            console.log("state들에게 setState 해주는 중!");
             //isEditing이랑 postFromState가 있을때마다 setstate를 해주고있으므로, 따로 리셋 처리 안해줘도 됨!
             setCategory(postFromState.category);
             setTitle(postFromState.title);
             setContent(postFromState.content);
             return;
         }
+
         if (!postFromState.title && postFromState.post_id !== postId) {
-            console.log(
-                "post 값이 없거나 id가 일치하는 게시글이 아니면 실행됨!",
-            );
-            console.log(postFromState.post_id, postId);
             // 그냥 !postFromState를 하니까 있는 걸로 판단해서 .title 까지 넣어줌.
             dispatch(detailUnivBoardPostDB(postId));
             dispatch(getUnivBoardCommentDB(postId));
