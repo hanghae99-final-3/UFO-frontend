@@ -35,7 +35,6 @@ instance.interceptors.response.use(
             config,
             response: { status },
         } = error;
-        console.log(status);
     },
 );
 
