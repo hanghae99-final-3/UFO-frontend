@@ -30,12 +30,12 @@ instance.interceptors.response.use(
         }
         return response;
     },
-    async error => {
-        const {
-            config,
-            response: { status },
-        } = error;
-    },
+    // async error => {
+    //     const {
+    //         config,
+    //         response: { status },
+    //     } = error;
+    // },
 );
 
 // 사용자 관련 axios API 통신

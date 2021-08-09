@@ -1,15 +1,34 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import MypageModal from "./MypageModal";
 
 const MypageAccount = props => {
     const [newNickname, setNewNickname] = useState();
     const [newEmail, setNewEmail] = useState();
     const [newPassword, setNewPassword] = useState();
+    const [modalVisible, setModalVisible] = useState(false);
+
+    const openModal = () => {
+        setModalVisible(true);
+    };
+    const closeModal = () => {
+        setModalVisible(false);
+    };
+
     return (
         <>
             <Title>계정</Title>
             <ControlContainer>
-                <ControlButton>학교 인증</ControlButton>
+                <ControlButton onClick={openModal}>학교 인증</ControlButton>
+                {modalVisible && (
+                    <MypageModal
+                        visible={modalVisible}
+                        closable={true}
+                        maskClosable={true}
+                        onClose={closeModal}
+                    />
+                )}
+
                 <ControlButton>닉네임 설정</ControlButton>
                 <ControlButton>로그인 이메일 변경</ControlButton>
                 <ControlButton>비밀번호 설정</ControlButton>

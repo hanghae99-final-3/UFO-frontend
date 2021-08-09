@@ -48,6 +48,7 @@
         "jwt-decode": "^3.1.2",
         "moment": "^2.29.1",
         "random-key": "^0.3.2",
+        "randomstring": "^1.2.1",
         "react": "^17.0.2",
         "react-cookie": "^4.0.3",
         "react-dom": "^17.0.2",
