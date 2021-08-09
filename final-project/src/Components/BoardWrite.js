@@ -12,19 +12,21 @@ import categories from "../categories";
 import Editor from "../Components/Editor";
 
 /**
- * @author kwonjiyeong
+ * @author jiyeong
  * @param  boardName:게시판명
  * @returns 자유게시판 게시글 작성페이지 or 자유게시판 특정 게시글 수정페이지
  * @역할 props.match.params.id이 없으면 게시글 작성페이지, 있으면 수정페이지로 렌더링.
- * @필수값 boardName:게시판명, postId:포스트아이디, userId:유저아이디, univId:학교번호
+ * @필수값 boardName:게시판명, postId:포스트아이디, user:유저정보
  */
 
-const FreeBoardWrite = ({ boardName }) => {
+const BoardWrite = ({ boardName }) => {
     const dispatch = useDispatch();
     const user = useSelector(state => state.user.user);
     const [post, setPost] = useState(null); //이 state는 입력값들이 들어갈 공간입니다!
     const { id: postId } = useParams();
     const isEdit = postId ? true : false; //수정모드인지 아닌지 판별 state
+
+    console.log(post);
 
     const getContentFromEditor = content => {
         //에디터로부터 content 값 가져오기
@@ -46,22 +48,21 @@ const FreeBoardWrite = ({ boardName }) => {
         if (boardName === "univboard")
             history.push(`/univboard/detail/${postId}`);
     };
-    //----
 
     //----state로부터 post값을 얻어올 수 있으면 중지하고, 아니면 서버로부터 post값을 받아온다.
     useEffect(() => {
         if (postId && postFromState) setPost(postFromState); //디테일페이지에 갔다가 수정페이지에오면 디테일페이지에 있는 내용들이 state에 실리게 되어서 마운트가 되고, 원본값을 넣기로 함!
-
         if (postId && !postFromState) {
             //만약 스테이트에 post값이 없으면, api 요청해서 바로 값을 가져와서 post에 집어넣어준다.
             if (boardName === "freeboard")
                 freeBoardApi
                     .getPost(postId)
                     .then(res => setPost(res.data.result));
-            else
+            if (boardName === "univboard") {
                 univBoardApi
                     .getPostDetail(postId)
                     .then(res => setPost(res.data.result));
+            }
         }
     }, []);
     //----
@@ -84,6 +85,7 @@ const FreeBoardWrite = ({ boardName }) => {
                 country_id: post.country_id,
                 post_id: post.post_id,
             };
+            history.push(`/freeboard/detail/${postId}`);
             dispatch(editFreePostDB(req));
         }
         if (boardName === "univboard") {
@@ -93,16 +95,16 @@ const FreeBoardWrite = ({ boardName }) => {
                 content: post.content,
                 post_id: post.post_id,
                 is_fixed: false,
-                univ_id: user.user.univ_id,
+                univ_id: user.univ_id,
             };
             dispatch(editUnivBoardPostDB(req));
+            history.push(`univboard/detail/${postId}`);
         }
     };
     //┗-----------------게시글 수정파트-----------------┛
 
     //┏-----------------게시글 작성파트-----------------┓
 
-    console.log(post);
     //---- boardName이 freeboard면 자유게시판카테고리를 가져오고, 아니면 대학카테고리를 가져온다.
     const categoryList =
         boardName === "freeboard"
@@ -221,4 +223,4 @@ const FreeBoardWrite = ({ boardName }) => {
     );
 };
 
-export default FreeBoardWrite;
+export default BoardWrite;

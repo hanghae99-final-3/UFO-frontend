@@ -11,6 +11,14 @@ import { history } from "../redux/configureStore";
 import { checkLoggedInUser } from "../redux/async/user";
 import { onLogout } from "../redux/modules/univBoardSlice";
 
+/**
+ * @author jiyeong, heesung
+ * @param
+ * @returns 앱의 헤더
+ * @역할 국가선택, 메뉴, 로고, 인삿말 렌더링
+ * @필수값
+ */
+
 const Header = () => {
     const dispatch = useDispatch();
     const isLoggedIn = useSelector(state => state.user.isLoggedIn);

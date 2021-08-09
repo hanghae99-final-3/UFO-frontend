@@ -75,7 +75,6 @@ export const editFreePostDB = createAsyncThunk(
         try {
             const response = await freeBoardApi.editPost(data);
             if (response.data.ok) {
-                history.push("/freeboard");
                 return response.data.result[0]; //서버에서 온 값이 배열로 묶여져서 들어와서 인덱스 처리했음.
             }
         } catch (err) {
