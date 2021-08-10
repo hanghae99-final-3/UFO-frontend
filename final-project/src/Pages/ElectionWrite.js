@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import { makeStyles } from "@material-ui/core/styles";
 import Accordion from "@material-ui/core/Accordion";
@@ -24,14 +24,36 @@ const useStyles = makeStyles(theme => ({
 
 const ElectionWrite = () => {
     const classes = useStyles();
-    const [post, setPost] = useState({ candidate: [{}] });
+    const [post, setPost] = useState({ candidate: [{}] }); //입력값이 여기로 담겨진다.
+    const [isUploading, setIsUploading] = useState(false); //업로드중인지 아닌지 판별하는 state
+    const fileInput = useRef();
 
-    const deleteCard = cardIdx => {
+    const addCard = () => {
+        //카드 추가하기
+        setPost({ ...post, candidate: [...post.candidate, {}] });
+    };
+
+    const deleteCard = currentIdx => {
+        //카드 삭제하기
         setPost({
             ...post,
-            candidate: post.candidate.filter((ele, idx) => cardIdx !== idx),
+            candidate: post.candidate.filter((ele, idx) => currentIdx !== idx),
         });
     };
+
+    const selectFile = currentIdx => {
+        if (isUploading) return; //업로드중이 아닐때에만 파일선택하게 한다.
+        setIsUploading(true); //업로드 시작
+        const file = fileInput.current.files[0];
+        setPost({
+            ...post,
+            candidate: post.candidate.map((ele, idx) =>
+                idx === currentIdx ? { ...ele, photo: file } : ele,
+            ),
+        });
+        setIsUploading(false);
+    };
+    console.log(post);
 
     return (
         <div className={classes.root}>
@@ -56,14 +78,28 @@ const ElectionWrite = () => {
                         <AccordionDetails>
                             <WriteBox>
                                 <Image>
-                                    <Freeview>
-                                        <img src="" alt="" />
-                                    </Freeview>
-                                    <input
-                                        type="file"
-                                        onChange={e =>
-                                            console.log(e.target.files[0])
+                                    <Freeview
+                                        onClick={() =>
+                                            fileInput.current.click()
                                         }
+                                    >
+                                        {/* 후보자의 이미지가 있으면 보여주고, 아니면 default string을 보여준다. */}
+                                        {ele.photo ? (
+                                            <img
+                                                src={ele.photo}
+                                                alt={`기호 ${idx + 1}번`}
+                                            />
+                                        ) : (
+                                            <span>
+                                                클릭하여 이미지를 추가해 주세요!
+                                            </span>
+                                        )}
+                                    </Freeview>
+                                    <Uploader
+                                        ref={fileInput}
+                                        type="file"
+                                        onChange={() => selectFile(idx)}
+                                        disabled={isUploading}
                                     />
                                 </Image>
                                 <Content>
@@ -76,24 +112,26 @@ const ElectionWrite = () => {
                     </Accordion>
                 ))}
 
-            <Button
-                onClick={() =>
-                    setPost({ ...post, candidate: [...post.candidate, {}] })
-                }
-            >
-                추가하기
-            </Button>
+            <Button onClick={addCard}>추가하기</Button>
         </div>
     );
 };
 
-const Freeview = styled.div``;
+const Freeview = styled.div`
+    height: 100%;
+    width: 300px;
+`;
 const WriteBox = styled.div`
     display: flex;
     justify-content: space-between;
     width: 100%;
 `;
 const Image = styled.div``;
+
+const Uploader = styled.input`
+    display: none;
+`;
+
 const Content = styled.div`
     display: flex;
     flex-direction: column;
