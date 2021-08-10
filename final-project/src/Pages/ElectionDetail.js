@@ -6,7 +6,7 @@ import { getElectionDB, deleteElectionDB } from "../redux/async/election";
 const ElectionDetail = () => {
     const dispatch = useDispatch();
     const { id: electionId } = useParams();
-    const post = useSelector(state => state.election.list);
+    const post = useSelector(state => state.election.post);
 
     useEffect(() => {
         dispatch(getElectionDB(electionId));

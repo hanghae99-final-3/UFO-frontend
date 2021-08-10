@@ -22,6 +22,7 @@ import UnivBoardDetail from "./Pages/UnivBoardDetail"; //대학게시판 게시�
 import UnivboardWrite from "./Pages/UnivBoardWrite";
 import Election from "./Pages/Election"; //선거게시판
 import ElectionDetail from "./Pages/ElectionDetail"; //선거게시판 게시글상세페이지
+import ElectionWrite from "./Pages/ElectionWrite"; //선거게시글 작성페이지 or 수정페이지
 
 //utils
 import { checkLoggedInUser } from "./redux/async/user"; // 로그인 체크
@@ -104,6 +105,11 @@ function App() {
                             path="/election/detail/:id"
                             exact
                             component={ElectionDetail}
+                        />
+                        <Route
+                            path="/election/write"
+                            exact
+                            component={ElectionWrite}
                         />
                         <Redirect from="*" to="/" />
                     </Switch>
