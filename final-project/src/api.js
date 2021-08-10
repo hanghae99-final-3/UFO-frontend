@@ -233,12 +233,21 @@ export const electionApi = {
         }),
     deleteElection: ({ election_id }) =>
         instance.delete(`election/${election_id}`),
+};
+
+export const voteApi = {
     addVote: ({ election_id, vote_num }) =>
         instance.post(`election/vote/${election_id}`, { vote_num }),
     getResult: ({ election_id }) =>
         instance.get(`election/${election_id}/result`),
 };
 
-export const voteApi = {};
+export const imageApi = {
+    //단일 이미지 업로드
+    uploadImage: ({ img }) => instance.post("util/image", { img }),
+
+    //대량 이미지 업로드
+    uploadImages: ({ img }) => instance.post("util/bulk-image", { img }),
+};
 
 export default instance;
