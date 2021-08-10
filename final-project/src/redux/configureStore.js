@@ -10,7 +10,6 @@ import userSlice from "./modules/userSlice";
 import univBoardSlice from "./modules/univBoardSlice";
 import searchSlice from "./modules/searchSlice";
 import electionSlice from "./modules/electionSlice";
-import imageSlice from "./modules/imageSlice";
 
 export const history = createBrowserHistory();
 
@@ -21,7 +20,6 @@ const reducer = combineReducers({
     univBoard: univBoardSlice.reducer,
     user: userSlice.reducer,
     election: electionSlice.reducer,
-    image: imageSlice.reducer,
     search: searchSlice.reducer,
 });
 
