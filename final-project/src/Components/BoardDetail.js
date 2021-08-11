@@ -34,6 +34,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 import { useCookies } from "react-cookie";
 import instance from "../api";
+import { setUnivViewReducer } from "../redux/modules/univBoardSlice";
 
 const BoardDetail = ({ page }) => {
     const dispatch = useDispatch();
@@ -83,6 +84,8 @@ const BoardDetail = ({ page }) => {
             }
             if (page === "freeboard" && cookies.viewCookie !== `f${postId}`) {
                 dispatch(setViewReducer());
+            } else {
+                dispatch(setUnivViewReducer());
             }
         };
         // 쿠키 설정을 통해서 조회수 증가는 20분으로 제한한다.

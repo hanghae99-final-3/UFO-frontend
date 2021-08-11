@@ -59,16 +59,22 @@ const BoardBox = ({ postList, title, tag, preview, boardName }) => {
                                 )}
                             </ContentContainer> */}
                             <IconContainer>
-                                <Icon>
-                                    <BiHeart />
-                                    <span>
-                                        {post.like && post.like.all_like}
-                                    </span>
-                                </Icon>
-                                <Icon>
-                                    <MdComment />
-                                    <span>{post.coment_count}</span>
-                                </Icon>
+                                {!tag ? (
+                                    <>
+                                        <Icon>
+                                            <BiHeart />
+                                            <span>
+                                                {post.like &&
+                                                    post.like.all_like}
+                                            </span>
+                                        </Icon>
+                                        <Icon>
+                                            <MdComment />
+                                            <span>{post.coment_count}</span>
+                                        </Icon>
+                                    </>
+                                ) : null}
+
                                 <Icon>
                                     <VisibilityIcon />
                                     <span>{post.view_count}</span>
@@ -110,7 +116,7 @@ const More = styled.div`
 const Content = styled.div``;
 
 const PostContainer = styled.div`
-    padding: 20px 0;
+    padding: 10px 0;
     display: flex;
     justify-content: space-between;
     border-bottom: 2px solid #fff;

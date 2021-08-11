@@ -1,4 +1,5 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { useCookies } from "react-cookie";
 
 import Select from "@material-ui/core/Select";
 import InputBase from "@material-ui/core/InputBase";
@@ -54,13 +55,25 @@ const useStyles = makeStyles(theme => ({
 export default function SelectCountry() {
     const dispatch = useDispatch();
     const classes = useStyles();
-    const [country, setCountry] = React.useState(0);
+    const [country, setCountry] = useState(0);
+    const [cookies, setCookie, removeCookie] = useCookies(["rememberCountry"]);
 
     useEffect(() => {
+        if (cookies.rememberCountry !== undefined) {
+            setCountry(parseInt(cookies.rememberCountry));
+        }
         dispatch(setCountryReducer(country));
     }, [country, dispatch]);
 
     const handleChange = event => {
+        if (
+            cookies.rememberCountry !== event.target.value ||
+            cookies.rememberCountry === undefined
+        ) {
+            setCookie("rememberCountry", event.target.value, {
+                maxAge: 60 * 60 * 24,
+            });
+        }
         setCountry(event.target.value);
     };
     return (

@@ -34,6 +34,9 @@ const univBoardSlice = createSlice({
         onLogout: state => {
             state.list = [];
         },
+        setUnivViewReducer: (state, action) => {
+            if (state.post) state.postDetail.view_count += 1;
+        },
     },
     extraReducers: {
         //┏---------------대학교 게시판 게시글 불러오기 reducer------------┓
@@ -173,6 +176,6 @@ const univBoardSlice = createSlice({
     },
 });
 
-export const { onLogout } = univBoardSlice.actions;
+export const { onLogout, setUnivViewReducer } = univBoardSlice.actions;
 
 export default univBoardSlice;
