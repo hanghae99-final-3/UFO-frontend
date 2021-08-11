@@ -1,6 +1,9 @@
 import React, { useState, useRef } from "react";
 import axios from "axios";
 import styled from "styled-components";
+import { addElectionDB } from "../redux/async/election";
+import { useDispatch } from "react-redux";
+import moment from "moment";
 
 //머테리얼 ui
 import { makeStyles } from "@material-ui/core/styles";
@@ -10,6 +13,7 @@ import AccordionDetails from "@material-ui/core/AccordionDetails";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import TextField from "@material-ui/core/TextField";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -26,6 +30,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const ElectionWrite = () => {
+    const dispatch = useDispatch();
     const classes = useStyles();
     const [post, setPost] = useState({ candidate: [{}] }); //입력값이 여기로 담겨진다.
     const [isLoading, setIsLoading] = useState(false); //업로드중인지 아닌지 판별하는 state
@@ -44,14 +49,31 @@ const ElectionWrite = () => {
         });
     };
 
+    const setElectionInfo = event => {
+        //선거의 정보들을 받아와서 post에 정보를 넣어주는 함수입니다.
+        const keyName = event.target.attributes.getNamedItem("name").value; //post에 넣어줄 key 입니다.
+        let value = event.target.value; //post에 넣어줄 value 입니다.
+
+        if (keyName.includes("date"))
+            //날짜데이터는 지정된 형식으로 변환시켜준다.
+            value = moment(value).format("YYYY-MM-DD HH:mm") + ":00";
+        setPost({
+            ...post,
+            [keyName]: value,
+        });
+
+        const transform = moment().format("YYYY-MM-DDTHH:mm");
+        console.log(transform);
+    };
+    console.log(post);
     const setCandidateInfo = (currentIdx, event) => {
-        //후보자들의 정보를 받아와서 post에 정보를 넣어주는 함수입니다.
-        const label = event.target.attributes.getNamedItem("label").value; //post에 넣어줄 key 입니다.
+        //후보자들의 정보들을 받아와서 post에 정보를 넣어주는 함수입니다.
+        const keyName = event.target.attributes.getNamedItem("name").value; //post에 넣어줄 key 입니다.
         const value = event.target.value; //post에 넣어줄 value 입니다.
         setPost({
             ...post,
             candidate: post.candidate.map((ele, idx) =>
-                idx === currentIdx ? { ...ele, [label]: value } : ele,
+                idx === currentIdx ? { ...ele, [keyName]: value } : ele,
             ),
         });
     };
@@ -113,98 +135,169 @@ const ElectionWrite = () => {
         //----
     };
 
-    return (
-        <div className={classes.root}>
-            {post &&
-                post.candidate.map((ele, idx) => (
-                    <Accordion key={idx}>
-                        <AccordionSummary
-                            expandIcon={<ExpandMoreIcon />}
-                            aria-controls="panel1a-content"
-                            id="panel1a-header"
-                        >
-                            <Typography className={classes.heading}>
-                                기호 {idx + 1}번
-                            </Typography>
-                            <Button
-                                className={classes.button}
-                                onClick={() => deleteCard(idx)}
-                            >
-                                삭제
-                            </Button>
-                        </AccordionSummary>
-                        <AccordionDetails>
-                            <WriteBox>
-                                <Image>
-                                    <Freeview
-                                        onClick={() =>
-                                            fileInput.current.click()
-                                        }
-                                    >
-                                        {/* 후보자의 이미지가 있으면 보여주고, 아니면 default string을 보여준다. */}
-                                        {ele.imgUrl ? (
-                                            <img
-                                                src={`http://3.36.90.60/${ele.imgUrl}`}
-                                                alt={post.imgurl}
-                                            />
-                                        ) : (
-                                            <span>
-                                                클릭하여 이미지를 추가해 주세요!
-                                            </span>
-                                        )}
-                                    </Freeview>
-                                    <Uploader
-                                        ref={fileInput}
-                                        type="file"
-                                        onChange={() =>
-                                            selectFileImageUploader(idx)
-                                        }
-                                        disabled={isLoading}
-                                    />
-                                </Image>
-                                <Content>
-                                    <input
-                                        label="name"
-                                        placeholder="이름을 작성해주세요!"
-                                        onChange={e => setCandidateInfo(idx, e)}
-                                    />
-                                    <input
-                                        label="major"
-                                        placeholder="학과를 작성해주세요!"
-                                        onChange={e => setCandidateInfo(idx, e)}
-                                    />
-                                    <textarea
-                                        label="content"
-                                        placeholder="소개를 작성해주세요!"
-                                        onChange={e => setCandidateInfo(idx, e)}
-                                    />
-                                </Content>
-                            </WriteBox>
-                        </AccordionDetails>
-                    </Accordion>
-                ))}
+    const addElection = () => {
+        dispatch(addElectionDB(post));
+    };
 
-            <Button onClick={addCard}>추가하기</Button>
-        </div>
+    return (
+        <ElectionContainer>
+            <ElectionInfoBox>
+                <TextField
+                    name="name"
+                    label="제목"
+                    type="text"
+                    className={classes.textField}
+                    InputLabelProps={{
+                        shrink: true,
+                    }}
+                    onChange={e => setElectionInfo(e)}
+                />
+                <TextField
+                    name="content"
+                    label="내용"
+                    type="text"
+                    className={classes.textField}
+                    InputLabelProps={{
+                        shrink: true,
+                    }}
+                    onChange={e => setElectionInfo(e)}
+                />
+                <TextField
+                    name="start_date"
+                    id="datetime-local"
+                    label="선거 시작일"
+                    type="datetime-local"
+                    defaultValue={moment().format("YYYY-MM-DDTHH:mm")}
+                    className={classes.textField}
+                    InputLabelProps={{
+                        shrink: true,
+                    }}
+                    onChange={e => setElectionInfo(e)}
+                />
+                <TextField
+                    name="end_date"
+                    id="datetime-local"
+                    label="선거 종료일"
+                    type="datetime-local"
+                    defaultValue={moment()
+                        .add(7, "d")
+                        .format("YYYY-MM-DDTHH:mm")}
+                    className={classes.textField}
+                    InputLabelProps={{
+                        shrink: true,
+                    }}
+                    onChange={e => setElectionInfo(e)}
+                />
+            </ElectionInfoBox>
+            <CandidateInfoBox className={classes.root}>
+                {post &&
+                    post.candidate.map((ele, idx) => (
+                        <Accordion key={idx}>
+                            <AccordionSummary
+                                expandIcon={<ExpandMoreIcon />}
+                                aria-controls="panel1a-content"
+                                id="panel1a-header"
+                            >
+                                <Typography className={classes.heading}>
+                                    기호 {idx + 1}번
+                                </Typography>
+                                <Button
+                                    className={classes.button}
+                                    onClick={() => deleteCard(idx)}
+                                >
+                                    삭제
+                                </Button>
+                            </AccordionSummary>
+                            <AccordionDetails>
+                                <CandidateWriteBox>
+                                    <CandidateImage>
+                                        <Freeview
+                                            onClick={() =>
+                                                fileInput.current.click()
+                                            }
+                                        >
+                                            {/* 후보자의 이미지가 있으면 보여주고, 아니면 default string을 보여준다. */}
+                                            {ele.imgUrl ? (
+                                                <img
+                                                    src={`http://3.36.90.60/${ele.imgUrl}`}
+                                                    alt={post.imgurl}
+                                                />
+                                            ) : (
+                                                <span>
+                                                    클릭하여 이미지를 추가해
+                                                    주세요!
+                                                </span>
+                                            )}
+                                        </Freeview>
+                                        <Uploader
+                                            ref={fileInput}
+                                            type="file"
+                                            onChange={() =>
+                                                selectFileImageUploader(idx)
+                                            }
+                                            disabled={isLoading}
+                                        />
+                                    </CandidateImage>
+                                    <CandidateContent>
+                                        <input
+                                            name="name"
+                                            placeholder="이름을 작성해주세요!"
+                                            onChange={e =>
+                                                setCandidateInfo(idx, e)
+                                            }
+                                        />
+                                        <input
+                                            name="major"
+                                            placeholder="학과를 작성해주세요!"
+                                            onChange={e =>
+                                                setCandidateInfo(idx, e)
+                                            }
+                                        />
+                                        <textarea
+                                            name="content"
+                                            placeholder="소개를 작성해주세요!"
+                                            onChange={e =>
+                                                setCandidateInfo(idx, e)
+                                            }
+                                        />
+                                    </CandidateContent>
+                                </CandidateWriteBox>
+                            </AccordionDetails>
+                        </Accordion>
+                    ))}
+                <Button onClick={addCard}>후보자 추가</Button>
+                <Button onClick={addElection}>저장</Button>
+            </CandidateInfoBox>
+        </ElectionContainer>
     );
 };
+
+const ElectionContainer = styled.div``;
+
+const ElectionInfoBox = styled.div`
+    padding: 50px 40px;
+    display: flex;
+    flex-direction: column;
+`;
+
+const CandidateInfoBox = styled.div``;
 
 const Freeview = styled.div`
     height: 100%;
     width: 300px;
 `;
-const WriteBox = styled.div`
+const CandidateWriteBox = styled.div`
     display: flex;
     justify-content: space-between;
     width: 100%;
 `;
-const Image = styled.div``;
+const CandidateImage = styled.div``;
 
 const Uploader = styled.input`
     display: none;
 `;
 
-const Content = styled.div`
+const CandidateContent = styled.div`
     display: flex;
     flex-direction: column;
     width: 100%;

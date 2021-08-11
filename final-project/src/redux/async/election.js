@@ -59,3 +59,25 @@ export const deleteElectionDB = createAsyncThunk(
         }
     },
 );
+
+/**
+ * @author kwonjiyeong
+ * @param data = election_id
+ * @returns 서버연결 성공시, 특정 선거게시글 삭제 / 서버연결 실패시, 에러메세지
+ * @역할 특정게시글 삭제하기
+ * @필수값 없음
+ */
+export const addElectionDB = createAsyncThunk(
+    "election/deletePost",
+    async (data, thunkAPI) => {
+        try {
+            const response = await electionApi.addElection(data);
+            if (response.data.ok) {
+                history.push("/election");
+                return response.data.result;
+            }
+        } catch (err) {
+            return thunkAPI.rejectWithValue(err.response.message);
+        }
+    },
+);
