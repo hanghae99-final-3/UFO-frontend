@@ -13,6 +13,8 @@ import { Icon, Button } from "@material-ui/core";
 import randomstring from "randomstring";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Boop from "../../Elements/Boop";
+import Fireworks from "../../Elements/Fireworks";
 
 const MypageModalContent = ({ close }) => {
     const user = useSelector(state => state.user.user);
@@ -21,10 +23,10 @@ const MypageModalContent = ({ close }) => {
     const [verificationCode, setVerificationCode] = useState(
         randomstring.generate(),
     );
+    const [isVerificationSuccess, setIsVerificationSuccess] = useState(false);
     const [enteredEmail, setEnteredEmail] = useState("");
     const [enteredCode, setEnteredCode] = useState("");
     const notify = () => toast("인증 메일을 발송했습니다!");
-    const notify_complete = () => toast("이메일 인증 성공!");
 
     const handleCodeSubmit = async () => {
         if (enteredCode === verificationCode) {
@@ -35,7 +37,7 @@ const MypageModalContent = ({ close }) => {
                 };
                 const response = await userApi.checkVerifyCode(req);
                 if (response.data.result === "university authorized") {
-                    notify_complete();
+                    setIsVerificationSuccess(true);
                     setEnteredCode("");
                     setVerificationCodeError("");
                 }
@@ -83,72 +85,89 @@ const MypageModalContent = ({ close }) => {
     });
     return (
         <React.Fragment>
-            <ToastContainer />
+            <ToastContainer limit={1} />
             <AuthModalContainer>
                 <Wrapper>
                     <Title>학교 인증</Title>
                     <ClearButton className="modal-close" onClick={close}>
-                        <Icon>
-                            <ClearIcon />
-                        </Icon>
+                        <Boop rotation={20} timing={200}>
+                            <Icon>
+                                <ClearIcon />
+                            </Icon>
+                        </Boop>
                     </ClearButton>
                 </Wrapper>
-                <EmailFormContainer>
-                    <Form onSubmit={formik_email.handleSubmit}>
-                        <TextField
-                            fullWidth
-                            id="email"
-                            onChange={formik_email.handleChange}
-                            value={formik_email.values.email}
-                            {...formik_email.getFieldProps("email")}
-                            placeholder="학교 메일을 입력해주세요"
-                            InputProps={{
-                                endAdornment: (
-                                    <Button type="submit">보내기</Button>
-                                ),
-                            }}
-                        />
+                {isVerificationSuccess ? (
+                    <EmailFormContainer>
+                        <span>🎉 인증 성공, 축하합니다!! 🎉</span>
+                        <Fireworks />
+                    </EmailFormContainer>
+                ) : (
+                    <>
+                        <EmailFormContainer>
+                            <Form onSubmit={formik_email.handleSubmit}>
+                                <TextField
+                                    fullWidth
+                                    id="email"
+                                    onChange={formik_email.handleChange}
+                                    value={formik_email.values.email}
+                                    {...formik_email.getFieldProps("email")}
+                                    placeholder="학교 메일을 입력해주세요"
+                                    InputProps={{
+                                        endAdornment: (
+                                            <Button type="submit">
+                                                보내기
+                                            </Button>
+                                        ),
+                                    }}
+                                />
 
-                        {formik_email.touched.email &&
-                        formik_email.errors.email ? (
-                            <div>{formik_email.errors.email}</div>
-                        ) : null}
-                        {emailVerificationError ? (
-                            <div>{emailVerificationError}</div>
-                        ) : null}
-                    </Form>
-                </EmailFormContainer>
-                <ValidationCodeFormContainer>
-                    <Form>
-                        <TextField
-                            fullWidth
-                            value={enteredCode}
-                            id="validation_code"
-                            placeholder="인증번호를 입력해주세요"
-                            onChange={handleCodeChange}
-                            InputProps={{
-                                endAdornment: (
-                                    <Button
-                                        onClick={handleCodeSubmit}
-                                        style={{ width: "100px" }}
-                                    >
-                                        인증하기
-                                    </Button>
-                                ),
-                            }}
-                        />
-                        {verificationError ? (
-                            <div>{verificationError}</div>
-                        ) : null}
-                    </Form>
-                </ValidationCodeFormContainer>
+                                {formik_email.touched.email &&
+                                formik_email.errors.email ? (
+                                    <div>{formik_email.errors.email}</div>
+                                ) : null}
+                                {emailVerificationError ? (
+                                    <div>{emailVerificationError}</div>
+                                ) : null}
+                            </Form>
+                        </EmailFormContainer>
+                        <ValidationCodeFormContainer>
+                            <div style={{ minWidth: "400px" }}>
+                                <TextField
+                                    fullWidth
+                                    value={enteredCode}
+                                    id="validation_code"
+                                    placeholder="인증번호를 입력해주세요"
+                                    onChange={handleCodeChange}
+                                    InputProps={{
+                                        endAdornment: (
+                                            <Button
+                                                onClick={handleCodeSubmit}
+                                                style={{ width: "100px" }}
+                                            >
+                                                인증하기
+                                            </Button>
+                                        ),
+                                    }}
+                                />
+                                {verificationError ? (
+                                    <div>{verificationError}</div>
+                                ) : null}
+                            </div>
+                        </ValidationCodeFormContainer>
+                    </>
+                )}
+
                 <CompleteButtonWrapper>
-                    <Button
-                        variant="outlined"
-                        style={{ padding: "10px 80px", marginTop: "20px" }}
-                    >
-                        완료
-                    </Button>
+                    {isVerificationSuccess && (
+                        <Button
+                            variant="outlined"
+                            style={{ padding: "10px 80px", marginTop: "20px" }}
+                            onClick={close}
+                        >
+                            완료
+                        </Button>
+                    )}
                 </CompleteButtonWrapper>
             </AuthModalContainer>
         </React.Fragment>
