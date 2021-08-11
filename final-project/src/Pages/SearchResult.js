@@ -24,39 +24,14 @@ const SearchResult = props => {
     };
 
     useEffect(() => {
-        if ((selectedTag === null) & (selectedCountry === 0)) {
-            const SearchQueryData = {
-                pageSize: 10,
-                pageNum: 1,
-                keyword: searchTerm,
-            };
-            dispatch(getSearchResult(SearchQueryData));
-        } else if ((selectedTag !== null) & (selectedCountry !== 0)) {
-            const SearchQueryData = {
-                pageSize: 10,
-                pageNum: 1,
-                category: selectedTag,
-                country_id: selectedCountry,
-                keyword: searchTerm,
-            };
-            dispatch(getSearchResult(SearchQueryData));
-        } else if (selectedTag !== null && selectedCountry === 0) {
-            const SearchQueryData = {
-                pageSize: 10,
-                pageNum: 1,
-                category: selectedTag,
-                keyword: searchTerm,
-            };
-            dispatch(getSearchResult(SearchQueryData));
-        } else {
-            const SearchQueryData = {
-                pageSize: 10,
-                pageNum: 1,
-                country_id: selectedCountry,
-                keyword: searchTerm,
-            };
-            dispatch(getSearchResult(SearchQueryData));
-        }
+        const SearchQueryData = {
+            pageSize: 10,
+            pageNum: 1,
+            keyword: searchTerm,
+            category: selectedTag === null ? undefined : selectedTag,
+            country_id: selectedCountry === 0 ? undefined : selectedCountry,
+        };
+        dispatch(getSearchResult(SearchQueryData));
     }, [dispatch, selectedTag, selectedCountry, searchTerm]);
 
     return (

@@ -3,17 +3,17 @@ import {
     getUnivBoardDB,
     detailUnivBoardPostDB,
     addUnivBoardPostDB,
-    getCommentDB,
+    getUnivBoardCommentDB,
     deleteUnivBoardPostDB,
-    addUniBoardCommentDB,
-    editUniBoardCommentDB,
-    deleteUniBoardCommentDB,
+    addUnivBoardCommentDB,
+    editUnivBoardCommentDB,
+    deleteUnivBoardCommentDB,
     editUnivBoardPostDB,
 } from "../async/univBoard";
 
 const initialState = {
     list: [],
-    postDetail: {},
+    postDetail: null,
     commentList: [],
     isFetching: false,
     errorMessage: "",
@@ -30,7 +30,11 @@ const initialState = {
 const univBoardSlice = createSlice({
     name: "univBoard",
     initialState: initialState,
-    reducers: {},
+    reducers: {
+        onLogout: state => {
+            state.list = [];
+        },
+    },
     extraReducers: {
         //┏---------------대학교 게시판 게시글 불러오기 reducer------------┓
         [getUnivBoardDB.pending]: (state, { payload }) => {
@@ -82,10 +86,7 @@ const univBoardSlice = createSlice({
         },
         [editUnivBoardPostDB.fulfilled]: (state, { payload: updatedPost }) => {
             state.isFetching = false;
-            state.postDetail.title = updatedPost.title;
-            state.postDetail.content = updatedPost.content;
-            state.postDetail.category = updatedPost.category;
-            state.postDetail.is_fixed = updatedPost.is_fixed;
+            state.postDetail = updatedPost;
             state.editRequestErrorMessage = "";
         },
         [editUnivBoardPostDB.rejected]: (state, { payload: errorMessage }) => {
@@ -108,62 +109,70 @@ const univBoardSlice = createSlice({
         },
         //----------------------------------------------------------------
 
-        //┏------------대학교 게시판 게시글  댓글 생성 reducer---------------┓
-        [addUniBoardCommentDB.pending]: (state, action) => {
+        //---------------------------게시물 댓글 불러오기--------------------
+        [getUnivBoardCommentDB.pending]: (state, action) => {
             state.isFetching = true;
         },
-        [addUniBoardCommentDB.fulfilled]: (state, action) => {
+        [getUnivBoardCommentDB.fulfilled]: (
+            state,
+            { payload: commentList },
+        ) => {
+            state.isFetching = false;
+            state.commentList = commentList;
+            state.getCommentErrorMessage = "";
+        },
+        [getUnivBoardCommentDB.rejected]: (
+            state,
+            { payload: errorMessage },
+        ) => {
+            state.isFetching = false;
+            state.getCommentErrorMessage = errorMessage;
+        },
+        //----------------------------------------------------------------
+
+        //┏------------대학교 게시판 게시글  댓글 생성 reducer---------------┓
+        [addUnivBoardCommentDB.pending]: (state, action) => {
+            state.isFetching = true;
+        },
+        [addUnivBoardCommentDB.fulfilled]: (state, action) => {
             state.isFetching = false;
             state.addCommentErrorMessage = "";
         },
-        [addUniBoardCommentDB.rejected]: (state, { payload }) => {
+        [addUnivBoardCommentDB.rejected]: (state, { payload }) => {
             state.isFetching = false;
             state.addCommentErrorMessage = payload;
         },
         //----------------------------------------------------------------
 
         //┏------------대학교 게시판 게시글  댓글 수정 reducer--------------┓
-        [editUniBoardCommentDB.pending]: (state, action) => {
+        [editUnivBoardCommentDB.pending]: (state, action) => {
             state.isFetching = true;
         },
-        [editUniBoardCommentDB.fulfilled]: (state, action) => {
+        [editUnivBoardCommentDB.fulfilled]: (state, action) => {
             state.isFetching = false;
             state.editCommentErrorMessage = "";
         },
-        [editUniBoardCommentDB.rejected]: (state, { payload }) => {
+        [editUnivBoardCommentDB.rejected]: (state, { payload }) => {
             state.isFetching = false;
             state.editCommentErrorMessage = payload;
         },
         //-----------------------------------------------------------------
 
-        //---------------------------게시물 댓글 불러오기--------------------
-        [getCommentDB.pending]: (state, action) => {
-            state.isFetching = true;
-        },
-        [getCommentDB.fulfilled]: (state, { payload: commentList }) => {
-            state.isFetching = false;
-            state.commentList = commentList;
-            state.getCommentErrorMessage = "";
-        },
-        [getCommentDB.rejected]: (state, { payload: errorMessage }) => {
-            state.isFetching = false;
-            state.getCommentErrorMessage = errorMessage;
-        },
-        //----------------------------------------------------------------
-
         //--------------------------게시글 댓글 삭제------------------------
-        [deleteUniBoardCommentDB.pending]: (state, action) => {
+        [deleteUnivBoardCommentDB.pending]: (state, action) => {
             state.isFetching = true;
         },
-        [deleteUniBoardCommentDB.fulfilled]: (state, action) => {
+        [deleteUnivBoardCommentDB.fulfilled]: (state, action) => {
             state.isFetching = false;
             state.deleteCommentErrorMessage = "";
         },
-        [deleteUniBoardCommentDB.rejected]: (state, { payload }) => {
+        [deleteUnivBoardCommentDB.rejected]: (state, { payload }) => {
             state.isFetching = false;
             state.deleteCommentErrorMessage = payload; //errorMessage
         },
     },
 });
+
+export const { onLogout } = univBoardSlice.actions;
 
 export default univBoardSlice;

@@ -15,6 +15,28 @@ instance.interceptors.request.use(async config => {
     config.headers["authorization"] = await getToken();
     return config;
 });
+// ┏----------interceptor를 통한 response 설정----------┓
+instance.interceptors.response.use(
+    response => {
+        if (response.data.message === "new token") {
+            const { config } = response;
+            const originalRequest = config;
+            const newAccessToken = response.data.myNewToken;
+
+            // localStorage.setItem("token", newAccessToken);
+            // axios.defaults.headers.common.Authorization = `Bearer ${newAccessToken}`;
+            // originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+            // return axios(originalRequest);
+        }
+        return response;
+    },
+    // async error => {
+    //     const {
+    //         config,
+    //         response: { status },
+    //     } = error;
+    // },
+);
 
 // 사용자 관련 axios API 통신
 export const userApi = {
@@ -63,6 +85,7 @@ export const freeBoardApi = {
                 pageSize: data.pageSize,
                 pageNum: data.pageNum,
                 category: data?.category,
+                country_id: data?.country_id,
             },
         }),
 
@@ -78,6 +101,11 @@ export const freeBoardApi = {
     },
     //게시물 삭제하기
     deletePost: id_list => instance.delete(`free/post/${id_list.post_id}`),
+
+    //게시물 좋아요 갯수 불러오기
+    postLikeToggle: post_id => {
+        return instance.get(`/free/post/${post_id}/like`);
+    },
 };
 
 export const freeCommentApi = {
@@ -114,23 +142,23 @@ export const univBoardApi = {
     },
 
     //대학 게시판 게시글 작성하기
-    addPost: ({ title, content, category, univId }) =>
+    addPost: ({ title, content, category, is_fixed, univ_id }) =>
         instance.post("/univ/post", {
             title,
             content,
             category,
-            is_fixed: false, // 테스트 마치면 수정 필요함
-            univ_id: univId, //테스트 마치면 수정 필요함
+            is_fixed, // 테스트 마치면 수정 필요함
+            univ_id, //테스트 마치면 수정 필요함
         }),
 
     // 대학 게시판 게시물 수정
-    editPost: data =>
-        instance.put(`univ/post/${data.postId}`, {
-            univ_id: data.univId,
-            title: data.title,
-            content: data.content,
-            is_fixed: true,
-            category: data.category,
+    editPost: ({ title, content, category, is_fixed, univ_id, post_id }) =>
+        instance.put(`univ/post/${post_id}`, {
+            univ_id,
+            title,
+            content,
+            is_fixed,
+            category,
         }),
 
     //게시물 상제정보 불러오기
@@ -139,27 +167,27 @@ export const univBoardApi = {
     },
 
     //게시물 삭제하기
-    deletePost: ({ postId }) => instance.delete(`univ/post/${postId}`),
+    deletePost: ({ post_id }) => instance.delete(`univ/post/${post_id}`),
 
     // 게시물 댓글 생성
-    addComment: ({ postId, content }) =>
+    addComment: ({ post_id, content }) =>
         instance.post("univ/comment", {
-            post_id: postId,
+            post_id,
             content, // 게시물 댓글 내용
         }),
 
     // 게시물 댓글 수정
-    editComment: ({ commentId, content }) =>
-        instance.put(`univ/comment/${commentId}`, {
+    editComment: ({ comment_id, content }) =>
+        instance.put(`univ/comment/${comment_id}`, {
             content, // 게시물 댓글 내용
         }),
 
     //게시물 댓글 삭제
-    deleteComment: ({ commentId }) =>
-        instance.delete(`univ/comment/${commentId}`),
+    deleteComment: ({ comment_id }) =>
+        instance.delete(`univ/comment/${comment_id}`),
 
     // 게시물 모든 댓글 불러오기
-    getComment: postId => instance.get(`univ/comment/${postId}`),
+    getComment: post_id => instance.get(`univ/comment/${post_id}`),
 };
 
 export const searchApi = {
@@ -171,7 +199,7 @@ export const searchApi = {
                 pageNum: data.pageNum,
                 category: data?.category,
                 country_id: data?.country_id,
-                keyword: data.keyword,
+                keyword: data?.keyword,
             },
         }),
 };
@@ -179,3 +207,5 @@ export const searchApi = {
 export const electionApi = {};
 
 export const voteApi = {};
+
+export default instance;

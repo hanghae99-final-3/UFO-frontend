@@ -2,6 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { history } from "../configureStore";
 import { freeBoardApi } from "../../api";
 import { freeCommentApi } from "../../api";
+import moment from "moment";
 
 /**
  * @author kwonjiyeong
@@ -34,7 +35,8 @@ export const getFreePostDB = createAsyncThunk(
     async (data, thunkAPI) => {
         try {
             const response = await freeBoardApi.getPost(data);
-            if (response.data.ok) return response.data.result;
+            if (response.data.ok)
+                return { ...response.data.like, ...response.data.result };
         } catch (err) {
             return thunkAPI.rejectWithValue(err.response.message);
         }
@@ -74,7 +76,6 @@ export const editFreePostDB = createAsyncThunk(
         try {
             const response = await freeBoardApi.editPost(data);
             if (response.data.ok) {
-                history.push("/freeboard");
                 return response.data.result[0]; //서버에서 온 값이 배열로 묶여져서 들어와서 인덱스 처리했음.
             }
         } catch (err) {
@@ -137,7 +138,12 @@ export const addFreeCommentDB = createAsyncThunk(
         try {
             const response = await freeCommentApi.addPostComment(data);
             const user = thunkAPI.getState().user;
-            if (response.data.ok) return { ...response.data.result, ...user };
+            if (response.data.ok)
+                return {
+                    ...response.data.result,
+                    ...user,
+                    createdAt: moment().format(`YYYY-MM-DD HH:mm:ss`), // 여기는 지영님 맘대로 하세요~~
+                };
         } catch (err) {
             return thunkAPI.rejectWithValue(err.response.message);
         }
@@ -157,7 +163,7 @@ export const editFreeCommentDB = createAsyncThunk(
         try {
             const response = await freeCommentApi.editPostComment(data);
             if (response.data.ok) {
-                return { comment_id: data.comment_id, content: data.content }; //서버에서 넘겨지는 값이 없어서 임시조치!
+                return response.data.result;
             }
         } catch (err) {
             return thunkAPI.rejectWithValue(err.response.message);
@@ -181,6 +187,19 @@ export const deleteFreeCommentDB = createAsyncThunk(
             if (response.data.ok) {
                 return data.comment_id;
             }
+        } catch (err) {
+            return thunkAPI.rejectWithValue(err.response.message);
+        }
+    },
+);
+
+export const postLikeToggleDB = createAsyncThunk(
+    "freeBoard/like/post",
+    async (data, thunkAPI) => {
+        try {
+            const response = await freeBoardApi.postLikeToggle(data);
+            console.log("freepost like response", response.data);
+            if (response.data.ok) return response.data.result;
         } catch (err) {
             return thunkAPI.rejectWithValue(err.response.message);
         }

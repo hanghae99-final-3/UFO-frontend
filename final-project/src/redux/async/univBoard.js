@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { univBoardApi } from "../../api";
+import { univBoardApi, likeApi } from "../../api";
 import { history } from "../configureStore";
 
 /**
@@ -29,8 +29,8 @@ export const getUnivBoardDB = createAsyncThunk(
 );
 
 /**
- * @author heesung & junghoo
- * @param data = { title, content,category, userId, is_fixed, univ_id
+ * @author heesung & junghoo & jiyeong
+ * @param data = { title, content,category, userId, is_fixed, univ_id }
  * @returns 생성된 게시물 정보
  * @역할 대학 게시판 게시물 생성
  * @필수값 data
@@ -56,8 +56,8 @@ export const addUnivBoardPostDB = createAsyncThunk(
 );
 
 /**
- * @author heesung & junghoo
- * @param data = title, content,category, userId, is_fixed univ_id
+ * @author heesung & junghoo & jiyeong
+ * @param data = {title, content,category, userId, is_fixed univ_id}
  * @returns 수정 게시물 정보
  * @역할 대학 게시판 게시물 수정
  * @필수값 data
@@ -70,7 +70,7 @@ export const editUnivBoardPostDB = createAsyncThunk(
             const response = await univBoardApi.editPost(data);
             if (response.data.ok) {
                 //성공시 수정된 게시물 정보 반환
-                return response.data.result[0];
+                return response.data.result;
             } else if (!response.data.ok) {
                 return thunkAPI.rejectWithValue(response.data.message);
             }
@@ -106,7 +106,7 @@ export const detailUnivBoardPostDB = createAsyncThunk(
 );
 
 /**
- * @author heesung & junghoo
+ * @author heesung & junghoo & jiyeong
  * @param data = userId, postId
  * @returns status message
  * @역할 대학교 게시판 게시글 삭제
@@ -120,8 +120,7 @@ export const deleteUnivBoardPostDB = createAsyncThunk(
             const response = await univBoardApi.deletePost(data);
             if (response.data.ok) {
                 // 요청 성공시 redux 게시글 리스트 최신화
-                thunkAPI.dispatch(getUnivBoardDB());
-                return response.data.message;
+                history.push("/univboard");
             } else if (!response.data.ok) {
                 // 삭제 실패시  에러 메세지 반환
                 return thunkAPI.rejectWithValue(response.data.message);
@@ -136,12 +135,35 @@ export const deleteUnivBoardPostDB = createAsyncThunk(
 
 /**
  * @author heesung & junghoo
+ * @param data = postId
+ * @returns 해당 게시물의 모든 댓글 (배열)
+ * @역할 게시글의 달린 댓글 불러온다.
+ * @필수값 data = 게시글 아이디
+ */
+export const getUnivBoardCommentDB = createAsyncThunk(
+    "univBoard/get/comment",
+    async (post_id, thunkAPI) => {
+        try {
+            // 게시글의 댓글 요청
+            const response = await univBoardApi.getComment(post_id);
+            if (response.data.ok) {
+                // 요청 성공시 댓글 리스트(배열) 반환
+                return response.data.result;
+            }
+        } catch (error) {
+            return thunkAPI.rejectWithValue(error.response.data.message);
+        }
+    },
+);
+
+/**
+ * @author heesung & junghoo & jiyeong
  * @param data = postId, userId, content
  * @returns 상태 메세지
  * @역할 대학 게시판 게시물 댓글 생성
  * @필수값 data
  */
-export const addUniBoardCommentDB = createAsyncThunk(
+export const addUnivBoardCommentDB = createAsyncThunk(
     "univBoard/add/comment",
     async (data, thunkAPI) => {
         try {
@@ -150,7 +172,7 @@ export const addUniBoardCommentDB = createAsyncThunk(
             const postId = response.data.result.post_id;
             if (response.data.ok) {
                 // 요청 성공시 댓글 리스트 최신화
-                thunkAPI.dispatch(getCommentDB(postId));
+                thunkAPI.dispatch(getUnivBoardCommentDB(postId));
             } else if (!response.data.ok) {
                 // 댓글 작성 실패시 메세지 반환
                 return thunkAPI.rejectWithValue(response.data.message);
@@ -163,19 +185,19 @@ export const addUniBoardCommentDB = createAsyncThunk(
 );
 
 /**
- * @author heesung & junghoo
- * @param data = commentId, userId, content
+ * @author heesung & junghoo & jiyeong
+ * @param data = commentId, user_id, content, post_id
  * @returns 상태 메세지
  * @역할 대학 게시판 게시물 댓글 수정
  * @필수값 data
  */
-export const editUniBoardCommentDB = createAsyncThunk(
+export const editUnivBoardCommentDB = createAsyncThunk(
     "univBoard/edit/comment",
     async (data, thunkAPI) => {
         try {
             const response = await univBoardApi.editComment(data);
             if (response.data.ok) {
-                thunkAPI.dispatch(getCommentDB(data.postId));
+                thunkAPI.dispatch(getUnivBoardCommentDB(data.post_id));
             } else if (!response.data.ok) {
                 return thunkAPI.rejectWithValue(response.data.message);
             }
@@ -187,36 +209,13 @@ export const editUniBoardCommentDB = createAsyncThunk(
 );
 
 /**
- * @author heesung & junghoo
- * @param data = postId
- * @returns 해당 게시물의 모든 댓글 (배열)
- * @역할 게시글의 달린 댓글 불러온다.
- * @필수값 data = 게시글 아이디
- */
-export const getCommentDB = createAsyncThunk(
-    "univBoard/get/comment",
-    async (postId, thunkAPI) => {
-        try {
-            // 게시글의 댓글 요청
-            const response = await univBoardApi.getComment(postId);
-            if (response.data.ok) {
-                // 요청 성공시 댓글 리스트(배열) 반환
-                return response.data.result;
-            }
-        } catch (error) {
-            return thunkAPI.rejectWithValue(error.response.data.message);
-        }
-    },
-);
-
-/**
- * @author heesung & junghoo
+ * @author heesung & junghoo & jiyeong
  * @param data = commentId, userId
  * @returns 댓글 삭제후 해당 댓글이 제거된 댓글 리스트 배열 반환
  * @역할 게시물 댓글 삭제
  * @필수값 data = 댓글 아이디, 유저 아이디
  */
-export const deleteUniBoardCommentDB = createAsyncThunk(
+export const deleteUnivBoardCommentDB = createAsyncThunk(
     "univBoard/delete/comment",
     async (data, thunkAPI) => {
         try {
@@ -224,7 +223,7 @@ export const deleteUniBoardCommentDB = createAsyncThunk(
             const response = await univBoardApi.deleteComment(data);
             if (response.data.ok) {
                 // 댓글 삭제 성공시 최신 댓글 리스트 배열 요청
-                thunkAPI.dispatch(getCommentDB(data.postId));
+                thunkAPI.dispatch(getUnivBoardCommentDB(data.post_id));
             } else if (!response.data.ok) {
                 return thunkAPI.rejectWithValue(response.data.message);
             }

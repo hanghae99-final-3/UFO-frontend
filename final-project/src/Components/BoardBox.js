@@ -5,7 +5,6 @@ import styled from "styled-components";
 import categories from "../categories";
 
 import { BiHeart } from "react-icons/bi";
-import { BiShareAlt } from "react-icons/bi";
 import { MdComment } from "react-icons/md";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 
@@ -21,9 +20,9 @@ const BoardBox = ({ postList, title, tag, preview, boardName }) => {
     const _onClick = postId => {
         //자유게시판일때,
         if (boardName === "freeBoard")
-            return history.push(`freeboard/detail/${postId}`);
+            return history.push(`/freeboard/detail/${postId}`);
         //학교게시판일때,
-        return history.push(`univBoard/detail/${postId}`);
+        return history.push(`/univBoard/detail/${postId}`);
     };
     return (
         <BoardContentContainer>
@@ -62,7 +61,9 @@ const BoardBox = ({ postList, title, tag, preview, boardName }) => {
                             <IconContainer>
                                 <Icon>
                                     <BiHeart />
-                                    <span>5개</span>
+                                    <span>
+                                        {post.like && post.like.all_like}
+                                    </span>
                                 </Icon>
                                 <Icon>
                                     <MdComment />
@@ -154,7 +155,4 @@ const TitleHeading = styled.span`
     font-size: 30px;
 `;
 
-const ContentContainer = styled.div``;
-
-const PostContent = styled.span``;
 export default BoardBox;

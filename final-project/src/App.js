@@ -19,6 +19,7 @@ import FreeBoardDetail from "./Pages/FreeBoardDetail"; //자유게시판 게시�
 import FreeBoardWrite from "./Pages/FreeBoardWrite"; //자유게시판 게시글작성페이지 or 게시글수정페이지
 import UnivBoard from "./Pages/UnivBoard"; //대학게시판
 import UnivBoardDetail from "./Pages/UnivBoardDetail"; //대학게시판 게시글상세페이지
+import UnivboardWrite from "./Pages/UnivBoardWrite";
 
 //utils
 import { checkLoggedInUser } from "./redux/async/user"; // 로그인 체크
@@ -30,14 +31,14 @@ function App() {
     // 로컬 스토리지 토큰 확인
     const is_token = localStorage.getItem("token") ? true : false;
     // 유저 대학교 이메일 인증 여부 확인
-    const isAuthenticated = useSelector(state => state.user?.user.school_auth);
+    const isLoggedIn = useSelector(state => state.user.isLoggedIn);
 
     useEffect(() => {
         if (is_token) {
             dispatch(checkLoggedInUser());
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [dispatch]);
+    }, [dispatch, isLoggedIn]);
 
     return (
         <>
@@ -85,6 +86,16 @@ function App() {
                             path="/univboard/detail/:id"
                             exact
                             component={UnivBoardDetail}
+                        />
+                        <Route
+                            path="/univboard/write"
+                            exact
+                            component={UnivboardWrite}
+                        />
+                        <Route
+                            path="/univboard/edit/:id"
+                            exact
+                            component={UnivboardWrite}
                         />
                         <Redirect from="*" to="/" />
                     </Switch>
