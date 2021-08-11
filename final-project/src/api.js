@@ -16,27 +16,27 @@ instance.interceptors.request.use(async config => {
     return config;
 });
 // ┏----------interceptor를 통한 response 설정----------┓
-instance.interceptors.response.use(
-    response => {
-        if (response.data.message === "new token") {
-            const { config } = response;
-            const originalRequest = config;
-            const newAccessToken = response.data.myNewToken;
+// instance.interceptors.response.use(
+//     response => {
+//         if (response.data.message === "new token") {
+//             const { config } = response;
+//             const originalRequest = config;
+//             const newAccessToken = response.data.myNewToken;
 
-            // localStorage.setItem("token", newAccessToken);
-            // axios.defaults.headers.common.Authorization = `Bearer ${newAccessToken}`;
-            // originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
-            // return axios(originalRequest);
-        }
-        return response;
-    },
-    // async error => {
-    //     const {
-    //         config,
-    //         response: { status },
-    //     } = error;
-    // },
-);
+//             localStorage.setItem("token", newAccessToken);
+
+//             originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+//             return axios(originalRequest);
+//         }
+//         return response;
+//     },
+//     async error => {
+//         const {
+//             config,
+//             response: { status },
+//         } = error;
+//     },
+// );
 
 // 사용자 관련 axios API 통신
 export const userApi = {
