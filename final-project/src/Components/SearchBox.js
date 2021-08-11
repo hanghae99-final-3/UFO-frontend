@@ -9,6 +9,7 @@ import { useDispatch } from "react-redux";
 // material Ui
 import Input from "@material-ui/core/Input";
 import styled from "styled-components";
+import PushButton from "../Elements/Buttons/PushButton";
 /**
  * @author heesung
  * @param searchTag
@@ -62,21 +63,22 @@ const SearchBox = ({ searchTag, deactivateSearch, page }) => {
     };
     //----
 
+    const onClick = () => history.push(`/${page}/write`);
+
     return (
         <React.Fragment>
             <SearchBoxContainer>
                 {page && (
                     <Title>
-                        <span>
+                        <TitleSpan>
                             {page === "freeboard"
                                 ? "자유 게시판"
                                 : "대학 게시판"}
-                        </span>
+                        </TitleSpan>
 
-                        <button onClick={() => history.push(`/${page}/write`)}>
+                        <PushButton onClick={onClick}>
                             {/* 작성하기 페이지로 이동! */}
-                            작성하기
-                        </button>
+                        </PushButton>
                     </Title>
                 )}
 
@@ -151,13 +153,9 @@ const Title = styled.div`
     justify-content: space-between;
     align-items: flex-end;
     margin-bottom: 30px;
-    span {
-        font-size: 40px;
-        color: #707070;
-    }
-    button {
-        height: 40px;
-        padding: 0 20px;
-        border-radius: 10px;
-    }
+`;
+
+const TitleSpan = styled.span`
+    font-size: 40px;
+    color: #707070;
 `;

@@ -16,27 +16,27 @@ instance.interceptors.request.use(async config => {
     return config;
 });
 // ┏----------interceptor를 통한 response 설정----------┓
-instance.interceptors.response.use(
-    response => {
-        if (response.data.message === "new token") {
-            const { config } = response;
-            const originalRequest = config;
-            const newAccessToken = response.data.myNewToken;
+// instance.interceptors.response.use(
+//     response => {
+//         if (response.data.message === "new token") {
+//             const { config } = response;
+//             const originalRequest = config;
+//             const newAccessToken = response.data.myNewToken;
 
-            // localStorage.setItem("token", newAccessToken);
-            // axios.defaults.headers.common.Authorization = `Bearer ${newAccessToken}`;
-            // originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
-            // return axios(originalRequest);
-        }
-        return response;
-    },
-    // async error => {
-    //     const {
-    //         config,
-    //         response: { status },
-    //     } = error;
-    // },
-);
+//             localStorage.setItem("token", newAccessToken);
+
+//             originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+//             return axios(originalRequest);
+//         }
+//         return response;
+//     },
+//     async error => {
+//         const {
+//             config,
+//             response: { status },
+//         } = error;
+//     },
+// );
 
 // 사용자 관련 axios API 통신
 export const userApi = {
@@ -188,6 +188,9 @@ export const univBoardApi = {
 
     // 게시물 모든 댓글 불러오기
     getComment: post_id => instance.get(`univ/comment/${post_id}`),
+
+    //게시물 좋아요/취소
+    univLikeToggle: post_id => instance.get(`/univ/post/${post_id}/like`),
 };
 
 export const searchApi = {
@@ -204,8 +207,50 @@ export const searchApi = {
         }),
 };
 
-export const electionApi = {};
+export const electionApi = {
+    getElectionList: () => instance.get("election"),
+    getElection: election_id => instance.get(`election/${election_id}`),
+    addElection: ({
+        name,
+        content,
+        country_id,
+        univ_id,
+        candidates,
+        start_date,
+        end_date,
+    }) =>
+        instance.post("election", {
+            name,
+            content,
+            country_id,
+            univ_id,
+            candidates,
+            start_date,
+            end_date,
+        }),
+    editElection: ({ election_id, name, content, end_date }) =>
+        instance.put(`election/${election_id}`, {
+            name,
+            content,
+            end_date,
+        }),
+    deleteElection: ({ election_id }) =>
+        instance.delete(`election/${election_id}`),
+};
 
-export const voteApi = {};
+export const voteApi = {
+    addVote: ({ election_id, vote_num }) =>
+        instance.post(`election/vote/${election_id}`, { vote_num }),
+    getResult: ({ election_id }) =>
+        instance.get(`election/${election_id}/result`),
+};
+
+export const imageApi = {
+    //단일 이미지 업로드
+    uploadImage: ({ img }) => instance.post("util/image", { img }),
+
+    //대량 이미지 업로드
+    uploadImages: ({ img }) => instance.post("util/bulk-image", { img }),
+};
 
 export default instance;

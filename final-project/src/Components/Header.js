@@ -54,13 +54,16 @@ const Header = () => {
                     <Control>
                         <Link to="/">홈</Link>
                     </Control>
-
                     <Control>
                         <Link to="/freeboard">자유게시판</Link>
                     </Control>
                     <Control>
                         <Link to="/univboard">대학게시판</Link>
                     </Control>
+                    <Control>
+                        <Link to="/election">투표함</Link>
+                    </Control>
+
                     {isLoggedIn ? (
                         <>
                             <Control>

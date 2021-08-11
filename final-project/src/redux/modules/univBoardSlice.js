@@ -34,6 +34,18 @@ const univBoardSlice = createSlice({
         onLogout: state => {
             state.list = [];
         },
+        //사용자가 로그인하고 게시글에 처음 들어갔을때 바로 뷰 카운트를 추가해주는 리듀서
+        setUnivViewReducer: (state, action) => {
+            if (state.post) state.postDetail.view_count += 1;
+        },
+        //사용자가 게시글 좋아요를 누르면 바로 게시글의 전체 좋아요 수를 증가해주는 리듀서
+        increaseLike: (state, action) => {
+            state.post.all_like += 1;
+        },
+        //사용자가 게시글 좋아요를 지우면 바로 게시글의 전체 좋아요 수를 감소해주는 리듀서
+        decreaseLike: (state, action) => {
+            state.post.all_like -= 1;
+        },
     },
     extraReducers: {
         //┏---------------대학교 게시판 게시글 불러오기 reducer------------┓
@@ -173,6 +185,7 @@ const univBoardSlice = createSlice({
     },
 });
 
-export const { onLogout } = univBoardSlice.actions;
+export const { onLogout, setUnivViewReducer, increaseLike, decreaseLike } =
+    univBoardSlice.actions;
 
 export default univBoardSlice;

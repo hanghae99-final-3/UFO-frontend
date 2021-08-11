@@ -3,7 +3,7 @@ import { history } from "../configureStore";
 import { freeBoardApi } from "../../api";
 import { freeCommentApi } from "../../api";
 import moment from "moment";
-
+import { increaseLike, decreaseLike } from "../modules/freeBoardSlice";
 /**
  * @author kwonjiyeong
  * @param 없음
@@ -198,8 +198,15 @@ export const postLikeToggleDB = createAsyncThunk(
     async (data, thunkAPI) => {
         try {
             const response = await freeBoardApi.postLikeToggle(data);
-            console.log("freepost like response", response.data);
-            if (response.data.ok) return response.data.result;
+            if (response.data.ok) {
+                if (response.data.message === "disliked post") {
+                    //좋아요 취소
+                    thunkAPI.dispatch(decreaseLike());
+                } else {
+                    //좋아요
+                    thunkAPI.dispatch(increaseLike());
+                }
+            }
         } catch (err) {
             return thunkAPI.rejectWithValue(err.response.message);
         }

@@ -7,7 +7,7 @@ import SearchBox from "../Components/SearchBox";
 import Pagination from "@material-ui/lab/Pagination";
 import { getFreeListDB } from "../redux/async/freeBoard";
 import { useDispatch, useSelector } from "react-redux";
-import instance, { freeBoardApi } from "../api";
+import { freeBoardApi } from "../api";
 
 /**
  * @author kwonjiyeong & heesung
