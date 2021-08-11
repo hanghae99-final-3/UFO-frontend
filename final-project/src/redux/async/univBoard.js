@@ -238,15 +238,16 @@ export const univLikeToggleDB = createAsyncThunk(
     async (data, thunkAPI) => {
         try {
             const response = await univBoardApi.univLikeToggle(data);
-            if (response.data.ok) {
-                if (response.data.message === "disliked post") {
-                    //좋아요 취소
-                    thunkAPI.dispatch(decreaseLike());
-                } else {
-                    //좋아요
-                    thunkAPI.dispatch(increaseLike());
-                }
-            }
+            console.log("univBoard Like", response);
+            // if (response.data.ok) {
+            //     if (response.data.message === "disliked post") {
+            //         //좋아요 취소
+            //         thunkAPI.dispatch(decreaseLike());
+            //     } else {
+            //         //좋아요
+            //         thunkAPI.dispatch(increaseLike());
+            //     }
+            // }
         } catch (err) {
             console.log("err", err);
         }

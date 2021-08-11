@@ -141,6 +141,7 @@ const BoardDetail = ({ page }) => {
     return (
         <MainContentContainer>
             <ContentHeaderContainer>
+                {console.log("isLike", isLike)}
                 {page === "freeboard" ? (
                     <Tag>
                         #{post && categories.freeBoardTags[post.category]}
@@ -171,7 +172,7 @@ const BoardDetail = ({ page }) => {
                                 control={
                                     <Checkbox
                                         onClick={() => {
-                                            dispatch(postLikeToggleDB(postId));
+                                            dispatch(univLikeToggleDB(postId));
                                         }}
                                         style={{ cursor: "pointer" }}
                                         icon={
