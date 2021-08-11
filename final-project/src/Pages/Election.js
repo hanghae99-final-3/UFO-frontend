@@ -32,9 +32,9 @@ const Election = () => {
                         </Post>
                     ))}
             </ElectionContainer>
-            <button onClick={() => history.push(`/election/write`)}>
+            <Button onClick={() => history.push(`/election/write`)}>
                 추가하기
-            </button>
+            </Button>
         </>
     );
 };
@@ -48,10 +48,8 @@ const Post = styled.div`
     height: 100px;
 `;
 
-const Freeview = styled.div`
-    width: 300px;
-    height: 300px;
-    background: pink;
+const Button = styled.button`
+    padding: 10px;
 `;
 
 export default Election;
