@@ -1,11 +1,13 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
-import SearchBox from "../Components/SearchBox";
+
 import { useDispatch, useSelector } from "react-redux";
 import { getFreeListDB } from "../redux/async/freeBoard";
 import BoardBox from "../Components/BoardBox";
 import { getUnivBoardDB } from "../redux/async/univBoard";
 import categories from "../categories";
+import MainSlider from "../Components/MainSlider";
+import PushButton from "../Elements/Buttons/PushButton";
 
 const Home = () => {
     const dispatch = useDispatch();
@@ -51,14 +53,8 @@ const Home = () => {
 
     return (
         <HomeContainer>
-            {/* <SearchContainer>
-                <SearchBox searchTag={categories.freeBoardTags} />
-            </SearchContainer>
-            {/* 인기 게시판 불러오기*/}
-            <BoardBox
-                title="인기 게시판"
+            <MainSlider
                 postList={freeBoardPostList && freeBoardPostList.slice(0, 5)}
-                boardName="freeBoard"
             />
             <BoardContainer>
                 {/* 학교 게시판 불러오기*/}
@@ -85,9 +81,11 @@ const Home = () => {
                         title="자유 게시판"
                         postList={
                             freeBoardPostList &&
-                            freeBoardPostList.filter(
-                                post => post.country_id === selectedCountry,
-                            )
+                            freeBoardPostList
+                                .filter(
+                                    post => post.country_id === selectedCountry,
+                                )
+                                .slice(0, 10)
                         }
                         boardName="freeBoard"
                     />
@@ -138,9 +136,7 @@ const Home = () => {
 };
 
 const HomeContainer = styled.div``;
-const SearchContainer = styled.div`
-    margin: 50px 0;
-`;
+
 const BoardContainer = styled.div`
     display: grid;
     grid-template-columns: repeat(2, 1fr);
