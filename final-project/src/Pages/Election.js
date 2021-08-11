@@ -12,7 +12,6 @@ const Election = () => {
         dispatch(getElectionListDB());
     }, []);
 
-    console.log(electionList);
     return (
         <>
             <ElectionContainer>

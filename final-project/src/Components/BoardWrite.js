@@ -27,8 +27,6 @@ const BoardWrite = ({ boardName }) => {
     const { id: postId } = useParams();
     const isEdit = postId ? true : false; //수정모드인지 아닌지 판별 state
 
-    console.log(post);
-
     const getContentFromEditor = content => {
         //에디터로부터 content 값 가져오기
         setPost({ ...post, content: content });

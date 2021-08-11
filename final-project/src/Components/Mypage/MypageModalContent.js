@@ -66,7 +66,6 @@ const MypageModalContent = ({ close }) => {
             try {
                 const response = await userApi.verifyUniEmail(values.email);
                 if (response.status === 200) {
-                    console.log(response.data.authCode);
                     setVerificationCode(response.data.authCode);
                     notify();
                 }

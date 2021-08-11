@@ -7,7 +7,6 @@ import BoardBox from "../Components/BoardBox";
 import { getUnivBoardDB } from "../redux/async/univBoard";
 import categories from "../categories";
 import MainSlider from "../Components/MainSlider";
-import PushButton from "../Elements/Buttons/PushButton";
 
 const Home = () => {
     const dispatch = useDispatch();
@@ -56,6 +55,9 @@ const Home = () => {
             <MainSlider
                 postList={freeBoardPostList && freeBoardPostList.slice(0, 5)}
             />
+            {/* <SearchContainer>
+                <SearchBox searchTag={categories.freeBoardTags} />
+            </SearchContainer> */}
             <BoardContainer>
                 {/* 학교 게시판 불러오기*/}
                 <BoardBox

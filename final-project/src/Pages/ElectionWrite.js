@@ -62,12 +62,10 @@ const ElectionWrite = () => {
             [keyName]: value,
         });
     };
-    console.log(post);
     const setCandidateInfo = (currentIdx, event) => {
         //후보자들의 정보들을 받아와서 post에 정보를 넣어주는 함수입니다.
         const keyName = event.target.attributes.getNamedItem("name").value; //post에 넣어줄 key 입니다.
         const value = event.target.value; //post에 넣어줄 value 입니다.
-        console.log(currentIdx, keyName, value);
         setPost({
             ...post,
             candidate: post.candidate.map((ele, idx) =>

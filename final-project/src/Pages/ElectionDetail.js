@@ -8,7 +8,6 @@ const ElectionDetail = () => {
     const dispatch = useDispatch();
     const { id: electionId } = useParams();
     const post = useSelector(state => state.election.post);
-    console.log(post);
 
     useEffect(() => {
         dispatch(getElectionDB(electionId));
