@@ -9,6 +9,7 @@ import {
     addFreeCommentDB,
     editFreeCommentDB,
     deleteFreeCommentDB,
+    postLikeToggleDB,
 } from "../async/freeBoard";
 
 /**
@@ -39,6 +40,12 @@ const freeBoardSlice = createSlice({
         },
         resetTagReducer: (state, action) => {
             state.selectedTag = null;
+        },
+        increaseLike: (state, action) => {
+            state.post.all_like += 1;
+        },
+        decreaseLike: (state, action) => {
+            state.post.all_like -= 1;
         },
     },
 
@@ -196,7 +203,12 @@ const freeBoardSlice = createSlice({
     },
 });
 
-export const { setCountryReducer, setTagReducer, resetTagReducer } =
-    freeBoardSlice.actions;
+export const {
+    setCountryReducer,
+    setTagReducer,
+    resetTagReducer,
+    increaseLike,
+    decreaseLike,
+} = freeBoardSlice.actions;
 
 export default freeBoardSlice;

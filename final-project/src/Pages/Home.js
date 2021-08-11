@@ -51,9 +51,9 @@ const Home = () => {
 
     return (
         <HomeContainer>
-            <SearchContainer>
+            {/* <SearchContainer>
                 <SearchBox searchTag={categories.freeBoardTags} />
-            </SearchContainer>
+            </SearchContainer> */}
             <BoardContainer>
                 {/* 인기 게시판 불러오기*/}
                 <BoardBox

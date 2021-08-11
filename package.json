@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "moment": "^2.29.1",
+    "react-animated-heart": "^0.0.7-alpha.1",
     "react-cookie": "^4.0.3",
     "react-toastify": "^7.0.4",
     "time-counting": "^2.0.2"

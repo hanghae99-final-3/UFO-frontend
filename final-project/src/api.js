@@ -188,6 +188,9 @@ export const univBoardApi = {
 
     // 게시물 모든 댓글 불러오기
     getComment: post_id => instance.get(`univ/comment/${post_id}`),
+
+    //게시물 좋아요/취소
+    univLikeToggle: post_id => instance.get(`/univ/post/${post_id}/like`),
 };
 
 export const searchApi = {

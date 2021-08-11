@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-
+import Heart from "react-animated-heart";
 import { history } from "../redux/configureStore";
 import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
@@ -14,6 +14,7 @@ import {
     deleteUnivBoardPostDB,
     detailUnivBoardPostDB,
     getUnivBoardCommentDB,
+    univLikeToggleDB,
 } from "../redux/async/univBoard";
 
 import { BiHeart } from "react-icons/bi";
@@ -21,6 +22,8 @@ import { Button as Mbutton } from "@material-ui/core";
 import { MdComment } from "react-icons/md";
 import AccessTimeIcon from "@material-ui/icons/AccessTime";
 import LinkIcon from "@material-ui/icons/Link";
+import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
+import FavoriteIcon from "@material-ui/icons/Favorite";
 
 import categories from "../categories";
 import VisibilityIcon from "@material-ui/icons/Visibility";
@@ -33,6 +36,13 @@ import "react-toastify/dist/ReactToastify.css";
 
 import { useCookies } from "react-cookie";
 import instance from "../api";
+
+//좋아요시작
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Checkbox from "@material-ui/core/Checkbox";
+import Favorite from "@material-ui/icons/Favorite";
+import FavoriteBorder from "@material-ui/icons/FavoriteBorder";
+//좋아요끝
 
 const BoardDetail = ({ page }) => {
     const dispatch = useDispatch();
@@ -57,6 +67,12 @@ const BoardDetail = ({ page }) => {
         },
     };
 
+    const isLike = useSelector(state =>
+        page === "freeboard"
+            ? state.freeBoard.post?.is_like
+            : state.univBoard.postDetail?.is_like,
+    );
+    console.log("like check", isLike);
     //-------------조회수--------------
     let now = new Date();
     let after20m = new Date();
@@ -68,7 +84,9 @@ const BoardDetail = ({ page }) => {
             page === "freeboard"
                 ? getFreePostDB(postId)
                 : detailUnivBoardPostDB(postId),
-        ); // 게시물 상세정보 api 요청 미들웨어
+        );
+
+        // 게시물 상세정보 api 요청 미들웨어
         dispatch(
             page === "freeboard"
                 ? getFreeCommentListDB(postId)
@@ -94,7 +112,8 @@ const BoardDetail = ({ page }) => {
             setCookie("viewCookie", viewCookie, { expires: after20m });
             callView();
         }
-    }, [dispatch, postId, page]);
+        //이미 좋아요 눌렀던 게시물이면 빨간하트 return
+    }, [dispatch, postId, page, isLike]);
 
     //서버에 필요한 정보를 정리하고, 포스트를 삭제하는 미들웨어 함수로 보낸다.
     const deletePost = () => {
@@ -117,19 +136,6 @@ const BoardDetail = ({ page }) => {
         document.execCommand("copy");
         document.body.removeChild(el);
         toast("게시물 링크가 클립보드에 복사되었습니다!");
-    };
-
-    //-----------------게시글 좋아요
-
-    //게시물 좋아요 / 취소 토글
-    const Likeit = () => {
-        if (page === "freeboard") {
-            console.log("freeboard detail liked");
-            dispatch(postLikeToggleDB(postId));
-        } else if (page === "univboard") {
-            console.log("univboard detail liked");
-            dispatch(postLikeToggleDB(postId));
-        }
     };
 
     return (
@@ -160,11 +166,36 @@ const BoardDetail = ({ page }) => {
                         </Mbutton>
 
                         <Icon>
-                            <BiHeart
-                                onClick={Likeit}
-                                style={{ cursor: "pointer" }}
+                            <FormControlLabel
+                                style={{ width: "30px" }}
+                                control={
+                                    <Checkbox
+                                        onClick={() => {
+                                            dispatch(postLikeToggleDB(postId));
+                                        }}
+                                        style={{ cursor: "pointer" }}
+                                        icon={
+                                            isLike ? (
+                                                <FavoriteIcon
+                                                    style={{ fill: "red" }}
+                                                />
+                                            ) : (
+                                                <FavoriteBorder />
+                                            )
+                                        }
+                                        checkedIcon={
+                                            isLike ? (
+                                                <FavoriteBorder />
+                                            ) : (
+                                                <FavoriteIcon
+                                                    style={{ fill: "red" }}
+                                                />
+                                            )
+                                        }
+                                    />
+                                }
                             />
-                            <span>{}</span>
+                            <span>{post && post.all_like}</span>
                         </Icon>
                         <Icon>
                             <VisibilityIcon />

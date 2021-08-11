@@ -9,6 +9,7 @@ import {
     editUnivBoardCommentDB,
     deleteUnivBoardCommentDB,
     editUnivBoardPostDB,
+    univLikeToggleDB,
 } from "../async/univBoard";
 
 const initialState = {
@@ -33,6 +34,12 @@ const univBoardSlice = createSlice({
     reducers: {
         onLogout: state => {
             state.list = [];
+        },
+        increaseLike: (state, action) => {
+            state.post.all_like += 1;
+        },
+        decreaseLike: (state, action) => {
+            state.post.all_like -= 1;
         },
     },
     extraReducers: {
@@ -173,6 +180,6 @@ const univBoardSlice = createSlice({
     },
 });
 
-export const { onLogout } = univBoardSlice.actions;
+export const { onLogout, increaseLike, decreaseLike } = univBoardSlice.actions;
 
 export default univBoardSlice;
