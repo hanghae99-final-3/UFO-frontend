@@ -3,6 +3,8 @@ import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router";
 import { getElectionDB, deleteElectionDB } from "../redux/async/election";
+import { voteApi } from "../api";
+import { history } from "../redux/configureStore";
 
 //컴포넌트
 import ElectionSlider from "../Components/ElectionSlider";
@@ -11,8 +13,7 @@ const ElectionDetail = () => {
     const dispatch = useDispatch();
     const { id: electionId } = useParams();
     const post = useSelector(state => state.election.post); //선거게시물의 데이터가 들어있습니다.
-    const [focusCardId, setFocusCardId] = useState(null); // 현재 보여지고 있는 후보자 카드의 Id의 정보를 담고있는 state
-    const [isShowCard, setIsShowCard] = useState(false); //후보자 카드가 보여지고 있나 없나 판별 state
+    const [selectCandidateNum, setSelectCandidateNum] = useState(null); //선택한 후보자의 번호를 담는 state입니다.
 
     useEffect(() => {
         dispatch(getElectionDB(electionId));
@@ -20,6 +21,20 @@ const ElectionDetail = () => {
 
     const addVote = () => {
         //투표를 처리하는 함수입니다.
+        const req = {
+            election_id: electionId,
+            candidate_id: selectCandidateNum,
+        };
+
+        voteApi.addVote(req).then(res => {
+            if (res.data.ok) {
+                alert("투표해주셔서 감사합니다!");
+                history.replace("/election");
+            } else {
+                alert("투표가 정상적으로 처리되지 않았습니다!");
+                history.replace("/election");
+            }
+        });
     };
 
     const deleteElection = () => {
@@ -56,7 +71,15 @@ const ElectionDetail = () => {
                 <VoteBox>
                     {post &&
                         post.candidates.map((ele, idx) => (
-                            <VoteCard key={ele.candidate_id}>
+                            <VoteCard
+                                key={ele.candidate_id}
+                                onClick={() =>
+                                    setSelectCandidateNum(ele.candidate_id)
+                                }
+                                isSelected={
+                                    ele.candidate_id === selectCandidateNum
+                                }
+                            >
                                 <img
                                     src={`http://3.36.90.60/${ele.photo}`}
                                     alt={ele.photo}
@@ -128,7 +151,7 @@ const VoteBox = styled.div`
 const VoteCard = styled.div`
     display: flex;
     flex-direction: column;
-    border: 1px solid #d2d2d2;
+    border: 1px solid ${props => (props.isSelected ? "#eb4d4b" : "#d2d2d2")};
     text-align: center;
     img {
         width: 100%;

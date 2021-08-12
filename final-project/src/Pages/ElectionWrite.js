@@ -79,7 +79,6 @@ const ElectionWrite = () => {
 
     const selectFileImageUploadSetData = currentIdx => {
         //유저가 파일을 선택하면 post 안에 파일객체를 저장하고, 서버에 파일객체를 보내고, imgUrl을 받아서 post 안에 imgUrl을 저장하는 역할을 합니다.
-        console.log("함수 실행!!!🤣🤣");
         if (isLoading) return; //업로드중이 아닐때에만 파일선택하게 한다.
         setIsLoading(true);
 
@@ -124,7 +123,6 @@ const ElectionWrite = () => {
         setIsLoading(false);
         //----
     };
-    console.log(post);
 
     const addElection = () => {
         //서버로 보낼 데이터를 정리하고, 선거를 추가하는 미들웨어함수로 보낸다.
@@ -142,8 +140,10 @@ const ElectionWrite = () => {
     };
 
     return (
-        <ElectionContainer>
-            <ElectionInfoBox>
+        <ElectionWriteContainer>
+            {/* 선거 게시글의 제목, 내용, 시작일, 종료일을 입력하는 곳입니다. */}
+            <WriteElectionInfoBox>
+                {/* 선거게시글 제목입력란 */}
                 <TextField
                     name="name"
                     label="제목"
@@ -154,6 +154,7 @@ const ElectionWrite = () => {
                     }}
                     onChange={e => setElectionInfo(e)}
                 />
+                {/* 선거게시글 내용입력란 */}
                 <TextField
                     name="content"
                     label="내용"
@@ -164,6 +165,7 @@ const ElectionWrite = () => {
                     }}
                     onChange={e => setElectionInfo(e)}
                 />
+                {/* 선거시작일 입력란 */}
                 <TextField
                     name="start_date"
                     id="datetime-local"
@@ -176,6 +178,7 @@ const ElectionWrite = () => {
                     }}
                     onChange={e => setElectionInfo(e)}
                 />
+                {/* 선거종료일 입력란 */}
                 <TextField
                     name="end_date"
                     id="datetime-local"
@@ -190,11 +193,15 @@ const ElectionWrite = () => {
                     }}
                     onChange={e => setElectionInfo(e)}
                 />
-            </ElectionInfoBox>
-            <CandidateInfoBox className={classes.root}>
+            </WriteElectionInfoBox>
+
+            {/* 선거 후보자의 이름, 학과, 소개, 사진을 입력하는 곳입니다. */}
+            <WriteCandidateBox className={classes.root}>
                 {post &&
                     post.candidates.map((ele, idx) => (
+                        // 머테리얼 ui의 Accordion을 적용한 부분입니다.
                         <Accordion key={idx}>
+                            {/* 아코디언 디자인의 헤더 부분입니다. */}
                             <AccordionSummary
                                 expandIcon={<ExpandMoreIcon />}
                                 aria-controls="panel1a-content"
@@ -210,15 +217,19 @@ const ElectionWrite = () => {
                                     삭제
                                 </Button>
                             </AccordionSummary>
+
+                            {/* 아코디언 디자인의 상세내용 부분입니다. */}
                             <AccordionDetails>
                                 <CandidateWriteBox>
+                                    {/* 후보자의 사진에 관련된 작업을 하는 공간입니다. */}
                                     <CandidateImage>
+                                        {/* 후보자의 사진을 미리보기 할 수 있는 곳입니다. */}
                                         <Freeview
                                             onClick={() =>
                                                 fileInput.current.click()
                                             }
                                         >
-                                            {/* 후보자의 이미지가 있으면 보여주고, 아니면 default string을 보여준다. */}
+                                            {/* 후보자의 이미지가 있으면 보여주고, 아니면 기본문자열을 보여줍니다. */}
                                             {ele.photo ? (
                                                 <img
                                                     src={`http://3.36.90.60/${ele.photo}`}
@@ -231,6 +242,8 @@ const ElectionWrite = () => {
                                                 </span>
                                             )}
                                         </Freeview>
+
+                                        {/* Uploader은 type이 file인 input입니다. 브라우저 상에서는 보이지 않게 숨겨두었습니다. */}
                                         <Uploader
                                             ref={fileInput}
                                             type="file"
@@ -242,7 +255,10 @@ const ElectionWrite = () => {
                                             disabled={isLoading}
                                         />
                                     </CandidateImage>
+
+                                    {/* 후보자의 상세 내용이 담길 곳입니다. */}
                                     <CandidateContent>
+                                        {/* 후보자의 이름 */}
                                         <input
                                             name="name"
                                             placeholder="이름을 작성해주세요!"
@@ -250,6 +266,7 @@ const ElectionWrite = () => {
                                                 setCandidateInfo(idx, e)
                                             }
                                         />
+                                        {/* 후보자의 학과 */}
                                         <input
                                             name="major"
                                             placeholder="학과를 작성해주세요!"
@@ -257,6 +274,7 @@ const ElectionWrite = () => {
                                                 setCandidateInfo(idx, e)
                                             }
                                         />
+                                        {/* 후보자의 소개 */}
                                         <textarea
                                             name="content"
                                             placeholder="소개를 작성해주세요!"
@@ -271,26 +289,29 @@ const ElectionWrite = () => {
                     ))}
                 <Button onClick={addCard}>후보자 추가</Button>
                 <Button onClick={addElection}>저장</Button>
-            </CandidateInfoBox>
-        </ElectionContainer>
+            </WriteCandidateBox>
+        </ElectionWriteContainer>
     );
 };
 
-const ElectionContainer = styled.div``;
+const ElectionWriteContainer = styled.div``;
 
-const ElectionInfoBox = styled.div`
+const WriteElectionInfoBox = styled.div`
     padding: 50px 40px;
     display: flex;
     flex-direction: column;
 `;
 
-const CandidateInfoBox = styled.div``;
+const WriteCandidateBox = styled.div``;
 
 const Freeview = styled.div`
     width: 300px;
-    height: 100%;
+    height: 300px;
+    display: flex;
+    align-items: center;
     img {
         width: 100%;
+        height: 100%;
         object-fit: cover;
     }
 `;

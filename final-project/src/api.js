@@ -208,8 +208,13 @@ export const searchApi = {
 };
 
 export const electionApi = {
+    //전체선거게시글 조회
     getElectionList: () => instance.get("election"),
+
+    //특정선거게시글 조회
     getElection: election_id => instance.get(`election/${election_id}`),
+
+    //선거게시글 추가
     addElection: ({
         name,
         content,
@@ -228,19 +233,26 @@ export const electionApi = {
             start_date,
             end_date,
         }),
+
+    //특정 선거게시글 수정
     editElection: ({ election_id, name, content, end_date }) =>
         instance.put(`election/${election_id}`, {
             name,
             content,
             end_date,
         }),
+
+    //특정 선거게시글 삭제
     deleteElection: ({ election_id }) =>
         instance.delete(`election/${election_id}`),
 };
 
 export const voteApi = {
-    addVote: ({ election_id, vote_num }) =>
-        instance.post(`election/vote/${election_id}`, { vote_num }),
+    //투표추가
+    addVote: ({ election_id, candidate_id }) =>
+        instance.post(`election/vote/${election_id}`, { candidate_id }),
+
+    //특정 선거게시글 결과조회
     getResult: ({ election_id }) =>
         instance.get(`election/${election_id}/result`),
 };
