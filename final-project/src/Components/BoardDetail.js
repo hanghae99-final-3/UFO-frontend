@@ -32,6 +32,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import { useCookies } from "react-cookie";
+import Cookies from "js-cookie";
 import instance from "../api";
 import { setUnivViewReducer } from "../redux/modules/univBoardSlice";
 
@@ -39,8 +40,8 @@ import { setUnivViewReducer } from "../redux/modules/univBoardSlice";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import FavoriteBorder from "@material-ui/icons/FavoriteBorder";
-//좋아요끝
 
+//좋아요끝
 const BoardDetail = ({ page }) => {
     const dispatch = useDispatch();
     const { id: postId } = useParams();
@@ -81,7 +82,6 @@ const BoardDetail = ({ page }) => {
                 ? getFreePostDB(postId)
                 : detailUnivBoardPostDB(postId),
         );
-
         // 게시물 상세정보 api 요청 미들웨어
         dispatch(
             page === "freeboard"
@@ -91,26 +91,34 @@ const BoardDetail = ({ page }) => {
         const callView = async () => {
             if (page === "freeboard") {
                 await instance.get(`free/post/${postId}/view_count`);
+                if (post) {
+                    dispatch(setViewReducer());
+                }
             } else {
                 await instance.get(`univ/post/${postId}/view_count`);
-            }
-            if (page === "freeboard" && cookies.viewCookie !== `f${postId}`) {
-                dispatch(setViewReducer());
-            } else {
-                dispatch(setUnivViewReducer());
+                if (post) {
+                    dispatch(setUnivViewReducer());
+                }
             }
         };
         // 쿠키 설정을 통해서 조회수 증가는 20분으로 제한한다.
-        if (page === "freeboard" && cookies.viewCookie !== `f${postId}`) {
-            after20m.setMinutes(now.getMinutes() + 20);
-            setCookie("viewCookie", viewCookie, { expires: after20m });
+        if (
+            page === "freeboard" &&
+            Cookies.get(`viewCookie_f${postId}`) !== `f${postId}`
+        ) {
+            after20m.setMinutes(now.getMinutes() + 10);
+            setCookie(`viewCookie_f${postId}`, viewCookie, {
+                expires: after20m,
+            });
             callView();
         } else if (
             page === "univboard" &&
-            cookies.viewCookie !== `u${postId}`
+            Cookies.get(`viewCookie_u${postId}`) !== `u${postId}`
         ) {
-            after20m.setMinutes(now.getMinutes() + 20);
-            setCookie("viewCookie", viewCookie, { expires: after20m });
+            after20m.setMinutes(now.getMinutes() + 10);
+            setCookie(`viewCookie_u${postId}`, viewCookie, {
+                expires: after20m,
+            });
             callView();
         }
         //이미 좋아요 눌렀던 게시물이면 빨간하트 return

@@ -2,14 +2,24 @@ import React, { useState, useEffect } from "react";
 import { history } from "../redux/configureStore";
 // redux
 import {
+    resetSearchOrder,
     resetTagReducer,
+    setSearchOrder,
     setTagReducer,
 } from "../redux/modules/freeBoardSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 // material Ui
 import Input from "@material-ui/core/Input";
 import styled from "styled-components";
 import PushButton from "../Elements/Buttons/PushButton";
+import categories from "../categories";
+import {
+    InputAdornment,
+    InputLabel,
+    MenuItem,
+    NativeSelect,
+    Select,
+} from "@material-ui/core";
 /**
  * @author heesung
  * @param searchTag
@@ -24,10 +34,13 @@ const SearchBox = ({ searchTag, deactivateSearch, page }) => {
     const [selectedTag, setSelectedTag] = useState(null);
     // 유저가 검색어 입력창에 입력한 값을 searchTerm에 저장한다.
     const [searchTerm, setSearchTerm] = useState("");
+    // 로그인 유저의 대학교 id
+    const univName = useSelector(state => state.user?.user?.university?.name);
+    // 작성일 or  관련순 초기 상태
+    const [order, setOrder] = React.useState("date");
 
     useEffect(() => {
         // selectedTag 상태를 리덕스 스토어의 상태와 동기화
-
         dispatch(setTagReducer(selectedTag));
     }, [dispatch, selectedTag]);
 
@@ -55,14 +68,22 @@ const SearchBox = ({ searchTag, deactivateSearch, page }) => {
     //-------검색창 form onSubmit 이벤트 핸들링--------
     const handleSearch = e => {
         e.preventDefault();
-
         if (searchTerm === "") {
             return window.alert("검색어를 입력해 주세요.");
         }
-        history.push(`/search/${searchTerm}`);
+        history.push(`/freeboard/search/${searchTerm}`);
     };
     //----
 
+    // 작성일 or  관련순 정렬  이벤트 핸들링
+    const handleOrderChange = event => {
+        setOrder(event.target.value);
+        if (event.target.value === "rel") {
+            dispatch(setSearchOrder("relative"));
+        } else {
+            dispatch(resetSearchOrder());
+        }
+    };
     const onClick = () => history.push(`/${page}/write`);
 
     return (
@@ -73,7 +94,7 @@ const SearchBox = ({ searchTag, deactivateSearch, page }) => {
                         <TitleSpan>
                             {page === "freeboard"
                                 ? "자유 게시판"
-                                : "대학 게시판"}
+                                : `대학 게시판 (${univName})`}
                         </TitleSpan>
 
                         <PushButton onClick={onClick}>
@@ -109,6 +130,16 @@ const SearchBox = ({ searchTag, deactivateSearch, page }) => {
                                 fullWidth
                                 value={searchTerm}
                                 onChange={onSearchTermChange}
+                                endAdornment={
+                                    <NativeSelect
+                                        value={order}
+                                        onChange={handleOrderChange}
+                                        style={{ width: "80px" }}
+                                    >
+                                        <option value={"date"}>작성일</option>
+                                        <option value={"rel"}>관련순</option>
+                                    </NativeSelect>
+                                }
                             />
                         </SearchForm>
                     </InputContainer>

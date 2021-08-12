@@ -15,28 +15,29 @@ instance.interceptors.request.use(async config => {
     config.headers["authorization"] = await getToken();
     return config;
 });
+
 // ┏----------interceptor를 통한 response 설정----------┓
-// instance.interceptors.response.use(
-//     response => {
-//         if (response.data.message === "new token") {
-//             const { config } = response;
-//             const originalRequest = config;
-//             const newAccessToken = response.data.myNewToken;
+instance.interceptors.response.use(
+    async response => {
+        if (response.data.message === "new token") {
+            const { config } = response;
+            const originalRequest = config;
+            const newAccessToken = response.data.myNewToken;
 
-//             localStorage.setItem("token", newAccessToken);
+            localStorage.setItem("token", newAccessToken);
 
-//             originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
-//             return axios(originalRequest);
-//         }
-//         return response;
-//     },
-//     async error => {
-//         const {
-//             config,
-//             response: { status },
-//         } = error;
-//     },
-// );
+            originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+            return await axios(originalRequest);
+        }
+        return response;
+    },
+    // async error => {
+    //     const {
+    //         config,
+    //         response: { status },
+    //     } = error;
+    // },
+);
 
 // 사용자 관련 axios API 통신
 export const userApi = {
@@ -75,6 +76,21 @@ export const userApi = {
         }),
     // 계정 삭제
     deleteAccount: userId => instance.delete(`api/user/${userId}`),
+    // 내가 쓴 글 불러오기
+    getMyPosts: data =>
+        instance.get("/api/user/my-post", {
+            params: {
+                pageSize: data.pageSize,
+                pageNum: data.pageNum,
+            },
+        }),
+    getMyCommentedPost: data =>
+        instance.get("/api/user/my-comment", {
+            params: {
+                pageSize: data.pageSize,
+                pageNum: data.pageNum,
+            },
+        }),
 };
 
 export const freeBoardApi = {
@@ -88,6 +104,10 @@ export const freeBoardApi = {
                 country_id: data?.country_id,
             },
         }),
+
+    // 인기 게시물 불러오기
+
+    getIssueList: data => instance.get("/issue"),
 
     //게시물추가하기
     addPost: post => instance.post("free/post", post),
@@ -125,8 +145,6 @@ export const freeCommentApi = {
     deletePostComment: comment =>
         instance.delete(`free/comment/${comment.comment_id}`),
 };
-
-export const issueApi = {};
 
 export const univBoardApi = {
     //UnivBoard 목록 불러오기
@@ -203,6 +221,7 @@ export const searchApi = {
                 category: data?.category,
                 country_id: data?.country_id,
                 keyword: data?.keyword,
+                sort: data?.sort,
             },
         }),
 };

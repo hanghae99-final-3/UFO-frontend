@@ -7,6 +7,7 @@ import categories from "../categories";
 import { BiHeart } from "react-icons/bi";
 import { MdComment } from "react-icons/md";
 import VisibilityIcon from "@material-ui/icons/Visibility";
+import moment from "moment";
 
 /**
  * @author heesung && junghoo
@@ -16,7 +17,15 @@ import VisibilityIcon from "@material-ui/icons/Visibility";
  * @필수값 postList, title, tag, preview
  */
 
-const BoardBox = ({ postList, title, tag, preview, boardName }) => {
+const BoardBox = ({
+    postList,
+    title,
+    tag,
+    preview,
+    boardName,
+    myPostTitle,
+    mypage,
+}) => {
     const _onClick = postId => {
         //자유게시판일때,
         if (boardName === "freeBoard")
@@ -29,6 +38,7 @@ const BoardBox = ({ postList, title, tag, preview, boardName }) => {
             <Header>
                 {tag && <Tag># {tag}</Tag>}
                 {title && <TitleHeading>{title}</TitleHeading>}
+                {myPostTitle && <TitleHeading>{myPostTitle}</TitleHeading>}
                 {(title || tag) && (
                     <More onClick={() => history.push(boardName)}>더보기</More>
                 )}
@@ -58,28 +68,40 @@ const BoardBox = ({ postList, title, tag, preview, boardName }) => {
                                     <PostContent>{post.content}</PostContent>
                                 )}
                             </ContentContainer> */}
-                            <IconContainer>
-                                {!tag ? (
-                                    <>
-                                        <Icon>
-                                            <BiHeart />
-                                            <span>
-                                                {post.like &&
-                                                    post.like.all_like}
-                                            </span>
-                                        </Icon>
-                                        <Icon>
-                                            <MdComment />
-                                            <span>{post.coment_count}</span>
-                                        </Icon>
-                                    </>
-                                ) : null}
+                            {!mypage && (
+                                <IconContainer>
+                                    {!tag ? (
+                                        <>
+                                            <Icon>
+                                                <BiHeart />
+                                                <span>
+                                                    {post.like &&
+                                                        post.like.all_like}
+                                                </span>
+                                            </Icon>
+                                            <Icon>
+                                                <MdComment />
+                                                <span>{post.coment_count}</span>
+                                            </Icon>
+                                        </>
+                                    ) : null}
 
-                                <Icon>
-                                    <VisibilityIcon />
-                                    <span>{post.view_count}</span>
-                                </Icon>
-                            </IconContainer>
+                                    <Icon>
+                                        <VisibilityIcon />
+                                        <span>{post.view_count}</span>
+                                    </Icon>
+                                </IconContainer>
+                            )}
+                            {mypage && (
+                                <IconContainer>
+                                    <span>
+                                        {post &&
+                                            moment(post.createdAt).format(
+                                                "YYYY.MM.DD",
+                                            )}
+                                    </span>
+                                </IconContainer>
+                            )}
                         </PostContainer>
                     ))}
             </Content>
