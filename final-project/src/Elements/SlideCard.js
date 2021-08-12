@@ -85,7 +85,9 @@ export default function SlideCard({ post, rank }) {
                     variant="body2"
                     component="p"
                     className="ck-content"
-                    dangerouslySetInnerHTML={{ __html: post.content }}
+                    dangerouslySetInnerHTML={{
+                        __html: post.content,
+                    }}
                 ></Typography>
             </CardContent>
             <div style={{ display: "flex" }}>
@@ -100,14 +102,6 @@ export default function SlideCard({ post, rank }) {
                     </Button>
                 </CardActions>
                 <IconContainer>
-                    <Icon>
-                        <BiHeart />
-                        <span>{post.like && post.like.all_like}</span>
-                    </Icon>
-                    <Icon>
-                        <MdComment />
-                        <span>{post.coment_count}</span>
-                    </Icon>
                     <Icon>
                         <VisibilityIcon />
                         <span>{post.view_count}</span>
