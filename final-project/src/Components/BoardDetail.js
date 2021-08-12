@@ -17,16 +17,15 @@ import {
     univLikeToggleDB,
 } from "../redux/async/univBoard";
 
+import moment from "moment";
 import { Button as Mbutton } from "@material-ui/core";
 import AccessTimeIcon from "@material-ui/icons/AccessTime";
 import LinkIcon from "@material-ui/icons/Link";
-import FavoriteIcon from "@material-ui/icons/Favorite";
 
 import categories from "../categories";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 
 import TimeCounting from "time-counting";
-import moment from "moment";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -39,12 +38,16 @@ import { setUnivViewReducer } from "../redux/modules/univBoardSlice";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import FavoriteBorder from "@material-ui/icons/FavoriteBorder";
+import FavoriteIcon from "@material-ui/icons/Favorite";
 //좋아요끝
 
+//date countdown
+import DateCountdown from "react-date-countdown-timer";
+import CountDown from "./CountDown/CountDown";
+//
 const BoardDetail = ({ page }) => {
     const dispatch = useDispatch();
     const { id: postId } = useParams();
-
     // 게시물 상세 정보 스토어 구독
     const post = useSelector(state =>
         page === "freeboard"
@@ -231,6 +234,17 @@ const BoardDetail = ({ page }) => {
                     ></ContentBody>
                 )}
             </ContentBodyContainer>
+            <div>
+                <p>standard time : 지금부터...</p>
+                <p>end time : 2021년 8월 20일까지는...</p>
+                <p>Left time : </p>
+                <CountDown />
+                {/* return{" "}
+                <DateCountdown
+                    dateTo="August 14, 2021 00:00:00 GMT+03:00"
+                    callback={() => alert("Hello")}
+                /> */}
+            </div>
             <ButtonContainer>
                 <Button onClick={() => history.push(`/${page}`)}>목록</Button>
                 {userId && post && post.user && userId === post.user.user_id && (

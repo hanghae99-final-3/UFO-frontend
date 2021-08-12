@@ -1,12 +1,19 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { history } from "../redux/configureStore";
 
 import styled from "styled-components";
 import categories from "../categories";
-
+import { useParams } from "react-router-dom";
 import { BiHeart } from "react-icons/bi";
 import { MdComment } from "react-icons/md";
 import VisibilityIcon from "@material-ui/icons/Visibility";
+import { useSelector, useState } from "react-redux";
+
+//좋아요 박스
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Checkbox from "@material-ui/core/Checkbox";
+import FavoriteBorder from "@material-ui/icons/FavoriteBorder";
+import FavoriteIcon from "@material-ui/icons/Favorite";
 
 /**
  * @author heesung && junghoo
@@ -24,8 +31,12 @@ const BoardBox = ({ postList, title, tag, preview, boardName }) => {
         //학교게시판일때,
         return history.push(`/univBoard/detail/${postId}`);
     };
+    const isLike = useSelector(state =>
+        boardName === "freeBoard" ? state.freeBoard.list : state.univBoard.list,
+    );
     return (
         <BoardContentContainer>
+            {console.log("isLike", isLike)}
             <Header>
                 {tag && <Tag># {tag}</Tag>}
                 {title && <TitleHeading>{title}</TitleHeading>}
@@ -62,7 +73,7 @@ const BoardBox = ({ postList, title, tag, preview, boardName }) => {
                                 {!tag ? (
                                     <>
                                         <Icon>
-                                            <BiHeart />
+                                            <FavoriteBorder />
                                             <span>
                                                 {post.like &&
                                                     post.like.all_like}
