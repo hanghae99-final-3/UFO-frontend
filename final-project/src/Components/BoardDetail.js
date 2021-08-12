@@ -150,8 +150,6 @@ const BoardDetail = ({ page }) => {
     return (
         <MainContentContainer>
             <ContentHeaderContainer>
-                {console.log("isLike", isLike)}
-                {console.log("postId", postId)}
                 {page === "freeboard" ? (
                     <Tag>
                         #{post && categories.freeBoardTags[post.category]}

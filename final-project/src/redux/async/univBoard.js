@@ -238,7 +238,6 @@ export const univLikeToggleDB = createAsyncThunk(
     async (data, thunkAPI) => {
         try {
             const response = await univBoardApi.univLikeToggle(data);
-            console.log("univBoard Like", response);
             if (response.data.ok) {
                 if (response.data.message === "disliked post") {
                     //좋아요 취소

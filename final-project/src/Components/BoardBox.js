@@ -38,7 +38,6 @@ const BoardBox = ({
     );
     return (
         <BoardContentContainer>
-            {console.log("isLike", isLike)}
             <Header>
                 {tag && <Tag># {tag}</Tag>}
                 {title && <TitleHeading>{title}</TitleHeading>}
