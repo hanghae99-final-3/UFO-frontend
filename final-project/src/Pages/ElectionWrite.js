@@ -69,7 +69,7 @@ const ElectionWrite = () => {
     };
 
     const setElectionInfo = event => {
-        //선거의 정보들을 받아와서 post에 정보를 넣어주는 함수입니다.
+        //선거의 메인정보들을 받아와서 post에 정보를 넣어주는 함수입니다.
         const keyName = event.target.attributes.getNamedItem("name").value; //post에 넣어줄 key 입니다.
         let value = event.target.value; //post에 넣어줄 value 입니다.
 
@@ -81,6 +81,7 @@ const ElectionWrite = () => {
             [keyName]: value,
         });
     };
+
     const setCandidateInfo = (currentIdx, event) => {
         //후보자들의 정보들을 받아와서 post에 정보를 넣어주는 함수입니다.
         const keyName = event.target.attributes.getNamedItem("name").value; //post에 넣어줄 key 입니다.
@@ -142,6 +143,18 @@ const ElectionWrite = () => {
 
     const addElection = () => {
         //서버로 보낼 데이터를 정리하고, 선거를 추가하는 미들웨어함수로 보낸다.
+        if (
+            moment(post.start_date).isBefore(moment()) ||
+            moment(post.start_date).isSame(moment())
+        )
+            return alert("시작일을 현재시간보다 후로 설정해주세요");
+
+        if (
+            moment(post.end_date).isBefore(post.start_date) ||
+            moment(post.end_date).isSame(post.start_date)
+        )
+            return alert("종료일을 시작일 후로 설정해주세요");
+
         const req = {
             name: post.name,
             content: post.content,
