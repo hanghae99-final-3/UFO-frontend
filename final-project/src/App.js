@@ -25,6 +25,9 @@ import ElectionDetail from "./Pages/ElectionDetail"; //선거게시판 게시글
 import ElectionWrite from "./Pages/ElectionWrite"; //선거게시글 작성페이지 or 수정페이지
 import FreeBoardSearchResult from "./Pages/FreeBoardSearchResult"; // 자유 게시판 검색 결과 페이지
 
+//정후님을 위한 테스트 페이지 :-)
+import Test from "./Pages/Test";
+
 //utils
 import { checkLoggedInUser } from "./redux/async/user"; // 로그인 체크
 import MyPostList from "./Pages/MyPostList";
@@ -113,6 +116,8 @@ function App() {
                             exact
                             component={ElectionWrite}
                         />
+                        <Route path="/test" exact component={Test} />
+
                         <Redirect from="*" to="/" />
                     </Switch>
                 </Layout>

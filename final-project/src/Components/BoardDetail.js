@@ -240,17 +240,7 @@ const BoardDetail = ({ page }) => {
                     ></ContentBody>
                 )}
             </ContentBodyContainer>
-            <div>
-                <p>standard time : 지금부터...</p>
-                <p>end time : 2021년 8월 20일까지는...</p>
-                <p>Left time : </p>
-                <CountDown />
-                {/* return{" "}
-                <DateCountdown
-                    dateTo="August 14, 2021 00:00:00 GMT+03:00"
-                    callback={() => alert("Hello")}
-                /> */}
-            </div>
+
             <ButtonContainer>
                 <Button onClick={() => history.push(`/${page}`)}>목록</Button>
                 {userId && post && post.user && userId === post.user.user_id && (
