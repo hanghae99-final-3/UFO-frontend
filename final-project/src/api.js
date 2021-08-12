@@ -190,7 +190,9 @@ export const univBoardApi = {
     getComment: post_id => instance.get(`univ/comment/${post_id}`),
 
     //게시물 좋아요/취소
-    univLikeToggle: post_id => instance.get(`/univ/post/${post_id}/like`),
+    univLikeToggle: post_id => {
+        return instance.get(`/univ/post/${post_id}/like`);
+    },
 };
 
 export const searchApi = {

@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { univBoardApi, likeApi } from "../../api";
+import { univBoardApi } from "../../api";
 import { history } from "../configureStore";
 import { increaseLike, decreaseLike } from "../modules/univBoardSlice";
 /**
@@ -239,15 +239,15 @@ export const univLikeToggleDB = createAsyncThunk(
         try {
             const response = await univBoardApi.univLikeToggle(data);
             console.log("univBoard Like", response);
-            // if (response.data.ok) {
-            //     if (response.data.message === "disliked post") {
-            //         //좋아요 취소
-            //         thunkAPI.dispatch(decreaseLike());
-            //     } else {
-            //         //좋아요
-            //         thunkAPI.dispatch(increaseLike());
-            //     }
-            // }
+            if (response.data.ok) {
+                if (response.data.message === "disliked post") {
+                    //좋아요 취소
+                    thunkAPI.dispatch(decreaseLike());
+                } else {
+                    //좋아요
+                    thunkAPI.dispatch(increaseLike());
+                }
+            }
         } catch (err) {
             console.log("err", err);
         }
