@@ -25,6 +25,7 @@ a {
 }
 button {
   border: 0;
+  cursor: pointer;
 }
 body{
   /* 스크롤바 제거 */
