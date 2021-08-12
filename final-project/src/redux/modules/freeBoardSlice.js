@@ -9,6 +9,7 @@ import {
     addFreeCommentDB,
     editFreeCommentDB,
     deleteFreeCommentDB,
+    getIssuePostListDB,
 } from "../async/freeBoard";
 
 /**
@@ -18,6 +19,7 @@ import {
 
 const initialState = {
     list: [],
+    issueList: [],
     post: null,
     commentList: null,
     isFetching: false,
@@ -40,9 +42,15 @@ const freeBoardSlice = createSlice({
         resetTagReducer: (state, action) => {
             state.selectedTag = null;
         },
+        setSearchOrder: (state, { payload }) => {
+            state.selectedSearchOrder = payload;
+        },
+        resetSearchOrder: (state, { payload }) => {
+            state.selectedSearchOrder = null;
+        },
         //사용자가 로그인하고 게시글에 처음 들어갔을때 바로 뷰 카운트를 추가해주는 리듀서
         setViewReducer: (state, action) => {
-            if (state.post) state.post.view_count += 1;
+            state.post.view_count += 1;
         },
         //사용자가 게시글 좋아요를 누르면 바로 게시글의 전체 좋아요 수를 증가해주는 리듀서
         increaseLike: (state, action) => {
@@ -205,6 +213,18 @@ const freeBoardSlice = createSlice({
             state.errorMessage = errorMessage;
         },
         //----
+        //----자유게시판 인기 게시물 불러오는 리듀서
+        [getIssuePostListDB.pending]: (state, action) => {
+            state.isFetching = true;
+        },
+        [getIssuePostListDB.fulfilled]: (state, { payload: issuePosts }) => {
+            state.isFetching = false;
+            state.issueList = issuePosts;
+        },
+        [getIssuePostListDB.rejected]: (state, { payload: errorMessage }) => {
+            state.isFetching = false;
+            state.errorMessage = errorMessage;
+        },
     },
 });
 
@@ -215,6 +235,8 @@ export const {
     setViewReducer,
     increaseLike,
     decreaseLike,
+    setSearchOrder,
+    resetSearchOrder,
 } = freeBoardSlice.actions;
 
 export default freeBoardSlice;
