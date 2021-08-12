@@ -2,7 +2,7 @@ import React, { useState, useRef } from "react";
 import axios from "axios";
 import styled from "styled-components";
 import { addElectionDB } from "../redux/async/election";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
 
 //머테리얼 ui
@@ -32,20 +32,23 @@ const useStyles = makeStyles(theme => ({
 const ElectionWrite = () => {
     const dispatch = useDispatch();
     const classes = useStyles();
-    const [post, setPost] = useState({ candidate: [{}] }); //입력값이 여기로 담겨진다.
-    const [isLoading, setIsLoading] = useState(false); //업로드중인지 아닌지 판별하는 state
-    const fileInput = useRef();
+    const [post, setPost] = useState({ candidates: [{}] }); //입력값 통합 state (모든 입력값이 여기로 담겨진다.)
+    const [isLoading, setIsLoading] = useState(false); //이미지가 업로드중인지 아닌지 판별하는 state (이미 이미지가 업로드 중이면(true면) 이미지 업로드를 막는 역할)
+    const fileInput = useRef(); //type이 file인 input이다 (파일 객체를 받아올 input)
+    const user = useSelector(state => state.user.user);
 
     const addCard = () => {
         //카드 추가하기
-        setPost({ ...post, candidate: [...post.candidate, {}] });
+        setPost({ ...post, candidates: [...post.candidates, {}] });
     };
 
     const deleteCard = currentIdx => {
         //카드 삭제하기
         setPost({
             ...post,
-            candidate: post.candidate.filter((ele, idx) => currentIdx !== idx),
+            candidates: post.candidates.filter(
+                (ele, idx) => currentIdx !== idx,
+            ),
         });
     };
 
@@ -68,43 +71,44 @@ const ElectionWrite = () => {
         const value = event.target.value; //post에 넣어줄 value 입니다.
         setPost({
             ...post,
-            candidate: post.candidate.map((ele, idx) =>
+            candidates: post.candidates.map((ele, idx) =>
                 idx === currentIdx ? { ...ele, [keyName]: value } : ele,
             ),
         });
     };
 
-    const selectFileImageUploader = currentIdx => {
+    const selectFileImageUploadSetData = currentIdx => {
+        //유저가 파일을 선택하면 post 안에 파일객체를 저장하고, 서버에 파일객체를 보내고, imgUrl을 받아서 post 안에 imgUrl을 저장하는 역할을 합니다.
+        console.log("함수 실행!!!🤣🤣");
         if (isLoading) return; //업로드중이 아닐때에만 파일선택하게 한다.
         setIsLoading(true);
 
+        const file = fileInput.current.files[0]; //파일객체;
         setPost({
             //파일객체를 post에 담아둔다.
             ...post,
-            candidate: post.candidate.map((ele, idx) =>
-                idx === currentIdx ? { ...ele, photo: "" } : ele,
+            candidates: post.candidates.map((ele, idx) =>
+                idx === currentIdx ? { ...ele, photo: file } : ele,
             ),
         });
 
         //----사용할 데이터를 정리하고, 서버에 데이터(이미지 객체)를 전달하고 url을 얻어서 post에 저장한다.
-        const file = fileInput.current.files[0]; //파일객체;
 
         const req = { img: file }; //서버에서 사용할 데이터
 
-        //----multer를 사용하려면 formData 안에 request들을 넣어주어야 한다
+        //multer를 사용하려면 formData 안에 request들을 넣어주어야 한다
         let formData = new FormData();
         for (let entry of Object.entries(req)) {
             formData.append(entry[0], entry[1]);
         }
-        //----
 
-        //----통신헤더설정
+        //통신헤더설정
         const config = {
             header: { "content-type": "multipart/form-data" },
         };
-        //----
 
         async function sendImg() {
+            //서버에 파일 객체를 보내서 imgUrl을 얻어온다.
             try {
                 const {
                     data: { result: imgUrl },
@@ -113,14 +117,13 @@ const ElectionWrite = () => {
                     formData,
                     config,
                 );
-
-                setPost({
+                setPost(prevState => ({
                     //통신 후 받아온 imgUrl을 post 안에 담아둔다. 이 imgUrl을 사용하여 화면에서 미리보기를 구현한다.
-                    ...post,
-                    candidate: post.candidate.map((ele, idx) =>
+                    ...prevState,
+                    candidates: prevState.candidates.map((ele, idx) =>
                         idx === currentIdx ? { ...ele, imgUrl } : ele,
                     ),
-                });
+                }));
             } catch (err) {
                 alert("이미지를 등록할 수 없습니다.");
             }
@@ -130,9 +133,21 @@ const ElectionWrite = () => {
         setIsLoading(false);
         //----
     };
+    console.log(post);
 
     const addElection = () => {
-        dispatch(addElectionDB(post));
+        //서버로 보낼 데이터를 정리하고, 선거를 추가하는 미들웨어함수로 보낸다.
+        const req = {
+            name: post.name,
+            content: post.content,
+            country_id: user.country_id,
+            univ_id: user.univ_id,
+            candidates: post.candidates,
+            start_date: post.start_date,
+            end_date: post.end_date,
+        };
+
+        dispatch(addElectionDB(req));
     };
 
     return (
@@ -187,7 +202,7 @@ const ElectionWrite = () => {
             </ElectionInfoBox>
             <CandidateInfoBox className={classes.root}>
                 {post &&
-                    post.candidate.map((ele, idx) => (
+                    post.candidates.map((ele, idx) => (
                         <Accordion key={idx}>
                             <AccordionSummary
                                 expandIcon={<ExpandMoreIcon />}
@@ -229,7 +244,9 @@ const ElectionWrite = () => {
                                             ref={fileInput}
                                             type="file"
                                             onChange={() =>
-                                                selectFileImageUploader(idx)
+                                                selectFileImageUploadSetData(
+                                                    idx,
+                                                )
                                             }
                                             disabled={isLoading}
                                         />
