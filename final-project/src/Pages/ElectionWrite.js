@@ -1,9 +1,13 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import styled from "styled-components";
+import { history } from "../redux/configureStore";
 import { addElectionDB } from "../redux/async/election";
 import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
+
+//컴포넌트
+import Error from "../Components/Error";
 
 //머테리얼 ui
 import { makeStyles } from "@material-ui/core/styles";
@@ -52,6 +56,10 @@ const ElectionWrite = () => {
     const [isLoading, setIsLoading] = useState(false); //이미지가 업로드중인지 아닌지 판별하는 state (이미 이미지가 업로드 중이면(true면) 이미지 업로드를 막는 역할)
     const fileInput = useRef(); //type이 file인 input이다 (파일 객체를 받아올 input)
     const user = useSelector(state => state.user.user);
+
+    useEffect(() => {
+        // 나중에 여기에 대학관리자만 들어올 수 있게 처리하자!
+    }, []);
 
     const addCard = () => {
         //카드 추가하기
@@ -143,11 +151,13 @@ const ElectionWrite = () => {
 
     const addElection = () => {
         //서버로 보낼 데이터를 정리하고, 선거를 추가하는 미들웨어함수로 보낸다.
-        if (
-            moment(post.start_date).isBefore(moment()) ||
-            moment(post.start_date).isSame(moment())
-        )
-            return alert("시작일을 현재시간보다 후로 설정해주세요");
+
+        if (post.name || post.content || post.start_date || post.end_date)
+            if (
+                moment(post.start_date).isBefore(moment()) ||
+                moment(post.start_date).isSame(moment())
+            )
+                return alert("시작일을 현재시간보다 후로 설정해주세요");
 
         if (
             moment(post.end_date).isBefore(post.start_date) ||
@@ -167,6 +177,16 @@ const ElectionWrite = () => {
 
         dispatch(addElectionDB(req));
     };
+
+    //대학 인증을 한 사람만 볼 수 있도록 예외처리를 합니다.
+    if (!user.univ_id || !user.country_id)
+        return (
+            <Error
+                message="대학인증을 한 사람만 선거게시글을 볼 수 있어요"
+                link="/mypage"
+                buttonValue="대학인증하러가기"
+            />
+        );
 
     return (
         <ElectionWriteContainer>
@@ -194,7 +214,6 @@ const ElectionWrite = () => {
                     }}
                     onChange={e => setElectionInfo(e)}
                 />
-
                 {/* 선거시작일 입력란 */}
                 <TextField
                     name="start_date"
@@ -226,7 +245,6 @@ const ElectionWrite = () => {
                     onChange={e => setElectionInfo(e)}
                 />
             </WriteElectionInfoBox>
-
             {/* 선거 후보자의 이름, 학과, 소개, 사진을 입력하는 곳입니다. */}
             <WriteCandidateBox className={classes.root}>
                 {post &&
@@ -249,7 +267,6 @@ const ElectionWrite = () => {
                                     삭제
                                 </Button>
                             </AccordionSummary>
-
                             {/* 아코디언 디자인의 상세내용 부분입니다. */}
                             <AccordionDetails>
                                 <CandidateWriteBox>
@@ -274,7 +291,6 @@ const ElectionWrite = () => {
                                                 </span>
                                             )}
                                         </Freeview>
-
                                         {/* Uploader은 type이 file인 input입니다. 브라우저 상에서는 보이지 않게 숨겨두었습니다. */}
                                         <Uploader
                                             ref={fileInput}
@@ -287,7 +303,6 @@ const ElectionWrite = () => {
                                             disabled={isLoading}
                                         />
                                     </CandidateImage>
-
                                     {/* 후보자의 상세 내용이 담길 곳입니다. */}
                                     <CandidateContent>
                                         {/* 후보자의 이름 */}

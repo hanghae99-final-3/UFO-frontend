@@ -8,10 +8,12 @@ import { history } from "../redux/configureStore";
 
 //컴포넌트
 import ElectionSlider from "../Components/ElectionSlider";
+import Error from "../Components/Error";
 
 const ElectionDetail = () => {
     const dispatch = useDispatch();
     const { id: electionId } = useParams();
+    const user = useSelector(state => state.user.user);
     const post = useSelector(state => state.election.post); //선거게시물의 데이터가 들어있습니다.
     const [selectCandidateNum, setSelectCandidateNum] = useState(null); //선택한 후보자의 번호를 담는 state입니다.
 
@@ -45,6 +47,16 @@ const ElectionDetail = () => {
 
         dispatch(deleteElectionDB(req));
     };
+
+    //대학 인증을 한 사람만 볼 수 있도록 예외처리를 합니다.
+    if (!user.univ_id || !user.country_id)
+        return (
+            <Error
+                message="대학인증을 한 사람만 선거게시글을 볼 수 있어요"
+                link="/mypage"
+                buttonValue="대학인증하러가기"
+            />
+        );
 
     return (
         <ElectionDetailContainer>
