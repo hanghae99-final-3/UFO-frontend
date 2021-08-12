@@ -108,13 +108,13 @@ const ElectionWrite = () => {
                     formData,
                     config,
                 );
-                setPost(prevState => ({
+                setPost({
                     //통신 후 받아온 imgUrl을 post 안에 담아둔다. 이 imgUrl을 사용하여 화면에서 미리보기를 구현한다.
-                    ...prevState,
-                    candidates: prevState.candidates.map((ele, idx) =>
+                    ...post,
+                    candidates: post.candidates.map((ele, idx) =>
                         idx === currentIdx ? { ...ele, photo } : ele,
                     ),
-                }));
+                });
             } catch (err) {
                 alert("이미지를 등록할 수 없습니다.");
             }
