@@ -63,6 +63,9 @@ const Header = () => {
                     <Control>
                         <Link to="/election">투표함</Link>
                     </Control>
+                    <Control>
+                        <Link to="/mypost">내가 작성한 글</Link>
+                    </Control>
 
                     {isLoggedIn ? (
                         <>
