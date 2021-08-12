@@ -80,6 +80,7 @@ const Header = () => {
                                         dispatch(onLogout());
                                         localStorage.removeItem("token");
                                         history.replace("/");
+                                        setMenuOn(false);
                                     }}
                                 >
                                     로그아웃
