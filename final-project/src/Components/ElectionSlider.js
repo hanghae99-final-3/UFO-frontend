@@ -103,6 +103,7 @@ const SlideCard = styled.div`
 
 const CandidateCard = styled.div`
     display: flex;
+    margin-top: 50px;
 `;
 
 const CandidateImage = styled.div`
@@ -116,7 +117,7 @@ const CandidateImage = styled.div`
 `;
 
 const CandidateInfo = styled.div`
-    padding: 20px 10px;
+    padding: 20px 0 20px 50px;
     h3 {
         margin-bottom: 30px;
         font-size: 30px;
@@ -126,9 +127,10 @@ const CandidateInfo = styled.div`
         width: 100%;
         display: flex;
         justify-content: space-between;
+        font-size: 20px;
         span {
             font-weight: bold;
-            min-width: 50px;
+            min-width: 100px;
         }
         p {
             width: 100%;

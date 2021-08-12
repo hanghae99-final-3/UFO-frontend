@@ -64,7 +64,7 @@ const ElectionDetail = () => {
             <TimeContainer>
                 <h5>투표까지 남은 시간</h5>
                 <TimeBox>
-                    <span>D-일수:시간:분</span>
+                    <span>D-일:시간:분</span>
                 </TimeBox>
             </TimeContainer>
             <CandidatesContainer>
@@ -163,8 +163,9 @@ const VoteBox = styled.div`
 const VoteCard = styled.div`
     display: flex;
     flex-direction: column;
-    border: 1px solid ${props => (props.isSelected ? "#eb4d4b" : "#d2d2d2")};
+    border: 5px solid ${props => (props.isSelected ? "#eb4d4b" : "#d2d2d2")};
     text-align: center;
+
     img {
         width: 100%;
         height: 100%;
@@ -180,7 +181,17 @@ const VoteCard = styled.div`
 const Controls = styled.div`
     text-align: center;
     button {
-        padding: 10px;
+        padding: 10px 20px;
+        border-radius: 10px;
+        font-size: 20px;
+        font-weight: bold;
+        :first-child {
+            margin-right: 10px;
+        }
+        :hover {
+            background-color: #eb4d4b;
+            color: #fff;
+        }
     }
 `;
 
