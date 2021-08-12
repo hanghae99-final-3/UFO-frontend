@@ -212,3 +212,25 @@ export const postLikeToggleDB = createAsyncThunk(
         }
     },
 );
+
+/**
+ * @author heesungjang
+ * @param 없음
+ * @returns 서버연결 성공시, 자유게시판  인기 (핫이슈) 포스트 리스트 / 서버연결 실패시, 에러메세지
+ * @역할 댓글 + 조회수가 높은 현재 이슈 게시글들 리스트 불러오기
+ * @필수값 없음
+ */
+
+export const getIssuePostListDB = createAsyncThunk(
+    "freeBoard/issue/list",
+    async (data, thunkAPI) => {
+        try {
+            const response = await freeBoardApi.getIssueList();
+            if (response.data.ok) {
+                return response.data.result;
+            }
+        } catch (err) {
+            return thunkAPI.rejectWithValue(err.response.message);
+        }
+    },
+);
