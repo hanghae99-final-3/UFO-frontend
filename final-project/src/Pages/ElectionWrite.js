@@ -32,7 +32,23 @@ const useStyles = makeStyles(theme => ({
 const ElectionWrite = () => {
     const dispatch = useDispatch();
     const classes = useStyles();
-    const [post, setPost] = useState({ candidates: [{}] }); //입력값 통합 state (모든 입력값이 여기로 담겨진다.)
+
+    //기본 선거시작시간은 현재로부터 10분뒤입니다.
+    const defaultStartDate =
+        moment().add(10, "minutes").format("YYYY-MM-DD HH:mm") + ":00";
+    //기본 선거종료시간은 현재로부터 7일 10분 뒤 입니다.
+    const defaultEndDate =
+        moment().add({ minutes: 10, days: 7 }).format("YYYY-MM-DD HH:mm") +
+        ":00";
+
+    //입력값 통합 state (모든 입력값이 여기로 담겨진다.)
+    const [post, setPost] = useState({
+        candidates: [{}],
+        start_date: defaultStartDate,
+        end_date: defaultEndDate,
+    });
+
+    console.log(post);
     const [isLoading, setIsLoading] = useState(false); //이미지가 업로드중인지 아닌지 판별하는 state (이미 이미지가 업로드 중이면(true면) 이미지 업로드를 막는 역할)
     const fileInput = useRef(); //type이 file인 input이다 (파일 객체를 받아올 input)
     const user = useSelector(state => state.user.user);
@@ -165,13 +181,16 @@ const ElectionWrite = () => {
                     }}
                     onChange={e => setElectionInfo(e)}
                 />
+
                 {/* 선거시작일 입력란 */}
                 <TextField
                     name="start_date"
                     id="datetime-local"
                     label="선거 시작일"
                     type="datetime-local"
-                    defaultValue={moment().format("YYYY-MM-DDTHH:mm")}
+                    defaultValue={moment(defaultStartDate).format(
+                        "YYYY-MM-DDTHH:mm",
+                    )}
                     className={classes.textField}
                     InputLabelProps={{
                         shrink: true,
@@ -184,9 +203,9 @@ const ElectionWrite = () => {
                     id="datetime-local"
                     label="선거 종료일"
                     type="datetime-local"
-                    defaultValue={moment()
-                        .add(7, "d")
-                        .format("YYYY-MM-DDTHH:mm")}
+                    defaultValue={moment(defaultEndDate).format(
+                        "YYYY-MM-DDTHH:mm",
+                    )}
                     className={classes.textField}
                     InputLabelProps={{
                         shrink: true,
