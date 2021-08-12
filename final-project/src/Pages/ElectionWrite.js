@@ -83,17 +83,8 @@ const ElectionWrite = () => {
         if (isLoading) return; //업로드중이 아닐때에만 파일선택하게 한다.
         setIsLoading(true);
 
-        const file = fileInput.current.files[0]; //파일객체;
-        setPost({
-            //파일객체를 post에 담아둔다.
-            ...post,
-            candidates: post.candidates.map((ele, idx) =>
-                idx === currentIdx ? { ...ele, photo: file } : ele,
-            ),
-        });
-
         //----사용할 데이터를 정리하고, 서버에 데이터(이미지 객체)를 전달하고 url을 얻어서 post에 저장한다.
-
+        const file = fileInput.current.files[0]; //파일객체;
         const req = { img: file }; //서버에서 사용할 데이터
 
         //multer를 사용하려면 formData 안에 request들을 넣어주어야 한다
@@ -111,7 +102,7 @@ const ElectionWrite = () => {
             //서버에 파일 객체를 보내서 imgUrl을 얻어온다.
             try {
                 const {
-                    data: { result: imgUrl },
+                    data: { result: photo },
                 } = await axios.post(
                     "http://3.36.90.60/util/image",
                     formData,
@@ -121,7 +112,7 @@ const ElectionWrite = () => {
                     //통신 후 받아온 imgUrl을 post 안에 담아둔다. 이 imgUrl을 사용하여 화면에서 미리보기를 구현한다.
                     ...prevState,
                     candidates: prevState.candidates.map((ele, idx) =>
-                        idx === currentIdx ? { ...ele, imgUrl } : ele,
+                        idx === currentIdx ? { ...ele, photo } : ele,
                     ),
                 }));
             } catch (err) {
@@ -228,10 +219,10 @@ const ElectionWrite = () => {
                                             }
                                         >
                                             {/* 후보자의 이미지가 있으면 보여주고, 아니면 default string을 보여준다. */}
-                                            {ele.imgUrl ? (
+                                            {ele.photo ? (
                                                 <img
-                                                    src={`http://3.36.90.60/${ele.imgUrl}`}
-                                                    alt={post.imgurl}
+                                                    src={`http://3.36.90.60/${ele.photo}`}
+                                                    alt={post.photo}
                                                 />
                                             ) : (
                                                 <span>
