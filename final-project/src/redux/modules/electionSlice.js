@@ -11,7 +11,7 @@ import {
  */
 
 const initialState = {
-    list: null,
+    list: [],
     post: null,
     isFetching: false,
     errorMessage: null,
@@ -57,7 +57,7 @@ const electionSlice = createSlice({
 
         //----특정 선거 게시물을 추가하는 리듀서
         [addElectionDB.fulfilled]: (state, { payload }) => {
-            state.list.unshift(payload);
+            state.list.pop(payload);
             state.isFetching = false;
             state.errorMessage = null;
         },
