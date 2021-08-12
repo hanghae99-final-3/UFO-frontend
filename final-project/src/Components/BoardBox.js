@@ -1,13 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { history } from "../redux/configureStore";
 
 import styled from "styled-components";
 import categories from "../categories";
-
 import { BiHeart } from "react-icons/bi";
 import { MdComment } from "react-icons/md";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import moment from "moment";
+import { useSelector } from "react-redux";
 
 /**
  * @author heesung && junghoo
@@ -33,8 +33,12 @@ const BoardBox = ({
         //학교게시판일때,
         return history.push(`/univBoard/detail/${postId}`);
     };
+    const isLike = useSelector(state =>
+        boardName === "freeBoard" ? state.freeBoard.list : state.univBoard.list,
+    );
     return (
         <BoardContentContainer>
+            {console.log("isLike", isLike)}
             <Header>
                 {tag && <Tag># {tag}</Tag>}
                 {title && <TitleHeading>{title}</TitleHeading>}

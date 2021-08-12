@@ -35,9 +35,7 @@ const BoardWrite = ({ boardName }) => {
     //┏-----------------게시글 수정파트-----------------┓
     //----state에 있는 post 정보 불러오기. boardName이 freeboard면 자유게시판, 아니면 대학게시판을 가져온다.
     const postFromState = useSelector(state =>
-        boardName === "freeboard"
-            ? state.freeBoard.post
-            : state.univBoard.postDetail,
+        boardName === "freeboard" ? state.freeBoard.post : state.univBoard.post,
     );
 
     const goBackPostDetail = () => {
