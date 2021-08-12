@@ -4,6 +4,9 @@ import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router";
 import { getElectionDB, deleteElectionDB } from "../redux/async/election";
 
+//컴포넌트
+import ElectionSlider from "../Components/ElectionSlider";
+
 const ElectionDetail = () => {
     const dispatch = useDispatch();
     const { id: electionId } = useParams();
@@ -15,14 +18,18 @@ const ElectionDetail = () => {
         dispatch(getElectionDB(electionId));
     }, []);
 
-    const deletePost = () => {
+    const addVote = () => {
+        //투표를 처리하는 함수입니다.
+    };
+
+    const deleteElection = () => {
+        //선거를 삭제하는 함수입니다.
         const req = {
             election_id: electionId,
         };
 
         dispatch(deleteElectionDB(req));
     };
-    console.log(post);
 
     return (
         <ElectionDetailContainer>
@@ -35,21 +42,36 @@ const ElectionDetail = () => {
             </TimeContainer>
             <CandidatesContainer>
                 <h5>후보자</h5>
-                <CandidatesBox>스와이퍼들어갈곳</CandidatesBox>
+                <CandidatesBox>
+                    {post && (
+                        <ElectionSlider
+                            candidateList={post && post.candidates}
+                        />
+                    )}
+                </CandidatesBox>
             </CandidatesContainer>
             <VoteContainer>
                 <h5>투표하기</h5>
                 <p>비밀 투표이며, 투표 완료시, 변경이 불가합니다.</p>
                 <VoteBox>
-                    {post && post.candidates.map((ele,idx) => <VoteCard key={ele.candidate_id}>
-                        <span>기호 {idx+1}번</span>
-                        <img src={`http://3.36.90.60/${ele.photo}`} alt={ele.photo} />
-                        <span>{ele.name}</span>
-                        <p>{ele.content}</p>
-                    </VoteCard>)}
+                    {post &&
+                        post.candidates.map((ele, idx) => (
+                            <VoteCard key={ele.candidate_id}>
+                                <img
+                                    src={`http://3.36.90.60/${ele.photo}`}
+                                    alt={ele.photo}
+                                />
+                                <p>
+                                    <span>기호 {idx + 1}번</span> {ele.name}
+                                </p>
+                            </VoteCard>
+                        ))}
                 </VoteBox>
             </VoteContainer>
-            <Button onClick={deletePost}>삭제하기</Button>
+            <Controls>
+                <button onClick={addVote}>투표하기</button>
+                <button onClick={deleteElection}>삭제하기</button>
+            </Controls>
         </ElectionDetailContainer>
     );
 };
@@ -59,39 +81,72 @@ const ElectionDetailContainer = styled.div`
 
     > div {
         width: 100%;
+        margin-top: 30px;
+        :not(:nth-child(2)) {
+            margin-top: 50px;
+        }
+        h5 {
+            color: #707070;
+            font-size: 25px;
+            margin-bottom: 10px;
+        }
     }
 `;
 const Title = styled.h3`
     width: 100%;
+    font-size: 30px;
 `;
 
 const TimeContainer = styled.div``;
 const TimeBox = styled.div`
     width: 100%;
     text-align: center;
+    padding: 30px;
+    border: 1px solid #707070;
+    background: #d9d9d9;
     span {
-        font-size: 100px;
+        font-size: 50px;
+        font-weight: bold;
+        color: #707070;
     }
 `;
 const CandidatesContainer = styled.div``;
 const CandidatesBox = styled.div``;
 
 const VoteContainer = styled.div`
->p{
-    color:#eb4d4b;
-}
+    > p {
+        color: #eb4d4b;
+    }
 `;
 
 const VoteBox = styled.div`
-display:flex;`;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    flex-wrap: wrap;
+`;
 
 const VoteCard = styled.div`
-display:flex;
-flex-direction: column;
-border:1px solid #d2d2d2;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #d2d2d2;
+    text-align: center;
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    p {
+        span {
+            font-weight: bold;
+        }
+    }
 `;
-const Button = styled.button`
-    padding: 10px;
+
+const Controls = styled.div`
+    text-align: center;
+    button {
+        padding: 10px;
+    }
 `;
 
 export default ElectionDetail;

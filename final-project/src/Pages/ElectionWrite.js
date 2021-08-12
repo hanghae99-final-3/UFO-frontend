@@ -287,8 +287,12 @@ const ElectionInfoBox = styled.div`
 const CandidateInfoBox = styled.div``;
 
 const Freeview = styled.div`
-    height: 100%;
     width: 300px;
+    height: 100%;
+    img {
+        width: 100%;
+        object-fit: cover;
+    }
 `;
 const CandidateWriteBox = styled.div`
     display: flex;
