@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { univBoardApi, likeApi } from "../../api";
+import { univBoardApi } from "../../api";
 import { history } from "../configureStore";
 import { increaseLike, decreaseLike } from "../modules/univBoardSlice";
 /**

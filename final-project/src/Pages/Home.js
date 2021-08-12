@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import styled from "styled-components";
 
 import { useDispatch, useSelector } from "react-redux";
-import { getFreeListDB } from "../redux/async/freeBoard";
+import { getFreeListDB, getIssuePostListDB } from "../redux/async/freeBoard";
 import BoardBox from "../Components/BoardBox";
 import { getUnivBoardDB } from "../redux/async/univBoard";
 import categories from "../categories";
@@ -13,6 +13,12 @@ const Home = () => {
 
     // 자유 게시판 게시물 리덕스 스토어 구독--------
     const freeBoardPostList = useSelector(state => state.freeBoard.list);
+    //----
+
+    // 자유 게시판 인기 게시글 리스트 스토어 구독-------
+    const freeBoardIssuePostList = useSelector(
+        state => state.freeBoard.issueList,
+    );
     //----
 
     // 학교 게시판 게시물 리덕스 스토어 구독------------
@@ -41,6 +47,7 @@ const Home = () => {
     // 학교 게시판 / 자유 게시판 thunk dispatch--------
     useEffect(() => {
         dispatch(getFreeListDB(postListQueryData));
+        dispatch(getIssuePostListDB());
         // 유저에게 등록된 univId가 있다면 대학 게시판 게시글 조회 요청
         if (isLoggedIn && univId) {
             dispatch(getUnivBoardDB(UnivListQueryData));
@@ -53,7 +60,9 @@ const Home = () => {
     return (
         <HomeContainer>
             <MainSlider
-                postList={freeBoardPostList && freeBoardPostList.slice(0, 5)}
+                postList={
+                    freeBoardIssuePostList && freeBoardIssuePostList.slice(0, 5)
+                }
             />
             {/* <SearchContainer>
                 <SearchBox searchTag={categories.freeBoardTags} />

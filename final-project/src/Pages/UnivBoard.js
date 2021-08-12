@@ -9,7 +9,6 @@ import SearchBox from "../Components/SearchBox";
 import categories from "../categories";
 import BoardBox from "../Components/BoardBox";
 import { withRouter } from "react-router-dom";
-import { history } from "../redux/configureStore";
 
 const UnivBoard = () => {
     const dispatch = useDispatch();

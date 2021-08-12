@@ -17,39 +17,41 @@ import {
     univLikeToggleDB,
 } from "../redux/async/univBoard";
 
+import moment from "moment";
 import { Button as Mbutton } from "@material-ui/core";
 import AccessTimeIcon from "@material-ui/icons/AccessTime";
 import LinkIcon from "@material-ui/icons/Link";
-import FavoriteIcon from "@material-ui/icons/Favorite";
 
 import categories from "../categories";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 
 import TimeCounting from "time-counting";
-import moment from "moment";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import { useCookies } from "react-cookie";
+import Cookies from "js-cookie";
 import instance from "../api";
 import { setUnivViewReducer } from "../redux/modules/univBoardSlice";
 
-//좋아요시작
+//----좋아요
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import FavoriteBorder from "@material-ui/icons/FavoriteBorder";
-//좋아요끝
+import FavoriteIcon from "@material-ui/icons/Favorite";
+//----
 
+//date countdown
+import DateCountdown from "react-date-countdown-timer";
+import CountDown from "./CountDown/CountDown";
+//
 const BoardDetail = ({ page }) => {
     const dispatch = useDispatch();
     const { id: postId } = useParams();
-
     // 게시물 상세 정보 스토어 구독
     const post = useSelector(state =>
-        page === "freeboard"
-            ? state.freeBoard.post
-            : state.univBoard.postDetail,
+        page === "freeboard" ? state.freeBoard.post : state.univBoard.post,
     );
     // 유저 아이디 스토어 구독
     const userId = useSelector(state => state.user.user.user_id);
@@ -67,7 +69,7 @@ const BoardDetail = ({ page }) => {
     const isLike = useSelector(state =>
         page === "freeboard"
             ? state.freeBoard.post?.is_like
-            : state.univBoard.postDetail?.is_like,
+            : state.univBoard.post?.is_like,
     );
     //-------------조회수--------------
     let now = new Date();
@@ -81,7 +83,6 @@ const BoardDetail = ({ page }) => {
                 ? getFreePostDB(postId)
                 : detailUnivBoardPostDB(postId),
         );
-
         // 게시물 상세정보 api 요청 미들웨어
         dispatch(
             page === "freeboard"
@@ -91,26 +92,34 @@ const BoardDetail = ({ page }) => {
         const callView = async () => {
             if (page === "freeboard") {
                 await instance.get(`free/post/${postId}/view_count`);
+                if (post) {
+                    dispatch(setViewReducer());
+                }
             } else {
                 await instance.get(`univ/post/${postId}/view_count`);
-            }
-            if (page === "freeboard" && cookies.viewCookie !== `f${postId}`) {
-                dispatch(setViewReducer());
-            } else {
-                dispatch(setUnivViewReducer());
+                if (post) {
+                    dispatch(setUnivViewReducer());
+                }
             }
         };
         // 쿠키 설정을 통해서 조회수 증가는 20분으로 제한한다.
-        if (page === "freeboard" && cookies.viewCookie !== `f${postId}`) {
-            after20m.setMinutes(now.getMinutes() + 20);
-            setCookie("viewCookie", viewCookie, { expires: after20m });
+        if (
+            page === "freeboard" &&
+            Cookies.get(`viewCookie_f${postId}`) !== `f${postId}`
+        ) {
+            after20m.setMinutes(now.getMinutes() + 10);
+            setCookie(`viewCookie_f${postId}`, viewCookie, {
+                expires: after20m,
+            });
             callView();
         } else if (
             page === "univboard" &&
-            cookies.viewCookie !== `u${postId}`
+            Cookies.get(`viewCookie_u${postId}`) !== `u${postId}`
         ) {
-            after20m.setMinutes(now.getMinutes() + 20);
-            setCookie("viewCookie", viewCookie, { expires: after20m });
+            after20m.setMinutes(now.getMinutes() + 10);
+            setCookie(`viewCookie_u${postId}`, viewCookie, {
+                expires: after20m,
+            });
             callView();
         }
         //이미 좋아요 눌렀던 게시물이면 빨간하트 return
@@ -171,7 +180,19 @@ const BoardDetail = ({ page }) => {
                                 control={
                                     <Checkbox
                                         onClick={() => {
-                                            dispatch(postLikeToggleDB(postId));
+                                            {
+                                                page === "freeboard"
+                                                    ? dispatch(
+                                                          postLikeToggleDB(
+                                                              postId,
+                                                          ),
+                                                      )
+                                                    : dispatch(
+                                                          univLikeToggleDB(
+                                                              postId,
+                                                          ),
+                                                      );
+                                            }
                                         }}
                                         style={{ cursor: "pointer" }}
                                         icon={
@@ -217,6 +238,7 @@ const BoardDetail = ({ page }) => {
                     ></ContentBody>
                 )}
             </ContentBodyContainer>
+
             <ButtonContainer>
                 <Button onClick={() => history.push(`/${page}`)}>목록</Button>
                 {userId && post && post.user && userId === post.user.user_id && (

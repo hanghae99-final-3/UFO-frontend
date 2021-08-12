@@ -2,7 +2,7 @@ import React, { useState, useRef } from "react";
 import axios from "axios";
 import styled from "styled-components";
 import { addElectionDB } from "../redux/async/election";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
 
 //머테리얼 ui
@@ -32,20 +32,23 @@ const useStyles = makeStyles(theme => ({
 const ElectionWrite = () => {
     const dispatch = useDispatch();
     const classes = useStyles();
-    const [post, setPost] = useState({ candidate: [{}] }); //입력값이 여기로 담겨진다.
-    const [isLoading, setIsLoading] = useState(false); //업로드중인지 아닌지 판별하는 state
-    const fileInput = useRef();
+    const [post, setPost] = useState({ candidates: [{}] }); //입력값 통합 state (모든 입력값이 여기로 담겨진다.)
+    const [isLoading, setIsLoading] = useState(false); //이미지가 업로드중인지 아닌지 판별하는 state (이미 이미지가 업로드 중이면(true면) 이미지 업로드를 막는 역할)
+    const fileInput = useRef(); //type이 file인 input이다 (파일 객체를 받아올 input)
+    const user = useSelector(state => state.user.user);
 
     const addCard = () => {
         //카드 추가하기
-        setPost({ ...post, candidate: [...post.candidate, {}] });
+        setPost({ ...post, candidates: [...post.candidates, {}] });
     };
 
     const deleteCard = currentIdx => {
         //카드 삭제하기
         setPost({
             ...post,
-            candidate: post.candidate.filter((ele, idx) => currentIdx !== idx),
+            candidates: post.candidates.filter(
+                (ele, idx) => currentIdx !== idx,
+            ),
         });
     };
 
@@ -68,57 +71,47 @@ const ElectionWrite = () => {
         const value = event.target.value; //post에 넣어줄 value 입니다.
         setPost({
             ...post,
-            candidate: post.candidate.map((ele, idx) =>
+            candidates: post.candidates.map((ele, idx) =>
                 idx === currentIdx ? { ...ele, [keyName]: value } : ele,
             ),
         });
     };
 
-    const selectFileImageUploader = currentIdx => {
+    const selectFileImageUploadSetData = currentIdx => {
+        //유저가 파일을 선택하면 post 안에 파일객체를 저장하고, 서버에 파일객체를 보내고, imgUrl을 받아서 post 안에 imgUrl을 저장하는 역할을 합니다.
         if (isLoading) return; //업로드중이 아닐때에만 파일선택하게 한다.
         setIsLoading(true);
 
-        setPost({
-            //파일객체를 post에 담아둔다.
-            ...post,
-            candidate: post.candidate.map((ele, idx) =>
-                idx === currentIdx ? { ...ele, photo: "" } : ele,
-            ),
-        });
-
         //----사용할 데이터를 정리하고, 서버에 데이터(이미지 객체)를 전달하고 url을 얻어서 post에 저장한다.
         const file = fileInput.current.files[0]; //파일객체;
-
         const req = { img: file }; //서버에서 사용할 데이터
 
-        //----multer를 사용하려면 formData 안에 request들을 넣어주어야 한다
+        //multer를 사용하려면 formData 안에 request들을 넣어주어야 한다
         let formData = new FormData();
         for (let entry of Object.entries(req)) {
             formData.append(entry[0], entry[1]);
         }
-        //----
 
-        //----통신헤더설정
+        //통신헤더설정
         const config = {
             header: { "content-type": "multipart/form-data" },
         };
-        //----
 
         async function sendImg() {
+            //서버에 파일 객체를 보내서 imgUrl을 얻어온다.
             try {
                 const {
-                    data: { result: imgUrl },
+                    data: { result: photo },
                 } = await axios.post(
                     "http://3.36.90.60/util/image",
                     formData,
                     config,
                 );
-
                 setPost({
                     //통신 후 받아온 imgUrl을 post 안에 담아둔다. 이 imgUrl을 사용하여 화면에서 미리보기를 구현한다.
                     ...post,
-                    candidate: post.candidate.map((ele, idx) =>
-                        idx === currentIdx ? { ...ele, imgUrl } : ele,
+                    candidates: post.candidates.map((ele, idx) =>
+                        idx === currentIdx ? { ...ele, photo } : ele,
                     ),
                 });
             } catch (err) {
@@ -132,12 +125,25 @@ const ElectionWrite = () => {
     };
 
     const addElection = () => {
-        dispatch(addElectionDB(post));
+        //서버로 보낼 데이터를 정리하고, 선거를 추가하는 미들웨어함수로 보낸다.
+        const req = {
+            name: post.name,
+            content: post.content,
+            country_id: user.country_id,
+            univ_id: user.univ_id,
+            candidates: post.candidates,
+            start_date: post.start_date,
+            end_date: post.end_date,
+        };
+
+        dispatch(addElectionDB(req));
     };
 
     return (
-        <ElectionContainer>
-            <ElectionInfoBox>
+        <ElectionWriteContainer>
+            {/* 선거 게시글의 제목, 내용, 시작일, 종료일을 입력하는 곳입니다. */}
+            <WriteElectionInfoBox>
+                {/* 선거게시글 제목입력란 */}
                 <TextField
                     name="name"
                     label="제목"
@@ -148,6 +154,7 @@ const ElectionWrite = () => {
                     }}
                     onChange={e => setElectionInfo(e)}
                 />
+                {/* 선거게시글 내용입력란 */}
                 <TextField
                     name="content"
                     label="내용"
@@ -158,6 +165,7 @@ const ElectionWrite = () => {
                     }}
                     onChange={e => setElectionInfo(e)}
                 />
+                {/* 선거시작일 입력란 */}
                 <TextField
                     name="start_date"
                     id="datetime-local"
@@ -170,6 +178,7 @@ const ElectionWrite = () => {
                     }}
                     onChange={e => setElectionInfo(e)}
                 />
+                {/* 선거종료일 입력란 */}
                 <TextField
                     name="end_date"
                     id="datetime-local"
@@ -184,11 +193,15 @@ const ElectionWrite = () => {
                     }}
                     onChange={e => setElectionInfo(e)}
                 />
-            </ElectionInfoBox>
-            <CandidateInfoBox className={classes.root}>
+            </WriteElectionInfoBox>
+
+            {/* 선거 후보자의 이름, 학과, 소개, 사진을 입력하는 곳입니다. */}
+            <WriteCandidateBox className={classes.root}>
                 {post &&
-                    post.candidate.map((ele, idx) => (
+                    post.candidates.map((ele, idx) => (
+                        // 머테리얼 ui의 Accordion을 적용한 부분입니다.
                         <Accordion key={idx}>
+                            {/* 아코디언 디자인의 헤더 부분입니다. */}
                             <AccordionSummary
                                 expandIcon={<ExpandMoreIcon />}
                                 aria-controls="panel1a-content"
@@ -204,19 +217,23 @@ const ElectionWrite = () => {
                                     삭제
                                 </Button>
                             </AccordionSummary>
+
+                            {/* 아코디언 디자인의 상세내용 부분입니다. */}
                             <AccordionDetails>
                                 <CandidateWriteBox>
+                                    {/* 후보자의 사진에 관련된 작업을 하는 공간입니다. */}
                                     <CandidateImage>
+                                        {/* 후보자의 사진을 미리보기 할 수 있는 곳입니다. */}
                                         <Freeview
                                             onClick={() =>
                                                 fileInput.current.click()
                                             }
                                         >
-                                            {/* 후보자의 이미지가 있으면 보여주고, 아니면 default string을 보여준다. */}
-                                            {ele.imgUrl ? (
+                                            {/* 후보자의 이미지가 있으면 보여주고, 아니면 기본문자열을 보여줍니다. */}
+                                            {ele.photo ? (
                                                 <img
-                                                    src={`http://3.36.90.60/${ele.imgUrl}`}
-                                                    alt={post.imgurl}
+                                                    src={`http://3.36.90.60/${ele.photo}`}
+                                                    alt={post.photo}
                                                 />
                                             ) : (
                                                 <span>
@@ -225,16 +242,23 @@ const ElectionWrite = () => {
                                                 </span>
                                             )}
                                         </Freeview>
+
+                                        {/* Uploader은 type이 file인 input입니다. 브라우저 상에서는 보이지 않게 숨겨두었습니다. */}
                                         <Uploader
                                             ref={fileInput}
                                             type="file"
                                             onChange={() =>
-                                                selectFileImageUploader(idx)
+                                                selectFileImageUploadSetData(
+                                                    idx,
+                                                )
                                             }
                                             disabled={isLoading}
                                         />
                                     </CandidateImage>
+
+                                    {/* 후보자의 상세 내용이 담길 곳입니다. */}
                                     <CandidateContent>
+                                        {/* 후보자의 이름 */}
                                         <input
                                             name="name"
                                             placeholder="이름을 작성해주세요!"
@@ -242,6 +266,7 @@ const ElectionWrite = () => {
                                                 setCandidateInfo(idx, e)
                                             }
                                         />
+                                        {/* 후보자의 학과 */}
                                         <input
                                             name="major"
                                             placeholder="학과를 작성해주세요!"
@@ -249,6 +274,7 @@ const ElectionWrite = () => {
                                                 setCandidateInfo(idx, e)
                                             }
                                         />
+                                        {/* 후보자의 소개 */}
                                         <textarea
                                             name="content"
                                             placeholder="소개를 작성해주세요!"
@@ -263,24 +289,31 @@ const ElectionWrite = () => {
                     ))}
                 <Button onClick={addCard}>후보자 추가</Button>
                 <Button onClick={addElection}>저장</Button>
-            </CandidateInfoBox>
-        </ElectionContainer>
+            </WriteCandidateBox>
+        </ElectionWriteContainer>
     );
 };
 
-const ElectionContainer = styled.div``;
+const ElectionWriteContainer = styled.div``;
 
-const ElectionInfoBox = styled.div`
+const WriteElectionInfoBox = styled.div`
     padding: 50px 40px;
     display: flex;
     flex-direction: column;
 `;
 
-const CandidateInfoBox = styled.div``;
+const WriteCandidateBox = styled.div``;
 
 const Freeview = styled.div`
-    height: 100%;
     width: 300px;
+    height: 300px;
+    display: flex;
+    align-items: center;
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
 `;
 const CandidateWriteBox = styled.div`
     display: flex;

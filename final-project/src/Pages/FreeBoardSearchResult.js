@@ -8,14 +8,18 @@ import Pagination from "@material-ui/lab/Pagination";
 import BoardBox from "../Components/BoardBox";
 import SearchBox from "../Components/SearchBox";
 import categories from "../categories";
+import { resetSearchOrder } from "../redux/modules/freeBoardSlice";
 
-const SearchResult = props => {
+const FreeBoardSearchResult = props => {
     const dispatch = useDispatch();
     const [page, setPage] = useState(1);
     const { param: searchTerm } = useParams();
     const selectedTag = useSelector(state => state.freeBoard.selectedTag);
     const selectedCountry = useSelector(
         state => state.freeBoard.selectedCountry,
+    );
+    const selectedSearchOrder = useSelector(
+        state => state.freeBoard?.selectedSearchOrder,
     );
     const searchResultList = useSelector(state => state.search.searchResult);
 
@@ -30,8 +34,10 @@ const SearchResult = props => {
             keyword: searchTerm,
             category: selectedTag === null ? undefined : selectedTag,
             country_id: selectedCountry === 0 ? undefined : selectedCountry,
+            sort: selectedSearchOrder ? selectedSearchOrder : null,
         };
         dispatch(getSearchResult(SearchQueryData));
+        dispatch(resetSearchOrder());
     }, [dispatch, selectedTag, selectedCountry, searchTerm]);
 
     return (
@@ -78,4 +84,4 @@ const TitleContainer = styled.div`
     vertical-align: middle;
 `;
 
-export default SearchResult;
+export default FreeBoardSearchResult;

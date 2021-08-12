@@ -1,12 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { history } from "../redux/configureStore";
 
 import styled from "styled-components";
 import categories from "../categories";
-
 import { BiHeart } from "react-icons/bi";
 import { MdComment } from "react-icons/md";
 import VisibilityIcon from "@material-ui/icons/Visibility";
+import moment from "moment";
+import { useSelector } from "react-redux";
 
 /**
  * @author heesung && junghoo
@@ -16,7 +17,15 @@ import VisibilityIcon from "@material-ui/icons/Visibility";
  * @필수값 postList, title, tag, preview
  */
 
-const BoardBox = ({ postList, title, tag, preview, boardName }) => {
+const BoardBox = ({
+    postList,
+    title,
+    tag,
+    preview,
+    boardName,
+    myPostTitle,
+    mypage,
+}) => {
     const _onClick = postId => {
         //자유게시판일때,
         if (boardName === "freeBoard")
@@ -24,11 +33,15 @@ const BoardBox = ({ postList, title, tag, preview, boardName }) => {
         //학교게시판일때,
         return history.push(`/univBoard/detail/${postId}`);
     };
+    const isLike = useSelector(state =>
+        boardName === "freeBoard" ? state.freeBoard.list : state.univBoard.list,
+    );
     return (
         <BoardContentContainer>
             <Header>
                 {tag && <Tag># {tag}</Tag>}
                 {title && <TitleHeading>{title}</TitleHeading>}
+                {myPostTitle && <TitleHeading>{myPostTitle}</TitleHeading>}
                 {(title || tag) && (
                     <More onClick={() => history.push(boardName)}>더보기</More>
                 )}
@@ -58,28 +71,40 @@ const BoardBox = ({ postList, title, tag, preview, boardName }) => {
                                     <PostContent>{post.content}</PostContent>
                                 )}
                             </ContentContainer> */}
-                            <IconContainer>
-                                {!tag ? (
-                                    <>
-                                        <Icon>
-                                            <BiHeart />
-                                            <span>
-                                                {post.like &&
-                                                    post.like.all_like}
-                                            </span>
-                                        </Icon>
-                                        <Icon>
-                                            <MdComment />
-                                            <span>{post.coment_count}</span>
-                                        </Icon>
-                                    </>
-                                ) : null}
+                            {!mypage && (
+                                <IconContainer>
+                                    {!tag ? (
+                                        <>
+                                            <Icon>
+                                                <BiHeart />
+                                                <span>
+                                                    {post.like &&
+                                                        post.like.all_like}
+                                                </span>
+                                            </Icon>
+                                            <Icon>
+                                                <MdComment />
+                                                <span>{post.coment_count}</span>
+                                            </Icon>
+                                        </>
+                                    ) : null}
 
-                                <Icon>
-                                    <VisibilityIcon />
-                                    <span>{post.view_count}</span>
-                                </Icon>
-                            </IconContainer>
+                                    <Icon>
+                                        <VisibilityIcon />
+                                        <span>{post.view_count}</span>
+                                    </Icon>
+                                </IconContainer>
+                            )}
+                            {mypage && (
+                                <IconContainer>
+                                    <span>
+                                        {post &&
+                                            moment(post.createdAt).format(
+                                                "YYYY.MM.DD",
+                                            )}
+                                    </span>
+                                </IconContainer>
+                            )}
                         </PostContainer>
                     ))}
             </Content>

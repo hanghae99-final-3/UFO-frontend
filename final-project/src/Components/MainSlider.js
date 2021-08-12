@@ -52,7 +52,7 @@ function MainSlider({ postList }) {
                                     : "slide"
                             }
                         >
-                            <SlideCard post={post} rank={idx + 1} />
+                            <SlideCard post={post.free_board} rank={idx + 1} />
                         </div>
                     ))}
             </Slider>

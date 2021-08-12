@@ -23,10 +23,14 @@ import UnivboardWrite from "./Pages/UnivBoardWrite";
 import Election from "./Pages/Election"; //선거게시판
 import ElectionDetail from "./Pages/ElectionDetail"; //선거게시판 게시글상세페이지
 import ElectionWrite from "./Pages/ElectionWrite"; //선거게시글 작성페이지 or 수정페이지
+import FreeBoardSearchResult from "./Pages/FreeBoardSearchResult"; // 자유 게시판 검색 결과 페이지
+
+//정후님을 위한 테스트 페이지 :-)
+import Test from "./Pages/Test";
 
 //utils
 import { checkLoggedInUser } from "./redux/async/user"; // 로그인 체크
-import SearchResult from "./Pages/SearchResult";
+import MyPostList from "./Pages/MyPostList";
 
 function App() {
     // redux dispatch
@@ -53,6 +57,7 @@ function App() {
                         <Route path="/signup" exact component={Signup} />
                         <Route path="/login" exact component={Login} />
                         <Route path="/freeboard" exact component={FreeBoard} />
+                        <Route path="/mypost" exact component={MyPostList} />
                         <Route
                             path="/freeboard/detail/:id"
                             exact
@@ -69,9 +74,9 @@ function App() {
                             component={FreeBoardWrite}
                         />
                         <Route
-                            path="/search/:param"
+                            path="/freeboard/search/:param"
                             exact
-                            component={SearchResult}
+                            component={FreeBoardSearchResult}
                         />
                         <Route path="/mypage" exact component={MyPage} />
 
@@ -111,6 +116,8 @@ function App() {
                             exact
                             component={ElectionWrite}
                         />
+                        <Route path="/test" exact component={Test} />
+
                         <Redirect from="*" to="/" />
                     </Switch>
                 </Layout>

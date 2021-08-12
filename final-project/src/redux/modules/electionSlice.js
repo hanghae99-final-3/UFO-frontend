@@ -1,5 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getElectionListDB, getElectionDB } from "../async/election";
+import {
+    getElectionListDB,
+    getElectionDB,
+    addElectionDB,
+} from "../async/election";
 
 /**
  * @initialState freeBoardList:자유게시판 목록, isFetching:자유게시판 목록을 가져오는 중인가, errorMessage: 에러메세지
@@ -7,7 +11,7 @@ import { getElectionListDB, getElectionDB } from "../async/election";
  */
 
 const initialState = {
-    list: null,
+    list: [],
     post: null,
     isFetching: false,
     errorMessage: null,
@@ -46,6 +50,21 @@ const electionSlice = createSlice({
             state.isFetching = true;
         },
         [getElectionDB.rejected]: (state, { payload: errorMessage }) => {
+            state.isFetching = false;
+            state.errorMessage = errorMessage;
+        },
+        //----
+
+        //----특정 선거 게시물을 추가하는 리듀서
+        [addElectionDB.fulfilled]: (state, { payload }) => {
+            state.list.pop(payload);
+            state.isFetching = false;
+            state.errorMessage = null;
+        },
+        [addElectionDB.pending]: (state, { payload }) => {
+            state.isFetching = true;
+        },
+        [addElectionDB.rejected]: (state, { payload: errorMessage }) => {
             state.isFetching = false;
             state.errorMessage = errorMessage;
         },

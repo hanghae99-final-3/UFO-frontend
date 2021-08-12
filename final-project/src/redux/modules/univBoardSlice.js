@@ -13,7 +13,7 @@ import {
 
 const initialState = {
     list: [],
-    postDetail: null,
+    post: null,
     commentList: [],
     isFetching: false,
     errorMessage: "",
@@ -36,7 +36,7 @@ const univBoardSlice = createSlice({
         },
         //사용자가 로그인하고 게시글에 처음 들어갔을때 바로 뷰 카운트를 추가해주는 리듀서
         setUnivViewReducer: (state, action) => {
-            if (state.post) state.postDetail.view_count += 1;
+            state.post.view_count += 1;
         },
         //사용자가 게시글 좋아요를 누르면 바로 게시글의 전체 좋아요 수를 증가해주는 리듀서
         increaseLike: (state, action) => {
@@ -68,7 +68,7 @@ const univBoardSlice = createSlice({
         },
         [detailUnivBoardPostDB.fulfilled]: (state, { payload: detail }) => {
             state.isFetching = false;
-            state.postDetail = detail;
+            state.post = detail;
             state.getDetailBoardErrorMessage = "";
         },
         [detailUnivBoardPostDB.rejected]: (state, { payload }) => {
@@ -98,7 +98,7 @@ const univBoardSlice = createSlice({
         },
         [editUnivBoardPostDB.fulfilled]: (state, { payload: updatedPost }) => {
             state.isFetching = false;
-            state.postDetail = updatedPost;
+            state.post = updatedPost;
             state.editRequestErrorMessage = "";
         },
         [editUnivBoardPostDB.rejected]: (state, { payload: errorMessage }) => {
