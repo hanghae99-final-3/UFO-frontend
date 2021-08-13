@@ -116,6 +116,11 @@ function App() {
                             exact
                             component={ElectionWrite}
                         />
+                        <Route
+                            path="/election/edit/:id"
+                            exact
+                            component={ElectionWrite}
+                        />
                         <Route path="/test" exact component={Test} />
 
                         <Redirect from="*" to="/" />

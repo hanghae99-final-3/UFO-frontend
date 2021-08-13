@@ -108,7 +108,11 @@ const ElectionDetail = () => {
                                 }
                             >
                                 <img
-                                    src={`http://3.36.90.60/${ele.photo}`}
+                                    src={
+                                        ele.photo
+                                            ? `http://3.36.90.60/${ele.photo}`
+                                            : "https://cdn.pixabay.com/photo/2016/04/01/12/07/alien-1300540__340.png"
+                                    }
                                     alt={ele.photo}
                                 />
                                 <p>
@@ -121,6 +125,21 @@ const ElectionDetail = () => {
             <Controls>
                 <button onClick={addVote}>투표하기</button>
                 <button onClick={deleteElection}>삭제하기</button>
+                {
+                    // 여기에 선거 작성자가 맞는지 안맞는지도 판별해줘야함!
+                    moment().isBefore(post.start_date) &&
+                        !moment().isSame(post.start_date) && (
+                            <button
+                                onClick={() =>
+                                    history.push(
+                                        `/election/edit/${post.election_id}`,
+                                    )
+                                }
+                            >
+                                수정하기
+                            </button>
+                        )
+                }
             </Controls>
         </ElectionDetailContainer>
     );
