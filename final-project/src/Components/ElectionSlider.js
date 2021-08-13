@@ -51,30 +51,30 @@ const ElectionSlider = ({ candidateList }) => {
                         >
                             <img
                                 src={`http://3.36.90.60/${candidate.photo}`}
-                                alt={candidate.photo}
+                                alt={candidate?.photo}
                             />
-                            <span>{candidate.name}</span>
+                            <span>{candidate?.name}</span>
                         </SlideCard>
                     ))}
             </Slider>
             <CandidateCard>
                 <CandidateImage>
                     <img
-                        src={`http://3.36.90.60/${candidateList[cardIndex].photo}`}
-                        alt={candidateList[cardIndex].photo}
+                        src={`http://3.36.90.60/${candidateList[cardIndex]?.photo}`}
+                        alt={candidateList[cardIndex]?.photo}
                     />
                 </CandidateImage>
                 <CandidateInfo>
                     <h3>
-                        기호 {cardIndex + 1}번 {candidateList[cardIndex].name}
+                        기호 {cardIndex + 1}번 {candidateList[cardIndex]?.name}
                     </h3>
                     <div>
                         <span>학과</span>
-                        <p>{candidateList[cardIndex].major}</p>
+                        <p>{candidateList[cardIndex]?.major}</p>
                     </div>
                     <div>
                         <span>소개</span>
-                        <p>{candidateList[cardIndex].content}</p>
+                        <p>{candidateList[cardIndex]?.content}</p>
                     </div>
                 </CandidateInfo>
             </CandidateCard>
