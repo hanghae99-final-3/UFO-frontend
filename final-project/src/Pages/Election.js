@@ -5,7 +5,7 @@ import { getElectionListDB } from "../redux/async/election";
 import { history } from "../redux/configureStore";
 
 //컴포넌트
-import Error from "../Components/Error";
+import Message from "../Components/Message";
 
 const Election = () => {
     const dispatch = useDispatch();
@@ -18,7 +18,7 @@ const Election = () => {
     //대학 인증을 한 사람만 볼 수 있도록 예외처리를 합니다.
     if (!user.univ_id || !user.country_id)
         return (
-            <Error
+            <Message
                 message="대학인증을 한 사람만 선거게시글을 볼 수 있어요"
                 link="/mypage"
                 buttonValue="대학인증하러가기"

@@ -2,13 +2,16 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router";
+import { history } from "../redux/configureStore";
+import moment from "moment";
+
+//통신
 import { getElectionDB, deleteElectionDB } from "../redux/async/election";
 import { voteApi } from "../api";
-import { history } from "../redux/configureStore";
 
 //컴포넌트
 import ElectionSlider from "../Components/ElectionSlider";
-import Error from "../Components/Error";
+import Message from "../Components/Message";
 
 const ElectionDetail = () => {
     const dispatch = useDispatch();
@@ -51,10 +54,20 @@ const ElectionDetail = () => {
     //대학 인증을 한 사람만 볼 수 있도록 예외처리를 합니다.
     if (!user.univ_id || !user.country_id)
         return (
-            <Error
+            <Message
                 message="대학인증을 한 사람만 선거게시글을 볼 수 있어요"
                 link="/mypage"
                 buttonValue="대학인증하러가기"
+            />
+        );
+
+    // 선거 종료일이 현재보다 뒤에 있다면 결과페이지로 연결하는 버튼을 보여줍니다.
+    if (moment().isAfter(post.end_date))
+        return (
+            <Message
+                message="선거가 끝났어요! 결과를 보러 가시겠어요?"
+                buttonValue="결과보러가기"
+                link={`election/${electionId}/result`}
             />
         );
 
@@ -113,13 +126,11 @@ const ElectionDetail = () => {
 
 const ElectionDetailContainer = styled.div`
     width: 100%;
+    position: relative;
 
-    > div {
+    > div:not(:last-child) {
         width: 100%;
         margin-top: 30px;
-        :not(:nth-child(2)) {
-            margin-top: 50px;
-        }
         h5 {
             color: #707070;
             font-size: 25px;
@@ -181,6 +192,32 @@ const VoteCard = styled.div`
 const Controls = styled.div`
     text-align: center;
     button {
+        padding: 10px 20px;
+        border-radius: 10px;
+        font-size: 20px;
+        font-weight: bold;
+        :first-child {
+            margin-right: 10px;
+        }
+        :hover {
+            background-color: #eb4d4b;
+            color: #fff;
+        }
+    }
+`;
+
+const Result = styled.div`
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    overflow: hidden;
+    touch-action: none;
+    z-index: 99;
+    text-align: center;
+    button {
+        margin-top: 200px;
         padding: 10px 20px;
         border-radius: 10px;
         font-size: 20px;

@@ -10,20 +10,20 @@ import { history } from "../redux/configureStore";
  * @필수값  message : 에러메세지를 담는 곳이다.
  */
 
-const Error = ({ message, link, buttonValue }) => {
+const Message = ({ message, link, buttonValue }) => {
     return (
-        <ErrorContainer>
+        <MessageContainer>
             <p>{message}</p>
             {link && (
                 <button onClick={() => history.push(link)}>
                     {buttonValue}
                 </button>
             )}
-        </ErrorContainer>
+        </MessageContainer>
     );
 };
 
-const ErrorContainer = styled.div`
+const MessageContainer = styled.div`
     height: calc(100vh - 100px);
     width: 100%;
     display: flex;
@@ -46,4 +46,4 @@ const ErrorContainer = styled.div`
     }
 `;
 
-export default Error;
+export default Message;
