@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import styled from "styled-components";
-import { history } from "../redux/configureStore";
 import { addElectionDB } from "../redux/async/election";
 import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
@@ -156,17 +155,28 @@ const ElectionWrite = () => {
     const addElection = () => {
         //서버로 보낼 데이터를 정리하고, 선거를 추가하는 미들웨어함수로 보낸다.
 
-        if (post.name || post.content || post.start_date || post.end_date)
-            if (
-                moment(post.start_date).isBefore(moment()) ||
-                moment(post.start_date).isSame(moment())
-            )
-                return Swal.fire(
-                    "에러",
-                    "시작일을 현재시간보다 후로 설정해주세요.",
-                    "error",
-                );
+        //----선거게시글에 대한 내용이 빠져있으면 return 한다.
+        if (!post.name || !post.content || !post.start_date || !post.end_date)
+            return Swal.fire(
+                "에러",
+                "선거게시글에 대한 내용을 입력해주세요.",
+                "error",
+            );
+        //----
 
+        //----선거 시작일이 현재보다 전이거나 같으면 return한다.
+        if (
+            moment(post.start_date).isBefore(moment()) ||
+            moment(post.start_date).isSame(moment())
+        )
+            return Swal.fire(
+                "에러",
+                "시작일을 현재시간보다 후로 설정해주세요.",
+                "error",
+            );
+        //----
+
+        //----선거 종료일이 시작일보다 전이거나 같으면 return한다.
         if (
             moment(post.end_date).isBefore(post.start_date) ||
             moment(post.end_date).isSame(post.start_date)
@@ -176,7 +186,28 @@ const ElectionWrite = () => {
                 "종료일을 시작일 후로 설정해주세요.",
                 "error",
             );
+        //----
 
+        // 후보자에 대한 정보가 있는지 없는지 알아보고, 없으면 return한다.
+        let isWriteCandidatesInfo = true;
+        for (let i = 0; i < post.candidates.length; i++)
+            if (
+                !post.candidates[i].name ||
+                !post.candidates[i].content ||
+                !post.candidates[i].major
+            ) {
+                isWriteCandidatesInfo = false;
+                return;
+            }
+        if (!isWriteCandidatesInfo)
+            return Swal.fire(
+                "에러",
+                "후보자의 정보를 모두 입력해주세요.",
+                "error",
+            );
+        //----
+
+        //----서버로 보낼 데이터를 정리하고, 선거게시글을 추가하는 미들웨어 함수로 보낸다.
         const req = {
             name: post.name,
             content: post.content,
@@ -186,8 +217,8 @@ const ElectionWrite = () => {
             start_date: post.start_date,
             end_date: post.end_date,
         };
-
         dispatch(addElectionDB(req));
+        //----
     };
 
     //대학 인증을 한 사람만 볼 수 있도록 예외처리를 합니다.
