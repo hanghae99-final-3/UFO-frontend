@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router";
 import { history } from "../redux/configureStore";
 import moment from "moment";
-import alertConfirm from "../alertConfirm";
+import confirm from "../confirm";
 
 //통신
 import { getElectionDB, deleteElectionDB } from "../redux/async/election";
@@ -45,7 +45,7 @@ const ElectionDetail = () => {
 
     const deleteElection = () => {
         //선거를 삭제하는 함수입니다.
-        alertConfirm.deleteConfirm(() => {
+        confirm.deleteConfirm(() => {
             const req = {
                 election_id: electionId,
             };

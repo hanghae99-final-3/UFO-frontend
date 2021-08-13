@@ -2,6 +2,9 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { history } from "../configureStore";
 import { electionApi } from "../../api";
 
+//통신결과에 따른 후처리를 위한 alert 라이브러리
+import Swal from "sweetalert2";
+
 /**
  * @author kwonjiyeong
  * @param 없음
@@ -14,6 +17,8 @@ export const getElectionListDB = createAsyncThunk(
     async (data, thunkAPI) => {
         try {
             const response = await electionApi.getElectionList();
+            console.log(response);
+            console.log(!response.data.result[0].votes);
             if (response.data.ok) return response.data.result;
         } catch (err) {
             return thunkAPI.rejectWithValue(err.response.message);
@@ -54,9 +59,19 @@ export const addElectionDB = createAsyncThunk(
         try {
             const response = await electionApi.addElection(data);
             if (response.data.ok) {
+                // 선거가 추가되면 추가가된 선거게시글 상세페이지로 간다.
+                const electionId = response.data.result.election_id;
+                if (response.data.ok)
+                    Swal.fire(
+                        "완료",
+                        "정상적으로 추가가 되었습니다.",
+                        "success",
+                    );
+                history.push(`/election/detail/${electionId}`);
                 return response.data.result;
             }
         } catch (err) {
+            Swal.fire("오류", "게시글을 추가할 수 없어요!", "error");
             return thunkAPI.rejectWithValue(err.response.message);
         }
     },
@@ -74,8 +89,12 @@ export const deleteElectionDB = createAsyncThunk(
     async (data, thunkAPI) => {
         try {
             const response = await electionApi.deleteElection(data);
-            if (response.data.ok) history.push("/election");
+            if (response.data.ok) {
+                Swal.fire("완료", "정상적으로 삭제가 되었습니다.", "success");
+                history.push("/election");
+            }
         } catch (err) {
+            Swal.fire("에러", "게시글을 삭제할 수 없어요!", "error");
             return thunkAPI.rejectWithValue(err.response.message);
         }
     },
