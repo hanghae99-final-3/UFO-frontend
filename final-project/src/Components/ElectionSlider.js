@@ -50,7 +50,11 @@ const ElectionSlider = ({ candidateList }) => {
                             }
                         >
                             <img
-                                src={`http://3.36.90.60/${candidate.photo}`}
+                                src={
+                                    candidate.photo
+                                        ? `http://3.36.90.60/${candidate.photo}`
+                                        : "https://cdn.pixabay.com/photo/2016/04/01/12/07/alien-1300540__340.png"
+                                }
                                 alt={candidate?.photo}
                             />
                             <span>{candidate?.name}</span>
@@ -60,7 +64,11 @@ const ElectionSlider = ({ candidateList }) => {
             <CandidateCard>
                 <CandidateImage>
                     <img
-                        src={`http://3.36.90.60/${candidateList[cardIndex]?.photo}`}
+                        src={
+                            candidateList[cardIndex].photo
+                                ? `http://3.36.90.60/${candidateList[cardIndex].photo}`
+                                : "https://cdn.pixabay.com/photo/2016/04/01/12/07/alien-1300540__340.png"
+                        }
                         alt={candidateList[cardIndex]?.photo}
                     />
                 </CandidateImage>
@@ -93,7 +101,7 @@ const SlideCard = styled.div`
     margin: auto;
     display: block !important;
     width: 300px !important;
-    height: 300px;
+    height: 330px;
     img {
         width: 100%;
         height: calc(100% - 30px);

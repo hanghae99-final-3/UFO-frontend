@@ -17,8 +17,6 @@ export const getElectionListDB = createAsyncThunk(
     async (data, thunkAPI) => {
         try {
             const response = await electionApi.getElectionList();
-            console.log(response);
-            console.log(!response.data.result[0].votes);
             if (response.data.ok) return response.data.result;
         } catch (err) {
             return thunkAPI.rejectWithValue(err.response.message);
