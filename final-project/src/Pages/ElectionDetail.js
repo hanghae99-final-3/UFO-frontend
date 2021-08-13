@@ -127,8 +127,8 @@ const ElectionDetail = () => {
                 <button onClick={deleteElection}>삭제하기</button>
                 {
                     // 여기에 선거 작성자가 맞는지 안맞는지도 판별해줘야함!
-                    moment().isBefore(post.start_date) &&
-                        !moment().isSame(post.start_date) && (
+                    moment().isBefore(post?.start_date) &&
+                        !moment().isSame(post?.start_date) && (
                             <button
                                 onClick={() =>
                                     history.push(
