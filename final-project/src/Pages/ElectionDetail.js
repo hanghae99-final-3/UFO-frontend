@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router";
 import { history } from "../redux/configureStore";
 import moment from "moment";
+import alertConfirm from "../alertConfirm";
 
 //통신
 import { getElectionDB, deleteElectionDB } from "../redux/async/election";
@@ -44,11 +45,12 @@ const ElectionDetail = () => {
 
     const deleteElection = () => {
         //선거를 삭제하는 함수입니다.
-        const req = {
-            election_id: electionId,
-        };
-
-        dispatch(deleteElectionDB(req));
+        alertConfirm.deleteConfirm(() => {
+            const req = {
+                election_id: electionId,
+            };
+            dispatch(deleteElectionDB(req));
+        });
     };
 
     //대학 인증을 한 사람만 볼 수 있도록 예외처리를 합니다.
@@ -62,7 +64,7 @@ const ElectionDetail = () => {
         );
 
     // 선거 종료일이 현재보다 뒤에 있다면 결과페이지로 연결하는 버튼을 보여줍니다.
-    if (moment().isAfter(post.end_date))
+    if (moment().isAfter(post?.end_date))
         return (
             <Message
                 message="선거가 끝났어요! 결과를 보러 가시겠어요?"
