@@ -5,9 +5,13 @@ import { history } from "../redux/configureStore";
 import { addElectionDB } from "../redux/async/election";
 import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
+import confirm from "../confirm";
 
 //컴포넌트
 import Message from "../Components/Message";
+
+//alert 라이브러리
+import Swal from "sweetalert2";
 
 //머테리얼 ui
 import { makeStyles } from "@material-ui/core/styles";
@@ -36,6 +40,8 @@ const useStyles = makeStyles(theme => ({
 const ElectionWrite = () => {
     const dispatch = useDispatch();
     const classes = useStyles();
+    const [isLoading, setIsLoading] = useState(false); //이미지가 업로드중인지 아닌지 판별하는 state (이미 이미지가 업로드 중이면(true면) 이미지 업로드를 막는 역할)
+    const user = useSelector(state => state.user.user);
 
     //기본 선거시작시간은 현재로부터 10분뒤입니다.
     const defaultStartDate =
@@ -52,11 +58,6 @@ const ElectionWrite = () => {
         end_date: defaultEndDate,
     });
 
-    console.log(post);
-    const [isLoading, setIsLoading] = useState(false); //이미지가 업로드중인지 아닌지 판별하는 state (이미 이미지가 업로드 중이면(true면) 이미지 업로드를 막는 역할)
-    const fileInput = useRef(); //type이 file인 input이다 (파일 객체를 받아올 input)
-    const user = useSelector(state => state.user.user);
-
     useEffect(() => {
         // 나중에 여기에 대학관리자만 들어올 수 있게 처리하자!
     }, []);
@@ -68,11 +69,13 @@ const ElectionWrite = () => {
 
     const deleteCard = currentIdx => {
         //카드 삭제하기
-        setPost({
-            ...post,
-            candidates: post.candidates.filter(
-                (ele, idx) => currentIdx !== idx,
-            ),
+        confirm.deleteConfirm(() => {
+            setPost({
+                ...post,
+                candidates: post.candidates.filter(
+                    (ele, idx) => currentIdx !== idx,
+                ),
+            });
         });
     };
 
@@ -102,13 +105,13 @@ const ElectionWrite = () => {
         });
     };
 
-    const selectFileImageUploadSetData = currentIdx => {
+    const selectFileImageUploadSetData = (event, currentIdx) => {
         //유저가 파일을 선택하면 post 안에 파일객체를 저장하고, 서버에 파일객체를 보내고, imgUrl을 받아서 post 안에 imgUrl을 저장하는 역할을 합니다.
         if (isLoading) return; //업로드중이 아닐때에만 파일선택하게 한다.
         setIsLoading(true);
 
         //----사용할 데이터를 정리하고, 서버에 데이터(이미지 객체)를 전달하고 url을 얻어서 post에 저장한다.
-        const file = fileInput.current.files[0]; //파일객체;
+        const file = event.target.files[0]; //파일객체;
         const req = { img: file }; //서버에서 사용할 데이터
 
         //multer를 사용하려면 formData 안에 request들을 넣어주어야 한다
@@ -135,12 +138,13 @@ const ElectionWrite = () => {
                 setPost({
                     //통신 후 받아온 imgUrl을 post 안에 담아둔다. 이 imgUrl을 사용하여 화면에서 미리보기를 구현한다.
                     ...post,
-                    candidates: post.candidates.map((ele, idx) =>
-                        idx === currentIdx ? { ...ele, photo } : ele,
-                    ),
+                    candidates: post.candidates.map((ele, idx) => {
+                        console.log(idx, currentIdx);
+                        return idx === currentIdx ? { ...ele, photo } : ele;
+                    }),
                 });
             } catch (err) {
-                alert("이미지를 등록할 수 없습니다.");
+                Swal.fire("에러", "이미지를 등록할 수 없습니다.", "error");
             }
         }
         sendImg();
@@ -157,13 +161,21 @@ const ElectionWrite = () => {
                 moment(post.start_date).isBefore(moment()) ||
                 moment(post.start_date).isSame(moment())
             )
-                return alert("시작일을 현재시간보다 후로 설정해주세요");
+                return Swal.fire(
+                    "에러",
+                    "시작일을 현재시간보다 후로 설정해주세요.",
+                    "error",
+                );
 
         if (
             moment(post.end_date).isBefore(post.start_date) ||
             moment(post.end_date).isSame(post.start_date)
         )
-            return alert("종료일을 시작일 후로 설정해주세요");
+            return Swal.fire(
+                "에러",
+                "종료일을 시작일 후로 설정해주세요.",
+                "error",
+            );
 
         const req = {
             name: post.name,
@@ -273,11 +285,7 @@ const ElectionWrite = () => {
                                     {/* 후보자의 사진에 관련된 작업을 하는 공간입니다. */}
                                     <CandidateImage>
                                         {/* 후보자의 사진을 미리보기 할 수 있는 곳입니다. */}
-                                        <Freeview
-                                            onClick={() =>
-                                                fileInput.current.click()
-                                            }
-                                        >
+                                        <Freeview>
                                             {/* 후보자의 이미지가 있으면 보여주고, 아니면 기본문자열을 보여줍니다. */}
                                             {ele.photo ? (
                                                 <img
@@ -290,18 +298,18 @@ const ElectionWrite = () => {
                                                     주세요!
                                                 </span>
                                             )}
+                                            <Uploader
+                                                type="file"
+                                                onChange={e =>
+                                                    selectFileImageUploadSetData(
+                                                        e,
+                                                        idx,
+                                                    )
+                                                }
+                                                disabled={isLoading}
+                                            />
                                         </Freeview>
                                         {/* Uploader은 type이 file인 input입니다. 브라우저 상에서는 보이지 않게 숨겨두었습니다. */}
-                                        <Uploader
-                                            ref={fileInput}
-                                            type="file"
-                                            onChange={() =>
-                                                selectFileImageUploadSetData(
-                                                    idx,
-                                                )
-                                            }
-                                            disabled={isLoading}
-                                        />
                                     </CandidateImage>
                                     {/* 후보자의 상세 내용이 담길 곳입니다. */}
                                     <CandidateContent>
@@ -352,6 +360,7 @@ const WriteElectionInfoBox = styled.div`
 const WriteCandidateBox = styled.div``;
 
 const Freeview = styled.div`
+    position: relative;
     width: 300px;
     height: 300px;
     display: flex;
@@ -370,7 +379,13 @@ const CandidateWriteBox = styled.div`
 const CandidateImage = styled.div``;
 
 const Uploader = styled.input`
-    display: none;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 99;
+    left: 0;
+    top: 0;
+    opacity: 0;
 `;
 
 const CandidateContent = styled.div`
