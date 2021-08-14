@@ -1,10 +1,14 @@
-import React, { useState, useEffect, useRef } from "react";
-import axios from "axios";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { addElectionDB } from "../redux/async/election";
 import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router";
 import moment from "moment";
 import confirm from "../confirm";
+
+//통신
+import axios from "axios";
+import { electionApi } from "../api";
+import { addElectionDB } from "../redux/async/election";
 
 //컴포넌트
 import Message from "../Components/Message";
@@ -41,6 +45,12 @@ const ElectionWrite = () => {
     const classes = useStyles();
     const [isLoading, setIsLoading] = useState(false); //이미지가 업로드중인지 아닌지 판별하는 state (이미 이미지가 업로드 중이면(true면) 이미지 업로드를 막는 역할)
     const user = useSelector(state => state.user.user);
+    const { id: electionPostId } = useParams(); //선거게시글의 포스트아이디입니다.
+    const electionPostFromState = useSelector(
+        state =>
+            state.election.post?.election_id == electionPostId &&
+            state.election.post,
+    ); //기존 선거게시글의 내용이 담겨있습니다.
 
     //기본 선거시작시간은 현재로부터 10분뒤입니다.
     const defaultStartDate =
@@ -58,7 +68,15 @@ const ElectionWrite = () => {
     });
 
     useEffect(() => {
-        // 나중에 여기에 대학관리자만 들어올 수 있게 처리하자!
+        //선거게시글ID와 state로부터 원본 게시글 정보를 불러올 수 있으면 입력값 통합 state에 저장한다.
+        if (electionPostId && electionPostFromState)
+            setPost(electionPostFromState);
+        if (electionPostId && !electionPostFromState) {
+            //만약 스테이트에 post값이 없으면, api 요청해서 바로 값을 가져와서 post에 집어넣어준다.
+            electionApi
+                .getElection(electionPostId)
+                .then(res => setPost(res.data.result));
+        }
     }, []);
 
     const addCard = () => {
@@ -240,6 +258,7 @@ const ElectionWrite = () => {
                     name="name"
                     label="제목"
                     type="text"
+                    value={post && post.name}
                     className={classes.textField}
                     InputLabelProps={{
                         shrink: true,
@@ -251,6 +270,7 @@ const ElectionWrite = () => {
                     name="content"
                     label="내용"
                     type="text"
+                    value={post && post.content}
                     className={classes.textField}
                     InputLabelProps={{
                         shrink: true,
@@ -263,9 +283,13 @@ const ElectionWrite = () => {
                     id="datetime-local"
                     label="선거 시작일"
                     type="datetime-local"
-                    defaultValue={moment(defaultStartDate).format(
-                        "YYYY-MM-DDTHH:mm",
-                    )}
+                    defaultValue={
+                        post && post.start_date
+                            ? moment(post.start_date).format("YYYY-MM-DDTHH:mm")
+                            : moment(defaultStartDate).format(
+                                  "YYYY-MM-DDTHH:mm",
+                              )
+                    }
                     className={classes.textField}
                     InputLabelProps={{
                         shrink: true,
@@ -278,9 +302,11 @@ const ElectionWrite = () => {
                     id="datetime-local"
                     label="선거 종료일"
                     type="datetime-local"
-                    defaultValue={moment(defaultEndDate).format(
-                        "YYYY-MM-DDTHH:mm",
-                    )}
+                    defaultValue={
+                        post && post.start_date
+                            ? moment(post.end_date).format("YYYY-MM-DDTHH:mm")
+                            : moment(defaultEndDate).format("YYYY-MM-DDTHH:mm")
+                    }
                     className={classes.textField}
                     InputLabelProps={{
                         shrink: true,

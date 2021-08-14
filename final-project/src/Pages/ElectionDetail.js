@@ -217,7 +217,7 @@ const Controls = styled.div`
         border-radius: 10px;
         font-size: 20px;
         font-weight: bold;
-        :first-child {
+        :not(:last-child) {
             margin-right: 10px;
         }
         :hover {
