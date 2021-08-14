@@ -166,7 +166,7 @@ const BoardDetail = ({ page }) => {
                         {post && post.user && post.user.nickname}
                     </Nickname>
                     <IconContainer>
-                        <ToastContainer />
+                        <ToastContainer remit={1} />
 
                         <Mbutton onClick={copyUrl}>
                             <Icon>

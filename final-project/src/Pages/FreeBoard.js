@@ -25,6 +25,7 @@ const FreeBoard = () => {
     const selectedCountry = useSelector(
         state => state.freeBoard.selectedCountry,
     ); // 현재 선택된 국가 코드
+    const freeBoardTotalPage = useSelector(state => state.freeBoard.pageCount);
 
     useEffect(() => {
         const postListQueryData = {
@@ -38,25 +39,14 @@ const FreeBoard = () => {
 
     // pagination 상태 값 업데이트
     const handlePage = async (e, value) => {
-        if (
-            freeBoardPostList &&
-            freeBoardPostList.length < 10 &&
-            value > page
-        ) {
-            return alert("마지막 페이지");
-        }
         const postListQueryData = {
             pageSize: 10,
             pageNum: value,
             category: selectedTag === null ? undefined : selectedTag,
             country_id: selectedCountry === 0 ? undefined : selectedCountry,
         };
-        const response = await freeBoardApi.getList(postListQueryData);
-        if (response.data.result.length === 0) {
-            return alert("게시물이 없는 페이지 입니다.");
-        } else {
-            setPage(value);
-        }
+        await freeBoardApi.getList(postListQueryData);
+        setPage(value);
     };
     //----
 
@@ -66,10 +56,14 @@ const FreeBoard = () => {
             <BoardBox
                 postList={freeBoardPostList && freeBoardPostList}
                 preview={true}
-                boardName="freeBoard"
+                boardName="freeboard"
             />
             <PaginationContainer>
-                <Pagination count={10} page={page} onChange={handlePage} />
+                <Pagination
+                    count={freeBoardTotalPage && freeBoardTotalPage}
+                    page={page}
+                    onChange={handlePage}
+                />
             </PaginationContainer>
         </>
     );

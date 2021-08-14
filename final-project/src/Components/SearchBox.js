@@ -12,14 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Input from "@material-ui/core/Input";
 import styled from "styled-components";
 import PushButton from "../Elements/Buttons/PushButton";
-import categories from "../categories";
-import {
-    InputAdornment,
-    InputLabel,
-    MenuItem,
-    NativeSelect,
-    Select,
-} from "@material-ui/core";
+import { NativeSelect } from "@material-ui/core";
 /**
  * @author heesung
  * @param searchTag
@@ -39,6 +32,7 @@ const SearchBox = ({ searchTag, deactivateSearch, page }) => {
     // 작성일 or  관련순 초기 상태
     const [order, setOrder] = React.useState("date");
 
+    const storeSelectedTag = useSelector(state => state.freeBoard.selectedTag);
     useEffect(() => {
         // selectedTag 상태를 리덕스 스토어의 상태와 동기화
         dispatch(setTagReducer(selectedTag));
@@ -71,7 +65,11 @@ const SearchBox = ({ searchTag, deactivateSearch, page }) => {
         if (searchTerm === "") {
             return window.alert("검색어를 입력해 주세요.");
         }
-        history.push(`/freeboard/search/${searchTerm}`);
+        if (history.location.pathname.split("/")[1] === "freeboard") {
+            history.push(`/freeboard/search/${searchTerm}`);
+        } else if (history.location.pathname.split("/")[1] === "univboard") {
+            history.push(`/univboard/search/${searchTerm}`);
+        }
     };
     //----
 

@@ -22,13 +22,16 @@ instance.interceptors.response.use(
         if (response.data.message === "new token") {
             const { config } = response;
             const originalRequest = config;
-            const newAccessToken = response.data.myNewToken;
 
+            const newAccessToken = response.data.myNewToken;
             localStorage.setItem("token", newAccessToken);
 
-            originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
-            return await axios(originalRequest);
+            axios.defaults.headers.common.authorization = `Bearer ${newAccessToken}`;
+            originalRequest.headers.authorization = `Bearer ${newAccessToken}`;
+
+            return axios(originalRequest);
         }
+
         return response;
     },
     // async error => {
@@ -215,6 +218,17 @@ export const searchApi = {
     // 게시글 검색
     searchBySearchTerm: data =>
         instance.get("free/search", {
+            params: {
+                pageSize: data.pageSize,
+                pageNum: data.pageNum,
+                category: data?.category,
+                country_id: data?.country_id,
+                keyword: data?.keyword,
+                sort: data?.sort,
+            },
+        }),
+    searchUnivBySearchTerm: data =>
+        instance.get("univ/search", {
             params: {
                 pageSize: data.pageSize,
                 pageNum: data.pageNum,
