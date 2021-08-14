@@ -16,6 +16,7 @@ const UnivBoard = () => {
     const univId = useSelector(state => state.user?.user?.univ_id); // 로그인의 인증 대학교 아이디
     const UnivPostList = useSelector(state => state.univBoard.list); // 대학교 게시판 게시글
     const selectedTag = useSelector(state => state.freeBoard.selectedTag); // 현재 선택된 카테고리 구독
+    const totalUnivPage = useSelector(state => state.univBoard.pageCount);
 
     // 현재 페이지가 변하면 useEffect 발동, 다음 페이지 대학 게시글 요청
     useEffect(() => {
@@ -56,7 +57,11 @@ const UnivBoard = () => {
                 />
             </BoardContentContainer>
             <PaginationContainer>
-                <Pagination count={10} page={page} onChange={handlePage} />
+                <Pagination
+                    count={totalUnivPage && totalUnivPage}
+                    page={page}
+                    onChange={handlePage}
+                />
             </PaginationContainer>
         </>
     );

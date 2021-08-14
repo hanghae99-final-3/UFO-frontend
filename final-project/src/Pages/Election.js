@@ -4,6 +4,9 @@ import { useSelector, useDispatch } from "react-redux";
 import { getElectionListDB } from "../redux/async/election";
 import { history } from "../redux/configureStore";
 
+//컴포넌트
+import Message from "../Components/Message";
+
 const Election = () => {
     const dispatch = useDispatch();
     const electionList = useSelector(state => state.election.list);
@@ -12,9 +15,19 @@ const Election = () => {
         dispatch(getElectionListDB());
     }, []);
 
+    //대학 인증을 한 사람만 볼 수 있도록 예외처리를 합니다.
+    if (!user.univ_id || !user.country_id)
+        return (
+            <Message
+                message="대학인증을 한 사람만 선거게시글을 볼 수 있어요"
+                link="/mypage"
+                buttonValue="대학인증하러가기"
+            />
+        );
+
     return (
-        <>
-            <ElectionContainer>
+        <ElectionContainer>
+            <GridContainer>
                 {electionList &&
                     electionList.map(ele => (
                         <Post
@@ -30,15 +43,17 @@ const Election = () => {
                             <span>candi:{ele.candidates.length}</span>
                         </Post>
                     ))}
-            </ElectionContainer>
+            </GridContainer>
             <Button onClick={() => history.push(`/election/write`)}>
                 추가하기
             </Button>
-        </>
+        </ElectionContainer>
     );
 };
 
-const ElectionContainer = styled.div`
+const ElectionContainer = styled.div``;
+
+const GridContainer = styled.div`
     display: grid;
     grid-template-columns: repeat(4, 1fr);
 `;

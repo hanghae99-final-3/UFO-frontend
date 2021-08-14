@@ -253,7 +253,6 @@ const SelectBtn = styled.button`
     border: 1px solid #3b3b3b;
     border-radius: 10px;
     color: ${props => (props.selected ? "#fff" : "#505050")};
-    cursor: pointer;
     background: ${props => (props.selected ? "#3b3b3b" : "#fff")};
 `;
 

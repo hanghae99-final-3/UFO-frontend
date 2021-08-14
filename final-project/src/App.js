@@ -78,6 +78,11 @@ function App() {
                             exact
                             component={FreeBoardSearchResult}
                         />
+                        <Route
+                            path="/univboard/search/:param"
+                            exact
+                            component={FreeBoardSearchResult}
+                        />
                         <Route path="/mypage" exact component={MyPage} />
 
                         {/* ------대학 게시판 관련 route은 인증된 회원만 접근 가능-------- */}
@@ -113,6 +118,11 @@ function App() {
                         />
                         <Route
                             path="/election/write"
+                            exact
+                            component={ElectionWrite}
+                        />
+                        <Route
+                            path="/election/edit/:id"
                             exact
                             component={ElectionWrite}
                         />

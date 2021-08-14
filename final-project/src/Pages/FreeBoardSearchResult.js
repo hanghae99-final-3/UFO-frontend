@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
-import { getSearchResult } from "../redux/async/search";
+import { getSearchResult, getUnivSearchResult } from "../redux/async/search";
 
 import styled from "styled-components";
 import Pagination from "@material-ui/lab/Pagination";
@@ -9,12 +9,14 @@ import BoardBox from "../Components/BoardBox";
 import SearchBox from "../Components/SearchBox";
 import categories from "../categories";
 import { resetSearchOrder } from "../redux/modules/freeBoardSlice";
+import { history } from "../redux/configureStore";
 
 const FreeBoardSearchResult = props => {
+    const currentLocation = history.location.pathname.split("/")[1];
     const dispatch = useDispatch();
     const [page, setPage] = useState(1);
     const { param: searchTerm } = useParams();
-    const selectedTag = useSelector(state => state.freeBoard.selectedTag);
+    const selectedTag = useSelector(state => state.freeBoard?.selectedTag);
     const selectedCountry = useSelector(
         state => state.freeBoard.selectedCountry,
     );
@@ -36,8 +38,13 @@ const FreeBoardSearchResult = props => {
             country_id: selectedCountry === 0 ? undefined : selectedCountry,
             sort: selectedSearchOrder ? selectedSearchOrder : null,
         };
-        dispatch(getSearchResult(SearchQueryData));
-        dispatch(resetSearchOrder());
+        if (currentLocation === "freeboard") {
+            dispatch(getSearchResult(SearchQueryData));
+            dispatch(resetSearchOrder());
+        } else if (currentLocation === "univboard") {
+            dispatch(getUnivSearchResult(SearchQueryData));
+            dispatch(resetSearchOrder());
+        }
     }, [dispatch, selectedTag, selectedCountry, searchTerm]);
 
     return (
@@ -47,13 +54,17 @@ const FreeBoardSearchResult = props => {
                 <Title>검색결과</Title>
             </TitleContainer>
             <SearchBox
-                searchTag={categories.freeBoardTags}
+                searchTag={
+                    currentLocation === "freeboard"
+                        ? categories.freeBoardTags
+                        : categories.univBoardTags
+                }
                 deactivateSearch={true}
             />
             <BoardBox
                 postList={searchResultList && searchResultList}
                 preview={true}
-                boardName="freeBoard"
+                boardName={currentLocation}
             />
             <PaginationContainer>
                 <Pagination count={10} page={page} onChange={handlePage} />

@@ -2,16 +2,22 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router";
+import { history } from "../redux/configureStore";
+import moment from "moment";
+import confirm from "../confirm";
+
+//통신
 import { getElectionDB, deleteElectionDB } from "../redux/async/election";
 import { voteApi } from "../api";
-import { history } from "../redux/configureStore";
 
 //컴포넌트
 import ElectionSlider from "../Components/ElectionSlider";
+import Message from "../Components/Message";
 
 const ElectionDetail = () => {
     const dispatch = useDispatch();
     const { id: electionId } = useParams();
+    const user = useSelector(state => state.user.user);
     const post = useSelector(state => state.election.post); //선거게시물의 데이터가 들어있습니다.
     const [selectCandidateNum, setSelectCandidateNum] = useState(null); //선택한 후보자의 번호를 담는 state입니다.
 
@@ -39,12 +45,33 @@ const ElectionDetail = () => {
 
     const deleteElection = () => {
         //선거를 삭제하는 함수입니다.
-        const req = {
-            election_id: electionId,
-        };
-
-        dispatch(deleteElectionDB(req));
+        confirm.deleteConfirm(() => {
+            const req = {
+                election_id: electionId,
+            };
+            dispatch(deleteElectionDB(req));
+        });
     };
+
+    //대학 인증을 한 사람만 볼 수 있도록 예외처리를 합니다.
+    if (!user.univ_id || !user.country_id)
+        return (
+            <Message
+                message="대학인증을 한 사람만 선거게시글을 볼 수 있어요"
+                link="/mypage"
+                buttonValue="대학인증하러가기"
+            />
+        );
+
+    // 선거 종료일이 현재보다 뒤에 있다면 결과페이지로 연결하는 버튼을 보여줍니다.
+    if (moment().isAfter(post?.end_date))
+        return (
+            <Message
+                message="선거가 끝났어요! 결과를 보러 가시겠어요?"
+                buttonValue="결과보러가기"
+                link={`election/${electionId}/result`}
+            />
+        );
 
     return (
         <ElectionDetailContainer>
@@ -52,7 +79,7 @@ const ElectionDetail = () => {
             <TimeContainer>
                 <h5>투표까지 남은 시간</h5>
                 <TimeBox>
-                    <span>D-일수:시간:분</span>
+                    <span>D-일:시간:분</span>
                 </TimeBox>
             </TimeContainer>
             <CandidatesContainer>
@@ -81,7 +108,11 @@ const ElectionDetail = () => {
                                 }
                             >
                                 <img
-                                    src={`http://3.36.90.60/${ele.photo}`}
+                                    src={
+                                        ele.photo
+                                            ? `http://3.36.90.60/${ele.photo}`
+                                            : "https://cdn.pixabay.com/photo/2016/04/01/12/07/alien-1300540__340.png"
+                                    }
                                     alt={ele.photo}
                                 />
                                 <p>
@@ -94,6 +125,21 @@ const ElectionDetail = () => {
             <Controls>
                 <button onClick={addVote}>투표하기</button>
                 <button onClick={deleteElection}>삭제하기</button>
+                {
+                    // 여기에 선거 작성자가 맞는지 안맞는지도 판별해줘야함!
+                    moment().isBefore(post?.start_date) &&
+                        !moment().isSame(post?.start_date) && (
+                            <button
+                                onClick={() =>
+                                    history.push(
+                                        `/election/edit/${post.election_id}`,
+                                    )
+                                }
+                            >
+                                수정하기
+                            </button>
+                        )
+                }
             </Controls>
         </ElectionDetailContainer>
     );
@@ -101,13 +147,11 @@ const ElectionDetail = () => {
 
 const ElectionDetailContainer = styled.div`
     width: 100%;
+    position: relative;
 
-    > div {
+    > div:not(:last-child) {
         width: 100%;
         margin-top: 30px;
-        :not(:nth-child(2)) {
-            margin-top: 50px;
-        }
         h5 {
             color: #707070;
             font-size: 25px;
@@ -151,8 +195,9 @@ const VoteBox = styled.div`
 const VoteCard = styled.div`
     display: flex;
     flex-direction: column;
-    border: 1px solid ${props => (props.isSelected ? "#eb4d4b" : "#d2d2d2")};
+    border: 5px solid ${props => (props.isSelected ? "#eb4d4b" : "#d2d2d2")};
     text-align: center;
+
     img {
         width: 100%;
         height: 100%;
@@ -168,7 +213,43 @@ const VoteCard = styled.div`
 const Controls = styled.div`
     text-align: center;
     button {
-        padding: 10px;
+        padding: 10px 20px;
+        border-radius: 10px;
+        font-size: 20px;
+        font-weight: bold;
+        :not(:last-child) {
+            margin-right: 10px;
+        }
+        :hover {
+            background-color: #eb4d4b;
+            color: #fff;
+        }
+    }
+`;
+
+const Result = styled.div`
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    overflow: hidden;
+    touch-action: none;
+    z-index: 99;
+    text-align: center;
+    button {
+        margin-top: 200px;
+        padding: 10px 20px;
+        border-radius: 10px;
+        font-size: 20px;
+        font-weight: bold;
+        :first-child {
+            margin-right: 10px;
+        }
+        :hover {
+            background-color: #eb4d4b;
+            color: #fff;
+        }
     }
 `;
 

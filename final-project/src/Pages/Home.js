@@ -74,7 +74,7 @@ const Home = () => {
                     postList={
                         univBoardPostList && univBoardPostList.slice(0, 5)
                     }
-                    boardName="univBoard"
+                    boardName="univboard"
                 />
                 {/* 자유 게시판 불러오기*/}
                 {selectedCountry === 0 ? (
@@ -84,7 +84,7 @@ const Home = () => {
                         postList={
                             freeBoardPostList && freeBoardPostList.slice(0, 5)
                         }
-                        boardName="freeBoard"
+                        boardName="freeboard"
                     />
                 ) : (
                     //  유저가 특정 국가를 선택했을 경우, 자유 게시판을 해당 국의 게시글로 필터링하여 props로 전달한다.
@@ -98,7 +98,7 @@ const Home = () => {
                                 )
                                 .slice(0, 10)
                         }
-                        boardName="freeBoard"
+                        boardName="freeboard"
                     />
                 )}
                 {/* 카테고리별 게시판 불러오기*/}
@@ -108,18 +108,28 @@ const Home = () => {
                         if (selectedCountry === 0) {
                             // 특정 국가 선택이 되어있지 않은 경우, 전체 게시글 props로 전달.
                             return (
-                                <BoardBox
-                                    key={idx}
-                                    tag={category.categoryName}
-                                    postList={freeBoardPostList
-                                        .filter(
-                                            post =>
-                                                post.category ===
-                                                category.categoryId,
-                                        )
-                                        .slice(0, 5)}
-                                    boardName="freeBoard"
-                                />
+                                <>
+                                    <BoardBox
+                                        key={idx}
+                                        tag={category}
+                                        postList={freeBoardPostList
+                                            .filter(
+                                                post =>
+                                                    post.category ===
+                                                    category.categoryId,
+                                            )
+                                            .slice(0, 5)}
+                                        boardName="freeboard"
+                                    />
+                                    {category.length % 2 === 1 && (
+                                        <div>
+                                            <img
+                                                src="https://w7.pngwing.com/pngs/460/766/png-transparent-flying-saucer-unidentified-flying-object-ufo-purple-spacecraft-vertebrate-thumbnail.png"
+                                                alt="ufo"
+                                            />
+                                        </div>
+                                    )}
+                                </>
                             );
                         } else {
                             // 특정 국가가 선택되어 있는 경우, 해당 국가의 게시글로 필러팅하여 props로 게시글 리스트를 전달하여 준다.
@@ -127,7 +137,7 @@ const Home = () => {
                                 <BoardBox
                                     key={idx}
                                     tag={category.categoryName}
-                                    boardName="freeBoard"
+                                    boardName="freeboard"
                                     postList={freeBoardPostList
                                         .filter(
                                             post =>
@@ -141,6 +151,15 @@ const Home = () => {
                             );
                         }
                     })}
+                {/* 카테고리가 홀수이면 div를 스페어로 넣는다. */}
+                {categories.freeCategory.length % 2 !== 0 && (
+                    <SpareBox>
+                        <img
+                            src="https://cdn.pixabay.com/photo/2012/04/18/12/39/aliens-36912__340.png"
+                            alt="ufo"
+                        />
+                    </SpareBox>
+                )}
             </BoardContainer>
         </HomeContainer>
     );
@@ -154,6 +173,7 @@ const BoardContainer = styled.div`
     background: #d2d2d2;
     gap: 2px;
     border: 2px solid #d2d2d2;
+
     > div {
         background: #fff;
         padding: 50px;
@@ -162,6 +182,13 @@ const BoardContainer = styled.div`
     > div:first-child,
     > div:nth-child(2) {
         grid-column: 1/-1;
+    }
+`;
+
+const SpareBox = styled.div`
+    text-align: center;
+    img {
+        width: 50%;
     }
 `;
 

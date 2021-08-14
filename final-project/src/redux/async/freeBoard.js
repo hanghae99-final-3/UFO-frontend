@@ -16,7 +16,9 @@ export const getFreeListDB = createAsyncThunk(
     async (data, thunkAPI) => {
         try {
             const response = await freeBoardApi.getList(data);
-            if (response.data.ok) return response.data.result;
+            if (response.data.ok) {
+                return response.data;
+            }
         } catch (err) {
             return thunkAPI.rejectWithValue(err.response.message);
         }
@@ -56,6 +58,7 @@ export const addFreePostDB = createAsyncThunk(
         try {
             const response = await freeBoardApi.addPost(data);
             history.push("/freeboard");
+
             if (response.data.ok) return response.data.result;
         } catch (err) {
             return thunkAPI.rejectWithValue(err.response.message);

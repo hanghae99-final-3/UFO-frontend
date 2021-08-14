@@ -50,31 +50,39 @@ const ElectionSlider = ({ candidateList }) => {
                             }
                         >
                             <img
-                                src={`http://3.36.90.60/${candidate.photo}`}
-                                alt={candidate.photo}
+                                src={
+                                    candidate.photo
+                                        ? `http://3.36.90.60/${candidate.photo}`
+                                        : "https://cdn.pixabay.com/photo/2016/04/01/12/07/alien-1300540__340.png"
+                                }
+                                alt={candidate?.photo}
                             />
-                            <span>{candidate.name}</span>
+                            <span>{candidate?.name}</span>
                         </SlideCard>
                     ))}
             </Slider>
             <CandidateCard>
                 <CandidateImage>
                     <img
-                        src={`http://3.36.90.60/${candidateList[cardIndex].photo}`}
-                        alt={candidateList[cardIndex].photo}
+                        src={
+                            candidateList[cardIndex].photo
+                                ? `http://3.36.90.60/${candidateList[cardIndex].photo}`
+                                : "https://cdn.pixabay.com/photo/2016/04/01/12/07/alien-1300540__340.png"
+                        }
+                        alt={candidateList[cardIndex]?.photo}
                     />
                 </CandidateImage>
                 <CandidateInfo>
                     <h3>
-                        기호 {cardIndex + 1}번 {candidateList[cardIndex].name}
+                        기호 {cardIndex + 1}번 {candidateList[cardIndex]?.name}
                     </h3>
                     <div>
                         <span>학과</span>
-                        <p>{candidateList[cardIndex].major}</p>
+                        <p>{candidateList[cardIndex]?.major}</p>
                     </div>
                     <div>
                         <span>소개</span>
-                        <p>{candidateList[cardIndex].content}</p>
+                        <p>{candidateList[cardIndex]?.content}</p>
                     </div>
                 </CandidateInfo>
             </CandidateCard>
@@ -93,7 +101,7 @@ const SlideCard = styled.div`
     margin: auto;
     display: block !important;
     width: 300px !important;
-    height: 300px;
+    height: 330px;
     img {
         width: 100%;
         height: calc(100% - 30px);
@@ -103,6 +111,7 @@ const SlideCard = styled.div`
 
 const CandidateCard = styled.div`
     display: flex;
+    margin-top: 50px;
 `;
 
 const CandidateImage = styled.div`
@@ -116,7 +125,7 @@ const CandidateImage = styled.div`
 `;
 
 const CandidateInfo = styled.div`
-    padding: 20px 10px;
+    padding: 20px 0 20px 50px;
     h3 {
         margin-bottom: 30px;
         font-size: 30px;
@@ -126,9 +135,10 @@ const CandidateInfo = styled.div`
         width: 100%;
         display: flex;
         justify-content: space-between;
+        font-size: 20px;
         span {
             font-weight: bold;
-            min-width: 50px;
+            min-width: 100px;
         }
         p {
             width: 100%;

@@ -82,63 +82,45 @@ const MypageAccount = props => {
                     닉네임 설정
                 </ControlButton>
                 {isNicknameEditMode && (
-                    <div style={{ display: "flex", flexDirection: "column" }}>
-                        <TextField
-                            style={{ width: "500px", marginLeft: "10px" }}
-                            placeholder="비밀번호 입력"
-                            value={password}
-                            onChange={handlePassword}
-                            type="password"
-                        />
-                        <TextField
-                            style={{ width: "500px", marginLeft: "10px" }}
-                            placeholder="변경할 닉네임을 입력해주세요"
-                            value={newNickname}
-                            onChange={handleNicknameChange}
-                            InputProps={{
-                                endAdornment: (
-                                    <Button
-                                        style={{ width: "100px" }}
-                                        variant="outlined"
-                                        onClick={onNicknameChangeClick}
-                                    >
-                                        변경하기
-                                    </Button>
-                                ),
-                            }}
-                        />
-                    </div>
+                    <TextField
+                        style={{ width: "500px", marginLeft: "10px" }}
+                        placeholder="변경할 닉네임을 입력해주세요"
+                        value={newNickname}
+                        onChange={handleNicknameChange}
+                        InputProps={{
+                            endAdornment: (
+                                <Button
+                                    style={{ width: "100px" }}
+                                    variant="outlined"
+                                    onClick={onNicknameChangeClick}
+                                >
+                                    변경하기
+                                </Button>
+                            ),
+                        }}
+                    />
                 )}
                 <ControlButton onClick={handleEmailEditToggle}>
                     로그인 이메일 변경
                 </ControlButton>
                 {isEmailEditMode && (
-                    <div style={{ display: "flex", flexDirection: "column" }}>
-                        <TextField
-                            style={{ width: "500px", marginLeft: "10px" }}
-                            placeholder="비밀번호 입력"
-                            value={password}
-                            onChange={handlePassword}
-                            type="password"
-                        />
-                        <TextField
-                            style={{ width: "500px", marginLeft: "10px" }}
-                            placeholder="변경할 이메일을 입력해주세요"
-                            value={newEmail}
-                            onChange={handleEmailChange}
-                            InputProps={{
-                                endAdornment: (
-                                    <Button
-                                        style={{ width: "100px" }}
-                                        variant="outlined"
-                                        onClick={onEmailChangeClick}
-                                    >
-                                        변경하기
-                                    </Button>
-                                ),
-                            }}
-                        />
-                    </div>
+                    <TextField
+                        style={{ width: "500px", marginLeft: "10px" }}
+                        placeholder="변경할 이메일을 입력해주세요"
+                        value={newEmail}
+                        onChange={handleEmailChange}
+                        InputProps={{
+                            endAdornment: (
+                                <Button
+                                    style={{ width: "100px" }}
+                                    variant="outlined"
+                                    onClick={onEmailChangeClick}
+                                >
+                                    변경하기
+                                </Button>
+                            ),
+                        }}
+                    />
                 )}
 
                 <ControlButton>비밀번호 설정</ControlButton>

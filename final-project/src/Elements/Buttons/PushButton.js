@@ -6,7 +6,7 @@ const PushButton = ({ onClick }) => {
         <button className="pushable" onClick={onClick}>
             <span className="shadow"></span>
             <span className="edge"></span>
-            <span className="front">작성하기 </span>
+            <span className="front">글쓰기 </span>
         </button>
     );
 };
