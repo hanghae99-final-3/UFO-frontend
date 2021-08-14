@@ -74,7 +74,7 @@ const Home = () => {
                     postList={
                         univBoardPostList && univBoardPostList.slice(0, 5)
                     }
-                    boardName="univBoard"
+                    boardName="univboard"
                 />
                 {/* 자유 게시판 불러오기*/}
                 {selectedCountry === 0 ? (
@@ -84,7 +84,7 @@ const Home = () => {
                         postList={
                             freeBoardPostList && freeBoardPostList.slice(0, 5)
                         }
-                        boardName="freeBoard"
+                        boardName="freeboard"
                     />
                 ) : (
                     //  유저가 특정 국가를 선택했을 경우, 자유 게시판을 해당 국의 게시글로 필터링하여 props로 전달한다.
@@ -98,7 +98,7 @@ const Home = () => {
                                 )
                                 .slice(0, 10)
                         }
-                        boardName="freeBoard"
+                        boardName="freeboard"
                     />
                 )}
                 {/* 카테고리별 게시판 불러오기*/}
@@ -110,7 +110,7 @@ const Home = () => {
                             return (
                                 <BoardBox
                                     key={idx}
-                                    tag={category.categoryName}
+                                    tag={category}
                                     postList={freeBoardPostList
                                         .filter(
                                             post =>
@@ -118,7 +118,7 @@ const Home = () => {
                                                 category.categoryId,
                                         )
                                         .slice(0, 5)}
-                                    boardName="freeBoard"
+                                    boardName="freeboard"
                                 />
                             );
                         } else {
@@ -127,7 +127,7 @@ const Home = () => {
                                 <BoardBox
                                     key={idx}
                                     tag={category.categoryName}
-                                    boardName="freeBoard"
+                                    boardName="freeboard"
                                     postList={freeBoardPostList
                                         .filter(
                                             post =>

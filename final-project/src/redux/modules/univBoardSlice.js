@@ -17,6 +17,7 @@ const initialState = {
     commentList: [],
     isFetching: false,
     errorMessage: "",
+    pageCount: null,
     addRequestErrorMessage: "",
     deleteRequestErrorMessage: "",
     editRequestErrorMessage: "",
@@ -52,8 +53,9 @@ const univBoardSlice = createSlice({
         [getUnivBoardDB.pending]: (state, { payload }) => {
             state.isFetching = true;
         },
-        [getUnivBoardDB.fulfilled]: (state, { payload: univBoardList }) => {
-            state.list = univBoardList;
+        [getUnivBoardDB.fulfilled]: (state, { payload }) => {
+            state.list = payload.result;
+            state.pageCount = payload.page_count;
             state.isFetching = false;
             state.getUnivBoardErrorMessage = "";
         },

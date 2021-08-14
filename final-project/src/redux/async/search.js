@@ -22,3 +22,17 @@ export const getSearchResult = createAsyncThunk(
         }
     },
 );
+
+export const getUnivSearchResult = createAsyncThunk(
+    "search/getUnivSearchResult",
+    async (data, thunkAPI) => {
+        try {
+            const response = await searchApi.searchUnivBySearchTerm(data);
+            if (response.data.ok) {
+                return response.data.result;
+            }
+        } catch (error) {
+            thunkAPI.rejectWithValue(error.response.data.errorMessage);
+        }
+    },
+);

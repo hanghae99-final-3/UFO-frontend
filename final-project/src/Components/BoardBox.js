@@ -7,7 +7,7 @@ import { BiHeart } from "react-icons/bi";
 import { MdComment } from "react-icons/md";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import moment from "moment";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 /**
  * @author heesung && junghoo
@@ -26,12 +26,13 @@ const BoardBox = ({
     myPostTitle,
     mypage,
 }) => {
+    const dispatch = useDispatch();
     const _onClick = postId => {
         //자유게시판일때,
-        if (boardName === "freeBoard")
+        if (boardName === "freeboard")
             return history.push(`/freeboard/detail/${postId}`);
         //학교게시판일때,
-        return history.push(`/univBoard/detail/${postId}`);
+        return history.push(`/univboard/detail/${postId}`);
     };
     const isLike = useSelector(state =>
         boardName === "freeBoard" ? state.freeBoard.list : state.univBoard.list,
@@ -39,7 +40,7 @@ const BoardBox = ({
     return (
         <BoardContentContainer>
             <Header>
-                {tag && <Tag># {tag}</Tag>}
+                {tag && <Tag># {tag.categoryName}</Tag>}
                 {title && <TitleHeading>{title}</TitleHeading>}
                 {myPostTitle && <TitleHeading>{myPostTitle}</TitleHeading>}
                 {(title || tag) && (
@@ -58,7 +59,7 @@ const BoardBox = ({
                             <Title>
                                 <SmallTag>
                                     #{" "}
-                                    {boardName === "freeBoard"
+                                    {boardName === "freeboard"
                                         ? categories.freeCategory[post.category]
                                               ?.categoryName
                                         : categories.univCategory[post.category]
