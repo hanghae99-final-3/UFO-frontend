@@ -9,6 +9,12 @@ import VisibilityIcon from "@material-ui/icons/Visibility";
 import moment from "moment";
 import { useSelector, useDispatch } from "react-redux";
 
+//하트
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import FavoriteBorder from "@material-ui/icons/FavoriteBorder";
+import FavoriteIcon from "@material-ui/icons/Favorite";
+import Checkbox from "@material-ui/core/Checkbox";
+//
 /**
  * @author heesung && junghoo
  * @param postList, title, tag, preview
@@ -77,7 +83,15 @@ const BoardBox = ({
                                     {!tag ? (
                                         <>
                                             <Icon>
-                                                <BiHeart />
+                                                {post.like.is_like === false ? (
+                                                    <FavoriteBorder />
+                                                ) : (
+                                                    <FavoriteIcon
+                                                        style={{
+                                                            fill: "#FF5372",
+                                                        }}
+                                                    />
+                                                )}
                                                 <span>
                                                     {post.like &&
                                                         post.like.all_like}

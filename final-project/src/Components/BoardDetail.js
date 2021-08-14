@@ -55,7 +55,7 @@ const BoardDetail = ({ page }) => {
     );
     // 유저 아이디 스토어 구독
     const userId = useSelector(state => state.user.user.user_id);
-
+    const isLoggedin = useSelector(state => state.user.isLoggedIn);
     //작성 시간 config 설정
     const timeOption = {
         lang: "ko",
@@ -146,7 +146,11 @@ const BoardDetail = ({ page }) => {
         document.body.removeChild(el);
         toast("게시물 링크가 클립보드에 복사되었습니다!");
     };
-
+    const onLikeClick = () => {
+        page === "freeboard"
+            ? dispatch(postLikeToggleDB(postId))
+            : dispatch(univLikeToggleDB(postId));
+    };
     return (
         <MainContentContainer>
             <ContentHeaderContainer>
@@ -179,26 +183,13 @@ const BoardDetail = ({ page }) => {
                                 style={{ width: "30px" }}
                                 control={
                                     <Checkbox
-                                        onClick={() => {
-                                            {
-                                                page === "freeboard"
-                                                    ? dispatch(
-                                                          postLikeToggleDB(
-                                                              postId,
-                                                          ),
-                                                      )
-                                                    : dispatch(
-                                                          univLikeToggleDB(
-                                                              postId,
-                                                          ),
-                                                      );
-                                            }
-                                        }}
+                                        disabled={!isLoggedin}
+                                        onClick={onLikeClick}
                                         style={{ cursor: "pointer" }}
                                         icon={
                                             isLike ? (
                                                 <FavoriteIcon
-                                                    style={{ fill: "red" }}
+                                                    style={{ fill: "#FF5372" }}
                                                 />
                                             ) : (
                                                 <FavoriteBorder />
@@ -209,7 +200,7 @@ const BoardDetail = ({ page }) => {
                                                 <FavoriteBorder />
                                             ) : (
                                                 <FavoriteIcon
-                                                    style={{ fill: "red" }}
+                                                    style={{ fill: "#FF5372" }}
                                                 />
                                             )
                                         }

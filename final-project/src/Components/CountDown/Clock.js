@@ -32,12 +32,12 @@ const Clock = ({ deadline }) => {
     }, [deadline]);
 
     return (
-        <div>
-            <div className="Clock-days">{leading0(days)} 일</div>
-            <div className="Clock-hours">{leading0(hours)} 시간</div>
-            <div className="Clock-minutes">{leading0(minutes)} 분</div>
-            <div className="Clock-seconds">{leading0(seconds)} 초</div>
-        </div>
+        <h1>
+            <p>
+                {leading0(days)} 일 {leading0(hours)}시간 {leading0(minutes)}분
+                {leading0(seconds)} 초 남았습니다.
+            </p>
+        </h1>
     );
 };
 
