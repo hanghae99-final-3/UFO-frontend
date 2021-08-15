@@ -5,7 +5,6 @@ import { history } from "./redux/configureStore";
 import { useDispatch, useSelector } from "react-redux";
 
 //컴포넌트
-import { GlobalStyle } from "./globalStyle"; //글로벌 스타일
 import ProtectedRoute from "./ProtectedRoute";
 import Layout from "./Components/Layout"; // 앱의 헤더나 푸터같이 큰 틀을 담당하는 컴포넌트
 
@@ -49,7 +48,6 @@ function App() {
 
     return (
         <>
-            <GlobalStyle />
             <ConnectedRouter history={history}>
                 <Layout>
                     <Switch>
