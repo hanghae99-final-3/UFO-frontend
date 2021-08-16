@@ -38,11 +38,7 @@ const color = {
 //     tablet: 700,
 // };
 
-// const device = {
-//   mobile: `only screen and (max-width: ${deviceSizes.mobile})`,
-//   tablet: `only screen and (max-width: ${deviceSizes.tablet})`,
-// };
-
+//참고 : https://wonit.tistory.com/367
 // // 참고: https://www.styled-components.com/docs/advanced#media-templates
 // const media = Object.keys(deviceSize).reduce((acc, label) => {
 //     acc[label] = (...args) => css`
