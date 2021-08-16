@@ -11,7 +11,7 @@ import categories from "../categories";
 import { resetSearchOrder } from "../redux/modules/freeBoardSlice";
 import { history } from "../redux/configureStore";
 
-const FreeBoardSearchResult = props => {
+const SearchResult = props => {
     const currentLocation = history.location.pathname.split("/")[1];
     const dispatch = useDispatch();
     const [page, setPage] = useState(1);
@@ -32,7 +32,7 @@ const FreeBoardSearchResult = props => {
     useEffect(() => {
         const SearchQueryData = {
             pageSize: 10,
-            pageNum: 1,
+            pageNum: page,
             keyword: searchTerm,
             category: selectedTag === null ? undefined : selectedTag,
             country_id: selectedCountry === 0 ? undefined : selectedCountry,
@@ -45,7 +45,7 @@ const FreeBoardSearchResult = props => {
             dispatch(getUnivSearchResult(SearchQueryData));
             dispatch(resetSearchOrder());
         }
-    }, [dispatch, selectedTag, selectedCountry, searchTerm]);
+    }, [dispatch, selectedTag, selectedCountry, searchTerm, page]);
 
     return (
         <>
@@ -95,4 +95,4 @@ const TitleContainer = styled.div`
     vertical-align: middle;
 `;
 
-export default FreeBoardSearchResult;
+export default SearchResult;
