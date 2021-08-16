@@ -32,6 +32,7 @@ body{
   &::-webkit-scrollbar {
     display: none;
   }
+  /* background-color: #EEF1F5; */
 }
 
 `;
