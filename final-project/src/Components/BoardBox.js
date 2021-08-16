@@ -1,38 +1,29 @@
-import React, { useEffect } from "react";
-import { history } from "../redux/configureStore";
-
-import styled from "styled-components";
-import categories from "../categories";
-import { BiHeart } from "react-icons/bi";
-import { MdComment } from "react-icons/md";
-import VisibilityIcon from "@material-ui/icons/Visibility";
-import moment from "moment";
+import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 
-//하트
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import FavoriteBorder from "@material-ui/icons/FavoriteBorder";
+import Boop from "../Elements/Boop";
+import moment from "moment";
+import styled from "styled-components";
+import categories from "../categories";
+import { history } from "../redux/configureStore";
+
+//-----아이콘------
+import { MdComment } from "react-icons/md";
+import VisibilityIcon from "@material-ui/icons/Visibility";
 import FavoriteIcon from "@material-ui/icons/Favorite";
-import Checkbox from "@material-ui/core/Checkbox";
-//
-/**
- * @author heesung && junghoo
- * @param postList, title, tag, preview
- * @returns 게시글 with 게시글 layout
- * @역할 게시글 view component
- * @필수값 postList, title, tag, preview
- */
+import FavoriteBorder from "@material-ui/icons/FavoriteBorder";
+//----
 
 const BoardBox = ({
     postList,
     title,
     tag,
-    preview,
     boardName,
     myPostTitle,
     mypage,
+    announcement,
 }) => {
-    const dispatch = useDispatch();
+    // 게시물 클릭시 이벤틀 헨들러
     const _onClick = postId => {
         //자유게시판일때,
         if (boardName === "freeboard")
@@ -40,17 +31,23 @@ const BoardBox = ({
         //학교게시판일때,
         return history.push(`/univboard/detail/${postId}`);
     };
-    const isLike = useSelector(state =>
-        boardName === "freeBoard" ? state.freeBoard.list : state.univBoard.list,
-    );
+
+    // 더보기 클릭 이벤트 헨들러
+    const onToMoreClicked = () => {
+        history.push(boardName);
+    };
+
+    //-------리턴 컴포넌트----------
     return (
-        <BoardContentContainer>
+        <BoardContainer>
             <Header>
-                {tag && <Tag># {tag.categoryName}</Tag>}
+                {tag && <LargeTag># {tag.categoryName}</LargeTag>}
                 {title && <TitleHeading>{title}</TitleHeading>}
                 {myPostTitle && <TitleHeading>{myPostTitle}</TitleHeading>}
                 {(title || tag) && (
-                    <More onClick={() => history.push(boardName)}>더보기</More>
+                    <Boop rotation={15} timing={200}>
+                        <More onClick={onToMoreClicked}>더보기</More>
+                    </Boop>
                 )}
             </Header>
             <Content>
@@ -64,26 +61,29 @@ const BoardBox = ({
                         >
                             <Title>
                                 <SmallTag>
-                                    #{" "}
-                                    {boardName === "freeboard"
-                                        ? categories.freeCategory[post.category]
-                                              ?.categoryName
-                                        : categories.univCategory[post.category]
-                                              ?.categoryName}
+                                    {!announcement && "# "}
+                                    {boardName === "freeboard" &&
+                                        !announcement &&
+                                        categories.freeCategory[post.category]
+                                            ?.categoryName}
+                                    {boardName === "univboard" &&
+                                        !announcement &&
+                                        categories.univCategory[post.category]
+                                            ?.categoryName}
+                                    {boardName === "univboard" &&
+                                        boardName &&
+                                        "공지"}
                                 </SmallTag>
                                 <p>{post.title}</p>
                             </Title>
-                            {/* <ContentContainer>
-                                {preview && (
-                                    <PostContent>{post.content}</PostContent>
-                                )}
-                            </ContentContainer> */}
+
                             {!mypage && (
                                 <IconContainer>
                                     {!tag ? (
                                         <>
                                             <Icon>
-                                                {post.like.is_like === false ? (
+                                                {post?.like?.is_like ===
+                                                false ? (
                                                     <FavoriteBorder />
                                                 ) : (
                                                     <FavoriteIcon
@@ -123,11 +123,11 @@ const BoardBox = ({
                         </PostContainer>
                     ))}
             </Content>
-        </BoardContentContainer>
+        </BoardContainer>
     );
 };
 
-const BoardContentContainer = styled.div`
+const BoardContainer = styled.div`
     width: 100%;
 `;
 
@@ -138,7 +138,19 @@ const Header = styled.div`
     margin-bottom: 10px;
 `;
 
-const Tag = styled.span`
+const SmallTag = styled.span`
+    min-width: 74px;
+    height: 22px;
+    font-size: 12px;
+    text-align: center;
+    margin-right: 10px;
+    border: 1px solid #3b3b3b;
+    border-radius: 10px;
+    background-color: white;
+    color: #505050;
+`;
+
+const LargeTag = styled.span`
     padding: 0 1rem 0 1rem;
     border: none;
     border-radius: 5rem;
@@ -156,8 +168,8 @@ const More = styled.div`
 const Content = styled.div``;
 
 const PostContainer = styled.div`
-    padding: 10px 0;
     display: flex;
+    margin-bottom: 12px;
     justify-content: space-between;
     border-bottom: 2px solid #fff;
     transition: 0.3s ease;
@@ -170,15 +182,6 @@ const PostContainer = styled.div`
 
 const Title = styled.div`
     display: flex;
-`;
-
-const SmallTag = styled.span`
-    padding: 0 10px;
-    margin-right: 10px;
-    border: 1px solid #3b3b3b;
-    border-radius: 10px;
-    background-color: white;
-    color: #505050;
 `;
 
 const IconContainer = styled.div`
