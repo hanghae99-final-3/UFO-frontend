@@ -22,6 +22,9 @@ const Home = () => {
     // 학교 게시판 게시물 리덕스 스토어 구독------------
     const univBoardPostList = useSelector(state => state.univBoard.list);
 
+    // 공지 게시글
+    const announcement = useSelector(state => state.univBoard.fixedList);
+
     // 로그인 유저
     const univId = useSelector(state => state.user?.user?.univ_id);
     const isLoggedIn = useSelector(state => state.user.isLoggedIn);
@@ -94,8 +97,9 @@ const Home = () => {
                 {/* 학교 게시판 불러오기*/}
                 <BoardBox
                     title="학교 게시판"
+                    fixedList={announcement && announcement.slice(0, 2)}
                     postList={
-                        univBoardPostList && univBoardPostList.slice(0, 8)
+                        univBoardPostList && univBoardPostList.slice(0, 6)
                     }
                     boardName="univboard"
                 />

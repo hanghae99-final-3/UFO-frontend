@@ -16,6 +16,7 @@ import FavoriteBorder from "@material-ui/icons/FavoriteBorder";
 
 const BoardBox = ({
     postList,
+    fixedList,
     title,
     tag,
     boardName,
@@ -51,6 +52,64 @@ const BoardBox = ({
                 )}
             </Header>
             <Content>
+                {fixedList &&
+                    fixedList.map((post, idx) => (
+                        <PostContainer
+                            key={idx}
+                            onClick={() => {
+                                _onClick(post.post_id);
+                            }}
+                        >
+                            <Title>
+                                <SmallTag>공지</SmallTag>
+                                <p>{post.title}</p>
+                            </Title>
+
+                            {!mypage && (
+                                <IconContainer>
+                                    {!tag ? (
+                                        <>
+                                            <Icon>
+                                                {post?.like?.is_like ===
+                                                false ? (
+                                                    <FavoriteBorder />
+                                                ) : (
+                                                    <FavoriteIcon
+                                                        style={{
+                                                            fill: "#FF5372",
+                                                        }}
+                                                    />
+                                                )}
+                                                <span>
+                                                    {post.like &&
+                                                        post.like.all_like}
+                                                </span>
+                                            </Icon>
+                                            <Icon>
+                                                <MdComment />
+                                                <span>{post.coment_count}</span>
+                                            </Icon>
+                                        </>
+                                    ) : null}
+
+                                    <Icon>
+                                        <VisibilityIcon />
+                                        <span>{post.view_count}</span>
+                                    </Icon>
+                                </IconContainer>
+                            )}
+                            {mypage && (
+                                <IconContainer>
+                                    <span>
+                                        {post &&
+                                            moment(post.createdAt).format(
+                                                "YYYY.MM.DD",
+                                            )}
+                                    </span>
+                                </IconContainer>
+                            )}
+                        </PostContainer>
+                    ))}
                 {postList &&
                     postList.map((post, idx) => (
                         <PostContainer
@@ -72,6 +131,7 @@ const BoardBox = ({
                                             ?.categoryName}
                                     {boardName === "univboard" &&
                                         boardName &&
+                                        announcement &&
                                         "공지"}
                                 </SmallTag>
                                 <p>{post.title}</p>
