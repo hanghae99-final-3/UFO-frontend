@@ -12,6 +12,12 @@ import { history } from "../redux/configureStore";
 import { checkLoggedInUser } from "../redux/async/user";
 import { onLogout } from "../redux/modules/univBoardSlice";
 
+import logo from "../assets/logo.svg";
+import Boop from "../Elements/Boop";
+import Sparkles from "../Elements/Sparkles";
+import useSound from "use-sound";
+import clicked from "../assets/sound/click2.wav";
+import logoSound from "../assets/sound/logoSound.wav";
 /**
  * @author jiyeong, heesung
  * @param
@@ -21,6 +27,8 @@ import { onLogout } from "../redux/modules/univBoardSlice";
  */
 
 const Header = () => {
+    const [menu] = useSound(clicked);
+    const [playLogo] = useSound(logoSound);
     const dispatch = useDispatch();
     const isLoggedIn = useSelector(state => state.user.isLoggedIn);
     const userName = useSelector(state => state.user.user.nickname);
@@ -36,17 +44,28 @@ const Header = () => {
     return (
         <HeaderContainer>
             <LeftColumn>
-                <Logo>로고</Logo>
+                <Logo onMouseEnter={() => playLogo()}>
+                    <Boop rotation={20} timing={200} x={0} y={0}>
+                        <img src={logo} />
+                    </Boop>
+                </Logo>
                 <SelectCountry />
             </LeftColumn>
             <RightColumn>
-                <UserName>
-                    {/* 유저가 로그인을 하면 유저네임이 나옵니다! */}
-                    {userName
-                        ? `안녕하세요 ${userName}님`
-                        : "로그인이 필요해요!"}
-                </UserName>
-                <MenuBtn onClick={() => setMenuOn(!menuOn)}>
+                <Sparkles>
+                    <UserName>
+                        {/* 유저가 로그인을 하면 유저네임이 나옵니다! */}
+                        {userName
+                            ? `안녕하세요 ${userName}님`
+                            : "로그인이 필요해요!"}
+                    </UserName>
+                </Sparkles>
+                <MenuBtn
+                    onClick={() => {
+                        menu();
+                        setMenuOn(!menuOn);
+                    }}
+                >
                     {/* 메뉴버튼 on&off 토글설정 */}
                     {menuOn ? <ClearIcon /> : <MenuIcon />}
                 </MenuBtn>
@@ -118,7 +137,6 @@ const LeftColumn = styled.div`
 `;
 
 const Logo = styled.div`
-    border: 1px solid #d2d2d2;
     padding: 10px 30px;
 `;
 
