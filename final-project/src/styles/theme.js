@@ -1,50 +1,61 @@
+import { css } from "styled-components";
+
 const calRem = size => `${size / 16}rem`;
 
 const fontSize = {
-    status: calRem(8),
-    xs: calRem(12),
-    sm: calRem(14),
-    md: calRem(16),
-    lg: calRem(18),
-    la: calRem(20),
-    sxl: calRem(24),
-    xl: calRem(26),
-    xxl: calRem(28),
-    tab: calRem(36),
+    12: calRem(12),
+    14: calRem(14),
+    20: calRem(20),
+    30: calRem(30),
+    40: calRem(40),
 };
 
 const fontWeight = {
-    black: 900,
     extraBold: 800,
-    bold: 700,
     semiBold: 600,
     regular: 400,
-    light: 300,
 };
 
 const color = {
-    brandColor: "#FF9900",
-    skyblue: "#D4F0FF",
-    bgColor: "#F8F8F8",
-    semiLightG: "#E7E7E7",
-    gray: "#C4C4C4",
-    darkG: "#686868",
-    black: "#2C2C2C",
-    white: "#FDFDFD",
-    danger: "#FF0005",
-    safe: "#00C314",
+    // 가장 진한 색이 1이며, 숫자가 커질수록 점점 옅은 색으로 셋팅해두었습니다.
+    mainBlue: "#5327ff",
+    mainMint: "#83ffca",
+    mainGray: "#dfdfe0",
+    white: "#fff",
+    black: "#292b2d",
+    mint: "#bcffe2",
+    blue1: "#8689ff",
+    blue2: "#afb1ff",
+    blue3: "#d8d9ff",
+    gray1: "#464b50",
+    gray2: "#757b80",
+    gray3: "#a6abb2",
+    danger: "#ff8b6f",
 };
 
-const deviceSize = {
-    smallMobile: "(min-width: 395px)",
-    tab: "(min-width: 700px)",
-};
+// const deviceSize = {
+//     mobile: 395,
+//     tablet: 700,
+// };
+
+// const device = {
+//   mobile: `only screen and (max-width: ${deviceSizes.mobile})`,
+//   tablet: `only screen and (max-width: ${deviceSizes.tablet})`,
+// };
+
+// // 참고: https://www.styled-components.com/docs/advanced#media-templates
+// const media = Object.keys(deviceSize).reduce((acc, label) => {
+//     acc[label] = (...args) => css`
+//         @media (max-width: ${deviceSize[label] / 16}em) {
+//             ${css(...args)};
+//         }
+//     `;
+// });
 
 const theme = {
     fontSize,
     fontWeight,
     color,
-    deviceSize,
 };
 
 export default theme;
