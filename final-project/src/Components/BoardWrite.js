@@ -11,7 +11,7 @@ import {
 } from "../redux/async/univBoard";
 import categories from "../categories";
 import Editor from "../Components/Editor";
-import CheckBox from "react-animated-checkbox";
+import mixin from "../styles/Mixin";
 
 /**
  * @author jiyeong
@@ -126,6 +126,14 @@ const BoardWrite = ({ boardName }) => {
         if (boardName === "univboard") history.push(`/univboard`);
     };
 
+    const setCategory = (keyName, value) => {
+        // 선택한 카테고리 값을 가져와서 setPost해주는 함수입니다.
+        setPost({
+            ...post,
+            [keyName]: value,
+        });
+    };
+
     const addPost = () => {
         //서버에 필요한 정보를 정리하고, 포스트를 추가하는 미들웨어 함수로 보낸다.
         if (!user.user_id) return alert("로그인을 해주세요!");
@@ -189,20 +197,25 @@ const BoardWrite = ({ boardName }) => {
     return (
         // 게시글 작성모드
         <>
+            {/* 게시판제목 */}
+            <BoardTitle>
+                <h3>
+                    {boardName === "freeboard" ? "자유게시판" : "대학게시판"}
+                </h3>
+            </BoardTitle>
+
+            {/* 태그선택 */}
             <SelectBox>
                 {boardName === "freeboard" && (
                     <CountrySelect>
                         {/* 자유게시판이면 국가선택란이 나타난다. */}
-                        <span>국가 설정</span>
+                        <SelectTitle>국가 설정</SelectTitle>
                         {categories.country.map(ele => (
                             <SelectBtn
                                 selected={post?.country_id === ele.countryId}
                                 key={ele.countryId}
                                 onClick={() =>
-                                    setPost({
-                                        ...post,
-                                        country_id: ele.countryId,
-                                    })
+                                    setCategory("country_id", ele.countryId)
                                 }
                             >
                                 {ele.countryName}
@@ -211,18 +224,15 @@ const BoardWrite = ({ boardName }) => {
                     </CountrySelect>
                 )}
                 <TagSelect>
-                    {/* 카테고리 중 카테고리 선택하기 */}
-                    <span>태그 설정</span>
+                    {/* 카테고리 중  선택하기 */}
+                    <SelectTitle>태그 설정</SelectTitle>
                     {categoryList.map(ele => (
                         <SelectBtn
                             selected={Number(post?.category) === ele.categoryId}
                             key={ele.categoryId}
-                            onClick={() => {
-                                setPost({
-                                    ...post,
-                                    category: `${ele.categoryId}`,
-                                });
-                            }}
+                            onClick={() =>
+                                setCategory("category", ele.categoryId)
+                            }
                         >
                             #{ele.categoryName}
                         </SelectBtn>
@@ -241,11 +251,17 @@ const BoardWrite = ({ boardName }) => {
                     </TagSelect>
                 )}
             </SelectBox>
+
+            {/* 제목입력란 */}
             <InputTitle
                 placeholder="제목을 입력해주세요!"
                 onChange={e => setPost({ ...post, title: e.target.value })}
             />
+
+            {/* 컨텐츠입력란 (에디터) */}
             <Editor getContentFromEditor={getContentFromEditor} />
+
+            {/* 컨트롤 버튼 */}
             <Controls>
                 <button onClick={goBackBoard}>취소</button>
                 <button onClick={addPost}>등록</button>
@@ -254,30 +270,44 @@ const BoardWrite = ({ boardName }) => {
     );
 };
 
-const SelectBox = styled.div`
-    padding: 20px;
-    border-top: 2px solid #707070;
-    border-bottom: 2px solid #707070;
-
-    span {
-        margin-right: 10px;
+const BoardTitle = styled.div`
+    ${mixin.outline("1px solid", "gray3", "bottom")}
+    h3 {
+        ${mixin.textProps(30, "extraBold", "black")}
+        margin-bottom: 10px;
     }
 `;
 
+const SelectBox = styled.div``;
+
 const CountrySelect = styled.div`
-    margin-bottom: 10px;
-    margin-bottom: 10px;
+    padding: 15px 0;
+    ${mixin.outline("1px solid", "gray3", "bottom")}
 `;
 
-const TagSelect = styled.div``;
+const TagSelect = styled.div`
+    padding: 15px 0;
+    ${mixin.outline("1px solid", "gray3", "bottom")}
+`;
+
+const SelectTitle = styled.span`
+    ${mixin.textProps(14, "semiBold", "gray3")}
+`;
 
 const SelectBtn = styled.button`
-    padding: 0 10px;
-    margin-right: 10px;
-    border: 1px solid #3b3b3b;
-    border-radius: 10px;
-    color: ${props => (props.selected ? "#fff" : "#505050")};
-    background: ${props => (props.selected ? "#3b3b3b" : "#fff")};
+    ${mixin.textProps(18, "semiBold", "gray3")}
+    ${props =>
+        props.selected
+            ? mixin.outline("2px solid", "mainMint")
+            : mixin.outline("2px solid", "blue3")}
+    box-sizing:border-box;
+    border-radius: 16px;
+    min-width: 79px;
+    background-color: ${({ theme }) => theme.color.white};
+    color: ${props => props.selected && props.theme.color.black};
+    &:not(:last-child) {
+        margin-right: 10px;
+    }
 `;
 
 const InputTitle = styled.input`
