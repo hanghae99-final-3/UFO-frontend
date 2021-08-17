@@ -5,6 +5,7 @@ import categories from "../categories";
 import SearchBox from "../Components/SearchBox";
 import BoardDetail from "../Components/BoardDetail";
 import BoardComment from "../Components/BoardComment";
+import RecommendList from "../Components/RecommendList";
 
 /**
  * @author jiyeong && heesung
@@ -20,6 +21,7 @@ const FreeBoardDetail = () => {
             <SearchBox searchTag={categories.freeBoardTags} page="freeboard" />
             <BoardDetail page="freeboard" />
             <BoardComment boardName="freeboard" />
+            <RecommendList />
         </>
     );
 };
