@@ -42,11 +42,8 @@ import FavoriteBorder from "@material-ui/icons/FavoriteBorder";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 //----
 
-//date countdown
-import DateCountdown from "react-date-countdown-timer";
-import CountDown from "./CountDown/CountDown";
 import mixin from "../styles/Mixin";
-//
+
 const BoardDetail = ({ page }) => {
     const dispatch = useDispatch();
     const { id: postId } = useParams();
