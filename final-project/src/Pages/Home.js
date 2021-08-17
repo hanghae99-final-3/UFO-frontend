@@ -182,11 +182,6 @@ const BoardContainer = styled.div`
         background: #fff;
         padding: 50px;
     }
-
-    > div:first-child,
-    > div:nth-child(2) {
-        grid-column: 1/-1;
-    }
 `;
 
 const SpareBox = styled.div`

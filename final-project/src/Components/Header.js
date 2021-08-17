@@ -44,7 +44,7 @@ const Header = () => {
     return (
         <HeaderContainer>
             <LeftColumn>
-                <Logo onMouseEnter={() => playLogo()}>
+                <Logo>
                     <Boop rotation={20} timing={200} x={0} y={0}>
                         <img src={logo} />
                     </Boop>
@@ -62,7 +62,6 @@ const Header = () => {
                 </Sparkles>
                 <MenuBtn
                     onClick={() => {
-                        menu();
                         setMenuOn(!menuOn);
                     }}
                 >
