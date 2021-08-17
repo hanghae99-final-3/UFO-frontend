@@ -45,6 +45,7 @@ import FavoriteIcon from "@material-ui/icons/Favorite";
 //date countdown
 import DateCountdown from "react-date-countdown-timer";
 import CountDown from "./CountDown/CountDown";
+import mixin from "../styles/Mixin";
 //
 const BoardDetail = ({ page }) => {
     const dispatch = useDispatch();
@@ -166,13 +167,20 @@ const BoardDetail = ({ page }) => {
 
                 <Title>{post && post.title}</Title>
                 <NicknameIconContainer>
-                    <Nickname>
-                        {post && post.user && post.user.nickname}
-                    </Nickname>
                     <IconContainer>
-                        <ToastContainer remit={1} />
+                        <Nickname>
+                            {post && post.user && post.user.nickname}
+                        </Nickname>
+                    </IconContainer>
 
-                        <Mbutton onClick={copyUrl}>
+                    <IconContainer>
+                        <ToastContainer limit={1} />
+
+                        <Mbutton
+                            disableElevation
+                            disableRipple
+                            onClick={copyUrl}
+                        >
                             <Icon>
                                 <LinkIcon />
                             </Icon>
@@ -183,6 +191,8 @@ const BoardDetail = ({ page }) => {
                                 style={{ width: "30px" }}
                                 control={
                                     <Checkbox
+                                        disableElevation
+                                        disableRipple
                                         disabled={!isLoggedin}
                                         onClick={onLikeClick}
                                         style={{ cursor: "pointer" }}
@@ -231,40 +241,55 @@ const BoardDetail = ({ page }) => {
             </ContentBodyContainer>
 
             <ButtonContainer>
-                <Button onClick={() => history.push(`/${page}`)}>목록</Button>
-                {userId && post && post.user && userId === post.user.user_id && (
-                    <>
-                        <Button
-                            onClick={() =>
-                                history.push(`/${page}/edit/${postId}`)
-                            }
-                        >
-                            수정
-                        </Button>
-                        <Button onClick={deletePost}>삭제</Button>
-                    </>
-                )}
+                <ButtonWrapper>
+                    <Button>좋아요</Button>
+                </ButtonWrapper>
+                <ButtonWrapper>
+                    <Button onClick={() => history.push(`/${page}`)}>
+                        목록
+                    </Button>
+                    <Button>글쓰기</Button>
+                    {userId &&
+                        post &&
+                        post.user &&
+                        userId === post.user.user_id && (
+                            <>
+                                <Button
+                                    onClick={() =>
+                                        history.push(`/${page}/edit/${postId}`)
+                                    }
+                                >
+                                    수정
+                                </Button>
+                                <Button onClick={deletePost}>삭제</Button>
+                            </>
+                        )}
+                </ButtonWrapper>
             </ButtonContainer>
         </MainContentContainer>
     );
 };
 
 const Tag = styled.span`
-    padding: 2px 15px;
-    margin-right: 10px;
-    border: 1px solid #3b3b3b;
+    height: 32px;
+    min-width: 80px;
+    ${mixin.textProps(18, "regular", "gray1")}
+    border: 2px solid ${props => props.theme.color.blue3};
+    /* margin-right: 10px; */
     border-radius: 15px;
     background-color: white;
-    color: #505050;
+    text-align: center;
+    line-height: 28px;
+    display: inline-block;
 `;
 const Title = styled.h3`
     display: block;
-    font-size: 35px;
-    color: #707070;
-    margin: 20px 0;
+    ${mixin.textProps(30, "regular", "black")}
+    margin: 20px 0 0 0;
 `;
 const Nickname = styled.span`
-    color: #707070;
+    ${mixin.textProps(14, "regular", "gray2")}
+    line-height: 29px;
 `;
 
 const Icon = styled.div`
@@ -280,19 +305,18 @@ const Icon = styled.div`
 `;
 
 const MainContentContainer = styled.div`
-    background-color: #f5f5f5;
     padding: 30px 0 0 0;
 `;
 
 const ContentHeaderContainer = styled.div`
-    border-bottom: 2px solid #e7e7e7;
-    padding: 0 30px 20px 30px;
+    border-bottom: 1.5px solid ${props => props.theme.color.mainGray};
 `;
 
 const NicknameIconContainer = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
+    padding-bottom: 10px;
 `;
 
 const IconContainer = styled.div`
@@ -300,23 +324,31 @@ const IconContainer = styled.div`
 `;
 
 const ContentBodyContainer = styled.div`
-    border-bottom: 2px solid #e7e7e7;
-    padding: 0 30px 20px 30px;
+    border-bottom: 1.5px solid ${props => props.theme.color.mainGray};
     display: flex;
-    min-height: 200px;
+    min-height: 100px;
     align-items: center;
 `;
 const ContentBody = styled.div``;
 
 const ButtonContainer = styled.div`
-    padding: 20px 30px;
+    margin-top: 15px;
+    display: flex;
+    justify-content: space-between;
 `;
 
 const Button = styled.button`
-    border: 1px solid #e7e7e7;
-    background: white;
-    padding: 5px 25px;
-    font-size: 12px;
+    width: 94px;
+    height: 32px;
+    margin-right: 7px;
+    border-radius: 16px;
+    text-align: center;
+    font-size: ${props => props.theme.fontSize[18]};
+    font-weight: ${props => props.theme.fontWeight.regular};
+    color: ${props => props.theme.color.white};
+    background-color: ${props => props.theme.color.blue1};
 `;
+
+const ButtonWrapper = styled.div``;
 
 export default BoardDetail;

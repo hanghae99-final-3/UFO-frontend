@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 import TimeCounting from "time-counting";
 import moment from "moment";
+import mixin from "../styles/Mixin";
 
 import {
     getFreeCommentListDB,
@@ -71,12 +72,12 @@ const BoardComment = ({ boardName }) => {
     return (
         <BoardCommentContainer>
             <CommentWrite>
-                <input
+                <Input
                     type="text"
                     onChange={e => setContent(e.target.value)}
                     onKeyPress={e => e.key === "Enter" && addComment()} //엔터키를 눌렀을 때, 코멘트가 추가되도록 설정!
                     value={content} //나중에 댓글을 추가하고 value 값을 지울 때, state를 활용하여 지우기 위해 value props를 설정!
-                    placeholder="댓글을 입력해주세요!"
+                    placeholder="댓글을 적어주세요 댓글댓글"
                 />
                 <button onClick={addComment}>등록</button>
             </CommentWrite>
@@ -106,13 +107,10 @@ const BoardComment = ({ boardName }) => {
     );
 };
 
-const BoardCommentContainer = styled.div`
-    background: #f5f5f5;
-    padding: 20px;
-`;
+const BoardCommentContainer = styled.div``;
 
 const CommentWrite = styled.div`
-    border-bottom: 2px solid #707070;
+    border-bottom: 2px solid ${props => props.theme.color.mainGray}
     display: flex;
     justify-content: space-between;
     margin: 20px 0;
@@ -223,15 +221,15 @@ const Comment = ({ comment, boardName, postId }) => {
                 <Header>
                     {/* 유저이미지 */}
                     <img
-                        src={require("../assets/pngegg.png").default}
+                        src={require("../assets/pngegg2.webp").default}
                         alt="user"
                     />
 
                     {/* 유저닉네임 */}
-                    <span>{comment.user.nickname}</span>
+                    <Span>{comment.user.nickname}</Span>
 
                     {/* 현재시간과 댓글생성시간과 비교한 시간 (지금은 댓글생성시간으로 표기됨) */}
-                    <span>{TimeCounting(comment.createdAt, timeOption)}</span>
+                    <Span>{TimeCounting(comment.createdAt, timeOption)}</Span>
 
                     <Controls>
                         {/* 댓글의 작성자가 아니면 답글버튼이 나타납니다. */}
@@ -273,7 +271,7 @@ const Comment = ({ comment, boardName, postId }) => {
                             onChange={e => setContent(e.target.value)}
                         />
                     ) : (
-                        <span>{comment.content}</span>
+                        <CommentContent>{comment.content}</CommentContent>
                     )}
                 </Content>
             </CommentContainer>
@@ -313,6 +311,15 @@ const Content = styled.div`
         border-bottom: 2px solid black;
         width: 30%;
     }
+`;
+
+const Span = styled.span`
+    ${mixin.textProps(14, "regular", "gray3")}
+`;
+
+const Input = styled.input``;
+const CommentContent = styled.span`
+    ${mixin.textProps(20, "regular", "black")}
 `;
 
 export default BoardComment;

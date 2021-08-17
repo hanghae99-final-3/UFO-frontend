@@ -33,7 +33,7 @@ const FontSpan = styled.span`
     border-radius: 12px;
     font-size: 1.25rem;
     color: white;
-    background: hsl(345deg 100% 47%);
+    background: hsl(252deg 100% 58%);
     will-change: transform;
     transform: translateY(-4px);
     transition: transform 600ms cubic-bezier(0.3, 0.7, 0.4, 1);
@@ -48,10 +48,10 @@ const EdgeSpan = styled.span`
     border-radius: 12px;
     background: linear-gradient(
         to left,
-        hsl(340deg 100% 16%) 0%,
-        hsl(340deg 100% 32%) 8%,
-        hsl(340deg 100% 32%) 92%,
-        hsl(340deg 100% 16%) 100%
+        hsl(252deg 100% 16%) 0%,
+        hsl(252deg 100% 32%) 8%,
+        hsl(252deg 100% 32%) 92%,
+        hsl(252deg 100% 16%) 100%
     );
 `;
 

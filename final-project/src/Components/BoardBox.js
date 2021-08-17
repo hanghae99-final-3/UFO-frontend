@@ -12,6 +12,7 @@ import { MdComment } from "react-icons/md";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import FavoriteBorder from "@material-ui/icons/FavoriteBorder";
+import mixin from "../styles/Mixin";
 //----
 
 const BoardBox = ({
@@ -120,7 +121,7 @@ const BoardBox = ({
                         >
                             <Title>
                                 <SmallTag>
-                                    {!announcement && "# "}
+                                    {!announcement && "#"}
                                     {boardName === "freeboard" &&
                                         !announcement &&
                                         categories.freeCategory[post.category]
@@ -134,7 +135,7 @@ const BoardBox = ({
                                         announcement &&
                                         "공지"}
                                 </SmallTag>
-                                <p>{post.title}</p>
+                                <PostTitle>{post.title}</PostTitle>
                             </Title>
 
                             {!mypage && (
@@ -187,6 +188,8 @@ const BoardBox = ({
     );
 };
 
+//--------스타일 컴포넌트-----------
+
 const BoardContainer = styled.div`
     width: 100%;
 `;
@@ -198,18 +201,7 @@ const Header = styled.div`
     margin-bottom: 10px;
 `;
 
-const SmallTag = styled.span`
-    min-width: 74px;
-    height: 22px;
-    font-size: 12px;
-    text-align: center;
-    margin-right: 10px;
-    border: 1px solid #3b3b3b;
-    border-radius: 10px;
-    background-color: white;
-    color: #505050;
-`;
-
+// 태그
 const LargeTag = styled.span`
     padding: 0 1rem 0 1rem;
     border: none;
@@ -219,33 +211,46 @@ const LargeTag = styled.span`
     font-size: 1.5rem;
 `;
 
+const SmallTag = styled.span`
+    min-width: 94px;
+    height: 32px;
+    ${mixin.textProps(18, "regular", "gray1")}
+    text-align: center;
+    margin-right: 20px;
+    border: 3px solid ${props => props.theme.color.blue3};
+    border-radius: 16px;
+    background-color: white;
+    line-height: 28px;
+`;
+
+// 더보기 버튼
 const More = styled.div`
     :hover {
         cursor: pointer;
     }
 `;
 
+// 텍스트
+
+const PostTitle = styled.p`
+    ${mixin.textProps(20, "regular", "grey1")}
+`;
 const Content = styled.div``;
 
 const PostContainer = styled.div`
     display: flex;
     margin-bottom: 12px;
     justify-content: space-between;
-    border-bottom: 2px solid #fff;
-    transition: 0.3s ease;
-    :hover {
-        cursor: pointer;
-        border-bottom: 2px solid #e7e7e7;
-        box-shadow: 0px 8px 7px -9px #34495e;
-    }
 `;
 
 const Title = styled.div`
     display: flex;
+    align-items: center;
 `;
 
 const IconContainer = styled.div`
     display: flex;
+    width: 130px;
 `;
 
 const Icon = styled.div`
