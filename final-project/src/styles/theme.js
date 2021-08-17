@@ -5,6 +5,8 @@ const calRem = size => `${size / 16}rem`;
 const fontSize = {
     12: calRem(12),
     14: calRem(14),
+    16: calRem(16),
+    18: calRem(18),
     20: calRem(20),
     30: calRem(30),
     40: calRem(40),
