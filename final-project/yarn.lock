@@ -4485,6 +4485,11 @@ cliui@^7.0.2:
     strip-ansi "^6.0.0"
     wrap-ansi "^7.0.0"
 
+clock@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/clock/-/clock-1.0.2.tgz#716ee41586d18f0263e1bb1a5f4c4433e094e6f9"
+  integrity sha512-IfZHm4xXgHCij1NgGkE8IeoP3/WVV3tVXciaWkZTqbzPtG4JD9cET0a/LNcclVJfqgXyhgPwoRdDp5glvS/lIQ==
+
 clsx@^1.0.4, clsx@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/clsx/-/clsx-1.1.1.tgz#98b3134f9abbdf23b2663491ace13c5c03a73188"
