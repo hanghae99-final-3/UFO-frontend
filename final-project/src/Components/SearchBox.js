@@ -1,20 +1,28 @@
 import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+
+import mixin from "../styles/Mixin";
+import styled from "styled-components";
+import Boop from "../Elements/Boop";
 import { history } from "../redux/configureStore";
-// redux
+import PushButton from "../Elements/Buttons/PushButton";
+
+//-----------------redux----------------
 import {
     resetSearchOrder,
     resetTagReducer,
     setSearchOrder,
     setTagReducer,
 } from "../redux/modules/freeBoardSlice";
-import { useDispatch, useSelector } from "react-redux";
-// material Ui
+//-----
+
+//--------------material Ui---------------
 import Input from "@material-ui/core/Input";
-import styled from "styled-components";
-import PushButton from "../Elements/Buttons/PushButton";
-import { NativeSelect } from "@material-ui/core";
+import { makeStyles, MuiThemeProvider, NativeSelect } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
-import Boop from "../Elements/Boop";
+import { MuiTheme } from "../styles/MuiTheme";
+//-----
+
 /**
  * @author heesung
  * @param searchTag
@@ -22,8 +30,17 @@ import Boop from "../Elements/Boop";
  * @역할 검색 / 태그 선택
  * @필수값  searchTag 검색창 위에 보여지는 tag 배열
  */
+const useStyles = makeStyles(theme => ({
+    selectRoot: {
+        //...other styles
+        "&:focus": {
+            backgroundColor: "white",
+        },
+    },
+}));
 
 const SearchBox = ({ searchTag, deactivateSearch, page }) => {
+    const classes = useStyles();
     const dispatch = useDispatch();
     // 현재 선택되어있는 태그의 index값을 selectedTag 배열에 저장한다.
     const [selectedTag, setSelectedTag] = useState(null);
@@ -34,7 +51,6 @@ const SearchBox = ({ searchTag, deactivateSearch, page }) => {
     // 작성일 or  관련순 초기 상태
     const [order, setOrder] = React.useState("date");
 
-    const storeSelectedTag = useSelector(state => state.freeBoard.selectedTag);
     useEffect(() => {
         // selectedTag 상태를 리덕스 스토어의 상태와 동기화
         dispatch(setTagReducer(selectedTag));
@@ -88,20 +104,19 @@ const SearchBox = ({ searchTag, deactivateSearch, page }) => {
         <React.Fragment>
             <SearchBoxContainer>
                 {page && (
-                    <Title>
+                    <TitleContainer>
                         <TitleSpan>
                             {page === "freeboard"
                                 ? "자유 게시판"
                                 : `대학 게시판 (${univName})`}
                         </TitleSpan>
-
-                        <PushButton onClick={onClick}>
-                            {/* 작성하기 페이지로 이동! */}
-                        </PushButton>
-                    </Title>
+                        {/* <PushButton onClick={onClick}> */}
+                        {/* 작성하기 페이지로 이동! */}
+                        {/* </PushButton> */}
+                    </TitleContainer>
                 )}
-
                 <TagContainer>
+                    <TagSelectText>태그 설정</TagSelectText>
                     {searchTag.map((tag, idx) => {
                         // map 함수로 props로 전달된 태그 배열의 태그들 마다 TagButton 컴포넌트 랜더링
                         return (
@@ -109,7 +124,7 @@ const SearchBox = ({ searchTag, deactivateSearch, page }) => {
                                 rotation={0}
                                 timing={200}
                                 x={0}
-                                y={-5}
+                                y={-7}
                                 key={idx}
                             >
                                 <TagButton
@@ -119,36 +134,52 @@ const SearchBox = ({ searchTag, deactivateSearch, page }) => {
                                     onClick={handleTagSelect}
                                     key={idx}
                                 >
-                                    # {tag}
+                                    #{tag}
                                 </TagButton>
                             </Boop>
                         );
                     })}
-                    <ResetTagButton>
-                        <Boop rotation={20}>
+                    <CancelButton>
+                        <Boop rotation={25}>
                             <CloseIcon onClick={handleReset} />
                         </Boop>
-                    </ResetTagButton>
+                    </CancelButton>
                 </TagContainer>
                 {!deactivateSearch && (
                     <InputContainer>
                         <SearchForm onSubmit={handleSearch}>
-                            <Input
-                                placeholder="키워드 태그를 설정 후 검색해보세요!"
-                                fullWidth
-                                value={searchTerm}
-                                onChange={onSearchTermChange}
-                                endAdornment={
-                                    <NativeSelect
-                                        value={order}
-                                        onChange={handleOrderChange}
-                                        style={{ width: "80px" }}
-                                    >
-                                        <option value={"date"}>작성일</option>
-                                        <option value={"rel"}>관련순</option>
-                                    </NativeSelect>
-                                }
-                            />
+                            <MuiThemeProvider theme={MuiTheme}>
+                                <Input
+                                    placeholder="키워드 태그를 설정 후 검색해보세요!"
+                                    fullWidth
+                                    value={searchTerm}
+                                    onChange={onSearchTermChange}
+                                    classes={{ root: classes.MuiOutlinedInput }}
+                                    endAdornment={
+                                        <NativeSelect
+                                            classes={{
+                                                root: classes.selectRoot,
+                                            }}
+                                            disableUnderline
+                                            value={order}
+                                            outlined="false"
+                                            onChange={handleOrderChange}
+                                            style={{
+                                                width: "80px",
+                                                fontSize: "12px",
+                                                color: "#A6ABB2",
+                                            }}
+                                        >
+                                            <option value={"date"}>
+                                                작성일
+                                            </option>
+                                            <option value={"rel"}>
+                                                관련순
+                                            </option>
+                                        </NativeSelect>
+                                    }
+                                />
+                            </MuiThemeProvider>
                         </SearchForm>
                     </InputContainer>
                 )}
@@ -159,54 +190,62 @@ const SearchBox = ({ searchTag, deactivateSearch, page }) => {
 
 export default SearchBox;
 
-const SearchBoxContainer = styled.div``;
+//-------스타일 컴포넌트--------
 
-const TagContainer = styled.div`
+const SearchBoxContainer = styled.div``;
+// 타이틀
+const TitleContainer = styled.div`
     display: flex;
-    justify-content: flex-start;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding-bottom: 10px;
+    border-bottom: 1.5px solid #dedfe0;
+    margin-bottom: 10px;
+`;
+const TitleSpan = styled.span`
+    ${mixin.textProps(30, "regular", "black")}
+`;
+// 태그
+const TagContainer = styled.div`
+    height: 40px;
+    ${mixin.flexBox(null, "center")}
+    margin-bottom:10px;
+`;
+const TagSelectText = styled.span`
+    ${mixin.textProps(14, "regular", "gray3")};
+    margin-right: 10px;
+`;
+
+const TagButton = styled.button`
+    width: 80px;
+    height: 30px;
+    border: 2px solid
+        ${props =>
+            props.selected ? props.theme.color.mint : props.theme.color.blue3};
+    margin-right: 7px;
+    border-radius: 16px;
+    text-align: center;
+    font-size: ${props => props.theme.fontSize[18]};
+    font-weight: ${props => props.theme.fontWeight.regular};
+    color: ${props => props.theme.color.gray1};
+    background-color: ${props => props.theme.color.white};
+`;
+
+const CancelButton = styled.button`
+    width: 40px;
+    height: 30px;
+    border: 2px solid white;
+    border-radius: 16px;
+    text-align: center;
+    font-size: ${props => props.theme.fontSize[18]};
+    font-weight: ${props => props.theme.fontWeight.regular};
+    color: ${props =>
+        props.selected ? props.theme.color.white : props.theme.color.gray1};
+    background-color: ${props => (props.selected ? "#707071" : "#ffffff")};
 `;
 
 const InputContainer = styled.div`
     width: 100%;
 `;
 
-const TagButton = styled.button`
-    border: 1px solid #707071;
-    color: ${props => (props.selected ? "#ffffff" : "#707071")};
-    font-size: 18px;
-    width: 84px;
-    height: 32px;
-    border-radius: 16px;
-    background-color: ${props => (props.selected ? "#707071" : "#ffffff")};
-    text-align: center;
-    margin-right: 5px;
-    margin-bottom: 10px;
-`;
-
-const ResetTagButton = styled.button`
-    color: ${props => (props.selected ? "#ffffff" : "#707071")};
-    font-size: 18px;
-    height: 32px;
-    border-radius: 16px;
-    background-color: ${props => (props.selected ? "#707071" : "#ffffff")};
-    text-align: center;
-    margin-right: 5px;
-    margin-bottom: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-`;
-
 const SearchForm = styled.form``;
-
-const Title = styled.div`
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    margin-bottom: 20px;
-`;
-
-const TitleSpan = styled.span`
-    font-size: 40px;
-    color: #707070;
-`;
