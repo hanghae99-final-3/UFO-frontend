@@ -185,7 +185,6 @@ const BoardDetail = ({ page }) => {
                                 <LinkIcon />
                             </Icon>
                         </Mbutton>
-
                         <Icon>
                             <FormControlLabel
                                 style={{ width: "30px" }}
@@ -195,7 +194,10 @@ const BoardDetail = ({ page }) => {
                                         disableRipple
                                         disabled={!isLoggedin}
                                         onClick={onLikeClick}
-                                        style={{ cursor: "pointer" }}
+                                        style={
+                                            ({ cursor: "pointer" },
+                                            { backgroundColor: "transparent" })
+                                        }
                                         icon={
                                             isLike ? (
                                                 <FavoriteIcon
@@ -275,7 +277,6 @@ const Tag = styled.span`
     min-width: 80px;
     ${mixin.textProps(18, "regular", "gray1")}
     border: 2px solid ${props => props.theme.color.blue3};
-    /* margin-right: 10px; */
     border-radius: 15px;
     background-color: white;
     text-align: center;
