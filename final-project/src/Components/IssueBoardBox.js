@@ -96,7 +96,6 @@ const IconContainer = styled.div`
 `;
 
 const Icon = styled.div`
-width:
     display: flex;
     justify-content: flex-start;
     align-items: center;
