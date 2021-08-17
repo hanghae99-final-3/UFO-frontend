@@ -40,9 +40,9 @@ const BoardBox = ({
         //학교게시판일때,
         return history.push(`/univboard/detail/${postId}`);
     };
-    const isLike = useSelector(state =>
-        boardName === "freeBoard" ? state.freeBoard.list : state.univBoard.list,
-    );
+    // const isLike = useSelector(state =>
+    //     boardName === "freeBoard" ? state.freeBoard.list : state.univBoard.list,
+    // );
     return (
         <BoardContentContainer>
             <Header>
