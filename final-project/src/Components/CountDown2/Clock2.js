@@ -8,7 +8,6 @@ class Clock2 extends Component {
             hours: 0,
             minutes: 0,
             seconds: 0,
-            finished: false,
         };
     }
     componentWillMount() {
@@ -29,7 +28,6 @@ class Clock2 extends Component {
                 hours: 0,
                 minutes: 0,
                 seconds: 0,
-                finished: true,
             });
         } else {
             const seconds = Math.floor((time / 1000) % 60);
@@ -40,7 +38,6 @@ class Clock2 extends Component {
         }
         return;
     }
-
     render() {
         return (
             <p>
