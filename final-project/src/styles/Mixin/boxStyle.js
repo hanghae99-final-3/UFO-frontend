@@ -4,7 +4,7 @@ import { css } from "styled-components";
 const flexBox = (hoz, ver, direction, height = "100%") => {
     return css`
         display: flex;
-        height: ${`height: ${height}`};
+        height: ${height};
         ${hoz && `justify-content: ${hoz}`};
         ${ver && `align-items: ${ver}`};
         ${direction && `flex-direction: ${direction}`}
