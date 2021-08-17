@@ -11,8 +11,7 @@ export const GlobalStyle = createGlobalStyle`
   padding:0;
   box-sizing:border-box;
   font-family: 'Pretendard', sans-serif;
-  color:${({ theme }) => theme.color.gray1};
-  font-weight: ${({ theme }) => theme.fontWeight.regular};
+
   &:focus,&:hover,&:active{
   outline:none 
   }

@@ -176,6 +176,14 @@ const BoardWrite = ({ boardName }) => {
         return (
             //게시글 수정모드
             <>
+                {/* 게시판제목 */}
+                <BoardTitle>
+                    <h3>
+                        {boardName === "freeboard"
+                            ? "자유게시판"
+                            : "대학게시판"}
+                    </h3>
+                </BoardTitle>
                 <InputTitle
                     placeholder="제목을 입력해주세요!"
                     onChange={e => setPost({ ...post, title: e.target.value })}
@@ -193,6 +201,8 @@ const BoardWrite = ({ boardName }) => {
             </>
         );
     }
+
+    console.log(post);
 
     return (
         // 게시글 작성모드
@@ -241,7 +251,7 @@ const BoardWrite = ({ boardName }) => {
                 {boardName === "univboard" && isAdmin && (
                     <TagSelect>
                         {/* 카테고리 중 카테고리 선택하기 */}
-                        <span>공지 설정</span>
+                        <SelectTitle>공지 설정</SelectTitle>
                         <SelectBtn
                             selected={isAnnouncement}
                             onClick={() => setIsAnnouncement(!isAnnouncement)}
@@ -292,19 +302,25 @@ const TagSelect = styled.div`
 
 const SelectTitle = styled.span`
     ${mixin.textProps(14, "semiBold", "gray3")}
+    margin-right: 10px;
 `;
 
 const SelectBtn = styled.button`
-    ${mixin.textProps(18, "semiBold", "gray3")}
+    min-width: 79px;
+    box-sizing: border-box;
+    border-radius: 16px;
+    transition: all 0.3s ease;
+    ${props =>
+        props.selected
+            ? `box-shadow: inset -1px 5px 5px -5px #cdcdcd;`
+            : `box-shadow:  0 5px 5px -5px #cdcdcd;`}
+    background-color: ${({ theme }) => theme.color.white};
+    color: ${props => props.selected && props.theme.color.black};
     ${props =>
         props.selected
             ? mixin.outline("2px solid", "mainMint")
             : mixin.outline("2px solid", "blue3")}
-    box-sizing:border-box;
-    border-radius: 16px;
-    min-width: 79px;
-    background-color: ${({ theme }) => theme.color.white};
-    color: ${props => props.selected && props.theme.color.black};
+    ${mixin.textProps(18, "semiBold", "gray3")}
     &:not(:last-child) {
         margin-right: 10px;
     }
@@ -312,22 +328,27 @@ const SelectBtn = styled.button`
 
 const InputTitle = styled.input`
     all: unset;
-    border-bottom: 1px solid #000;
-    font-size: 30px;
-    margin: 20px;
-    width: calc(100% - 40px);
+    ${mixin.outline("1px solid", "gray3", "bottom")};
+    ${mixin.textProps(30, "extraBold", "black")};
+    padding: 20px 0;
+    width: 100%;
 `;
 
 const Controls = styled.div`
+    margin-top: 30px;
     display: flex;
     justify-content: center;
     button {
-        border: 1px solid #e7e7e7;
-        background: white;
-        padding: 5px 25px;
-        font-size: 12px;
+        padding: 10px 0;
+        width: 80px;
+        border-radius: 16px;
+        background: ${({ theme }) => theme.color.blue1};
+        ${mixin.textProps(18, "semiBold", "white")};
         :not(:last-child) {
-            margin-right: 10px;
+            margin-right: 15px;
+        }
+        &:hover {
+            background: ${({ theme }) => theme.color.mainBlue};
         }
     }
 `;

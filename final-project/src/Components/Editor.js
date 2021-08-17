@@ -1,5 +1,7 @@
 import React from "react";
 import styled from "styled-components";
+import mixin from "../styles/Mixin";
+
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-editor-classic/src/classiceditor";
 
@@ -210,16 +212,26 @@ const Editor = ({ getContentFromEditor, originContent }) => {
 };
 
 const StyledEditor = styled.div`
-    padding: 10px 0;
     min-height: 100px;
 
-    .ck-toolbar {
+    .ck.ck-toolbar.ck-toolbar_grouping {
         padding: 10px;
-        border-radius: 10px 10px 0 0 !important;
+        border: none;
+        background-color: ${({ theme }) => theme.color.white};
+        ${mixin.outline("1px solid", "gray3", "bottom")};
     }
     .ck-content {
-        min-height: 200px;
-        border-radius: 0 0 10px 10px !important;
+        min-height: 500px;
+        padding: 30px;
+        border: none;
+        ${mixin.outline("1px solid", "gray3", "bottom")};
+        transition: all 0.7s ease;
+    }
+    .ck-content.ck-editor__editable.ck-rounded-corners.ck-editor__editable_inline.ck-focused {
+        border: none;
+        ${mixin.outline("1px solid", "gray3", "bottom")};
+        /* box-shadow : 오른쪽 위쪽 블러 분사 */
+        box-shadow: inset 0px -15px 8px -6px #ededed;
     }
 `;
 
