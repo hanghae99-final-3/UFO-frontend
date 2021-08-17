@@ -5,6 +5,7 @@ const calRem = size => `${size / 16}rem`;
 const fontSize = {
     12: calRem(12),
     14: calRem(14),
+    18: calRem(18),
     20: calRem(20),
     30: calRem(30),
     40: calRem(40),
@@ -30,6 +31,7 @@ const color = {
     gray1: "#464b50",
     gray2: "#757b80",
     gray3: "#a6abb2",
+    gray4: "#e5e5e5",
     danger: "#ff8b6f",
 };
 

@@ -156,7 +156,6 @@ const ElectionWrite = () => {
                     //통신 후 받아온 imgUrl을 post 안에 담아둔다. 이 imgUrl을 사용하여 화면에서 미리보기를 구현한다.
                     ...post,
                     candidates: post.candidates.map((ele, idx) => {
-                        console.log(idx, currentIdx);
                         return idx === currentIdx ? { ...ele, photo } : ele;
                     }),
                 });

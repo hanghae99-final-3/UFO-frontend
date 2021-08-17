@@ -4,7 +4,7 @@ import { css } from "styled-components";
 const flexBox = (hoz, ver, direction, height = "100%") => {
     return css`
         display: flex;
-        height: ${`height: ${height}`};
+        height: ${height};
         ${hoz && `justify-content: ${hoz}`};
         ${ver && `align-items: ${ver}`};
         ${direction && `flex-direction: ${direction}`}
@@ -27,27 +27,30 @@ const outline = (border, borderColor, direction) => {
     switch (direction) {
         case "top":
             return css`
-                border-top: ${`${border} ${borderColor}`};
+                border-top: ${border} ${({ theme }) => theme.color[borderColor]};
             `;
 
         case "right":
             return css`
-                border-right: ${`${border} ${borderColor}`};
+                border-right: ${border}
+                    ${({ theme }) => theme.color[borderColor]};
             `;
 
         case "bottom":
             return css`
-                border-bottom: ${`${border} ${borderColor}`};
+                border-bottom: ${border}
+                    ${({ theme }) => theme.color[borderColor]};
             `;
 
         case "left":
             return css`
-                border-left: ${`${border} ${borderColor}`};
+                border-left: ${border}
+                    ${({ theme }) => theme.color[borderColor]};
             `;
 
         default:
             return css`
-                border: ${`${border} ${borderColor}`};
+                border: ${border} ${({ theme }) => theme.color[borderColor]};
             `;
     }
 };
