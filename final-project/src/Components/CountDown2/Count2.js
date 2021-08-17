@@ -1,7 +1,7 @@
 import React from "react";
 import Clock2 from "./Clock2";
 const Count2 = () => {
-    const deadline = "2021-08-17 22:41:10 ";
+    const deadline = "2021-08-18 02:49:00 ";
     return (
         <div>
             <div>

@@ -13,10 +13,14 @@ class Clock2 extends Component {
     componentWillMount() {
         this.getTimeUntil(this.props.deadline);
     }
-    componentDidMount(deadline) {
-        const time = Date.parse(deadline) - Date.parse(new Date());
-        setInterval(() => this.getTimeUntil(this.props.deadline), 1000);
+
+    componentDidMount() {
+        this.timer = setInterval(
+            () => this.getTimeUntil(this.props.deadline),
+            1000,
+        );
     }
+    return;
     leading0(num) {
         return num < 10 ? "0" + num : num;
     }
@@ -29,6 +33,7 @@ class Clock2 extends Component {
                 minutes: 0,
                 seconds: 0,
             });
+            clearInterval(this.timer);
         } else {
             const seconds = Math.floor((time / 1000) % 60);
             const minutes = Math.floor((time / 1000 / 60) % 60);
