@@ -1,58 +1,22 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import Card from "@material-ui/core/Card";
-import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
-import Button from "@material-ui/core/Button";
-import Typography from "@material-ui/core/Typography";
 import categories from "../categories";
-import TimeCounting from "time-counting";
-import moment from "moment";
 import styled from "styled-components";
-import { BiHeart } from "react-icons/bi";
-import { MdComment } from "react-icons/md";
-import VisibilityIcon from "@material-ui/icons/Visibility";
 import { history } from "../redux/configureStore";
 
-const useStyles = makeStyles({
-    root: {
-        minWidth: 275,
-        position: "relative",
-    },
-    bullet: {
-        display: "inline-block",
-        margin: "0 2px",
-        transform: "scale(0.8)",
-    },
-    title: {
-        fontSize: 14,
-    },
-    pos: {
-        marginBottom: 12,
-        fontSize: 12,
-    },
-});
-const Icon = styled.div`
-    display: flex;
-    align-items: center;
-    span {
-        line-height: 1;
-    }
-    svg {
-        font-size: 20px;
-        margin: 0 5px 0 10px;
-    }
-`;
+//----머테이얼 유아이 컴포넌트 & 아이콘------
+import VisibilityIcon from "@material-ui/icons/Visibility";
+import CardActions from "@material-ui/core/CardActions";
+import CardContent from "@material-ui/core/CardContent";
+//-----
 
-const IconContainer = styled.div`
-    display: flex;
-    margin-left: auto;
-    margin-right: 10px;
-`;
+//-----작성일자 (e.g 방금 전, 1시간전) 계산 라이브러리----
+import moment from "moment";
+import TimeCounting from "time-counting";
+import Boop from "./Boop";
+//-----
 
 export default function SlideCard({ post, rank }) {
-    const classes = useStyles();
-
+    // TimeCounting 옵션 설정
     const timeOption = {
         lang: "ko",
         // objectTime: "2020-08-10 06:00:00",
@@ -61,53 +25,101 @@ export default function SlideCard({ post, rank }) {
             justNow: 61,
         },
     };
+    // 디테일 페이지 바로가기 버튼 이벤트 헨들러
+    const onDetailButtonClick = () => {
+        history.push(`/freeboard/detail/${post.post_id}`);
+    };
 
     return (
-        <Card className={classes.root}>
-            <span style={{ position: "absolute", top: "3%", left: "90%" }}>
-                {rank}위
-            </span>
-            <CardContent>
-                <Typography
-                    className={classes.title}
-                    color="textSecondary"
-                    gutterBottom
-                >
-                    # {categories.freeBoardTags[post.category]}
-                </Typography>
-                <Typography variant="h5" component="h2">
-                    {post.title}
-                </Typography>
-                <Typography className={classes.pos} color="textSecondary">
-                    {TimeCounting(post.createdAt, timeOption)}
-                </Typography>
-                <Typography
-                    variant="body2"
-                    component="p"
+        <CardContainer>
+            {/* <RankSpan style={{}}>{rank}위</RankSpan> */}
+            <InnerContentContainer>
+                <TitleSpan>{post.title}</TitleSpan>
+                <CardMidBox>
+                    <TagSpan>
+                        # {categories.freeBoardTags[post.category]}
+                    </TagSpan>
+                    <DateSpan>
+                        {TimeCounting(post.createdAt, timeOption)}
+                    </DateSpan>
+                </CardMidBox>
+                <PreviewSpan
                     className="ck-content"
                     dangerouslySetInnerHTML={{
                         __html: post.content,
                     }}
-                ></Typography>
-            </CardContent>
-            <div style={{ display: "flex" }}>
-                <CardActions>
-                    <Button
-                        onClick={() =>
-                            history.push(`/freeboard/detail/${post.post_id}`)
-                        }
-                        size="small"
-                    >
-                        자세히 보기
-                    </Button>
-                </CardActions>
-                <IconContainer>
-                    <Icon>
+                ></PreviewSpan>
+
+                <CardBottomBox>
+                    <Boop scale={1.05}>
+                        <DetailButton onClick={onDetailButtonClick}>
+                            자세히 보기
+                        </DetailButton>
+                    </Boop>
+                    <IconBox>
                         <VisibilityIcon />
-                        <span>{post.view_count}</span>
-                    </Icon>
-                </IconContainer>
-            </div>
-        </Card>
+                        <ViewCountSpan>{post.view_count}</ViewCountSpan>
+                    </IconBox>
+                </CardBottomBox>
+            </InnerContentContainer>
+        </CardContainer>
     );
 }
+
+//------스타일 컴포넌트------
+const CardContainer = styled.div`
+    border: 1px solid;
+    width: 372px;
+    height: 192px;
+    border-radius: 96px;
+    padding: 45px 51px 0 51px;
+    position: relative;
+`;
+const InnerContentContainer = styled.div``;
+
+const CardMidBox = styled.div``;
+const CardBottomBox = styled.div`
+    display: flex;
+    font-size: 12px;
+`;
+
+const IconBox = styled.div`
+    display: flex;
+    align-items: center;
+    span {
+        line-height: 1;
+    }
+    svg {
+        font-size: 12px;
+        margin: 0 5px 0 10px;
+    }
+`;
+
+const TagSpan = styled.span`
+    font-size: 12px;
+`;
+
+const TitleSpan = styled.span`
+    font-size: 20px;
+`;
+
+const DateSpan = styled.span`
+    font-size: 12px;
+`;
+
+const ViewCountSpan = styled.span``;
+
+const PreviewSpan = styled.span`
+    font-size: 14px;
+`;
+
+const DetailButton = styled.button`
+    font-size: 12px;
+    background: none;
+`;
+
+const RankSpan = styled.span`
+    position: absolute;
+    top: 3%;
+    left: 90%;
+`;

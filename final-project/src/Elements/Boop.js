@@ -1,12 +1,30 @@
 import React from "react";
 
-const Boop = ({ rotation = 0, timing = 150, children }) => {
+const Boop = ({
+    x = 0,
+    y = 0,
+    rotation = 0,
+    scale = 1,
+    timing = 150,
+    children,
+}) => {
     const [isBooped, setIsBooped] = React.useState(false);
     const style = {
         display: "inline-block",
         backfaceVisibility: "hidden",
-        transform: isBooped ? `rotate(${rotation}deg)` : `rotate(0deg)`,
+        transform: isBooped
+            ? `translate(${x}px, ${y}px)
+         rotate(${rotation}deg)
+         scale(${scale})`
+            : `translate(0px, 0px)
+         rotate(0deg)
+         scale(1)`,
+
         transition: `transform ${timing}ms`,
+        config: {
+            tension: 300,
+            friction: 10,
+        },
     };
     React.useEffect(() => {
         if (!isBooped) {

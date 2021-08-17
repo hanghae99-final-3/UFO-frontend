@@ -1,5 +1,7 @@
 import axios from "axios";
 import { getToken } from "./utils";
+import Swal from "sweetalert2";
+import { history } from "./redux/configureStore";
 
 // Axios 인스턴스 설정
 const instance = axios.create({
@@ -17,6 +19,7 @@ instance.interceptors.request.use(async config => {
 });
 
 // ┏----------interceptor를 통한 response 설정----------┓
+
 instance.interceptors.response.use(
     async response => {
         if (response.data.message === "new token") {
@@ -34,12 +37,17 @@ instance.interceptors.response.use(
 
         return response;
     },
-    // async error => {
-    //     const {
-    //         config,
-    //         response: { status },
-    //     } = error;
-    // },
+    async error => {
+        const {
+            config,
+            response: { status },
+        } = error;
+        if (status === 401) {
+            localStorage.removeItem("token");
+            Swal.fire("로그인", "로그인 시간이 만료되었습니다.", "error");
+        }
+        history.replace("/");
+    },
 );
 
 // 사용자 관련 axios API 통신

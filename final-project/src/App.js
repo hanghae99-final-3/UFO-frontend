@@ -5,7 +5,6 @@ import { history } from "./redux/configureStore";
 import { useDispatch, useSelector } from "react-redux";
 
 //컴포넌트
-import { GlobalStyle } from "./globalStyle"; //글로벌 스타일
 import ProtectedRoute from "./ProtectedRoute";
 import Layout from "./Components/Layout"; // 앱의 헤더나 푸터같이 큰 틀을 담당하는 컴포넌트
 
@@ -23,7 +22,7 @@ import UnivboardWrite from "./Pages/UnivBoardWrite";
 import Election from "./Pages/Election"; //선거게시판
 import ElectionDetail from "./Pages/ElectionDetail"; //선거게시판 게시글상세페이지
 import ElectionWrite from "./Pages/ElectionWrite"; //선거게시글 작성페이지 or 수정페이지
-import FreeBoardSearchResult from "./Pages/FreeBoardSearchResult"; // 자유 게시판 검색 결과 페이지
+import SearchResult from "./Pages/SearchResult"; // 자유 게시판 검색 결과 페이지
 
 //정후님을 위한 테스트 페이지 :-)
 import Test from "./Pages/Test";
@@ -49,7 +48,6 @@ function App() {
 
     return (
         <>
-            <GlobalStyle />
             <ConnectedRouter history={history}>
                 <Layout>
                     <Switch>
@@ -76,12 +74,12 @@ function App() {
                         <Route
                             path="/freeboard/search/:param"
                             exact
-                            component={FreeBoardSearchResult}
+                            component={SearchResult}
                         />
                         <Route
                             path="/univboard/search/:param"
                             exact
-                            component={FreeBoardSearchResult}
+                            component={SearchResult}
                         />
                         <Route path="/mypage" exact component={MyPage} />
 

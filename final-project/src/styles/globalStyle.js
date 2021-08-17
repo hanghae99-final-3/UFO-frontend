@@ -1,21 +1,21 @@
 import { createGlobalStyle } from "styled-components";
 
 export const GlobalStyle = createGlobalStyle`
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap');
+
+/* 다이나믹 서브셋 */
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard-dynamic-subset.css');
+
 /* font 설정 */
-input {
-  font-family: 'Noto Sans KR', sans-serif !important;
-}
 *{
   margin:0;
   padding:0;
   box-sizing:border-box;
-  font-family: 'Noto Sans KR', sans-serif !important;
-  color:black;
+  font-family: 'Pretendard', sans-serif;
+  color:${({ theme }) => theme.color.gray1};
+  font-weight: ${({ theme }) => theme.fontWeight.regular};
   &:focus,&:hover,&:active{
-  outline:none !important;
+  outline:none 
   }
-  outline:none !important;
 }
 ul {
   list-style: none;
@@ -32,6 +32,7 @@ body{
   &::-webkit-scrollbar {
     display: none;
   }
+  /* background-color: #EEF1F5; */
 }
 
 `;
