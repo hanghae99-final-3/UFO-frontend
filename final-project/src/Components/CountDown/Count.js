@@ -15,7 +15,6 @@ const Count = () => {
     return (
         <div>
             <div>
-                {console.log("deadline", deadline)}
                 <p>
                     투표시작 일 : {startYear}년 {startMonth}월 {startDay}일
                     <DatePicker

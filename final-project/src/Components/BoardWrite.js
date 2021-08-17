@@ -159,7 +159,6 @@ const BoardWrite = ({ boardName }) => {
         }
 
         if (boardName === "univboard") {
-            console.log(isAnnouncement);
             const req = {
                 title: post.title,
                 category: post.category,
@@ -201,8 +200,6 @@ const BoardWrite = ({ boardName }) => {
             </>
         );
     }
-
-    console.log(post);
 
     return (
         // 게시글 작성모드
