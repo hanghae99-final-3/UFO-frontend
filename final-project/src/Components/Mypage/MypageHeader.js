@@ -6,6 +6,8 @@ import { logoutUser } from "../../redux/modules/userSlice";
 import { onLogout } from "../../redux/modules/univBoardSlice";
 import { history } from "../../redux/configureStore";
 
+import Trend from "react-trend";
+
 const MypageHeader = props => {
     const dispatch = useDispatch();
     const user = useSelector(state => state.user.user);
@@ -36,7 +38,17 @@ const MypageHeader = props => {
                 </Wrapper>
                 <MyActivityContainer>
                     <ActivityTitle>내 활동 보기</ActivityTitle>
-
+                    <Trend
+                        smooth
+                        autoDraw
+                        autoDrawDuration={3000}
+                        autoDrawEasing="ease-out"
+                        data={[0, 2, 5, 9, 5, 10, 3, 5, 0, 0, 1, 8, 2, 9, 0]}
+                        gradient={["#00c6ff", "#F0F", "#FF0"]}
+                        radius={10.5}
+                        strokeWidth={1.3}
+                        strokeLinecap={"butt"}
+                    />
                     <ActivityButton
                         onClick={() => alert("서비스 준비중 입니다")}
                     >

@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 import { history } from "../redux/configureStore";
 import { useParams } from "react-router";
-import { freeBoardApi, univBoardApi } from "../api";
+import instance, { freeBoardApi, univBoardApi } from "../api";
 import { addFreePostDB, editFreePostDB } from "../redux/async/freeBoard";
 import {
     addUnivBoardPostDB,
@@ -11,6 +11,7 @@ import {
 } from "../redux/async/univBoard";
 import categories from "../categories";
 import Editor from "../Components/Editor";
+import CheckBox from "react-animated-checkbox";
 
 /**
  * @author jiyeong
@@ -26,6 +27,8 @@ const BoardWrite = ({ boardName }) => {
     const [post, setPost] = useState(null); //이 state는 입력값들이 들어갈 공간입니다!
     const { id: postId } = useParams();
     const isEdit = postId ? true : false; //수정모드인지 아닌지 판별 state
+    const [isAnnouncement, setIsAnnouncement] = useState(false); // 게시물 공지 설정 값
+    const [isAdmin, setIsAdmin] = useState(false);
 
     const getContentFromEditor = content => {
         //에디터로부터 content 값 가져오기
@@ -61,6 +64,14 @@ const BoardWrite = ({ boardName }) => {
                     .then(res => setPost(res.data.result));
             }
         }
+        const checkAdmin = async () => {
+            await instance.get("/api/is-admin").then(res => {
+                if (res.data.ok && res.data?.result?.admin_id) {
+                    setIsAdmin(true);
+                }
+            });
+        };
+        checkAdmin();
     }, []);
     //----
 
@@ -140,11 +151,12 @@ const BoardWrite = ({ boardName }) => {
         }
 
         if (boardName === "univboard") {
+            console.log(isAnnouncement);
             const req = {
                 title: post.title,
                 category: post.category,
                 content: post.content,
-                is_fixed: false,
+                is_fixed: isAnnouncement,
                 univ_id: user.univ_id,
             };
             dispatch(addUnivBoardPostDB(req));
@@ -216,6 +228,18 @@ const BoardWrite = ({ boardName }) => {
                         </SelectBtn>
                     ))}
                 </TagSelect>
+                {boardName === "univboard" && isAdmin && (
+                    <TagSelect>
+                        {/* 카테고리 중 카테고리 선택하기 */}
+                        <span>공지 설정</span>
+                        <SelectBtn
+                            selected={isAnnouncement}
+                            onClick={() => setIsAnnouncement(!isAnnouncement)}
+                        >
+                            공지글
+                        </SelectBtn>
+                    </TagSelect>
+                )}
             </SelectBox>
             <InputTitle
                 placeholder="제목을 입력해주세요!"

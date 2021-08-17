@@ -15,6 +15,7 @@ const initialState = {
     list: [],
     post: null,
     commentList: [],
+    fixedList: [],
     isFetching: false,
     errorMessage: "",
     pageCount: null,
@@ -55,6 +56,7 @@ const univBoardSlice = createSlice({
         },
         [getUnivBoardDB.fulfilled]: (state, { payload }) => {
             state.list = payload.result;
+            state.fixedList = payload.fixed_post;
             state.pageCount = payload.page_count;
             state.isFetching = false;
             state.getUnivBoardErrorMessage = "";

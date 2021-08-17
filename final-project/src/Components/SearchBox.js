@@ -13,6 +13,8 @@ import Input from "@material-ui/core/Input";
 import styled from "styled-components";
 import PushButton from "../Elements/Buttons/PushButton";
 import { NativeSelect } from "@material-ui/core";
+import CloseIcon from "@material-ui/icons/Close";
+import Boop from "../Elements/Boop";
 /**
  * @author heesung
  * @param searchTag
@@ -46,10 +48,8 @@ const SearchBox = ({ searchTag, deactivateSearch, page }) => {
 
     //---------태그 리셋 버튼 이벤트 핸들링---------
     const handleReset = e => {
-        if (e.target.name === "reset") {
-            setSelectedTag(null);
-            dispatch(resetTagReducer());
-        }
+        setSelectedTag(null);
+        dispatch(resetTagReducer());
     };
     //----
 
@@ -102,23 +102,33 @@ const SearchBox = ({ searchTag, deactivateSearch, page }) => {
                 )}
 
                 <TagContainer>
-                    <TagButton name="reset" onClick={handleReset}>
-                        X
-                    </TagButton>
                     {searchTag.map((tag, idx) => {
                         // map 함수로 props로 전달된 태그 배열의 태그들 마다 TagButton 컴포넌트 랜더링
                         return (
-                            <TagButton
-                                // 선택 여부로 styled component에서 조건부 css 적용(아래 TagButton styled component 참고)
-                                selected={selectedTag === idx}
-                                value={idx}
-                                onClick={handleTagSelect}
+                            <Boop
+                                rotation={0}
+                                timing={200}
+                                x={0}
+                                y={-5}
                                 key={idx}
                             >
-                                # {tag}
-                            </TagButton>
+                                <TagButton
+                                    // 선택 여부로 styled component에서 조건부 css 적용(아래 TagButton styled component 참고)
+                                    selected={selectedTag === idx}
+                                    value={idx}
+                                    onClick={handleTagSelect}
+                                    key={idx}
+                                >
+                                    # {tag}
+                                </TagButton>
+                            </Boop>
                         );
                     })}
+                    <ResetTagButton>
+                        <Boop rotation={20}>
+                            <CloseIcon onClick={handleReset} />
+                        </Boop>
+                    </ResetTagButton>
                 </TagContainer>
                 {!deactivateSearch && (
                     <InputContainer>
@@ -149,9 +159,7 @@ const SearchBox = ({ searchTag, deactivateSearch, page }) => {
 
 export default SearchBox;
 
-const SearchBoxContainer = styled.div`
-    margin: 30px 0;
-`;
+const SearchBoxContainer = styled.div``;
 
 const TagContainer = styled.div`
     display: flex;
@@ -175,13 +183,27 @@ const TagButton = styled.button`
     margin-bottom: 10px;
 `;
 
+const ResetTagButton = styled.button`
+    color: ${props => (props.selected ? "#ffffff" : "#707071")};
+    font-size: 18px;
+    height: 32px;
+    border-radius: 16px;
+    background-color: ${props => (props.selected ? "#707071" : "#ffffff")};
+    text-align: center;
+    margin-right: 5px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+`;
+
 const SearchForm = styled.form``;
 
 const Title = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
 `;
 
 const TitleSpan = styled.span`
