@@ -12,6 +12,7 @@ import {
 import categories from "../categories";
 import Editor from "../Components/Editor";
 import mixin from "../styles/Mixin";
+import DefaultButton from "../Elements/Buttons/DefaultButton";
 
 /**
  * @author jiyeong
@@ -197,8 +198,10 @@ const BoardWrite = ({ boardName }) => {
                 />
 
                 <Controls>
-                    <button onClick={goBackPostDetail}>취소</button>
-                    <button onClick={editfreePost}>수정</button>
+                    <DefaultButton gap="10px" onClick={goBackPostDetail}>
+                        취소
+                    </DefaultButton>
+                    <DefaultButton onClick={editfreePost}>수정</DefaultButton>
                 </Controls>
             </>
         );
@@ -273,8 +276,10 @@ const BoardWrite = ({ boardName }) => {
 
             {/* 컨트롤 버튼 */}
             <Controls>
-                <button onClick={goBackBoard}>취소</button>
-                <button onClick={addPost}>등록</button>
+                <DefaultButton gap="15px" onClick={goBackBoard}>
+                    취소
+                </DefaultButton>
+                <DefaultButton onClick={addPost}>등록</DefaultButton>
             </Controls>
         </>
     );
@@ -338,19 +343,6 @@ const Controls = styled.div`
     margin-top: 30px;
     display: flex;
     justify-content: center;
-    button {
-        padding: 10px 0;
-        min-width: 80px;
-        border-radius: 20px;
-        background: ${({ theme }) => theme.color.blue1};
-        ${mixin.textProps(18, "semiBold", "white")};
-        :not(:last-child) {
-            margin-right: 15px;
-        }
-        &:hover {
-            background: ${({ theme }) => theme.color.mainBlue};
-        }
-    }
 `;
 
 export default BoardWrite;
