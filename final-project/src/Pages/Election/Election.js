@@ -1,12 +1,12 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
-import { getElectionListDB } from "../redux/async/election";
-import { history } from "../redux/configureStore";
-import DefaultButton from "../Elements/Buttons/DefaultButton";
+import { getElectionListDB } from "../../redux/async/election";
+import { history } from "../../redux/configureStore";
+import DefaultButton from "../../Elements/Buttons/DefaultButton";
 
 //컴포넌트
-import Message from "../Components/Message";
+import Message from "../../Components/Message";
 
 const Election = () => {
     const dispatch = useDispatch();

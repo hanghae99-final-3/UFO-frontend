@@ -3,16 +3,16 @@ import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 import moment from "moment";
-import confirm from "../confirm";
-import DefaultButton from "../Elements/Buttons/DefaultButton";
+import confirm from "../../confirm";
+import DefaultButton from "../../Elements/Buttons/DefaultButton";
 
 //통신
 import axios from "axios";
-import { electionApi } from "../api";
-import { addElectionDB } from "../redux/async/election";
+import { electionApi } from "../../api";
+import { addElectionDB, editElectionDB } from "../../redux/async/election";
 
 //컴포넌트
-import Message from "../Components/Message";
+import Message from "../../Components/Message";
 
 //alert 라이브러리
 import Swal from "sweetalert2";
@@ -43,6 +43,7 @@ const ElectionWrite = () => {
     const [isLoading, setIsLoading] = useState(false); //이미지가 업로드중인지 아닌지 판별하는 state (이미 이미지가 업로드 중이면(true면) 이미지 업로드를 막는 역할)
     const user = useSelector(state => state.user.user);
     const { id: electionPostId } = useParams(); //선거게시글의 포스트아이디입니다.
+    const isEdit = electionPostId ? true : false; //수정모드인지 아닌지 판별해주는 값
     const electionPostFromState = useSelector(
         state =>
             state.election.post?.election_id == electionPostId &&
@@ -221,6 +222,21 @@ const ElectionWrite = () => {
             );
         //----
 
+        //----서버로 보낼 데이터를 정리하고, 선거게시글을 수정하는 미들웨어 함수로 보낸다.
+        if (isEdit) {
+            const req = {
+                name: post.name,
+                content: post.content,
+                country_id: user.country_id,
+                univ_id: user.univ_id,
+                candidates: post.candidates,
+                start_date: post.start_date,
+                end_date: post.end_date,
+                election_id: post.election_id,
+            };
+            return dispatch(editElectionDB(req));
+        }
+
         //----서버로 보낼 데이터를 정리하고, 선거게시글을 추가하는 미들웨어 함수로 보낸다.
         const req = {
             name: post.name,
@@ -244,7 +260,7 @@ const ElectionWrite = () => {
                 buttonValue="대학인증하러가기"
             />
         );
-
+    console.log(post);
     return (
         <ElectionWriteContainer>
             {/* 선거 게시글의 제목, 내용, 시작일, 종료일을 입력하는 곳입니다. */}
@@ -254,7 +270,7 @@ const ElectionWrite = () => {
                     name="name"
                     label="제목"
                     type="text"
-                    value={post && post.name}
+                    value={post.name ? post.name : ""}
                     className={classes.textField}
                     InputLabelProps={{
                         shrink: true,
@@ -266,7 +282,7 @@ const ElectionWrite = () => {
                     name="content"
                     label="내용"
                     type="text"
-                    value={post && post.content}
+                    value={post.content ? post.content : ""}
                     className={classes.textField}
                     InputLabelProps={{
                         shrink: true,
@@ -279,7 +295,7 @@ const ElectionWrite = () => {
                     id="datetime-local"
                     label="선거 시작일"
                     type="datetime-local"
-                    defaultValue={
+                    value={
                         post && post.start_date
                             ? moment(post.start_date).format("YYYY-MM-DDTHH:mm")
                             : moment(defaultStartDate).format(
@@ -298,7 +314,7 @@ const ElectionWrite = () => {
                     id="datetime-local"
                     label="선거 종료일"
                     type="datetime-local"
-                    defaultValue={
+                    value={
                         post && post.start_date
                             ? moment(post.end_date).format("YYYY-MM-DDTHH:mm")
                             : moment(defaultEndDate).format("YYYY-MM-DDTHH:mm")
@@ -367,6 +383,7 @@ const ElectionWrite = () => {
                                         <input
                                             name="name"
                                             placeholder="이름을 작성해주세요!"
+                                            value={ele.name ? ele.name : ""}
                                             onChange={e =>
                                                 setCandidateInfo(idx, e)
                                             }
@@ -375,6 +392,7 @@ const ElectionWrite = () => {
                                         <input
                                             name="major"
                                             placeholder="학과를 작성해주세요!"
+                                            value={ele.major ? ele.major : ""}
                                             onChange={e =>
                                                 setCandidateInfo(idx, e)
                                             }
@@ -383,6 +401,9 @@ const ElectionWrite = () => {
                                         <textarea
                                             name="content"
                                             placeholder="소개를 작성해주세요!"
+                                            value={
+                                                ele.content ? ele.content : ""
+                                            }
                                             onChange={e =>
                                                 setCandidateInfo(idx, e)
                                             }
@@ -393,7 +414,7 @@ const ElectionWrite = () => {
                         </Accordion>
                     ))}
                 <DefaultButton onClick={addCard}>후보자 추가</DefaultButton>
-                <DefaultButton onClick={addElection}>저장</DefaultButton>
+                <DefaultButton onClick={addElection}>등록</DefaultButton>
             </WriteCandidateBox>
         </ElectionWriteContainer>
     );

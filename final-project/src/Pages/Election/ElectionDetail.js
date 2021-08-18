@@ -2,17 +2,17 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router";
-import { history } from "../redux/configureStore";
+import { history } from "../../redux/configureStore";
 import moment from "moment";
-import confirm from "../confirm";
+import confirm from "../../confirm";
 
 //통신
-import { getElectionDB, deleteElectionDB } from "../redux/async/election";
-import { voteApi } from "../api";
+import { getElectionDB, deleteElectionDB } from "../../redux/async/election";
+import { voteApi } from "../../api";
 
 //컴포넌트
-import ElectionSlider from "../Components/ElectionSlider";
-import Message from "../Components/Message";
+import ElectionSlider from "../../Components/Election/ElectionSlider";
+import Message from "../../Components/Message";
 
 const ElectionDetail = () => {
     const dispatch = useDispatch();
