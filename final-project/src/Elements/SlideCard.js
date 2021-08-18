@@ -1,3 +1,4 @@
+import mixin from ".././styles/Mixin";
 import React from "react";
 import categories from "../categories";
 import styled from "styled-components";
@@ -35,14 +36,14 @@ export default function SlideCard({ post, rank }) {
             {/* <RankSpan style={{}}>{rank}위</RankSpan> */}
             <InnerContentContainer>
                 <TitleSpan>{post.title}</TitleSpan>
-                <CardMidBox>
+                {/* <CardMidBox>
                     <TagSpan>
                         # {categories.freeBoardTags[post.category]}
                     </TagSpan>
                     <DateSpan>
                         {TimeCounting(post.createdAt, timeOption)}
                     </DateSpan>
-                </CardMidBox>
+                </CardMidBox> */}
                 <PreviewSpan
                     className="ck-content"
                     dangerouslySetInnerHTML={{
@@ -51,15 +52,19 @@ export default function SlideCard({ post, rank }) {
                 ></PreviewSpan>
 
                 <CardBottomBox>
-                    <Boop scale={1.05}>
-                        <DetailButton onClick={onDetailButtonClick}>
-                            자세히 보기
-                        </DetailButton>
-                    </Boop>
-                    <IconBox>
-                        <VisibilityIcon />
-                        <ViewCountSpan>{post.view_count}</ViewCountSpan>
-                    </IconBox>
+                    <ContentContainer>
+                        <Boop scale={1.05}>
+                            <DetailButton onClick={onDetailButtonClick}>
+                                자세히 보기
+                            </DetailButton>
+                        </Boop>
+
+                        {/* 조회수표시 */}
+                        {/* <IconBox>
+                            <VisibilityIcon />
+                            <ViewCountSpan>{post.view_count}</ViewCountSpan>
+                        </IconBox> */}
+                    </ContentContainer>
                 </CardBottomBox>
             </InnerContentContainer>
         </CardContainer>
@@ -68,13 +73,14 @@ export default function SlideCard({ post, rank }) {
 
 //------스타일 컴포넌트------
 const CardContainer = styled.div`
-    border: 1px solid;
+    ${mixin.outline("4px solid", "blue2")};
     width: 372px;
     height: 192px;
     border-radius: 96px;
     padding: 45px 51px 0 51px;
     position: relative;
 `;
+const ContentContainer = styled.div``;
 const InnerContentContainer = styled.div``;
 
 const CardMidBox = styled.div``;
@@ -99,8 +105,9 @@ const TagSpan = styled.span`
     font-size: 12px;
 `;
 
-const TitleSpan = styled.span`
+const TitleSpan = styled.div`
     font-size: 20px;
+    margin-bottom: 10px;
 `;
 
 const DateSpan = styled.span`
