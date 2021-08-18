@@ -79,7 +79,11 @@ const FreeBoard = () => {
 
     return (
         <>
-            <SearchBox searchTag={categories.freeBoardTags} page="freeboard" />
+            <SearchBox
+                searchTag={categories.freeBoardTags}
+                page="freeboard"
+                pushButton={true}
+            />
             <BoardBox
                 postList={freeBoardPostList && freeBoardPostList}
                 preview={true}

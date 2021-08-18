@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 import moment from "moment";
 import confirm from "../confirm";
+import DefaultButton from "../Elements/Buttons/DefaultButton";
 
 //통신
 import axios from "axios";
@@ -22,7 +23,6 @@ import Accordion from "@material-ui/core/Accordion";
 import AccordionSummary from "@material-ui/core/AccordionSummary";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
 import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import TextField from "@material-ui/core/TextField";
 
@@ -34,9 +34,6 @@ const useStyles = makeStyles(theme => ({
         fontSize: theme.typography.pxToRem(20), //폰트크기
         fontWeight: theme.typography.fontWeightBold, //폰트굵기
         marginRight: theme.typography.pxToRem(10),
-    },
-    button: {
-        padding: theme.spacing(1),
     },
 }));
 
@@ -328,12 +325,9 @@ const ElectionWrite = () => {
                                 <Typography className={classes.heading}>
                                     기호 {idx + 1}번
                                 </Typography>
-                                <Button
-                                    className={classes.button}
-                                    onClick={() => deleteCard(idx)}
-                                >
+                                <DefaultButton onClick={() => deleteCard(idx)}>
                                     삭제
-                                </Button>
+                                </DefaultButton>
                             </AccordionSummary>
                             {/* 아코디언 디자인의 상세내용 부분입니다. */}
                             <AccordionDetails>
@@ -398,8 +392,8 @@ const ElectionWrite = () => {
                             </AccordionDetails>
                         </Accordion>
                     ))}
-                <Button onClick={addCard}>후보자 추가</Button>
-                <Button onClick={addElection}>저장</Button>
+                <DefaultButton onClick={addCard}>후보자 추가</DefaultButton>
+                <DefaultButton onClick={addElection}>저장</DefaultButton>
             </WriteCandidateBox>
         </ElectionWriteContainer>
     );

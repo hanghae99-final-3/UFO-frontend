@@ -8,6 +8,7 @@ import "slick-carousel/slick/slick-theme.css";
 import Boop from "../Elements/Boop";
 import SlideCard from "../Elements/SlideCard";
 import { FaArrowRight, FaArrowLeft } from "react-icons/fa";
+import mixin from "../styles/Mixin";
 
 const MainSlider = ({ postList }) => {
     //슬라이더 우측 방향으로 이동
@@ -55,7 +56,11 @@ const MainSlider = ({ postList }) => {
                 {postList &&
                     postList.map((post, idx) => (
                         <CardContainer key={idx} active={idx === imageIndex}>
-                            <SlideCard post={post.free_board} rank={idx + 1} />
+                            <SlideCard
+                                post={post.free_board}
+                                rank={idx + 1}
+                                active={idx === imageIndex}
+                            />
                         </CardContainer>
                     ))}
             </Slider>
@@ -70,7 +75,7 @@ const PageTitle = styled.span`
 `;
 
 const SlideContainer = styled.div`
-    margin: 30px 0;
+    margin: 70px 0;
 `;
 
 // 슬라이더 카드 컨테이너
@@ -80,7 +85,14 @@ const CardContainer = styled.div`
         props.active
             ? `opacity: 1`
             : `    opacity: 0.5;
-`};
+    `};
+    ${props =>
+        props.active &&
+        `div{
+            background:${props.theme.color.blue1};
+            border:none;
+            color : white;
+        }`};
     transition: ${props => !props.active && "transform 300ms"};
     img {
         width: ${props => !props.active && "width:20rem"};
@@ -98,7 +110,7 @@ const ArrowContainer = styled.div`
     svg {
         transition: color 300ms;
         :hover {
-            color: #68edff;
+            color: #afb1ff;
         }
     }
     right: ${props => props.direction === "next" && "0%"};

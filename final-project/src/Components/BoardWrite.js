@@ -12,6 +12,7 @@ import {
 import categories from "../categories";
 import Editor from "../Components/Editor";
 import mixin from "../styles/Mixin";
+import DefaultButton from "../Elements/Buttons/DefaultButton";
 
 /**
  * @author jiyeong
@@ -92,6 +93,7 @@ const BoardWrite = ({ boardName }) => {
                 content: post.content,
                 country_id: post.country_id,
                 post_id: post.post_id,
+                img_list: post.img_list,
             };
             history.push(`/freeboard/detail/${postId}`);
             dispatch(editFreePostDB(req));
@@ -102,14 +104,16 @@ const BoardWrite = ({ boardName }) => {
                 category: post.category,
                 content: post.content,
                 post_id: post.post_id,
-                is_fixed: false,
+                is_fixed: post.is_fixed,
                 univ_id: user.univ_id,
+                img_list: post.img_list,
             };
             dispatch(editUnivBoardPostDB(req));
-            history.push(`univboard/detail/${postId}`);
+            history.push(`/univboard/detail/${postId}`);
         }
     };
     //┗-----------------게시글 수정파트-----------------┛
+    console.log(post);
 
     //┏-----------------게시글 작성파트-----------------┓
 
@@ -194,8 +198,10 @@ const BoardWrite = ({ boardName }) => {
                 />
 
                 <Controls>
-                    <button onClick={goBackPostDetail}>취소</button>
-                    <button onClick={editfreePost}>수정</button>
+                    <DefaultButton gap="10px" onClick={goBackPostDetail}>
+                        취소
+                    </DefaultButton>
+                    <DefaultButton onClick={editfreePost}>수정</DefaultButton>
                 </Controls>
             </>
         );
@@ -270,8 +276,10 @@ const BoardWrite = ({ boardName }) => {
 
             {/* 컨트롤 버튼 */}
             <Controls>
-                <button onClick={goBackBoard}>취소</button>
-                <button onClick={addPost}>등록</button>
+                <DefaultButton gap="15px" onClick={goBackBoard}>
+                    취소
+                </DefaultButton>
+                <DefaultButton onClick={addPost}>등록</DefaultButton>
             </Controls>
         </>
     );
@@ -335,19 +343,6 @@ const Controls = styled.div`
     margin-top: 30px;
     display: flex;
     justify-content: center;
-    button {
-        padding: 10px 0;
-        width: 80px;
-        border-radius: 16px;
-        background: ${({ theme }) => theme.color.blue1};
-        ${mixin.textProps(18, "semiBold", "white")};
-        :not(:last-child) {
-            margin-right: 15px;
-        }
-        &:hover {
-            background: ${({ theme }) => theme.color.mainBlue};
-        }
-    }
 `;
 
 export default BoardWrite;

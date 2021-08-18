@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 import { getElectionListDB } from "../redux/async/election";
 import { history } from "../redux/configureStore";
+import DefaultButton from "../Elements/Buttons/DefaultButton";
 
 //컴포넌트
 import Message from "../Components/Message";
@@ -44,9 +45,9 @@ const Election = () => {
                         </Post>
                     ))}
             </GridContainer>
-            <Button onClick={() => history.push(`/election/write`)}>
+            <DefaultButton onClick={() => history.push(`/election/write`)}>
                 추가하기
-            </Button>
+            </DefaultButton>
         </ElectionContainer>
     );
 };

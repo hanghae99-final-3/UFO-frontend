@@ -76,6 +76,11 @@ const BoardDetail = ({ page }) => {
     const [cookies, setCookie, removeCookie] = useCookies([viewCookie]);
 
     useEffect(() => {
+        window.scrollTo({
+            top: (0, 0),
+            behavior: "smooth",
+        });
+
         dispatch(
             page === "freeboard"
                 ? getFreePostDB(postId)
@@ -303,7 +308,7 @@ const Icon = styled.div`
 `;
 
 const MainContentContainer = styled.div`
-    padding: 30px 0 0 0;
+    margin-top: 30px;
 `;
 
 const ContentHeaderContainer = styled.div`

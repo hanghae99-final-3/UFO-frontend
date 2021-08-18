@@ -75,7 +75,11 @@ const UnivBoard = () => {
 
     return (
         <>
-            <SearchBox searchTag={categories.univBoardTags} page="univboard" />
+            <SearchBox
+                searchTag={categories.univBoardTags}
+                page="univboard"
+                pushButton={true}
+            />
             <BoardContentContainer>
                 {announcement && announcement.length > 0 && (
                     <BoardBox

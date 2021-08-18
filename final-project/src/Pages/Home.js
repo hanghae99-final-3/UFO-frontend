@@ -174,13 +174,12 @@ const HomeContainer = styled.div``;
 const BoardContainer = styled.div`
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    background: #d2d2d2;
     gap: 2px;
-    border: 2px solid #d2d2d2;
 
     > div {
         background: #fff;
-        padding: 50px;
+        padding: 20px;
+        width: 510px;
     }
 `;
 
