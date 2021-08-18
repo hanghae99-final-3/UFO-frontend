@@ -46,17 +46,10 @@ class Clock2 extends Component {
     render() {
         return (
             <p>
-                <p>
-                    {console.log("멈춰!")}
-                    {this.leading0(this.state.days)} 일
-                    {this.leading0(this.state.hours)} 시간
-                    {this.leading0(this.state.minutes)} 분
-                    {this.leading0(this.state.seconds)} 초 남았다
-                </p>
-                <p>
-                    {this.leading0(this.state.hours)} 시간{" "}
-                    {this.leading0(this.state.minutes)} 분 남았
-                </p>
+                {this.leading0(this.state.days)}일:
+                {this.leading0(this.state.hours)}시간:
+                {this.leading0(this.state.minutes)}분:
+                {this.leading0(this.state.seconds)}초
             </p>
         );
     }

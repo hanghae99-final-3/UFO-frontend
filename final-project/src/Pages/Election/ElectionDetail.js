@@ -5,6 +5,7 @@ import { useParams } from "react-router";
 import { history } from "../../redux/configureStore";
 import moment from "moment";
 import confirm from "../../confirm";
+import Count2 from "../../Components/CountDown2/Count2";
 
 //통신
 import { getElectionDB, deleteElectionDB } from "../../redux/async/election";
@@ -72,14 +73,13 @@ const ElectionDetail = () => {
                 link={`election/${electionId}/result`}
             />
         );
-
     return (
         <ElectionDetailContainer>
             <Title>투표함</Title>
             <TimeContainer>
                 <h5>투표까지 남은 시간</h5>
                 <TimeBox>
-                    <span>D-일:시간:분</span>
+                    <Count2 deadline={post.end_date} />
                 </TimeBox>
             </TimeContainer>
             <CandidatesContainer>
@@ -171,7 +171,7 @@ const TimeBox = styled.div`
     padding: 30px;
     border: 1px solid #707070;
     background: #d9d9d9;
-    span {
+    p {
         font-size: 50px;
         font-weight: bold;
         color: #707070;
