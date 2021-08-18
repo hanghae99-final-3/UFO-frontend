@@ -157,6 +157,20 @@ export const deleteAccountDB = createAsyncThunk(
     },
 );
 
+//관리자 여부 확인하세요
+export const checkAdminDB = createAsyncThunk(
+    "user/check/admin",
+    async (data, thunkAPI) => {
+        // 유저 삭제 요청
+        const response = await userApi.checkAdmin();
+        if (response.data.ok && response.data?.result?.admin_id) {
+            return true;
+        } else {
+            return false;
+        }
+    },
+);
+
 //카카오 로그인 미들웨어
 export const kakaoLogin = createAsyncThunk(
     "user/kakao",
