@@ -28,7 +28,7 @@ import SearchResult from "./Pages/SearchResult"; // 자유 게시판 검색 결�
 import Test from "./Pages/Test";
 
 //utils
-import { checkLoggedInUser } from "./redux/async/user"; // 로그인 체크
+import { checkAdminDB, checkLoggedInUser } from "./redux/async/user"; // 로그인 체크
 import MyPostList from "./Pages/MyPostList";
 
 function App() {
@@ -42,6 +42,7 @@ function App() {
     useEffect(() => {
         if (is_token) {
             dispatch(checkLoggedInUser());
+            dispatch(checkAdminDB());
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [dispatch, isLoggedIn]);

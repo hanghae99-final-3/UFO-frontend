@@ -102,6 +102,8 @@ export const userApi = {
                 pageNum: data.pageNum,
             },
         }),
+    // 관리자 확인
+    checkAdmin: () => instance.get("/api/is-admin"),
 };
 
 export const freeBoardApi = {
