@@ -92,6 +92,7 @@ const BoardWrite = ({ boardName }) => {
                 content: post.content,
                 country_id: post.country_id,
                 post_id: post.post_id,
+                img_list: post.img_list,
             };
             history.push(`/freeboard/detail/${postId}`);
             dispatch(editFreePostDB(req));
@@ -102,14 +103,16 @@ const BoardWrite = ({ boardName }) => {
                 category: post.category,
                 content: post.content,
                 post_id: post.post_id,
-                is_fixed: false,
+                is_fixed: post.is_fixed,
                 univ_id: user.univ_id,
+                img_list: post.img_list,
             };
             dispatch(editUnivBoardPostDB(req));
-            history.push(`univboard/detail/${postId}`);
+            history.push(`/univboard/detail/${postId}`);
         }
     };
     //┗-----------------게시글 수정파트-----------------┛
+    console.log(post);
 
     //┏-----------------게시글 작성파트-----------------┓
 

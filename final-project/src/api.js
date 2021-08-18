@@ -181,13 +181,22 @@ export const univBoardApi = {
         }),
 
     // 대학 게시판 게시물 수정
-    editPost: ({ title, content, category, is_fixed, univ_id, post_id }) =>
+    editPost: ({
+        title,
+        content,
+        category,
+        is_fixed,
+        univ_id,
+        post_id,
+        img_list,
+    }) =>
         instance.put(`univ/post/${post_id}`, {
             univ_id,
             title,
             content,
             is_fixed,
             category,
+            img_list,
         }),
 
     //게시물 상제정보 불러오기
