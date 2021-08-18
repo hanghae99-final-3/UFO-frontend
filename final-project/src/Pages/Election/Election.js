@@ -7,6 +7,7 @@ import DefaultButton from "../../Elements/Buttons/DefaultButton";
 
 //컴포넌트
 import Message from "../../Components/Message";
+import mixin from "../../styles/Mixin";
 
 const Election = () => {
     const dispatch = useDispatch();
@@ -40,8 +41,9 @@ const Election = () => {
                             }
                         >
                             <h3>{ele.name}</h3>
-                            <span>content:{ele.content}</span>
-                            <span>candi:{ele.candidates.length}</span>
+                            {ele.votes.length > 0 && (
+                                <VotingComplete>투표완료</VotingComplete>
+                            )}
                         </Post>
                     ))}
             </GridContainer>
@@ -57,14 +59,25 @@ const ElectionContainer = styled.div``;
 const GridContainer = styled.div`
     display: grid;
     grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    margin-bottom: 15px;
 `;
 
 const Post = styled.div`
-    height: 100px;
+    ${mixin.outline("3px solid", "gray4")}
+    border-radius: 20px;
+    ${mixin.flexBox("center", "center", null, "100px")};
+    ${mixin.floatBox("relative")}
 `;
 
-const Button = styled.button`
-    padding: 10px;
+const VotingComplete = styled.div`
+    ${mixin.floatBox("absolute", "50%", "50%")}
+    transform: translateY(-50%) translateX(50%);
+    width: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    border-radius: 20px;
+    ${mixin.textProps(20, "regular", "white")}
+    ${mixin.flexBox("center", "center")};
 `;
 
 export default Election;

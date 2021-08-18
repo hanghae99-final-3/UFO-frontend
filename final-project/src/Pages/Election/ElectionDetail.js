@@ -79,7 +79,7 @@ const ElectionDetail = () => {
             <TimeContainer>
                 <h5>투표까지 남은 시간</h5>
                 <TimeBox>
-                    <Count2 deadline={post.end_date} />
+                    <Count2 deadline={post?.end_date && post.end_date} />
                 </TimeBox>
             </TimeContainer>
             <CandidatesContainer>
