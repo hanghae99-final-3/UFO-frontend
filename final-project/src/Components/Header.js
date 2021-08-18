@@ -251,7 +251,7 @@ const Controls = styled.ul`
     height: calc(100vh - 86px);
     width: 500px;
     padding-left: 60px;
-    background: ${({ theme }) => theme.color.blue1};
+    background: ${({ theme }) => theme.color.mainBlue};
     ${mixin.floatBox("absolute", "86px", "0", null, null, 99)}
 `;
 const Control = styled.li`
