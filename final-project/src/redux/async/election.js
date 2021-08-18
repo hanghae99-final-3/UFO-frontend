@@ -75,6 +75,25 @@ export const addElectionDB = createAsyncThunk(
     },
 );
 
+export const editElectionDB = createAsyncThunk(
+    "election/editPost",
+    async (data, thunkAPI) => {
+        try {
+            const response = await electionApi.editElection(data);
+            if (response.data.ok) {
+                // 선거가 수정되면 추가가된 선거게시글 상세페이지로 간다.
+                const electionId = data.election_id;
+                Swal.fire("완료", "정상적으로 수정되었습니다.", "success");
+                return history.push(`/election/detail/${electionId}`);
+            }
+        } catch (err) {
+            console.log(err);
+            Swal.fire("오류", "게시글을 수정할 수 없어요!", "error");
+            return thunkAPI.rejectWithValue(err.response.message);
+        }
+    },
+);
+
 /**
  * @author kwonjiyeong
  * @param data = election_id

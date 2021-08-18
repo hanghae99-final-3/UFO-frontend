@@ -3,6 +3,7 @@ import {
     getElectionListDB,
     getElectionDB,
     addElectionDB,
+    editElectionDB,
 } from "../async/election";
 
 /**
@@ -65,6 +66,20 @@ const electionSlice = createSlice({
             state.isFetching = true;
         },
         [addElectionDB.rejected]: (state, { payload: errorMessage }) => {
+            state.isFetching = false;
+            state.errorMessage = errorMessage;
+        },
+        //----
+
+        //----특정 선거 게시물을 수정하는 리듀서
+        [editElectionDB.fulfilled]: (state, { payload }) => {
+            state.isFetching = false;
+            state.errorMessage = null;
+        },
+        [editElectionDB.pending]: (state, { payload }) => {
+            state.isFetching = true;
+        },
+        [editElectionDB.rejected]: (state, { payload: errorMessage }) => {
             state.isFetching = false;
             state.errorMessage = errorMessage;
         },
