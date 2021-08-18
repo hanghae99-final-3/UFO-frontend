@@ -87,14 +87,11 @@ const CardContainer = styled.div`
             : `    opacity: 0.5;
     `};
     ${props =>
-        props.active
-            ? `div{
-        background:${props.theme.color.blue1};
-        border:none;
-        color : white;
-        }`
-            : `>div{
-                ${mixin.outline("3px solid", "blue3")};
+        props.active &&
+        `div{
+            background:${props.theme.color.blue1};
+            border:none;
+            color : white;
         }`};
     transition: ${props => !props.active && "transform 300ms"};
     img {

@@ -32,40 +32,15 @@ export default function SlideCard({ post, rank }) {
     };
 
     return (
-        <CardContainer>
-            {/* <RankSpan style={{}}>{rank}위</RankSpan> */}
+        <CardContainer onClick={onDetailButtonClick}>
             <InnerContentContainer>
                 <TitleSpan>{post.title}</TitleSpan>
-                {/* <CardMidBox>
-                    <TagSpan>
-                        # {categories.freeBoardTags[post.category]}
-                    </TagSpan>
-                    <DateSpan>
-                        {TimeCounting(post.createdAt, timeOption)}
-                    </DateSpan>
-                </CardMidBox> */}
                 <PreviewSpan
                     className="ck-content"
                     dangerouslySetInnerHTML={{
                         __html: post.content,
                     }}
                 ></PreviewSpan>
-
-                <CardBottomBox>
-                    <ContentContainer>
-                        <Boop scale={1.05}>
-                            <DetailButton onClick={onDetailButtonClick}>
-                                자세히 보기
-                            </DetailButton>
-                        </Boop>
-
-                        {/* 조회수표시 */}
-                        {/* <IconBox>
-                            <VisibilityIcon />
-                            <ViewCountSpan>{post.view_count}</ViewCountSpan>
-                        </IconBox> */}
-                    </ContentContainer>
-                </CardBottomBox>
             </InnerContentContainer>
         </CardContainer>
     );
@@ -79,54 +54,15 @@ const CardContainer = styled.div`
     border-radius: 96px;
     padding: 45px 51px 0 51px;
     position: relative;
+    cursor: pointer;
 `;
-const ContentContainer = styled.div``;
 const InnerContentContainer = styled.div``;
-
-const CardMidBox = styled.div``;
-const CardBottomBox = styled.div`
-    display: flex;
-    font-size: 12px;
-`;
-
-const IconBox = styled.div`
-    display: flex;
-    align-items: center;
-    span {
-        line-height: 1;
-    }
-    svg {
-        font-size: 12px;
-        margin: 0 5px 0 10px;
-    }
-`;
-
-const TagSpan = styled.span`
-    font-size: 12px;
-`;
 
 const TitleSpan = styled.div`
     font-size: 20px;
     margin-bottom: 10px;
 `;
 
-const DateSpan = styled.span`
-    font-size: 12px;
-`;
-
-const ViewCountSpan = styled.span``;
-
 const PreviewSpan = styled.span`
     font-size: 14px;
-`;
-
-const DetailButton = styled.button`
-    font-size: 12px;
-    background: none;
-`;
-
-const RankSpan = styled.span`
-    position: absolute;
-    top: 3%;
-    left: 90%;
 `;
