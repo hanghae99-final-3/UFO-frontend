@@ -68,136 +68,133 @@ const Header = () => {
                         {/* 메뉴버튼 on&off 토글설정 */}
                         {menuOn ? <ClearIcon /> : <MenuIcon />}
                     </MenuBtn>
-                    <Controls menuOn={menuOn}>
-                        <Control>
-                            <Link
-                                to={{
-                                    pathname: "/",
-                                    state: {
-                                        isMatchPathname: pathname === "/",
-                                    },
-                                }}
-                            >
-                                홈
-                            </Link>
-                        </Control>
-                        <Control>
-                            <Link
-                                to={{
-                                    pathname: "/freeboard",
-                                    state: {
-                                        isMatchPathname:
-                                            pathname.includes("/freeboard"),
-                                    },
-                                }}
-                            >
-                                자유게시판
-                            </Link>
-                        </Control>
-                        <Control>
-                            <Link
-                                to={{
-                                    pathname: "/univboard",
-                                    state: {
-                                        isMatchPathname:
-                                            pathname.includes("/univboard"),
-                                    },
-                                }}
-                            >
-                                대학게시판
-                            </Link>
-                        </Control>
-                        <Control>
-                            <Link
-                                to={{
-                                    pathname: "/election",
-                                    state: {
-                                        isMatchPathname:
-                                            pathname.includes("/election"),
-                                    },
-                                }}
-                            >
-                                투표함
-                            </Link>
-                        </Control>
-                        <Control>
-                            <Link
-                                to={{
-                                    pathname: "/mypost",
-                                    state: {
-                                        isMatchPathname:
-                                            pathname.includes("/mypost"),
-                                    },
-                                }}
-                            >
-                                내가 작성한 글
-                            </Link>
-                        </Control>
-                        {isLoggedIn ? (
-                            <>
-                                <Control>
-                                    <Link
-                                        to={{
-                                            pathname: "/mypage",
-                                            state: {
-                                                isMatchPathname:
-                                                    pathname.includes(
-                                                        "/mypage",
-                                                    ),
-                                            },
-                                        }}
-                                    >
-                                        마이 페이지
-                                    </Link>
-                                </Control>
-                                <Control>
-                                    <Link
-                                        to=""
-                                        onClick={() => {
-                                            dispatch(logoutUser());
-                                            dispatch(onLogout());
-                                            localStorage.removeItem("token");
-                                            history.replace("/");
-                                            setMenuOn(false);
-                                        }}
-                                    >
-                                        로그아웃
-                                    </Link>
-                                </Control>
-                            </>
-                        ) : (
-                            <>
-                                <Control>
-                                    <Link
-                                        to={{
-                                            pathname: "/login",
-                                            state: {
-                                                isMatchPathname:
-                                                    pathname.includes("/login"),
-                                            },
-                                        }}
-                                    >
-                                        로그인
-                                    </Link>
-                                </Control>
-                                <Control>
-                                    <Link
-                                        to={{
-                                            pathname: "/signup",
-                                            state: {
-                                                isMatchPathname:
-                                                    pathname.includes(
-                                                        "/signup",
-                                                    ),
-                                            },
-                                        }}
-                                    >
-                                        회원가입
-                                    </Link>
-                                </Control>
-                            </>
-                        )}
-                    </Controls>
+                    <Menu menuOn={menuOn}>
+                        <Controls>
+                            <Control>
+                                <Link
+                                    to={{
+                                        pathname: "/freeboard",
+                                        state: {
+                                            isMatchPathname:
+                                                pathname.includes("/freeboard"),
+                                        },
+                                    }}
+                                >
+                                    자유게시판
+                                </Link>
+                            </Control>
+                            <Control>
+                                <Link
+                                    to={{
+                                        pathname: "/univboard",
+                                        state: {
+                                            isMatchPathname:
+                                                pathname.includes("/univboard"),
+                                        },
+                                    }}
+                                >
+                                    대학게시판
+                                </Link>
+                            </Control>
+                            <Control>
+                                <Link
+                                    to={{
+                                        pathname: "/election",
+                                        state: {
+                                            isMatchPathname:
+                                                pathname.includes("/election"),
+                                        },
+                                    }}
+                                >
+                                    투표함
+                                </Link>
+                            </Control>
+                            <Control>
+                                <Link
+                                    to={{
+                                        pathname: "/mypost",
+                                        state: {
+                                            isMatchPathname:
+                                                pathname.includes("/mypost"),
+                                        },
+                                    }}
+                                >
+                                    내가 작성한 글
+                                </Link>
+                            </Control>
+                            {isLoggedIn ? (
+                                <>
+                                    <Control>
+                                        <Link
+                                            to={{
+                                                pathname: "/mypage",
+                                                state: {
+                                                    isMatchPathname:
+                                                        pathname.includes(
+                                                            "/mypage",
+                                                        ),
+                                                },
+                                            }}
+                                        >
+                                            마이 페이지
+                                        </Link>
+                                    </Control>
+                                    <Control>
+                                        <Link
+                                            to=""
+                                            onClick={() => {
+                                                dispatch(logoutUser());
+                                                dispatch(onLogout());
+                                                localStorage.removeItem(
+                                                    "token",
+                                                );
+                                                history.replace("/");
+                                                setMenuOn(false);
+                                            }}
+                                        >
+                                            로그아웃
+                                        </Link>
+                                    </Control>
+                                </>
+                            ) : (
+                                <>
+                                    <Control>
+                                        <Link
+                                            to={{
+                                                pathname: "/login",
+                                                state: {
+                                                    isMatchPathname:
+                                                        pathname.includes(
+                                                            "/login",
+                                                        ),
+                                                },
+                                            }}
+                                        >
+                                            로그인
+                                        </Link>
+                                    </Control>
+                                    <Control>
+                                        <Link
+                                            to={{
+                                                pathname: "/signup",
+                                                state: {
+                                                    isMatchPathname:
+                                                        pathname.includes(
+                                                            "/signup",
+                                                        ),
+                                                },
+                                            }}
+                                        >
+                                            회원가입
+                                        </Link>
+                                    </Control>
+                                </>
+                            )}
+                        </Controls>
+                        <AboutUs>
+                            <span>about us</span>
+                        </AboutUs>
+                    </Menu>
                 </RightColumn>
             </Inner>
         </HeaderContainer>
@@ -243,10 +240,11 @@ const MenuBtn = styled.button`
     }
 `;
 
-const Controls = styled.ul`
+const Menu = styled.div`
+    padding: 80px 0;
     ${props =>
         props.menuOn
-            ? mixin.flexBox("space-evenly", null, "column")
+            ? mixin.flexBox("space-between", null, "column")
             : "display:none;"};
     height: calc(100vh - 86px);
     width: 500px;
@@ -254,15 +252,26 @@ const Controls = styled.ul`
     background: ${({ theme }) => theme.color.mainBlue};
     ${mixin.floatBox("absolute", "86px", "0", null, null, 99)}
 `;
+
 const Control = styled.li`
     cursor: pointer;
-
     /* Link의 state를 활용하여 조건부 렌더링을 해보았습니다. */
     a {
         ${({ children }) =>
-            children.props.to.state?.isMatchPathname
+            children.props.to?.state?.isMatchPathname
                 ? mixin.textProps(40, "extraBold", "mainMint")
                 : mixin.textProps(40, "extraBold", "blue3")};
     }
 `;
+
+const Controls = styled.ul`
+    ${mixin.flexBox("space-between", null, "column", "75%")}
+`;
+
+const AboutUs = styled.div`
+    span {
+        ${mixin.textProps(40, "extraBold", "blue3")}
+    }
+`;
+
 export default Header;
