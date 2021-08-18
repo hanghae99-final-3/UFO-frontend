@@ -5,6 +5,7 @@ import {
     checkLoggedInUser,
     editUserProfileDB,
     deleteAccountDB,
+    checkAdminDB,
 } from "../async/user";
 
 /**
@@ -18,6 +19,7 @@ const initialState = {
     isLoggedIn: false,
     errorMessage: "",
     isSignupSuccess: "",
+    isAdmin: false,
 };
 
 const userSlice = createSlice({
@@ -97,6 +99,9 @@ const userSlice = createSlice({
         [deleteAccountDB.fulfilled]: (state, action) => {
             state.user = {};
             state.isLoggedIn = false;
+        },
+        [checkAdminDB.fulfilled]: (state, { payload: isAdmin }) => {
+            state.isAdmin = isAdmin;
         },
     },
 });

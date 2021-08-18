@@ -19,16 +19,16 @@ import FreeBoardWrite from "./Pages/FreeBoardWrite"; //자유게시판 게시글
 import UnivBoard from "./Pages/UnivBoard"; //대학게시판
 import UnivBoardDetail from "./Pages/UnivBoardDetail"; //대학게시판 게시글상세페이지
 import UnivboardWrite from "./Pages/UnivBoardWrite";
-import Election from "./Pages/Election"; //선거게시판
-import ElectionDetail from "./Pages/ElectionDetail"; //선거게시판 게시글상세페이지
-import ElectionWrite from "./Pages/ElectionWrite"; //선거게시글 작성페이지 or 수정페이지
+import Election from "./Pages/Election/Election"; //선거게시판
+import ElectionDetail from "./Pages/Election/ElectionDetail"; //선거게시판 게시글상세페이지
+import ElectionWrite from "./Pages/Election/ElectionWrite"; //선거게시글 작성페이지 or 수정페이지
 import SearchResult from "./Pages/SearchResult"; // 자유 게시판 검색 결과 페이지
 
 //정후님을 위한 테스트 페이지 :-)
 import Test from "./Pages/Test";
 
 //utils
-import { checkLoggedInUser } from "./redux/async/user"; // 로그인 체크
+import { checkAdminDB, checkLoggedInUser } from "./redux/async/user"; // 로그인 체크
 import MyPostList from "./Pages/MyPostList";
 
 function App() {
@@ -42,6 +42,7 @@ function App() {
     useEffect(() => {
         if (is_token) {
             dispatch(checkLoggedInUser());
+            dispatch(checkAdminDB());
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [dispatch, isLoggedIn]);

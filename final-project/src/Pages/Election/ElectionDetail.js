@@ -2,17 +2,19 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router";
-import { history } from "../redux/configureStore";
+import { history } from "../../redux/configureStore";
 import moment from "moment";
-import confirm from "../confirm";
+import confirm from "../../confirm";
 
 //통신
-import { getElectionDB, deleteElectionDB } from "../redux/async/election";
-import { voteApi } from "../api";
+import { getElectionDB, deleteElectionDB } from "../../redux/async/election";
+import { voteApi } from "../../api";
 
 //컴포넌트
-import ElectionSlider from "../Components/ElectionSlider";
-import Message from "../Components/Message";
+import ElectionSlider from "../../Components/Election/ElectionSlider";
+import Message from "../../Components/Message";
+import DefaultButton from "../../Elements/Buttons/DefaultButton";
+import Count2 from "../../Components/CountDown2/Count2";
 
 const ElectionDetail = () => {
     const dispatch = useDispatch();
@@ -72,14 +74,13 @@ const ElectionDetail = () => {
                 link={`election/${electionId}/result`}
             />
         );
-
     return (
         <ElectionDetailContainer>
             <Title>투표함</Title>
             <TimeContainer>
                 <h5>투표까지 남은 시간</h5>
                 <TimeBox>
-                    <span>D-일:시간:분</span>
+                    <Count2 deadline={post?.end_date && post.end_date} />
                 </TimeBox>
             </TimeContainer>
             <CandidatesContainer>
@@ -123,13 +124,16 @@ const ElectionDetail = () => {
                 </VoteBox>
             </VoteContainer>
             <Controls>
-                <button onClick={addVote}>투표하기</button>
-                <button onClick={deleteElection}>삭제하기</button>
+                <DefaultButton rightGap="15px" onClick={addVote}>
+                    투표하기
+                </DefaultButton>
+                <DefaultButton onClick={deleteElection}>삭제하기</DefaultButton>
                 {
                     // 여기에 선거 작성자가 맞는지 안맞는지도 판별해줘야함!
                     moment().isBefore(post?.start_date) &&
                         !moment().isSame(post?.start_date) && (
-                            <button
+                            <DefaultButton
+                                leftGap="15px"
                                 onClick={() =>
                                     history.push(
                                         `/election/edit/${post.election_id}`,
@@ -137,7 +141,7 @@ const ElectionDetail = () => {
                                 }
                             >
                                 수정하기
-                            </button>
+                            </DefaultButton>
                         )
                 }
             </Controls>
@@ -171,7 +175,7 @@ const TimeBox = styled.div`
     padding: 30px;
     border: 1px solid #707070;
     background: #d9d9d9;
-    span {
+    p {
         font-size: 50px;
         font-weight: bold;
         color: #707070;
@@ -212,19 +216,6 @@ const VoteCard = styled.div`
 
 const Controls = styled.div`
     text-align: center;
-    button {
-        padding: 10px 20px;
-        border-radius: 10px;
-        font-size: 20px;
-        font-weight: bold;
-        :not(:last-child) {
-            margin-right: 10px;
-        }
-        :hover {
-            background-color: #eb4d4b;
-            color: #fff;
-        }
-    }
 `;
 
 const Result = styled.div`

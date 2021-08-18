@@ -7,6 +7,7 @@ import BoardBox from "../Components/BoardBox";
 import { getUnivBoardDB } from "../redux/async/univBoard";
 import categories from "../categories";
 import MainSlider from "../Components/MainSlider";
+import MainSearch from "../Elements/MainSearch";
 
 const Home = () => {
     const dispatch = useDispatch();
@@ -60,6 +61,8 @@ const Home = () => {
 
     return (
         <HomeContainer>
+            {/* 메인 검색창 */}
+            {/* <MainSearch /> */}
             {/* 인기 게시글 슬라이더 불러오기*/}
             <MainSlider
                 postList={
@@ -158,10 +161,10 @@ const Home = () => {
                 {/* 카테고리가 홀수이면 div를 스페어로 넣는다. */}
                 {categories.freeCategory.length % 2 !== 0 && (
                     <SpareBox>
-                        <img
+                        {/* <img
                             src="https://cdn.pixabay.com/photo/2012/04/18/12/39/aliens-36912__340.png"
                             alt="ufo"
-                        />
+                        /> */}
                     </SpareBox>
                 )}
             </BoardContainer>

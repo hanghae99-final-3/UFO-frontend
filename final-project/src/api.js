@@ -102,6 +102,8 @@ export const userApi = {
                 pageNum: data.pageNum,
             },
         }),
+    // 관리자 확인
+    checkAdmin: () => instance.get("/api/is-admin"),
 };
 
 export const freeBoardApi = {
@@ -285,10 +287,23 @@ export const electionApi = {
         }),
 
     //특정 선거게시글 수정
-    editElection: ({ election_id, name, content, end_date }) =>
+    editElection: ({
+        name,
+        content,
+        country_id,
+        univ_id,
+        candidates,
+        start_date,
+        end_date,
+        election_id,
+    }) =>
         instance.put(`election/${election_id}`, {
             name,
             content,
+            country_id,
+            univ_id,
+            candidates,
+            start_date,
             end_date,
         }),
 

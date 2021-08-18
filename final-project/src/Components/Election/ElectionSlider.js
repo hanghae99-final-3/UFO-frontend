@@ -51,7 +51,7 @@ const ElectionSlider = ({ candidateList }) => {
                         >
                             <img
                                 src={
-                                    candidate.photo
+                                    candidate?.photo
                                         ? `http://3.36.90.60/${candidate.photo}`
                                         : "https://cdn.pixabay.com/photo/2016/04/01/12/07/alien-1300540__340.png"
                                 }
@@ -65,7 +65,7 @@ const ElectionSlider = ({ candidateList }) => {
                 <CandidateImage>
                     <img
                         src={
-                            candidateList[cardIndex].photo
+                            candidateList[cardIndex]?.photo
                                 ? `http://3.36.90.60/${candidateList[cardIndex].photo}`
                                 : "https://cdn.pixabay.com/photo/2016/04/01/12/07/alien-1300540__340.png"
                         }

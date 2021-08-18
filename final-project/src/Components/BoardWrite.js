@@ -198,7 +198,7 @@ const BoardWrite = ({ boardName }) => {
                 />
 
                 <Controls>
-                    <DefaultButton gap="10px" onClick={goBackPostDetail}>
+                    <DefaultButton rightGap="10px" onClick={goBackPostDetail}>
                         취소
                     </DefaultButton>
                     <DefaultButton onClick={editfreePost}>수정</DefaultButton>
@@ -276,7 +276,7 @@ const BoardWrite = ({ boardName }) => {
 
             {/* 컨트롤 버튼 */}
             <Controls>
-                <DefaultButton gap="15px" onClick={goBackBoard}>
+                <DefaultButton rightGap="15px" onClick={goBackBoard}>
                     취소
                 </DefaultButton>
                 <DefaultButton onClick={addPost}>등록</DefaultButton>

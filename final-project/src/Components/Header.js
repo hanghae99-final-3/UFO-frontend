@@ -253,6 +253,10 @@ const Menu = styled.div`
     ${mixin.floatBox("absolute", "86px", "0", null, null, 99)}
 `;
 
+const Controls = styled.ul`
+    ${mixin.flexBox("space-between", null, "column", "75%")}
+`;
+
 const Control = styled.li`
     cursor: pointer;
     /* Link의 state를 활용하여 조건부 렌더링을 해보았습니다. */
@@ -262,10 +266,6 @@ const Control = styled.li`
                 ? mixin.textProps(40, "extraBold", "mainMint")
                 : mixin.textProps(40, "extraBold", "blue3")};
     }
-`;
-
-const Controls = styled.ul`
-    ${mixin.flexBox("space-between", null, "column", "75%")}
 `;
 
 const AboutUs = styled.div`
