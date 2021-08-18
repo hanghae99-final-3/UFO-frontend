@@ -337,8 +337,8 @@ const Controls = styled.div`
     justify-content: center;
     button {
         padding: 10px 0;
-        width: 80px;
-        border-radius: 16px;
+        min-width: 80px;
+        border-radius: 20px;
         background: ${({ theme }) => theme.color.blue1};
         ${mixin.textProps(18, "semiBold", "white")};
         :not(:last-child) {
