@@ -413,7 +413,9 @@ const ElectionWrite = () => {
                             </AccordionDetails>
                         </Accordion>
                     ))}
-                <DefaultButton onClick={addCard}>후보자 추가</DefaultButton>
+                <DefaultButton rightGap="15px" onClick={addCard}>
+                    후보자 추가
+                </DefaultButton>
                 <DefaultButton onClick={addElection}>등록</DefaultButton>
             </WriteCandidateBox>
         </ElectionWriteContainer>

@@ -3,8 +3,8 @@ import styled from "styled-components";
 import mixin from "../../styles/Mixin";
 
 // gap은 '10px'처럼 string 형식으로 주어야하며, 오른쪽 여백을 줍니다.
-const DefaultButton = ({ children, gap, onClick }) => {
-    const styles = { gap };
+const DefaultButton = ({ children, rightGap, leftGap, onClick }) => {
+    const styles = { rightGap, leftGap };
     return (
         <Button onClick={onClick} {...styles}>
             {children}
@@ -18,7 +18,8 @@ const Button = styled.button`
     border-radius: 20px;
     background: ${({ theme }) => theme.color.blue1};
     ${mixin.textProps(18, "semiBold", "white")};
-    margin-right: ${props => props.gap};
+    ${props => props.rightGap && `margin-right: ${props.rightGap};`};
+    ${props => props.leftGap && `margin-left: ${props.leftGap};`};
     &:hover {
         background: ${({ theme }) => theme.color.mainBlue};
     }
