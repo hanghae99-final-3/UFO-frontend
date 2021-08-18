@@ -145,7 +145,7 @@ export const addFreeCommentDB = createAsyncThunk(
                 return {
                     ...response.data.result,
                     ...user,
-                    createdAt: moment().format(`YYYY-MM-DD HH:mm:ss`), // 여기는 지영님 맘대로 하세요~~
+                    createdAt: moment().format(`YYYY-MM-DD HH:mm:ss`),
                 };
         } catch (err) {
             return thunkAPI.rejectWithValue(err.response.message);
