@@ -110,7 +110,7 @@ const BoardComment = ({ boardName }) => {
 const BoardCommentContainer = styled.div``;
 
 const CommentWrite = styled.div`
-    border-bottom: 2px solid ${props => props.theme.color.mainGray}
+    border-bottom: 2px solid ${props => props.theme.color.mainGray};
     display: flex;
     justify-content: space-between;
     margin: 20px 0;

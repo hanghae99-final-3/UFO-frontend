@@ -42,16 +42,19 @@ const BoardBox = ({
     //-------리턴 컴포넌트----------
     return (
         <BoardContainer>
-            <Header>
-                {tag && <LargeTag># {tag.categoryName}</LargeTag>}
-                {title && <TitleHeading>{title}</TitleHeading>}
-                {myPostTitle && <TitleHeading>{myPostTitle}</TitleHeading>}
-                {(title || tag) && (
-                    <Boop rotation={15} timing={200}>
-                        <More onClick={onToMoreClicked}>더보기</More>
-                    </Boop>
-                )}
-            </Header>
+            {tag || title ? (
+                <Header>
+                    {tag && <LargeTag>#{tag.categoryName}</LargeTag>}
+                    {title && <TitleHeading>{title}</TitleHeading>}
+                    {myPostTitle && <TitleHeading>{myPostTitle}</TitleHeading>}
+                    {(title || tag) && (
+                        <Boop rotation={15} timing={200}>
+                            <More onClick={onToMoreClicked}>더보기</More>
+                        </Boop>
+                    )}
+                </Header>
+            ) : null}
+
             <Content>
                 {fixedList &&
                     fixedList.map((post, idx) => (
@@ -62,15 +65,19 @@ const BoardBox = ({
                             }}
                         >
                             <Title>
-                                <SmallTag>공지</SmallTag>
-                                <p>{post.title}</p>
+                                <AnnounceTag title={title} tag={tag}>
+                                    공지
+                                </AnnounceTag>
+                                <AnnounceTitle title={title} tag={tag}>
+                                    {post.title}
+                                </AnnounceTitle>
                             </Title>
 
                             {!mypage && (
                                 <IconContainer>
                                     {!tag ? (
                                         <>
-                                            <Icon>
+                                            <Icon title={title} tag={tag}>
                                                 {post?.like?.is_like ===
                                                 false ? (
                                                     <FavoriteBorder />
@@ -86,14 +93,14 @@ const BoardBox = ({
                                                         post.like.all_like}
                                                 </span>
                                             </Icon>
-                                            <Icon>
+                                            <Icon title={title} tag={tag}>
                                                 <MdComment />
                                                 <span>{post.coment_count}</span>
                                             </Icon>
                                         </>
                                     ) : null}
 
-                                    <Icon>
+                                    <Icon title={title} tag={tag}>
                                         <VisibilityIcon />
                                         <span>{post.view_count}</span>
                                     </Icon>
@@ -120,7 +127,11 @@ const BoardBox = ({
                             }}
                         >
                             <Title>
-                                <SmallTag>
+                                <SmallTag
+                                    title={title}
+                                    tag={tag}
+                                    announcement={announcement}
+                                >
                                     {!announcement && "#"}
                                     {boardName === "freeboard" &&
                                         !announcement &&
@@ -135,14 +146,16 @@ const BoardBox = ({
                                         announcement &&
                                         "공지"}
                                 </SmallTag>
-                                <PostTitle>{post.title}</PostTitle>
+                                <PostTitle tag={tag} title={title}>
+                                    {post.title}
+                                </PostTitle>
                             </Title>
 
                             {!mypage && (
                                 <IconContainer>
-                                    {!tag ? (
+                                    {!tag || !title ? (
                                         <>
-                                            <Icon>
+                                            <Icon title={title} tag={tag}>
                                                 {post?.like?.is_like ===
                                                 false ? (
                                                     <FavoriteBorder />
@@ -158,14 +171,14 @@ const BoardBox = ({
                                                         post.like.all_like}
                                                 </span>
                                             </Icon>
-                                            <Icon>
+                                            <Icon title={title} tag={tag}>
                                                 <MdComment />
                                                 <span>{post.coment_count}</span>
                                             </Icon>
                                         </>
                                     ) : null}
 
-                                    <Icon>
+                                    <Icon title={title} tag={tag}>
                                         <VisibilityIcon />
                                         <span>{post.view_count}</span>
                                     </Icon>
@@ -199,32 +212,52 @@ const Header = styled.div`
     align-items: center;
     justify-content: space-between;
     margin-bottom: 10px;
+    border-bottom: 1px solid ${props => props.theme.color.gray4};
 `;
 
 // 태그
 const LargeTag = styled.span`
-    padding: 0 1rem 0 1rem;
-    border: none;
-    border-radius: 5rem;
-    background-color: #717171;
-    color: white;
-    font-size: 1.5rem;
+    ${mixin.textProps(30, "regular", "black")}
+    position: relative;
+    top: -7px;
 `;
 
 const SmallTag = styled.span`
-    min-width: 94px;
-    height: 32px;
-    ${mixin.textProps(18, "regular", "gray1")}
+    min-width: ${props => (props.title || props.tag ? " 74px" : "94px")};
+    height: ${props => (props.title || props.tag ? " 22px" : "32px")};
+    ${props =>
+        props.title || props.tag
+            ? mixin.textProps(12, "regular", "gray1")
+            : mixin.textProps(18, "regular", "gray1")}
     text-align: center;
     margin-right: 20px;
-    border: 3px solid ${props => props.theme.color.blue3};
+    border: 2px solid
+        ${props =>
+            props.announcement
+                ? props.theme.color.mint
+                : props.theme.color.blue3};
     border-radius: 16px;
     background-color: white;
-    line-height: 28px;
+    line-height: ${props => (props.title || props.tag ? "18px" : "28px")};
+`;
+const AnnounceTag = styled.span`
+    min-width: ${props => (props.title || props.tag ? " 74px" : "94px")};
+    height: ${props => (props.title || props.tag ? " 22px" : "32px")};
+    ${props =>
+        props.title || props.tag
+            ? mixin.textProps(12, "regular", "gray1")
+            : mixin.textProps(18, "regular", "gray1")}
+    text-align: center;
+    margin-right: 20px;
+    border: 2px solid ${props => props.theme.color.mint};
+    border-radius: 16px;
+    background-color: white;
+    line-height: ${props => (props.title || props.tag ? "18px" : "28px")};
 `;
 
 // 더보기 버튼
-const More = styled.div`
+const More = styled.span`
+    ${mixin.textProps(14, "regular", "gray3")}
     :hover {
         cursor: pointer;
     }
@@ -233,7 +266,17 @@ const More = styled.div`
 // 텍스트
 
 const PostTitle = styled.p`
-    ${mixin.textProps(20, "regular", "grey1")}
+    ${props =>
+        props.title || props.tag
+            ? mixin.textProps(14, "regular", "gray2")
+            : mixin.textProps(20, "regular", "gray2")}
+`;
+
+const AnnounceTitle = styled.p`
+    ${props =>
+        props.title || props.tag
+            ? mixin.textProps(14, "regular", "gray2")
+            : mixin.textProps(20, "regular", "gray2")}
 `;
 const Content = styled.div``;
 
@@ -260,13 +303,15 @@ const Icon = styled.div`
         line-height: 1;
     }
     svg {
-        font-size: 20px;
+        font-size: ${props => (props.title || props.tag ? "17px" : "20px")};
         margin: 0 5px 0 10px;
     }
 `;
 
 const TitleHeading = styled.span`
     font-size: 30px;
+    position: relative;
+    top: -7px;
 `;
 
 export default BoardBox;

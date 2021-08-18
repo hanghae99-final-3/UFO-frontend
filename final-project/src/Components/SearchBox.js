@@ -5,6 +5,7 @@ import mixin from "../styles/Mixin";
 import styled from "styled-components";
 import Boop from "../Elements/Boop";
 import { history } from "../redux/configureStore";
+import PushButton from "../Elements/Buttons/PushButton";
 
 //-----------------redux----------------
 import {
@@ -38,7 +39,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const SearchBox = ({ searchTag, deactivateSearch, page }) => {
+const SearchBox = ({ searchTag, deactivateSearch, page, pushButton }) => {
     const classes = useStyles();
     const dispatch = useDispatch();
     // 현재 선택되어있는 태그의 index값을 selectedTag 배열에 저장한다.
@@ -98,6 +99,9 @@ const SearchBox = ({ searchTag, deactivateSearch, page }) => {
         }
     };
 
+    //작성하기 페이지 바로기
+    const onClick = () => history.push(`/${page}/write`);
+
     return (
         <React.Fragment>
             <SearchBoxContainer>
@@ -108,9 +112,11 @@ const SearchBox = ({ searchTag, deactivateSearch, page }) => {
                                 ? "자유 게시판"
                                 : `대학 게시판 (${univName})`}
                         </TitleSpan>
-                        {/* <PushButton onClick={onClick}> */}
-                        {/* 작성하기 페이지로 이동! */}
-                        {/* </PushButton> */}
+                        {pushButton && (
+                            <PushButton onClick={onClick}>
+                                {/* 작성하기 페이지로 이동! */}
+                            </PushButton>
+                        )}
                     </TitleContainer>
                 )}
                 <TagContainer>
