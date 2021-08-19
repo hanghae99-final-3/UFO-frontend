@@ -3,6 +3,7 @@ import React from "react";
 import categories from "../categories";
 import styled from "styled-components";
 import { history } from "../redux/configureStore";
+import textOverflow from "../styles/Mixin/textStyle";
 
 //----머테이얼 유아이 컴포넌트 & 아이콘------
 import VisibilityIcon from "@material-ui/icons/Visibility";
@@ -55,6 +56,9 @@ const CardContainer = styled.div`
     padding: 45px 51px 0 51px;
     position: relative;
     cursor: pointer;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 `;
 const InnerContentContainer = styled.div``;
 
