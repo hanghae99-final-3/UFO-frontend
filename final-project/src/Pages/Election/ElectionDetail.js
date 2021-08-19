@@ -19,7 +19,8 @@ import Count2 from "../../Components/CountDown/Count";
 const ElectionDetail = () => {
     const dispatch = useDispatch();
     const { id: electionId } = useParams();
-    const user = useSelector(state => state.user.user);
+    const userInfo = useSelector(state => state.user.user);
+    const isAdmin = useSelector(state => state.user.isAdmin); //관리자인지 아닌지에 대한 판별값
     const post = useSelector(state => state.election.post); //선거게시물의 데이터가 들어있습니다.
     const [selectCandidateNum, setSelectCandidateNum] = useState(null); //선택한 후보자의 번호를 담는 state입니다.
 
@@ -56,7 +57,7 @@ const ElectionDetail = () => {
     };
 
     //대학 인증을 한 사람만 볼 수 있도록 예외처리를 합니다.
-    if (!user.univ_id || !user.country_id)
+    if (!userInfo.univ_id || !userInfo.country_id)
         return (
             <Message
                 message="대학인증을 한 사람만 선거게시글을 볼 수 있어요"
@@ -127,23 +128,29 @@ const ElectionDetail = () => {
                 <DefaultButton rightGap="15px" onClick={addVote}>
                     투표하기
                 </DefaultButton>
-                <DefaultButton onClick={deleteElection}>삭제하기</DefaultButton>
-                {
-                    // 여기에 선거 작성자가 맞는지 안맞는지도 판별해줘야함!
-                    moment().isBefore(post?.start_date) &&
-                        !moment().isSame(post?.start_date) && (
-                            <DefaultButton
-                                leftGap="15px"
-                                onClick={() =>
-                                    history.push(
-                                        `/election/edit/${post.election_id}`,
-                                    )
-                                }
-                            >
-                                수정하기
-                            </DefaultButton>
-                        )
-                }
+
+                {/* 관리자면 삭제하기 버튼을 볼 수 있습니다. */}
+                {isAdmin && (
+                    <DefaultButton onClick={deleteElection}>
+                        삭제하기
+                    </DefaultButton>
+                )}
+
+                {/* 선거시작일이 현재보다 이전이거나 같지 않고, 관리자면 수정하기 버튼을 볼 수 있습니다.  */}
+                {moment().isBefore(post?.start_date) &&
+                    !moment().isSame(post?.start_date) &&
+                    isAdmin(
+                        <DefaultButton
+                            leftGap="15px"
+                            onClick={() =>
+                                history.push(
+                                    `/election/edit/${post.election_id}`,
+                                )
+                            }
+                        >
+                            수정하기
+                        </DefaultButton>,
+                    )}
             </Controls>
         </ElectionDetailContainer>
     );
