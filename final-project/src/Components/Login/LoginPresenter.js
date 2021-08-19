@@ -1,7 +1,8 @@
 import React from "react";
 import { Formik, Form } from "formik";
 import SocialLogin from "./SocialLogin";
-
+import styled from "styled-components";
+import mixin from "../../styles/Mixin";
 import { makeStyles } from "@material-ui/styles";
 import { LoginTextField } from "./LoginTextField";
 import {
@@ -55,10 +56,7 @@ const LoginPresenter = ({
     return (
         <Grid item className={classes.mainContainer} xs={12}>
             <Grid className={classes.titleContainer}>
-                <Typography variant="h4">로그인</Typography>
-                <Typography style={{ fontSize: "12px", color: "#AE01FF" }}>
-                    유학생의 프리한 오늘, UFO
-                </Typography>
+                <LoginText variant="h4">로그인</LoginText>
             </Grid>
             {socialLoginMode ? (
                 <SocialLogin toggleLoginMode={toggleLoginMode} />
@@ -87,7 +85,7 @@ const LoginPresenter = ({
                                         name="password"
                                         type="password"
                                     />
-                                    <div>
+                                    <AutoLogin>
                                         <FormControlLabel
                                             control={
                                                 <Checkbox
@@ -110,7 +108,7 @@ const LoginPresenter = ({
                                             }
                                             label="자동 로그인"
                                         />
-                                    </div>
+                                    </AutoLogin>
 
                                     <Button
                                         style={{
@@ -141,9 +139,14 @@ const LoginPresenter = ({
                         )}
                     </Formik>
                 </Grid>
-            )}
+            )}{" "}
         </Grid>
     );
 };
+
+const LoginText = styled.div`
+    ${mixin.textProps(40, "extraBold", "black")}
+`;
+const AutoLogin = styled.div``;
 
 export default LoginPresenter;
