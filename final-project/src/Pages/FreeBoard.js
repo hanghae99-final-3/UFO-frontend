@@ -28,16 +28,19 @@ const useStyles = makeStyles(theme => ({
             backgroundColor: "#AFB1FF",
             borderRadius: "20px",
         },
+        "& .MuiPaginationItem-page": {
+            border: "3px solid #D8D9FF",
+            borderRadius: "20px",
+            backgroundColor: "white",
+        },
 
         "& .Mui-selected": {
             border: "3px solid #bcffe2",
             borderRadius: "20px",
             backgroundColor: "white",
         },
-        "& .MuiPaginationItem-page": {
-            // border: "3px solid #D8D9FF",
-            borderRadius: "20px",
-            backgroundColor: "white",
+        "& .Mui-disabled": {
+            border: "3px solid #bcffe2",
         },
     },
 }));

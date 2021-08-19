@@ -14,7 +14,7 @@ import { voteApi } from "../../api";
 import ElectionSlider from "../../Components/Election/ElectionSlider";
 import Message from "../../Components/Message";
 import DefaultButton from "../../Elements/Buttons/DefaultButton";
-import Count2 from "../../Components/CountDown2/Count2";
+import Count2 from "../../Components/CountDown/Count";
 
 const ElectionDetail = () => {
     const dispatch = useDispatch();

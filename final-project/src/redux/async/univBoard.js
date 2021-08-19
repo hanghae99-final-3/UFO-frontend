@@ -248,7 +248,7 @@ export const univLikeToggleDB = createAsyncThunk(
                 }
             }
         } catch (err) {
-            console.log("err", err);
+            return thunkAPI.rejectWithValue(err.response.message);
         }
     },
 );

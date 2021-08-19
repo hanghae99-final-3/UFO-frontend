@@ -260,7 +260,6 @@ const ElectionWrite = () => {
                 buttonValue="대학인증하러가기"
             />
         );
-    console.log(post);
     return (
         <ElectionWriteContainer>
             {/* 선거 게시글의 제목, 내용, 시작일, 종료일을 입력하는 곳입니다. */}
