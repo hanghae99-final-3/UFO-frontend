@@ -5,6 +5,7 @@ import { useParams } from "react-router";
 import { history } from "../../redux/configureStore";
 import moment from "moment";
 import confirm from "../../confirm";
+import mixin from "../../styles/Mixin";
 
 //통신
 import { getElectionDB, deleteElectionDB } from "../../redux/async/election";
@@ -14,7 +15,8 @@ import { voteApi } from "../../api";
 import ElectionSlider from "../../Components/Election/ElectionSlider";
 import Message from "../../Components/Message";
 import DefaultButton from "../../Elements/Buttons/DefaultButton";
-import Count2 from "../../Components/CountDown/Count";
+import Count from "../../Components/CountDown/Count";
+import ProgressBar from "../../Components/Election/ProgressBar";
 
 const ElectionDetail = () => {
     const dispatch = useDispatch();
@@ -77,13 +79,20 @@ const ElectionDetail = () => {
         );
     return (
         <ElectionDetailContainer>
-            <Title>투표함</Title>
-            <TimeContainer>
+            <ElectionContainer>
+                <h5>투표함</h5>
+                <ElectionBox></ElectionBox>
+            </ElectionContainer>
+            <CountdownContainer>
                 <h5>투표까지 남은 시간</h5>
+                <ProgressBar
+                    start={post?.start_date && post.start_date}
+                    end={post?.end_date && post.end_date}
+                />
                 <TimeBox>
-                    <Count2 deadline={post?.end_date && post.end_date} />
+                    <Count deadline={post?.end_date && post.end_date} />
                 </TimeBox>
-            </TimeContainer>
+            </CountdownContainer>
             <CandidatesContainer>
                 <h5>후보자</h5>
                 <CandidatesBox>
@@ -170,12 +179,26 @@ const ElectionDetailContainer = styled.div`
         }
     }
 `;
-const Title = styled.h3`
+const ElectionContainer = styled.div`
     width: 100%;
-    font-size: 30px;
+    h5 {
+        ${mixin.textProps(30, "extraBold", "black")};
+        ${mixin.outline("1px solid", "gray4", "bottom")};
+        padding-bottom: 10px;
+    }
 `;
 
-const TimeContainer = styled.div``;
+const ElectionBox = styled.div`
+    padding: 15px 0;
+`;
+
+const CountdownContainer = styled.div`
+    h5 {
+        ${mixin.textProps(30, "extraBold", "black")};
+        ${mixin.outline("1px solid", "gray4", "bottom")};
+        padding-bottom: 10px;
+    }
+`;
 const TimeBox = styled.div`
     width: 100%;
     text-align: center;
