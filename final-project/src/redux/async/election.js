@@ -87,7 +87,6 @@ export const editElectionDB = createAsyncThunk(
                 return history.push(`/election/detail/${electionId}`);
             }
         } catch (err) {
-            console.log(err);
             Swal.fire("오류", "게시글을 수정할 수 없어요!", "error");
             return thunkAPI.rejectWithValue(err.response.message);
         }
