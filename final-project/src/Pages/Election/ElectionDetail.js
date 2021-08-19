@@ -6,10 +6,14 @@ import { history } from "../../redux/configureStore";
 import moment from "moment";
 import confirm from "../../confirm";
 import mixin from "../../styles/Mixin";
+import Swal from "sweetalert2";
 
 //통신
-import { getElectionDB, deleteElectionDB } from "../../redux/async/election";
-import { voteApi } from "../../api";
+import {
+    getElectionDB,
+    deleteElectionDB,
+    addVoteDB,
+} from "../../redux/async/election";
 
 //컴포넌트
 import CandidateSlider from "../../Components/Election/CandidateSlider";
@@ -44,15 +48,7 @@ const ElectionDetail = () => {
             candidate_id: selectCandidateId,
         };
 
-        voteApi.addVote(req).then(res => {
-            if (res.data.ok) {
-                alert("투표해주셔서 감사합니다!");
-                history.replace("/election");
-            } else {
-                alert("투표가 정상적으로 처리되지 않았습니다!");
-                history.replace("/election");
-            }
-        });
+        dispatch(addVoteDB(req));
     };
 
     const deleteElection = () => {
@@ -231,9 +227,6 @@ const VoteBox = styled.div`
     grid-template-columns: repeat(5, 1fr);
     flex-wrap: wrap;
     gap: 10px;
-    > div {
-        cursor: pointer;
-    }
 `;
 
 const Controls = styled.div`

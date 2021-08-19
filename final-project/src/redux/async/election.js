@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { history } from "../configureStore";
-import { electionApi } from "../../api";
+import { electionApi, voteApi } from "../../api";
 
 //통신결과에 따른 후처리를 위한 alert 라이브러리
 import Swal from "sweetalert2";
@@ -108,9 +108,37 @@ export const deleteElectionDB = createAsyncThunk(
             if (response.data.ok) {
                 Swal.fire("완료", "정상적으로 삭제가 되었습니다.", "success");
                 history.push("/election");
+                return data.election_id;
             }
         } catch (err) {
             Swal.fire("에러", "게시글을 삭제할 수 없어요!", "error");
+            return thunkAPI.rejectWithValue(err.response.message);
+        }
+    },
+);
+
+/**
+ * @author kwonjiyeong
+ * @param data = election_id
+ * @returns 서버연결 성공시, 투표추가 / 서버연결 실패시, 에러메세지
+ * @역할 투표하기
+ * @필수값 없음
+ */
+export const addVoteDB = createAsyncThunk(
+    "election/addVote",
+    async (data, thunkAPI) => {
+        try {
+            const response = await voteApi.addVote(data);
+            if (response.data.ok) {
+                Swal.fire(
+                    "완료",
+                    "투표가 정상적으로 반영되었습니다.",
+                    "success",
+                );
+                history.push("/election");
+            }
+        } catch (err) {
+            Swal.fire("에러", "투표가 처리되지 않았습니다.", "error");
             return thunkAPI.rejectWithValue(err.response.message);
         }
     },

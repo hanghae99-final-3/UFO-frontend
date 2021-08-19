@@ -22,7 +22,7 @@ const CandidateCard = ({
     return (
         <Container
             {...voteProps}
-            cursor={cursor}
+            cursor={cursor ? "true" : false}
             onClick={() => {
                 isVote
                     ? selectCandidate(candidate.candidate_id)
