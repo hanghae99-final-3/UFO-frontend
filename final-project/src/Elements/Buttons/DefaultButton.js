@@ -13,7 +13,8 @@ const DefaultButton = ({ children, rightGap, leftGap, onClick }) => {
 };
 
 const Button = styled.button`
-    padding: 10px;
+    padding: 0 10px;
+    height: 32px;
     min-width: 80px;
     border-radius: 20px;
     background: ${({ theme }) => theme.color.blue1};
