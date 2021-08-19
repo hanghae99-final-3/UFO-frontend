@@ -27,10 +27,10 @@ const RecommendList = () => {
 };
 
 const HeadingWrapper = styled.div`
-    border-bottom: 1px solid ${props => props.theme.color.mainGray};
-    padding-bottom: 13px;
     margin-top: 57px;
     margin-bottom: 10px;
+    padding-bottom: 10px;
+    ${mixin.outline("1px solid", "mainGray", "bottom")}
 `;
 const Heading = styled.span`
     ${mixin.textProps(30, "regular", "black")}

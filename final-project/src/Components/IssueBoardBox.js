@@ -64,18 +64,17 @@ const IssueBoardBox = ({ issueList, boardName }) => {
 // 태그
 
 const SmallTag = styled.span`
-    min-width: 94px;
     height: 32px;
-    ${mixin.textProps(18, "regular", "gray1")}
-    text-align: center;
+    line-height: 28px;
+    min-width: 94px;
     margin-right: 20px;
-    border: 2px solid ${props => props.theme.color.blue3};
     border-radius: 16px;
     background-color: white;
-    line-height: 28px;
+    ${mixin.outline("2px solid", "blue3")}
+    ${mixin.textProps(18, "semiBold", "gray1", "center")}
 `;
 const PostTitle = styled.p`
-    ${mixin.textProps(20, "regular", "grey1")}
+    ${mixin.textProps(20, "semiBold", "gray2")}
 `;
 
 const PostContainer = styled.div`

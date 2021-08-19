@@ -206,58 +206,63 @@ const BoardBox = ({
 const BoardContainer = styled.div`
     width: 100%;
 `;
-
 const Header = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
     margin-bottom: 10px;
-    border-bottom: 1px solid ${props => props.theme.color.gray4};
+    padding-bottom: 8px;
+    ${mixin.outline("1.5px solid", "gray4", "bottom")}
+    ${mixin.flexBox("space-between", "flex-end", null, null)}
 `;
 
-// 태그
 const LargeTag = styled.span`
-    ${mixin.textProps(30, "regular", "black")}
-    position: relative;
-    top: -7px;
+    ${mixin.textProps(30, "extraBold", "black")}
+`;
+const TitleHeading = styled.span`
+    ${mixin.textProps(30, "extraBold", "black")}
+`;
+const PostTitle = styled.p`
+    ${props =>
+        props.title || props.tag
+            ? mixin.textProps(14, "semiBold", "gray2")
+            : mixin.textProps(20, "semiBold", "gray2")}
+`;
+const AnnounceTitle = styled.p`
+    ${props =>
+        props.title || props.tag
+            ? mixin.textProps(14, "semiBold", "gray2")
+            : mixin.textProps(20, "semiBold", "gray2")}
+`;
+const SmallTag = styled.span`
+    margin-right: 20px;
+    border-radius: 16px;
+    background-color: white;
+    height: ${props => (props.title || props.tag ? " 22px" : "32px")};
+    min-width: ${props => (props.title || props.tag ? " 74px" : "94px")};
+    line-height: ${props => (props.title || props.tag ? "18px" : "28px")};
+    ${props =>
+        props.title || props.tag
+            ? mixin.textProps(12, "semiBold", "gray1", "center")
+            : mixin.textProps(18, "semiBold", "gray1", "center")}
+    ${props =>
+        mixin.outline("2px solid", props.announcement ? "mint" : "blue3")}
 `;
 
-const SmallTag = styled.span`
-    min-width: ${props => (props.title || props.tag ? " 74px" : "94px")};
-    height: ${props => (props.title || props.tag ? " 22px" : "32px")};
-    ${props =>
-        props.title || props.tag
-            ? mixin.textProps(12, "regular", "gray1")
-            : mixin.textProps(18, "regular", "gray1")}
-    text-align: center;
-    margin-right: 20px;
-    border: 2px solid
-        ${props =>
-            props.announcement
-                ? props.theme.color.mint
-                : props.theme.color.blue3};
-    border-radius: 16px;
-    background-color: white;
-    line-height: ${props => (props.title || props.tag ? "18px" : "28px")};
-`;
 const AnnounceTag = styled.span`
-    min-width: ${props => (props.title || props.tag ? " 74px" : "94px")};
-    height: ${props => (props.title || props.tag ? " 22px" : "32px")};
-    ${props =>
-        props.title || props.tag
-            ? mixin.textProps(12, "regular", "gray1")
-            : mixin.textProps(18, "regular", "gray1")}
-    text-align: center;
     margin-right: 20px;
-    border: 2px solid ${props => props.theme.color.mint};
     border-radius: 16px;
     background-color: white;
+    height: ${props => (props.title || props.tag ? " 22px" : "32px")};
+    min-width: ${props => (props.title || props.tag ? " 74px" : "94px")};
     line-height: ${props => (props.title || props.tag ? "18px" : "28px")};
+    ${props =>
+        props.title || props.tag
+            ? mixin.textProps(12, "semiBold", "gray1", "center")
+            : mixin.textProps(18, "semiBold", "gray1", "center")}
+    ${mixin.outline("2px solid", "mint")}
 `;
 
 // 더보기 버튼
 const More = styled.span`
-    ${mixin.textProps(14, "regular", "gray3")}
+    ${mixin.textProps(14, "semiBold", "gray3")}
     :hover {
         cursor: pointer;
     }
@@ -265,19 +270,6 @@ const More = styled.span`
 
 // 텍스트
 
-const PostTitle = styled.p`
-    ${props =>
-        props.title || props.tag
-            ? mixin.textProps(14, "regular", "gray2")
-            : mixin.textProps(20, "regular", "gray2")}
-`;
-
-const AnnounceTitle = styled.p`
-    ${props =>
-        props.title || props.tag
-            ? mixin.textProps(14, "regular", "gray2")
-            : mixin.textProps(20, "regular", "gray2")}
-`;
 const Content = styled.div``;
 
 const PostContainer = styled.div`
@@ -306,12 +298,6 @@ const Icon = styled.div`
         font-size: ${props => (props.title || props.tag ? "17px" : "20px")};
         margin: 0 5px 0 10px;
     }
-`;
-
-const TitleHeading = styled.span`
-    font-size: 30px;
-    position: relative;
-    top: -7px;
 `;
 
 export default BoardBox;

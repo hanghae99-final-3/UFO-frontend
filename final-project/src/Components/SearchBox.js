@@ -37,6 +37,11 @@ const useStyles = makeStyles(theme => ({
             backgroundColor: "white",
         },
     },
+    MuiOutlinedInput: {
+        fontSize: 18,
+        fontWeight: 600,
+        color: "#A6ABB2",
+    },
 }));
 
 const SearchBox = ({ searchTag, deactivateSearch, page, pushButton }) => {
@@ -195,47 +200,42 @@ const SearchBox = ({ searchTag, deactivateSearch, page, pushButton }) => {
 export default SearchBox;
 
 //-------스타일 컴포넌트--------
-
 const SearchBoxContainer = styled.div`
     margin-bottom: 15px;
 `;
-// 타이틀
+
+// -----타이틀-----
 const TitleContainer = styled.div`
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    padding-bottom: 10px;
-    border-bottom: 1.5px solid #dedfe0;
     margin-bottom: 10px;
+    padding-bottom: 10px;
+    ${mixin.flexBox("space-between", "flex-end")}
+    ${mixin.outline("1.5px solid", "gray4", "bottom")}
 `;
 const TitleSpan = styled.span`
-    ${mixin.textProps(30, "regular", "black")}
+    ${mixin.textProps(30, "extraBold", "black")}
 `;
-// 태그
+//----
+
+//-----태그-----
 const TagContainer = styled.div`
-    height: 40px;
-    ${mixin.flexBox(null, "center")}
-    margin-bottom:10px;
+    margin-bottom: 15px;
+    ${mixin.flexBox(null, "center", null)}
 `;
 const TagSelectText = styled.span`
-    ${mixin.textProps(14, "regular", "gray3")};
+    ${mixin.textProps(14, "semiBold", "gray3")};
     margin-right: 10px;
 `;
-
 const TagButton = styled.button`
     width: 80px;
     height: 30px;
-    border: 2px solid
-        ${props =>
-            props.selected ? props.theme.color.mint : props.theme.color.blue3};
+    text-align: center;
     margin-right: 7px;
     border-radius: 16px;
-    text-align: center;
-    font-size: ${props => props.theme.fontSize[18]};
-    font-weight: ${props => props.theme.fontWeight.regular};
-    color: ${props => props.theme.color.gray1};
+    ${mixin.textProps(18, "semiBold", "gray1")};
+    ${props => mixin.outline("2px solid", props.selected ? "mint" : "blue3")}
     background-color: ${props => props.theme.color.white};
 `;
+//----
 
 const CancelButton = styled.button`
     width: 40px;

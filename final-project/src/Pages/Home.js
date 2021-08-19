@@ -62,7 +62,7 @@ const Home = () => {
     return (
         <HomeContainer>
             {/* 메인 검색창 */}
-            {/* <MainSearch /> */}
+            <MainSearch />
             {/* 인기 게시글 슬라이더 불러오기*/}
             <MainSlider
                 postList={

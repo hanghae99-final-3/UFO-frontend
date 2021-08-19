@@ -274,30 +274,34 @@ const BoardDetail = ({ page }) => {
     );
 };
 
+const MainContentContainer = styled.div`
+    margin-top: 30px;
+`;
+
 const Tag = styled.span`
     height: 32px;
     min-width: 80px;
-    ${mixin.textProps(18, "regular", "gray1")}
-    border: 2px solid ${props => props.theme.color.blue3};
-    border-radius: 15px;
-    background-color: white;
-    text-align: center;
     line-height: 28px;
     display: inline-block;
+    border-radius: 15px;
+    background-color: white;
+    ${mixin.outline("2px solid", "blue3")}
+    ${mixin.textProps(18, "semiBold", "gray1", "center")}
 `;
 const Title = styled.h3`
     display: block;
-    ${mixin.textProps(30, "regular", "black")}
     margin: 20px 0 0 0;
+    ${mixin.textProps(30, "extraBlack", "black")}
 `;
 const Nickname = styled.span`
-    ${mixin.textProps(14, "regular", "gray2")}
-    line-height: 29px;
+    ${mixin.textProps(14, "semiBold", "gray2")}
 `;
-
+const NicknameIconContainer = styled.div`
+    padding-bottom: 10px;
+    ${mixin.flexBox("space-between", "flex-end")}
+`;
 const Icon = styled.div`
-    display: flex;
-    align-items: center;
+    ${mixin.flexBox(null, "center", null, null)}
     span {
         line-height: 1;
     }
@@ -306,52 +310,33 @@ const Icon = styled.div`
         margin: 0 5px 0 10px;
     }
 `;
-
-const MainContentContainer = styled.div`
-    margin-top: 30px;
+const IconContainer = styled.div`
+    ${mixin.flexBox()}
 `;
 
 const ContentHeaderContainer = styled.div`
-    border-bottom: 1.5px solid ${props => props.theme.color.mainGray};
-`;
-
-const NicknameIconContainer = styled.div`
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    padding-bottom: 10px;
-`;
-
-const IconContainer = styled.div`
-    display: flex;
-`;
-
-const ContentBodyContainer = styled.div`
-    border-bottom: 1.5px solid ${props => props.theme.color.mainGray};
-    display: flex;
-    min-height: 100px;
-    align-items: center;
+    ${mixin.outline("1.5px solid", "gray4", "bottom")}
 `;
 const ContentBody = styled.div``;
+const ContentBodyContainer = styled.div`
+    min-height: 100px;
+    ${mixin.flexBox(null, "center")}
+    ${mixin.outline("1.5px solid", "gray4", "bottom")}
+`;
 
 const ButtonContainer = styled.div`
     margin-top: 15px;
-    display: flex;
-    justify-content: space-between;
+    ${mixin.flexBox("space-between")}
 `;
 
+const ButtonWrapper = styled.div``;
 const Button = styled.button`
     width: 94px;
     height: 32px;
     margin-right: 7px;
     border-radius: 16px;
-    text-align: center;
-    font-size: ${props => props.theme.fontSize[18]};
-    font-weight: ${props => props.theme.fontWeight.regular};
-    color: ${props => props.theme.color.white};
+    ${mixin.textProps(18, "semiBold", "white", "center")}
     background-color: ${props => props.theme.color.blue1};
 `;
-
-const ButtonWrapper = styled.div``;
 
 export default BoardDetail;
