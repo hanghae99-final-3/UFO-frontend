@@ -67,7 +67,7 @@ const GoogleButtonBox = styled.button`
     box-shadow: 0px 1px 1px 1px #ececec;
 `;
 const MemberCheckBox = styled.div`
-    margin-top: 30px;
+    margin-top: 32px;
     display: flex;
     ${mixin.textProps(20, "regular", "gray3")}
 `;

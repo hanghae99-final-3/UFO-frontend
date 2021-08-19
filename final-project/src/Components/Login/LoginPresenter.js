@@ -110,18 +110,9 @@ const LoginPresenter = ({
                                         />
                                     </AutoLogin>
 
-                                    <Button
-                                        style={{
-                                            marginTop: "20px",
-                                            width: "320px",
-                                            height: "40px",
-                                            borderRadius: "10px",
-                                        }}
-                                        type="submit"
-                                        variant="outlined"
-                                    >
+                                    <Loginbtn type="submit" variant="outlined">
                                         로그인
-                                    </Button>
+                                    </Loginbtn>
                                     <Button
                                         style={{
                                             marginTop: "20px",
@@ -147,6 +138,16 @@ const LoginPresenter = ({
 const LoginText = styled.div`
     ${mixin.textProps(40, "extraBold", "black")}
 `;
-const AutoLogin = styled.div``;
+const AutoLogin = styled.div`
+    width: 100%;
+`;
 
+const Loginbtn = styled.button`
+    margin-top: 20px;
+    width: 320px;
+    height: 40px;
+    ${mixin.textProps(20, "extraBold", "white")}
+    background-color : ${({ theme }) => theme.color.blue1};
+    border-radius: 23px;
+`;
 export default LoginPresenter;
