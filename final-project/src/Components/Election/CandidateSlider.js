@@ -4,7 +4,7 @@ import Slider from "react-slick";
 
 import { FaArrowRight, FaArrowLeft } from "react-icons/fa";
 
-const ElectionSlider = ({ candidateList }) => {
+const CandidateSlider = ({ candidateList }) => {
     const NextArrow = ({ onClick }) => {
         return (
             <div className="arrow next" onClick={onClick}>
@@ -146,4 +146,4 @@ const CandidateInfo = styled.div`
     }
 `;
 
-export default ElectionSlider;
+export default CandidateSlider;

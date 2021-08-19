@@ -10,15 +10,17 @@ import moment from "moment";
 
 const ProgressBar = ({ start, end }) => {
     const max = moment(end).diff(start); //최대값
-    const value = Math.ceil((moment(end).diff(moment()) / max) * 100);
-    //현재값을 백분율로 나타낸것
+    const value = Math.ceil((moment().diff(moment(start)) / max) * 100); //현재값을 백분율로 나타낸것
 
+    // 투표가 시작전이면 value 값은 0과 같거나 작게 됩니다. 따라서, value가 0보다 크면 프로그래스바를 진행하고, 아니면 진행하지 않습니다.
     return (
         <>
-            {value && (
+            {value > 0 ? (
                 <Container>
                     <Bar value={value} />
                 </Container>
+            ) : (
+                <Container />
             )}
         </>
     );
@@ -27,13 +29,13 @@ const ProgressBar = ({ start, end }) => {
 const Container = styled.div`
     width: 100%;
     height: 10px;
-    background-color: ${({ theme }) => theme.color.mainMint};
+    background-color: ${({ theme }) => theme.color.mint};
 `;
 
 const Bar = styled.div`
     height: 100%;
     animation: progressbar 3s forwards;
-    background-color: ${({ theme }) => theme.color.mainBlue};
+    background-color: ${({ theme }) => theme.color.blue2};
 
     @keyframes progressbar {
         0% {
