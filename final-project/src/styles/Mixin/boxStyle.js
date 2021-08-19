@@ -55,21 +55,17 @@ const outline = (border, borderColor, direction) => {
     }
 };
 
-const boxShadow = (
-    x = "0px",
-    y = "4px",
-    blur = "7px",
-    spread = "0px",
-    color = "#e5e5e5",
-    inset = false,
-) => {
+const boxShadow = (x, y, blur, spread, color, inset = false) => {
     if (inset)
         return css`
-            box-shadow: inset ${x} ${y} ${blur} ${spread} ${color};
+            box-shadow: inset ${x ? x : "0px"} ${y ? y : "4px"}
+                ${blur ? blur : "7px"} ${spread ? spread : "0px"}
+                ${color ? color : "#e5e5e5"};
         `;
 
     return css`
-        box-shadow: ${x} ${y} ${blur} ${spread} ${color};
+        box-shadow: ${x ? x : "0px"} ${y ? y : "4px"} ${blur ? blur : "7px"}
+            ${spread ? spread : "0px"} ${color ? color : "#e5e5e5"};
     `;
 };
 
