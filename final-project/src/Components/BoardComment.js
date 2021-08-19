@@ -110,10 +110,9 @@ const BoardComment = ({ boardName }) => {
 const BoardCommentContainer = styled.div``;
 
 const CommentWrite = styled.div`
-    border-bottom: 2px solid ${props => props.theme.color.mainGray};
-    display: flex;
-    justify-content: space-between;
     margin: 20px 0;
+    ${mixin.outline("2px solid", "gray4", "bottom")}
+    ${mixin.flexBox("space-between")}
     padding-bottom: 10px;
     input {
         all: unset;
@@ -129,7 +128,7 @@ const CommentWrite = styled.div`
 const CommentBox = styled.div``;
 
 const CommentCnt = styled.div`
-    color: #707070;
+    ${mixin.textProps(16, "semiBold", "gray2")}
     margin-bottom: 20px;
 `;
 
@@ -284,8 +283,7 @@ const CommentContainer = styled.div`
 `;
 
 const Header = styled.div`
-    display: flex;
-    align-items: center;
+    ${mixin.flexBox(null, "center")}
     height: 30px;
     > * {
         height: 100%;
@@ -314,7 +312,7 @@ const Content = styled.div`
 `;
 
 const Span = styled.span`
-    ${mixin.textProps(14, "regular", "gray3")}
+    ${mixin.textProps(14, "semiBod", "gray2")}
 `;
 
 const Input = styled.input``;
