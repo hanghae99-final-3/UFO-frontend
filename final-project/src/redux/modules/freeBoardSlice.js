@@ -10,6 +10,7 @@ import {
     editFreeCommentDB,
     deleteFreeCommentDB,
     getIssuePostListDB,
+    postLikeToggleDB,
 } from "../async/freeBoard";
 
 /**
@@ -216,14 +217,26 @@ const freeBoardSlice = createSlice({
         },
         //----
         //----자유게시판 인기 게시물 불러오는 리듀서
-        [getIssuePostListDB.pending]: (state, action) => {
-            state.isFetching = true;
-        },
         [getIssuePostListDB.fulfilled]: (state, { payload: issuePosts }) => {
             state.isFetching = false;
             state.issueList = issuePosts;
         },
+        [getIssuePostListDB.pending]: (state, action) => {
+            state.isFetching = true;
+        },
         [getIssuePostListDB.rejected]: (state, { payload: errorMessage }) => {
+            state.isFetching = false;
+            state.errorMessage = errorMessage;
+        },
+
+        //----자유게시판 좋아요처리하는 리듀서
+        [postLikeToggleDB.fulfilled]: (state, { payload: issuePosts }) => {
+            state.isFetching = false;
+        },
+        [postLikeToggleDB.pending]: (state, action) => {
+            state.isFetching = true;
+        },
+        [postLikeToggleDB.rejected]: (state, { payload: errorMessage }) => {
             state.isFetching = false;
             state.errorMessage = errorMessage;
         },

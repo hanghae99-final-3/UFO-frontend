@@ -3,12 +3,13 @@ import {
     getUnivBoardDB,
     detailUnivBoardPostDB,
     addUnivBoardPostDB,
-    getUnivBoardCommentDB,
+    editUnivBoardPostDB,
     deleteUnivBoardPostDB,
+    getUnivBoardCommentDB,
     addUnivBoardCommentDB,
     editUnivBoardCommentDB,
     deleteUnivBoardCommentDB,
-    editUnivBoardPostDB,
+    univLikeToggleDB,
 } from "../async/univBoard";
 
 const initialState = {
@@ -183,6 +184,19 @@ const univBoardSlice = createSlice({
             state.deleteCommentErrorMessage = "";
         },
         [deleteUnivBoardCommentDB.rejected]: (state, { payload }) => {
+            state.isFetching = false;
+            state.deleteCommentErrorMessage = payload; //errorMessage
+        },
+
+        //--------------------------대학게시판 좋아요처리하는 리듀서------------------------
+        [univLikeToggleDB.pending]: (state, action) => {
+            state.isFetching = true;
+        },
+        [univLikeToggleDB.fulfilled]: (state, action) => {
+            state.isFetching = false;
+            state.deleteCommentErrorMessage = "";
+        },
+        [univLikeToggleDB.rejected]: (state, { payload }) => {
             state.isFetching = false;
             state.deleteCommentErrorMessage = payload; //errorMessage
         },
