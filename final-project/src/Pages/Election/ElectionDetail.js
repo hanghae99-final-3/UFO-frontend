@@ -193,25 +193,28 @@ const ElectionBox = styled.div`
 `;
 
 const CountdownContainer = styled.div`
+    margin-bottom: 70px;
+    h5 {
+        ${mixin.textProps(30, "extraBold", "black")};
+        padding-bottom: 10px;
+    }
+`;
+const TimeBox = styled.div`
+    text-align: center;
+    padding: 10px 0;
+    p {
+        font-size: 100px;
+        ${mixin.textProps(null, "extraBold", "mainBlue")}
+    }
+`;
+const CandidatesContainer = styled.div`
+    margin-bottom: 70px;
     h5 {
         ${mixin.textProps(30, "extraBold", "black")};
         ${mixin.outline("1px solid", "gray4", "bottom")};
         padding-bottom: 10px;
     }
 `;
-const TimeBox = styled.div`
-    width: 100%;
-    text-align: center;
-    padding: 30px;
-    border: 1px solid #707070;
-    background: #d9d9d9;
-    p {
-        font-size: 50px;
-        font-weight: bold;
-        color: #707070;
-    }
-`;
-const CandidatesContainer = styled.div``;
 const CandidatesBox = styled.div``;
 
 const VoteContainer = styled.div`

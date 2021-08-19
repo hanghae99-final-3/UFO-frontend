@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-
+import styled from "styled-components";
+import mixin from "../../styles/Mixin";
 class Clock extends Component {
     constructor(props) {
         super(props);
@@ -9,9 +10,6 @@ class Clock extends Component {
             minutes: 0,
             seconds: 0,
         };
-    }
-    componentWillMount() {
-        this.getTimeUntil(this.props.deadline);
     }
 
     componentDidMount() {
@@ -45,13 +43,24 @@ class Clock extends Component {
     }
     render() {
         return (
-            <p>
-                {this.leading0(this.state.days)}일:
-                {this.leading0(this.state.hours)}시간:
-                {this.leading0(this.state.minutes)}분:
-                {this.leading0(this.state.seconds)}초
-            </p>
+            <TimeBox>
+                <span>D-{this.leading0(this.state.days)}일 </span>
+                <span>
+                    {this.leading0(this.state.hours)}:
+                    {this.leading0(this.state.minutes)}:
+                    {this.leading0(this.state.seconds)}
+                </span>
+            </TimeBox>
         );
     }
 }
+
+const TimeBox = styled.div`
+    text-align: center;
+    padding: 10px 0;
+    span {
+        font-size: 100px;
+        ${mixin.textProps(null, "extraBold", "mainBlue")}
+    }
+`;
 export default Clock;

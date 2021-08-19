@@ -55,4 +55,22 @@ const outline = (border, borderColor, direction) => {
     }
 };
 
-export { flexBox, floatBox, outline };
+const boxShadow = (
+    x = "0px",
+    y = "4px",
+    blur = "7px",
+    spread = "0px",
+    color = "#e5e5e5",
+    inset = false,
+) => {
+    if (inset)
+        return css`
+            box-shadow: inset ${x} ${y} ${blur} ${spread} ${color};
+        `;
+
+    return css`
+        box-shadow: ${x} ${y} ${blur} ${spread} ${color};
+    `;
+};
+
+export { flexBox, floatBox, outline, boxShadow };
