@@ -1,5 +1,5 @@
 import React from "react";
-import Count2 from "../Components/CountDown2/Count2";
+import Count2 from "../Components/CountDown/Count";
 
 const Test = () => {
     return (
