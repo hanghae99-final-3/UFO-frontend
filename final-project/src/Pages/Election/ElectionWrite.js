@@ -16,33 +16,13 @@ import { addElectionDB, editElectionDB } from "../../redux/async/election";
 //컴포넌트
 import Message from "../../Components/Message";
 import DateTimePicker from "../../Components/Election/DateTimePicker";
+import CandidateAccordian from "../../Components/Election/CandidateAccordian";
 
 //alert 라이브러리
 import Swal from "sweetalert2";
 
-//머테리얼 ui
-import { makeStyles } from "@material-ui/core/styles";
-import Accordion from "@material-ui/core/Accordion";
-import AccordionSummary from "@material-ui/core/AccordionSummary";
-import AccordionDetails from "@material-ui/core/AccordionDetails";
-import Typography from "@material-ui/core/Typography";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import TextField from "@material-ui/core/TextField";
-
-const useStyles = makeStyles(theme => ({
-    root: {
-        width: "100%",
-    },
-    heading: {
-        fontSize: theme.typography.pxToRem(20), //폰트크기
-        fontWeight: theme.typography.fontWeightBold, //폰트굵기
-        marginRight: theme.typography.pxToRem(10),
-    },
-}));
-
 const ElectionWrite = () => {
     const dispatch = useDispatch();
-    const classes = useStyles();
     const [isLoading, setIsLoading] = useState(false); //이미지가 업로드중인지 아닌지 판별하는 state (이미 이미지가 업로드 중이면(true면) 이미지 업로드를 막는 역할)
     const userInfo = useSelector(state => state.user.user);
     const { id: electionPostId } = useParams(); //선거게시글의 포스트아이디입니다.
@@ -53,7 +33,6 @@ const ElectionWrite = () => {
             state.election.post?.election_id == electionPostId &&
             state.election.post,
     ); //기존 선거게시글의 내용이 담겨있습니다.
-
     //기본시간설정
     const defaultDate = {
         //기본 선거시작시간은 현재로부터 10분뒤입니다.
@@ -70,6 +49,7 @@ const ElectionWrite = () => {
         start_date: defaultDate.start,
         end_date: defaultDate.end,
     });
+    console.log(post);
 
     useEffect(() => {
         if (!isAdmin) {
@@ -306,100 +286,20 @@ const ElectionWrite = () => {
             </WriteElectionDurationBox>
 
             {/* 선거 후보자의 이름, 학과, 소개, 사진을 입력하는 곳입니다. */}
-            <WriteCandidateBox className={classes.root}>
+            <WriteCandidateBox>
                 <Title bottomGap>후보자 정보</Title>
-                <CandidateControls>
-                    <span>현재 후보자 인원: {post?.candidates.length}명</span>
-                    <DefaultButton onClick={addCard}>후보자 추가</DefaultButton>
-                </CandidateControls>
-                {post &&
-                    post.candidates.map((ele, idx) => (
-                        // 머테리얼 ui의 Accordion을 적용한 부분입니다.
-                        <Accordion key={idx}>
-                            {/* 아코디언 디자인의 헤더 부분입니다. */}
-                            <AccordionSummary
-                                expandIcon={<ExpandMoreIcon />}
-                                aria-controls="panel1a-content"
-                                id="panel1a-header"
-                            >
-                                <Typography className={classes.heading}>
-                                    기호 {idx + 1}번
-                                </Typography>
-                                <DefaultButton onClick={() => deleteCard(idx)}>
-                                    삭제
-                                </DefaultButton>
-                            </AccordionSummary>
-                            {/* 아코디언 디자인의 상세내용 부분입니다. */}
-                            <AccordionDetails>
-                                <CandidateWriteBox>
-                                    {/* 후보자의 사진에 관련된 작업을 하는 공간입니다. */}
-                                    <CandidateImage>
-                                        {/* 후보자의 사진을 미리보기 할 수 있는 곳입니다. */}
-                                        <Freeview>
-                                            {/* 후보자의 이미지가 있으면 보여주고, 아니면 기본문자열을 보여줍니다. */}
-                                            {ele.photo ? (
-                                                <img
-                                                    src={`http://3.36.90.60/${ele.photo}`}
-                                                    alt={post.photo}
-                                                />
-                                            ) : (
-                                                <span>
-                                                    클릭하여 이미지를 추가해
-                                                    주세요!
-                                                </span>
-                                            )}
-                                            <Uploader
-                                                type="file"
-                                                onChange={e =>
-                                                    selectFileImageUploadSetData(
-                                                        e,
-                                                        idx,
-                                                    )
-                                                }
-                                                disabled={isLoading}
-                                            />
-                                        </Freeview>
-                                        {/* Uploader은 type이 file인 input입니다. 브라우저 상에서는 보이지 않게 숨겨두었습니다. */}
-                                    </CandidateImage>
-                                    {/* 후보자의 상세 내용이 담길 곳입니다. */}
-                                    <CandidateContent>
-                                        {/* 후보자의 이름 */}
-                                        <input
-                                            name="name"
-                                            placeholder="이름을 작성해주세요!"
-                                            value={ele.name ? ele.name : ""}
-                                            onChange={e =>
-                                                setCandidateInfo(idx, e)
-                                            }
-                                        />
-                                        {/* 후보자의 학과 */}
-                                        <input
-                                            name="major"
-                                            placeholder="학과를 작성해주세요!"
-                                            value={ele.major ? ele.major : ""}
-                                            onChange={e =>
-                                                setCandidateInfo(idx, e)
-                                            }
-                                        />
-                                        {/* 후보자의 소개 */}
-                                        <textarea
-                                            name="content"
-                                            placeholder="소개를 작성해주세요!"
-                                            value={
-                                                ele.content ? ele.content : ""
-                                            }
-                                            onChange={e =>
-                                                setCandidateInfo(idx, e)
-                                            }
-                                        />
-                                    </CandidateContent>
-                                </CandidateWriteBox>
-                            </AccordionDetails>
-                        </Accordion>
-                    ))}
-
-                <DefaultButton onClick={addElection}>등록</DefaultButton>
+                <CandidateAccordian
+                    candidates={post?.candidates}
+                    getData={setCandidateInfo}
+                    getImageData={selectFileImageUploadSetData}
+                    isLoading={isLoading}
+                    addCard={addCard}
+                    deleteCard={deleteCard}
+                />
             </WriteCandidateBox>
+            <Controls>
+                <DefaultButton onClick={addElection}>등록</DefaultButton>
+            </Controls>
         </ElectionWriteContainer>
     );
 };
@@ -439,52 +339,9 @@ const WriteElectionDurationBox = styled.div``;
 
 const WriteCandidateBox = styled.div``;
 
-const CandidateControls = styled.div`
-    margin: 10px 0;
-    ${mixin.flexBox("space-between", "center")}
-`;
-
-const Freeview = styled.div`
-    position: relative;
-    width: 300px;
-    height: 300px;
-    display: flex;
-    align-items: center;
-    img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-`;
-const CandidateWriteBox = styled.div`
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-`;
-const CandidateImage = styled.div``;
-
-const Uploader = styled.input`
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    z-index: 99;
-    left: 0;
-    top: 0;
-    opacity: 0;
-`;
-
-const CandidateContent = styled.div`
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    input,
-    textarea {
-        width: 100%;
-        all: unset;
-        border-bottom: 2px solid #707070;
-        padding-bottom: 10px;
-        margin-bottom: 10px;
-    }
+const Controls = styled.div`
+    margin-top: 30px;
+    text-align: center;
 `;
 
 export default ElectionWrite;

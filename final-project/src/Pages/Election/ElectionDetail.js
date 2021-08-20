@@ -117,15 +117,7 @@ const ElectionDetail = () => {
                 <p>{post?.content}</p>
             </ElectionInfoContainer>
             <CountdownContainer>
-                <Title borderNone={true}>투표까지 남은 시간</Title>
-                <ProgressBar
-                    start={post?.start_date && post.start_date}
-                    end={post?.end_date && post.end_date}
-                />
-                <ElectionDate>
-                    <span>{post?.start_date}</span>
-                    <span>{post?.end_date}</span>
-                </ElectionDate>
+                <Title>투표까지 남은 시간</Title>
                 {/* 투표가 아직 시작 전이면 투표 시작 전 문구를 렌더링, 아니면 시간을 카운팅합니다. */}
                 {moment().isBefore(post?.start_date) ||
                 moment().isSame(post?.start_date) ? (
@@ -135,6 +127,14 @@ const ElectionDetail = () => {
                 ) : (
                     <Count deadline={post?.end_date && post.end_date} />
                 )}
+                <ProgressBar
+                    start={post?.start_date && post.start_date}
+                    end={post?.end_date && post.end_date}
+                />
+                <ElectionDate>
+                    <span>{post?.start_date}</span>
+                    <span>{post?.end_date}</span>
+                </ElectionDate>
             </CountdownContainer>
             <CandidatesContainer>
                 <Title>후보자</Title>
