@@ -34,7 +34,7 @@ const Container = styled.div`
 
 const Bar = styled.div`
     height: 100%;
-    animation: progressbar 3s forwards;
+    animation: progressbar 1.5s ease-in-out forwards;
     background-color: ${({ theme }) => theme.color.blue2};
 
     @keyframes progressbar {

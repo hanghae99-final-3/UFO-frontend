@@ -18,6 +18,7 @@ const CandidateBox = ({ candidateList }) => {
                             key={idx}
                             idx={idx}
                             cursor
+                            isContact
                             getCandidateIdx={getCandidateIdx}
                         />
                     ))}

@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { history } from "../redux/configureStore";
+import mixin from "../styles/Mixin";
 
 /**
  * @author jiyeong
@@ -31,17 +32,18 @@ const MessageContainer = styled.div`
     justify-content: center;
     align-items: center;
     p {
-        font-size: 30px;
+        ${mixin.textProps(30, "semiBold", "gray1")};
     }
     button {
         margin-top: 50px;
         padding: 20px 30px;
-        font-size: 16px;
-        font-weight: bold;
-        border-radius: 10px;
+        background: ${({ theme }) => theme.color.gray4};
+        ${mixin.textProps(18, "extraBold", "gray1")};
+        border-radius: 25px;
+        transition: all 0.3s ease;
         :hover {
-            background: hsl(345deg 100% 47%);
-            color: #fff;
+            background: ${({ theme }) => theme.color.danger};
+            ${mixin.textProps(18, "semiBold", "white")};
         }
     }
 `;

@@ -14,6 +14,7 @@ const CandidateCard = ({
     getCandidateIdx,
     selectCandidate,
     isVote,
+    isContact,
     isSelected,
     cursor,
 }) => {
@@ -24,9 +25,8 @@ const CandidateCard = ({
             {...voteProps}
             cursor={cursor ? "true" : false}
             onClick={() => {
-                isVote
-                    ? selectCandidate(candidate.candidate_id)
-                    : getCandidateIdx(idx);
+                if (isVote) return selectCandidate(candidate.candidate_id);
+                if (isContact) return getCandidateIdx(idx);
             }}
         >
             <CandidateImage
