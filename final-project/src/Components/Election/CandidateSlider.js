@@ -12,6 +12,7 @@ import { FaArrowRight, FaArrowLeft } from "react-icons/fa";
 
 //애니메이션
 import Boop from "../../Elements/Boop";
+import CandidateIntroBox from "./CandidateIntroBox";
 
 const CandidateSlider = ({ candidateList }) => {
     const NextArrow = ({ onClick }) => {
@@ -59,32 +60,7 @@ const CandidateSlider = ({ candidateList }) => {
                         </Slide>
                     ))}
             </Slider>
-            <CandidateDetailBox>
-                <CandidateImage>
-                    <img
-                        src={
-                            candidateList[cardIndex]?.photo
-                                ? `http://3.36.90.60/${candidateList[cardIndex].photo}`
-                                : "https://cdn.pixabay.com/photo/2016/04/01/12/07/alien-1300540__340.png"
-                        }
-                        alt={candidateList[cardIndex]?.photo}
-                    />
-                </CandidateImage>
-                <CandidateInfo>
-                    <CandidateName>
-                        <strong>
-                            기호 {cardIndex + 1}번{" "}
-                            {candidateList[cardIndex]?.name}
-                        </strong>
-                    </CandidateName>
-                    <CandidateIntro>
-                        <span>학과</span>
-                        <p>{candidateList[cardIndex]?.major}</p>
-                        <span>소개</span>
-                        <p>{candidateList[cardIndex]?.content}</p>
-                    </CandidateIntro>
-                </CandidateInfo>
-            </CandidateDetailBox>
+            <CandidateIntroBox candidate={candidateList} idx={cardIndex} />
         </SlideContainer>
     );
 };

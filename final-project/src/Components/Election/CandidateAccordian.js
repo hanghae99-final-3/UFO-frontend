@@ -9,7 +9,6 @@ import DefaultButton from "../../Elements/Buttons/DefaultButton";
 import Accordion from "@material-ui/core/Accordion";
 import AccordionSummary from "@material-ui/core/AccordionSummary";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
-import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
 // isLoading은 유저가 사진을 선택해서 다운로드받을때에는 파일을 선택할 수 없게 막기 위한 판별값입니다.
