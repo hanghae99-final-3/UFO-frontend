@@ -37,7 +37,7 @@ const color = {
 
 // const deviceSize = {
 //     mobile: 360,
-//     tablet: 763,
+//     tablet: 768,
 // };
 
 //참고 : https://wonit.tistory.com/367
