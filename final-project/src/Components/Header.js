@@ -203,7 +203,7 @@ const Header = () => {
 
 const HeaderContainer = styled.header`
     width: 100%;
-    box-shadow: 0px 10px 3px -5px rgb(0 0 0 / 10%);
+    box-shadow: 0px 4px 7px 0px #e4ddff;
 `;
 
 const Inner = styled.div`

@@ -1,7 +1,8 @@
 import React from "react";
 import { Formik, Form } from "formik";
 import SocialLogin from "./SocialLogin";
-
+import styled from "styled-components";
+import mixin from "../../styles/Mixin";
 import { makeStyles } from "@material-ui/styles";
 import { LoginTextField } from "./LoginTextField";
 import {
@@ -55,10 +56,7 @@ const LoginPresenter = ({
     return (
         <Grid item className={classes.mainContainer} xs={12}>
             <Grid className={classes.titleContainer}>
-                <Typography variant="h4">로그인</Typography>
-                <Typography style={{ fontSize: "12px", color: "#AE01FF" }}>
-                    유학생의 프리한 오늘, UFO
-                </Typography>
+                <LoginText variant="h4">로그인</LoginText>
             </Grid>
             {socialLoginMode ? (
                 <SocialLogin toggleLoginMode={toggleLoginMode} />
@@ -78,16 +76,16 @@ const LoginPresenter = ({
                             <Grid className={classes.formContainer}>
                                 <Form className={classes.inputContainer}>
                                     <LoginTextField
-                                        label="Email"
+                                        label="ID"
                                         name="email"
                                         type="email"
                                     />
                                     <LoginTextField
-                                        label="Password"
+                                        label="PW"
                                         name="password"
                                         type="password"
                                     />
-                                    <div>
+                                    <AutoLogin>
                                         <FormControlLabel
                                             control={
                                                 <Checkbox
@@ -110,20 +108,10 @@ const LoginPresenter = ({
                                             }
                                             label="자동 로그인"
                                         />
-                                    </div>
-
-                                    <Button
-                                        style={{
-                                            marginTop: "20px",
-                                            width: "320px",
-                                            height: "40px",
-                                            borderRadius: "10px",
-                                        }}
-                                        type="submit"
-                                        variant="outlined"
-                                    >
+                                    </AutoLogin>
+                                    <Loginbtn type="submit" variant="outlined">
                                         로그인
-                                    </Button>
+                                    </Loginbtn>
                                     <Button
                                         style={{
                                             marginTop: "20px",
@@ -146,4 +134,19 @@ const LoginPresenter = ({
     );
 };
 
+const LoginText = styled.div`
+    ${mixin.textProps(40, "extraBold", "black")}
+`;
+const AutoLogin = styled.div`
+    width: 100%;
+`;
+
+const Loginbtn = styled.button`
+    margin-top: 20px;
+    width: 320px;
+    height: 40px;
+    ${mixin.textProps(20, "extraBold", "white")}
+    background-color : ${({ theme }) => theme.color.blue1};
+    border-radius: 23px;
+`;
 export default LoginPresenter;

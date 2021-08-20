@@ -5,6 +5,7 @@ import { useParams } from "react-router";
 import moment from "moment";
 import confirm from "../../confirm";
 import DefaultButton from "../../Elements/Buttons/DefaultButton";
+import { history } from "../../redux/configureStore";
 
 //통신
 import axios from "axios";
@@ -41,9 +42,10 @@ const ElectionWrite = () => {
     const dispatch = useDispatch();
     const classes = useStyles();
     const [isLoading, setIsLoading] = useState(false); //이미지가 업로드중인지 아닌지 판별하는 state (이미 이미지가 업로드 중이면(true면) 이미지 업로드를 막는 역할)
-    const user = useSelector(state => state.user.user);
+    const userInfo = useSelector(state => state.user.user);
     const { id: electionPostId } = useParams(); //선거게시글의 포스트아이디입니다.
     const isEdit = electionPostId ? true : false; //수정모드인지 아닌지 판별해주는 값
+    const isAdmin = useSelector(state => state.user.isAdmin); //관리자인지 아닌지 판별해주는 값
     const electionPostFromState = useSelector(
         state =>
             state.election.post?.election_id == electionPostId &&
@@ -66,6 +68,11 @@ const ElectionWrite = () => {
     });
 
     useEffect(() => {
+        if (!isAdmin) {
+            Swal.fire("에러", "관리자만 선거를 열 수 있어요!", "error");
+            return history.goBack();
+        }
+
         //선거게시글ID와 state로부터 원본 게시글 정보를 불러올 수 있으면 입력값 통합 state에 저장한다.
         if (electionPostId && electionPostFromState)
             setPost(electionPostFromState);
@@ -227,8 +234,8 @@ const ElectionWrite = () => {
             const req = {
                 name: post.name,
                 content: post.content,
-                country_id: user.country_id,
-                univ_id: user.univ_id,
+                country_id: userInfo.country_id,
+                univ_id: userInfo.univ_id,
                 candidates: post.candidates,
                 start_date: post.start_date,
                 end_date: post.end_date,
@@ -241,8 +248,8 @@ const ElectionWrite = () => {
         const req = {
             name: post.name,
             content: post.content,
-            country_id: user.country_id,
-            univ_id: user.univ_id,
+            country_id: userInfo.country_id,
+            univ_id: userInfo.univ_id,
             candidates: post.candidates,
             start_date: post.start_date,
             end_date: post.end_date,
@@ -252,7 +259,7 @@ const ElectionWrite = () => {
     };
 
     //대학 인증을 한 사람만 볼 수 있도록 예외처리를 합니다.
-    if (!user.univ_id || !user.country_id)
+    if (!userInfo.univ_id || !userInfo.country_id)
         return (
             <Message
                 message="대학인증을 한 사람만 선거게시글을 볼 수 있어요"

@@ -4,6 +4,8 @@ import {
     getElectionDB,
     addElectionDB,
     editElectionDB,
+    deleteElectionDB,
+    addVoteDB,
 } from "../async/election";
 
 /**
@@ -84,9 +86,36 @@ const electionSlice = createSlice({
             state.errorMessage = errorMessage;
         },
         //----
+
+        //----특정 선거 게시물을 삭제하는 리듀서
+        [deleteElectionDB.fulfilled]: (state, { payload }) => {
+            state.isFetching = false;
+            state.errorMessage = null;
+        },
+        [deleteElectionDB.pending]: (state, { payload }) => {
+            state.isFetching = true;
+        },
+        [deleteElectionDB.rejected]: (state, { payload: errorMessage }) => {
+            state.isFetching = false;
+            state.errorMessage = errorMessage;
+        },
+        //----
+
+        //----투표를 추가하는 리듀서
+        [addVoteDB.fulfilled]: (state, { payload }) => {
+            state.isFetching = false;
+            state.errorMessage = null;
+        },
+        [addVoteDB.pending]: (state, { payload }) => {
+            state.isFetching = true;
+        },
+        [addVoteDB.rejected]: (state, { payload: errorMessage }) => {
+            state.isFetching = false;
+            state.errorMessage = errorMessage;
+        },
+        //----
     },
 });
-
 export const {} = electionSlice.actions;
 
 export default electionSlice;

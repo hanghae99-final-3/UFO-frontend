@@ -1,9 +1,12 @@
 import React from "react";
-
+import logo from "../../assets/logo.svg";
 import { Formik, Form } from "formik";
 import { makeStyles } from "@material-ui/styles";
 import { LoginTextField } from "../Login/LoginTextField";
 import { Grid, Typography, Button } from "@material-ui/core";
+import styled from "styled-components";
+import mixin from "../../styles/Mixin";
+import { history } from "../../redux/configureStore";
 
 const useStyles = makeStyles({
     mainContainer: {
@@ -22,13 +25,13 @@ const useStyles = makeStyles({
         marginBottom: "30px",
     },
     formContainer: {
-        width: "100%",
+        width: "343px",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
     },
     inputContainer: {
-        width: "320px",
+        width: "100%",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
@@ -40,12 +43,8 @@ const SignupPresenter = ({ validate, onSignupSubmit }) => {
     const classes = useStyles();
     return (
         <Grid item className={classes.mainContainer} xs={12}>
-            <Grid className={classes.titleContainer}>
-                <Typography variant="h4">회원가입</Typography>
-                <Typography style={{ fontSize: "12px", color: "#AE01FF" }}>
-                    유학생들 다 모여라, 캥거루에서 소통하자!
-                </Typography>
-            </Grid>
+            <Slogan>U학생들의 FREE한 O늘!</Slogan>
+            <Logoimg src={logo} />
             <Grid className={classes.formContainer}>
                 <Formik
                     initialValues={{
@@ -62,40 +61,49 @@ const SignupPresenter = ({ validate, onSignupSubmit }) => {
                     {formik => (
                         <Grid className={classes.formContainer}>
                             <Form className={classes.inputContainer}>
+                                <InputboxName>이메일</InputboxName>
                                 <LoginTextField
-                                    label="Nickname"
-                                    name="nickname"
-                                    type="text"
-                                />
-                                <LoginTextField
-                                    label="Email"
+                                    label="이메일을 입력해주세요"
                                     name="email"
                                     type="email"
+                                    style={{ marginBottom: "39px" }}
                                 />
+                                <InputboxName>비밀번호</InputboxName>
                                 <LoginTextField
-                                    label="Password"
+                                    label="비밀번호를 입력해주세요"
                                     name="password"
                                     type="password"
+                                    style={{ marginBottom: "39px" }}
                                 />
+                                <InputboxName>비밀번호 확인</InputboxName>
                                 <LoginTextField
-                                    label="Confirm Password"
+                                    label="확인"
                                     name="confirmPassword"
                                     type="password"
+                                    style={{ marginBottom: "39px" }}
                                 />
-                                <Button
-                                    style={{
-                                        marginTop: "20px",
-                                        width: "320px",
-                                        height: "40px",
-                                        borderRadius: "10px",
-                                        backgroundColor: "#AE01FF",
-                                        color: "#ffffff",
-                                    }}
-                                    type="submit"
-                                    variant="contained"
-                                >
-                                    회원가입
-                                </Button>
+                                <InputboxName>닉네임</InputboxName>
+                                <LoginTextField
+                                    label="닉네임을 입력해주세요"
+                                    name="nickname"
+                                    type="text"
+                                    style={{ marginBottom: "39px" }}
+                                />
+                                <ButtonContainer>
+                                    <CancelButtonBox
+                                        onClick={() => {
+                                            history.push("/");
+                                        }}
+                                    >
+                                        취소
+                                    </CancelButtonBox>
+                                    <SignUpButtonBox
+                                        type="submit"
+                                        variant="contained"
+                                    >
+                                        회원가입
+                                    </SignUpButtonBox>
+                                </ButtonContainer>
                             </Form>
                         </Grid>
                     )}
@@ -104,5 +112,43 @@ const SignupPresenter = ({ validate, onSignupSubmit }) => {
         </Grid>
     );
 };
+
+const Slogan = styled.div`
+    ${mixin.textProps(20, "extraBold", "gray3")}
+    margin-bottom: 20px;
+`;
+
+const Logoimg = styled.img`
+    width: 190px;
+    height: 63px;
+    margin-bottom: 74px;
+`;
+const InputboxName = styled.div`
+    ${mixin.textProps(18, "extraBold", "black")};
+    width: 344px;
+`;
+
+const ButtonContainer = styled.div`
+    width: 344px;
+    ${mixin.flexBox("space-between")};
+`;
+
+const CancelButtonBox = styled.button`
+    margin-top: 58px;
+    background-color: #dedfe0;
+    ${mixin.textProps(20, "extraBold", "white")}
+    width: 164px;
+    height: 46px;
+    border-radius: 23px;
+`;
+
+const SignUpButtonBox = styled.button`
+    margin-top: 58px;
+    background-color: ${({ theme }) => theme.color.mainBlue};
+    ${mixin.textProps(20, "extraBold", "white")}
+    width: 164px;
+    height: 46px;
+    border-radius: 23px;
+`;
 
 export default SignupPresenter;

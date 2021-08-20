@@ -1,10 +1,11 @@
-import { flexBox, floatBox, outline } from "./boxStyle";
+import { flexBox, floatBox, outline, boxShadow } from "./boxStyle";
 import { textProps, textOverflow } from "./textStyle";
 
 const mixin = {
     flexBox,
     floatBox,
     outline,
+    boxShadow,
     textProps,
     textOverflow,
 };
