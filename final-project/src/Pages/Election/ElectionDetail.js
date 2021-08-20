@@ -19,6 +19,7 @@ import {
 import CandidateSlider from "../../Components/Election/CandidateSlider";
 import Message from "../../Components/Message";
 import DefaultButton from "../../Elements/Buttons/DefaultButton";
+import DangerButton from "../../Elements/Buttons/DangerButton";
 import Count from "../../Components/CountDown/Count";
 import ProgressBar from "../../Components/Election/ProgressBar";
 import CandidateBox from "../../Components/Election/CandidateBox";
@@ -94,8 +95,8 @@ const ElectionDetail = () => {
                         {moment().isBefore(post?.start_date) &&
                             !moment().isSame(post?.start_date) &&
                             isAdmin && (
-                                <DefaultButton
-                                    leftGap="15px"
+                                <DangerButton
+                                    rightGap="15px"
                                     onClick={() =>
                                         history.push(
                                             `/election/edit/${post.election_id}`,
@@ -103,13 +104,13 @@ const ElectionDetail = () => {
                                     }
                                 >
                                     수정하기
-                                </DefaultButton>
+                                </DangerButton>
                             )}
                         {/* 관리자면 삭제하기 버튼을 볼 수 있습니다. */}
                         {isAdmin && (
-                            <DefaultButton onClick={deleteElection}>
+                            <DangerButton onClick={deleteElection}>
                                 삭제하기
-                            </DefaultButton>
+                            </DangerButton>
                         )}
                     </TitleControls>
                 </ElectionTitle>
@@ -215,22 +216,7 @@ const ElectionTitle = styled.div`
     }
 `;
 
-const TitleControls = styled.div`
-    button {
-        padding: 0 10px;
-        height: 32px;
-        min-width: 80px;
-        border-radius: 20px;
-        background: ${({ theme }) => theme.color.gray2};
-        ${mixin.textProps(18, "semiBold", "white")};
-        :first-child {
-            margin-right: 15px;
-        }
-        &:hover {
-            background: ${({ theme }) => theme.color.danger};
-        }
-    }
-`;
+const TitleControls = styled.div``;
 
 const CountdownContainer = styled.div`
     margin-bottom: 70px;
