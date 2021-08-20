@@ -8,10 +8,11 @@ export const MuiTheme = createMuiTheme({
                     borderBottomColor: "#e5e5e5",
                 },
                 "&:hover:not($disabled):before": {
-                    borderBottomColor: "#8689FF",
+                    borderBottomColor: "#83FFCA",
+                    transition: "border-color 1s ease",
                 },
                 "&:after": {
-                    borderBottomColor: "#8689FF",
+                    borderBottomColor: "#83FFCA",
                 },
             },
         },

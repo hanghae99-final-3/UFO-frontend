@@ -55,18 +55,25 @@ function App() {
                         <Route path="/" exact component={Home} />
                         <Route path="/signup" exact component={Signup} />
                         <Route path="/login" exact component={Login} />
+                        <Route
+                            path="/freeboard/write"
+                            exact
+                            component={FreeBoardWrite}
+                        />
                         <Route path="/freeboard" exact component={FreeBoard} />
+                        <Route
+                            path="/freeboard/:id"
+                            exact
+                            component={FreeBoard}
+                        />
+
                         <Route path="/mypost" exact component={MyPostList} />
                         <Route
                             path="/freeboard/detail/:id"
                             exact
                             component={FreeBoardDetail}
                         />
-                        <Route
-                            path="/freeboard/write"
-                            exact
-                            component={FreeBoardWrite}
-                        />
+
                         <Route
                             path="/freeboard/edit/:id"
                             exact
@@ -86,9 +93,21 @@ function App() {
 
                         {/* ------대학 게시판 관련 route은 인증된 회원만 접근 가능-------- */}
                         {/*-------------- ProjectedRoute로 접근을 제한한다.-----------*/}
+
+                        <Route
+                            path="/univboard/write"
+                            exact
+                            component={UnivboardWrite}
+                        />
                         <ProtectedRoute
                             // 대학 게시판 페이지, 인증되지 않은 사용자 접근시 root 페이지로 redirect
                             path="/univboard"
+                            exact
+                            component={UnivBoard}
+                        />
+                        <ProtectedRoute
+                            // 대학 게시판 페이지, 인증되지 않은 사용자 접근시 root 페이지로 redirect
+                            path="/univboard/:id"
                             exact
                             component={UnivBoard}
                         />
@@ -99,11 +118,7 @@ function App() {
                             exact
                             component={UnivBoardDetail}
                         />
-                        <Route
-                            path="/univboard/write"
-                            exact
-                            component={UnivboardWrite}
-                        />
+
                         <Route
                             path="/univboard/edit/:id"
                             exact

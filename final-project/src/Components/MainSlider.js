@@ -89,7 +89,7 @@ const CardContainer = styled.div`
     ${props =>
         props.active &&
         `div{
-            background:${props.theme.color.blue1};
+            background:${props.theme.color.mainBlue};
             border:none;
             color : white;
         }`};

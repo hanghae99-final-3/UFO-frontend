@@ -216,6 +216,7 @@ const freeBoardSlice = createSlice({
             state.errorMessage = errorMessage;
         },
         //----
+
         //----자유게시판 인기 게시물 불러오는 리듀서
         [getIssuePostListDB.fulfilled]: (state, { payload: issuePosts }) => {
             state.isFetching = false;

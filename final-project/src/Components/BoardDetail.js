@@ -285,7 +285,7 @@ const Tag = styled.span`
     display: inline-block;
     border-radius: 15px;
     background-color: white;
-    ${mixin.outline("2px solid", "blue3")}
+    ${mixin.outline("2px solid", "blue2")}
     ${mixin.textProps(18, "semiBold", "gray1", "center")}
 `;
 const Title = styled.h3`

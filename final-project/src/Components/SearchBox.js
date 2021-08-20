@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 
 import mixin from "../styles/Mixin";
 import styled from "styled-components";
@@ -40,7 +41,7 @@ const useStyles = makeStyles(theme => ({
     MuiOutlinedInput: {
         fontSize: 18,
         fontWeight: 600,
-        color: "#A6ABB2",
+        color: "#757b80",
     },
 }));
 
@@ -48,7 +49,10 @@ const SearchBox = ({ searchTag, deactivateSearch, page, pushButton }) => {
     const classes = useStyles();
     const dispatch = useDispatch();
     // 현재 선택되어있는 태그의 index값을 selectedTag 배열에 저장한다.
-    const [selectedTag, setSelectedTag] = useState(null);
+    const { id } = useParams();
+    const [selectedTag, setSelectedTag] = useState(
+        id !== undefined ? parseInt(id) : null,
+    );
     // 유저가 검색어 입력창에 입력한 값을 searchTerm에 저장한다.
     const [searchTerm, setSearchTerm] = useState("");
     // 로그인 유저의 대학교 id
@@ -59,7 +63,7 @@ const SearchBox = ({ searchTag, deactivateSearch, page, pushButton }) => {
     useEffect(() => {
         // selectedTag 상태를 리덕스 스토어의 상태와 동기화
         dispatch(setTagReducer(selectedTag));
-    }, [dispatch, selectedTag]);
+    }, [dispatch, selectedTag, id]);
 
     //----------------태그 클릭 이벤트 핸들링----------------------
     const handleTagSelect = e => {
@@ -128,6 +132,7 @@ const SearchBox = ({ searchTag, deactivateSearch, page, pushButton }) => {
                     <TagSelectText>태그 설정</TagSelectText>
                     {searchTag.map((tag, idx) => {
                         // map 함수로 props로 전달된 태그 배열의 태그들 마다 TagButton 컴포넌트 랜더링
+
                         return (
                             <Boop
                                 rotation={0}
@@ -232,7 +237,8 @@ const TagButton = styled.button`
     margin-right: 7px;
     border-radius: 16px;
     ${mixin.textProps(18, "semiBold", "gray1")};
-    ${props => mixin.outline("2px solid", props.selected ? "mint" : "blue3")}
+    ${props =>
+        mixin.outline("2px solid", props.selected ? "mainMint" : "blue2")}
     background-color: ${props => props.theme.color.white};
 `;
 //----
