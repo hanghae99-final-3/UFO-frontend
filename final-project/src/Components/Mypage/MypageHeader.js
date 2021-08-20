@@ -7,6 +7,7 @@ import { onLogout } from "../../redux/modules/univBoardSlice";
 import { history } from "../../redux/configureStore";
 
 import Trend from "react-trend";
+import mixin from "../../styles/Mixin";
 
 const MypageHeader = props => {
     const dispatch = useDispatch();
@@ -21,24 +22,19 @@ const MypageHeader = props => {
     return (
         <React.Fragment>
             <MyPageHeader>
-                <PageTitle>마이 페이지</PageTitle>
-
                 {user && user.school_auth && (
                     <UnivName>
                         {user && user.university && user.university.name}
                     </UnivName>
                 )}
 
-                <Wrapper>
-                    <Greeting>
-                        <Nickname>{user && user.nickname} 님 </Nickname>
-                        반갑습니다!!
-                    </Greeting>
+                <UnivNameBox>
+                    <Greeting>{user && user.nickname}님, 반갑습니다!!</Greeting>
                     <LogoutButton onClick={handleLogout}>로그아웃</LogoutButton>
-                </Wrapper>
+                </UnivNameBox>
                 <MyActivityContainer>
                     <ActivityTitle>내 활동 보기</ActivityTitle>
-                    <Trend
+                    {/* <Trend
                         smooth
                         autoDraw
                         autoDrawDuration={3000}
@@ -48,24 +44,25 @@ const MypageHeader = props => {
                         radius={10.5}
                         strokeWidth={1.3}
                         strokeLinecap={"butt"}
-                    />
-                    <ActivityButton
-                        onClick={() => alert("서비스 준비중 입니다")}
-                    >
-                        최근 알림
-                    </ActivityButton>
-                    <ActivityButton
-                        onClick={() => alert("서비스 준비중 입니다")}
-                        style={{ margin: "0 50px" }}
-                    >
-                        내가 쓴 글
-                    </ActivityButton>
-                    <ActivityButton
-                        onClick={() => alert("서비스 준비중 입니다")}
-                    >
-                        내가 쓴 댓글
-                    </ActivityButton>
+                    /> */}
                 </MyActivityContainer>
+                <MyActivityButtonContainer>
+                    <ActivityButton
+                        onClick={() => alert("서비스 준비중 입니다")}
+                    >
+                        <ActivityButtonText>최근 알림</ActivityButtonText>
+                    </ActivityButton>
+                    <ActivityButton
+                        onClick={() => alert("서비스 준비중 입니다")}
+                    >
+                        <ActivityButtonText>내가 쓴 글</ActivityButtonText>
+                    </ActivityButton>
+                    <ActivityButton
+                        onClick={() => alert("서비스 준비중 입니다")}
+                    >
+                        <ActivityButtonText>내가 쓴 댓글</ActivityButtonText>
+                    </ActivityButton>
+                </MyActivityButtonContainer>
             </MyPageHeader>
         </React.Fragment>
     );
@@ -73,59 +70,48 @@ const MypageHeader = props => {
 
 //-------- 마이페이지 해더 스타일-----------
 const MyPageHeader = styled.div``;
-const PageTitle = styled.span`
-    font-weight: 400;
-    font-size: 30px;
-    display: block;
-    color: #707070;
+
+const UnivNameBox = styled.div`
+    margin-top: 20px;
+    ${mixin.flexBox("space-between", "flex-end")}
 `;
+
 const UnivName = styled.span`
-    font-weight: 400;
-    font-size: 20px;
-    color: #707070;
-    margin-top: 10px;
     display: block;
+    ${mixin.textProps(20, "semiBold", "gray2")}
 `;
 const Greeting = styled.span`
-    font-weight: 400;
-    font-size: 30px;
-    color: #707070;
+    ${mixin.textProps(40, "extraBold", "black")}
 `;
-const Nickname = styled.span`
-    font-weight: 500;
-    font-size: 40px;
-    color: #707070;
-`;
+
 const LogoutButton = styled.button`
-    padding: 10px 40px;
-    background-color: #d9d9d9;
-    border: 1px solid;
-    font-size: 20px;
-`;
-const Wrapper = styled.div`
-    margin-top: 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
+    width: 108px;
+    height: 32px;
+    border-radius: 60px;
+    background-color: ${props => props.theme.color.blue1};
+    ${mixin.textProps(18, "semiBold", "white")}
 `;
 
 const MyActivityContainer = styled.div`
-    margin-top: 100px;
+    margin: 70px 0 10px 0;
+    padding-bottom: 5px;
+    ${mixin.outline("1.5px solid", "gray4", "bottom")}
 `;
-const ActivityButton = styled.button`
-    padding: 10px 30px;
-    border: 1px solid #707070;
-    font-size: 15px;
-    background-color: white;
-    color: #707070;
-`;
-//----
 const ActivityTitle = styled.span`
-    display: block;
-    font-weight: 400;
-    font-size: 30px;
-    color: #707070;
-    margin-bottom: 20px;
+    ${mixin.textProps(30, "extraBold", "black")}
 `;
+
+const MyActivityButtonContainer = styled.div`
+    width: 50%;
+    ${mixin.flexBox("space-between")};
+`;
+const ActivityButton = styled.div`
+    width: 150px;
+    border-radius: 76px;
+    ${mixin.flexBox("center", "center", null, "40px")};
+    ${mixin.outline("2px solid", "blue3")};
+    ${mixin.textProps(18, "semiBold", "gray2")}
+`;
+const ActivityButtonText = styled.span``;
 
 export default MypageHeader;
