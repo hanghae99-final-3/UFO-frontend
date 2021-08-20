@@ -14,6 +14,7 @@ import { addElectionDB, editElectionDB } from "../../redux/async/election";
 
 //컴포넌트
 import Message from "../../Components/Message";
+import DateTimePicker from "../../Components/Election/DateTimePicker";
 
 //alert 라이브러리
 import Swal from "sweetalert2";
@@ -52,19 +53,21 @@ const ElectionWrite = () => {
             state.election.post,
     ); //기존 선거게시글의 내용이 담겨있습니다.
 
-    //기본 선거시작시간은 현재로부터 10분뒤입니다.
-    const defaultStartDate =
-        moment().add(10, "minutes").format("YYYY-MM-DD HH:mm") + ":00";
-    //기본 선거종료시간은 현재로부터 7일 10분 뒤 입니다.
-    const defaultEndDate =
-        moment().add({ minutes: 10, days: 7 }).format("YYYY-MM-DD HH:mm") +
-        ":00";
+    //기본시간설정
+    const defaultDate = {
+        //기본 선거시작시간은 현재로부터 10분뒤입니다.
+        start: moment().add(10, "minutes").format("YYYY-MM-DD HH:mm") + ":00",
+        //기본 선거종료시간은 현재로부터 7일 10분 뒤 입니다.
+        end:
+            moment().add({ minutes: 10, days: 7 }).format("YYYY-MM-DD HH:mm") +
+            ":00",
+    };
 
     //입력값 통합 state (모든 입력값이 여기로 담겨진다.)
     const [post, setPost] = useState({
         candidates: [{}],
-        start_date: defaultStartDate,
-        end_date: defaultEndDate,
+        start_date: defaultDate.start,
+        end_date: defaultDate.end,
     });
 
     useEffect(() => {
@@ -295,41 +298,11 @@ const ElectionWrite = () => {
                     }}
                     onChange={e => setElectionInfo(e)}
                 />
-                {/* 선거시작일 입력란 */}
-                <TextField
-                    name="start_date"
-                    id="datetime-local"
-                    label="선거 시작일"
-                    type="datetime-local"
-                    value={
-                        post && post.start_date
-                            ? moment(post.start_date).format("YYYY-MM-DDTHH:mm")
-                            : moment(defaultStartDate).format(
-                                  "YYYY-MM-DDTHH:mm",
-                              )
-                    }
-                    className={classes.textField}
-                    InputLabelProps={{
-                        shrink: true,
-                    }}
-                    onChange={e => setElectionInfo(e)}
-                />
-                {/* 선거종료일 입력란 */}
-                <TextField
-                    name="end_date"
-                    id="datetime-local"
-                    label="선거 종료일"
-                    type="datetime-local"
-                    value={
-                        post && post.start_date
-                            ? moment(post.end_date).format("YYYY-MM-DDTHH:mm")
-                            : moment(defaultEndDate).format("YYYY-MM-DDTHH:mm")
-                    }
-                    className={classes.textField}
-                    InputLabelProps={{
-                        shrink: true,
-                    }}
-                    onChange={e => setElectionInfo(e)}
+                <DateTimePicker
+                    defaultDate={defaultDate}
+                    originStartDate={post?.start_date}
+                    originEndDate={post?.end_date}
+                    getDateInfo={setElectionInfo}
                 />
             </WriteElectionInfoBox>
             {/* 선거 후보자의 이름, 학과, 소개, 사진을 입력하는 곳입니다. */}
@@ -427,7 +400,6 @@ const ElectionWrite = () => {
         </ElectionWriteContainer>
     );
 };
-
 const ElectionWriteContainer = styled.div``;
 
 const WriteElectionInfoBox = styled.div`
