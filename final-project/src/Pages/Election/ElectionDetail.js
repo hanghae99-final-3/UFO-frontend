@@ -86,13 +86,45 @@ const ElectionDetail = () => {
                 <Title>투표함</Title>
                 <ElectionBox></ElectionBox>
             </ElectionContainer>
+            <ElectionInfoContainer>
+                <ElectionTitle>
+                    <h5>{post?.name}</h5>
+                    <TitleControls>
+                        {/* 선거시작일이 현재보다 이전이거나 같지 않고, 관리자면 수정하기 버튼을 볼 수 있습니다.  */}
+                        {moment().isBefore(post?.start_date) &&
+                            !moment().isSame(post?.start_date) &&
+                            isAdmin && (
+                                <DefaultButton
+                                    leftGap="15px"
+                                    onClick={() =>
+                                        history.push(
+                                            `/election/edit/${post.election_id}`,
+                                        )
+                                    }
+                                >
+                                    수정하기
+                                </DefaultButton>
+                            )}
+                        {/* 관리자면 삭제하기 버튼을 볼 수 있습니다. */}
+                        {isAdmin && (
+                            <DefaultButton onClick={deleteElection}>
+                                삭제하기
+                            </DefaultButton>
+                        )}
+                    </TitleControls>
+                </ElectionTitle>
+                <p>{post?.content}</p>
+            </ElectionInfoContainer>
             <CountdownContainer>
                 <Title borderNone={true}>투표까지 남은 시간</Title>
                 <ProgressBar
                     start={post?.start_date && post.start_date}
                     end={post?.end_date && post.end_date}
                 />
-
+                <ElectionDate>
+                    <span>{post?.start_date}</span>
+                    <span>{post?.end_date}</span>
+                </ElectionDate>
                 {/* 투표가 아직 시작 전이면 투표 시작 전 문구를 렌더링, 아니면 시간을 카운팅합니다. */}
                 {moment().isBefore(post?.start_date) ||
                 moment().isSame(post?.start_date) ? (
@@ -138,29 +170,6 @@ const ElectionDetail = () => {
                 <DefaultButton rightGap="15px" onClick={addVote}>
                     투표하기
                 </DefaultButton>
-
-                {/* 관리자면 삭제하기 버튼을 볼 수 있습니다. */}
-                {isAdmin && (
-                    <DefaultButton onClick={deleteElection}>
-                        삭제하기
-                    </DefaultButton>
-                )}
-
-                {/* 선거시작일이 현재보다 이전이거나 같지 않고, 관리자면 수정하기 버튼을 볼 수 있습니다.  */}
-                {moment().isBefore(post?.start_date) &&
-                    !moment().isSame(post?.start_date) &&
-                    isAdmin && (
-                        <DefaultButton
-                            leftGap="15px"
-                            onClick={() =>
-                                history.push(
-                                    `/election/edit/${post.election_id}`,
-                                )
-                            }
-                        >
-                            수정하기
-                        </DefaultButton>
-                    )}
             </Controls>
         </ElectionDetailContainer>
     );
@@ -187,8 +196,51 @@ const ElectionBox = styled.div`
     padding: 15px 0;
 `;
 
+const ElectionInfoContainer = styled.div`
+    margin-bottom: 70px;
+`;
+
+const ElectionTitle = styled.div`
+    ${mixin.outline("1px solid", "gray4", "bottom")};
+    ${mixin.flexBox("space-between", "flex-end")};
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+    h5 {
+        ${mixin.textProps(30, "extraBold", "black")};
+        line-height: 1;
+    }
+
+    p {
+        ${mixin.textProps(20, "regular", "black")};
+    }
+`;
+
+const TitleControls = styled.div`
+    button {
+        padding: 0 10px;
+        height: 32px;
+        min-width: 80px;
+        border-radius: 20px;
+        background: ${({ theme }) => theme.color.gray2};
+        ${mixin.textProps(18, "semiBold", "white")};
+        :first-child {
+            margin-right: 15px;
+        }
+        &:hover {
+            background: ${({ theme }) => theme.color.danger};
+        }
+    }
+`;
+
 const CountdownContainer = styled.div`
     margin-bottom: 70px;
+`;
+
+const ElectionDate = styled.div`
+    ${mixin.flexBox("space-between", "flex-end")};
+    span {
+        ${mixin.textProps(20, "extraBold", "black")};
+    }
 `;
 
 const BeforeElection = styled.div`
