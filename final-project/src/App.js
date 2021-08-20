@@ -23,7 +23,7 @@ import Election from "./Pages/Election/Election"; //선거게시판
 import ElectionDetail from "./Pages/Election/ElectionDetail"; //선거게시판 게시글상세페이지
 import ElectionWrite from "./Pages/Election/ElectionWrite"; //선거게시글 작성페이지 or 수정페이지
 import SearchResult from "./Pages/SearchResult"; // 자유 게시판 검색 결과 페이지
-
+import SocialLogin from "./Components/Login/SocialLogin"; // 소셜로그인 페이지
 //정후님을 위한 테스트 페이지 :-)
 import Test from "./Pages/Test";
 

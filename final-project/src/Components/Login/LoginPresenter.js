@@ -76,12 +76,12 @@ const LoginPresenter = ({
                             <Grid className={classes.formContainer}>
                                 <Form className={classes.inputContainer}>
                                     <LoginTextField
-                                        label="Email"
+                                        label="ID"
                                         name="email"
                                         type="email"
                                     />
                                     <LoginTextField
-                                        label="Password"
+                                        label="PW"
                                         name="password"
                                         type="password"
                                     />
@@ -109,7 +109,6 @@ const LoginPresenter = ({
                                             label="자동 로그인"
                                         />
                                     </AutoLogin>
-
                                     <Loginbtn type="submit" variant="outlined">
                                         로그인
                                     </Loginbtn>
@@ -130,7 +129,7 @@ const LoginPresenter = ({
                         )}
                     </Formik>
                 </Grid>
-            )}{" "}
+            )}
         </Grid>
     );
 };

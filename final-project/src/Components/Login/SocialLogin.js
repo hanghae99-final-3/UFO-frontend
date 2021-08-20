@@ -31,43 +31,43 @@ const SocialLogin = ({ toggleLoginMode }) => {
 };
 
 const EmailButtonBox = styled.button`
-    margin-top: 20px;
-    width: 320px;
-    height: 40px;
+    margin-top: 33px;
+    width: 344px;
+    height: 46px;
     border-radius: 23px;
     ${mixin.textProps(20, "extraBold", "white")}
     background-color : ${({ theme }) => theme.color.mainBlue};
     box-shadow: 0px 1px 1px 1px #ececec;
 `;
 const KakaoButtonBox = styled.button`
-    margin-top: 20px;
-    width: 320px;
-    height: 40px;
+    margin-top: 15px;
+    width: 344px;
+    height: 46px;
     border-radius: 23px;
     ${mixin.textProps(20, "extraBold")}
     background-color : #FEE500;
     box-shadow: 0px 1px 1px 1px #ececec;
 `;
 const FBButtonBox = styled.button`
-    margin-top: 20px;
-    width: 320px;
-    height: 40px;
+    margin-top: 15px;
+    width: 344px;
+    height: 46px;
     border-radius: 23px;
     ${mixin.textProps(20, "extraBold", "white")};
     background-color: #3b5998;
     box-shadow: 0px 1px 1px 1px #ececec;
 `;
 const GoogleButtonBox = styled.button`
-    margin-top: 20px;
-    width: 320px;
-    height: 40px;
+    margin-top: 15px;
+    width: 344px;
+    height: 46px;
     border-radius: 23px;
     ${mixin.textProps(20, "extraBold")};
     background-color: ${({ theme }) => theme.color.white};
     box-shadow: 0px 1px 1px 1px #ececec;
 `;
 const MemberCheckBox = styled.div`
-    margin-top: 32px;
+    margin-top: 27px;
     display: flex;
     ${mixin.textProps(20, "regular", "gray3")}
 `;
