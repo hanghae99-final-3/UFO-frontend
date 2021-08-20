@@ -3,7 +3,7 @@ import { history } from "../configureStore";
 import { freeBoardApi } from "../../api";
 import { freeCommentApi } from "../../api";
 import moment from "moment";
-
+import { increaseLike, decreaseLike } from "../modules/freeBoardSlice";
 /**
  * @author kwonjiyeong
  * @param 없음
@@ -16,7 +16,10 @@ export const getFreeListDB = createAsyncThunk(
     async (data, thunkAPI) => {
         try {
             const response = await freeBoardApi.getList(data);
-            if (response.data.ok) return response.data.result;
+            console.log(response);
+            if (response.data.ok) {
+                return response.data;
+            }
         } catch (err) {
             return thunkAPI.rejectWithValue(err.response.message);
         }
@@ -56,6 +59,7 @@ export const addFreePostDB = createAsyncThunk(
         try {
             const response = await freeBoardApi.addPost(data);
             history.push("/freeboard");
+
             if (response.data.ok) return response.data.result;
         } catch (err) {
             return thunkAPI.rejectWithValue(err.response.message);
@@ -142,7 +146,7 @@ export const addFreeCommentDB = createAsyncThunk(
                 return {
                     ...response.data.result,
                     ...user,
-                    createdAt: moment().format(`YYYY-MM-DD HH:mm:ss`), // 여기는 지영님 맘대로 하세요~~
+                    createdAt: moment().format(`YYYY-MM-DD HH:mm:ss`),
                 };
         } catch (err) {
             return thunkAPI.rejectWithValue(err.response.message);
@@ -198,8 +202,37 @@ export const postLikeToggleDB = createAsyncThunk(
     async (data, thunkAPI) => {
         try {
             const response = await freeBoardApi.postLikeToggle(data);
-            console.log("freepost like response", response.data);
-            if (response.data.ok) return response.data.result;
+            if (response.data.ok) {
+                if (response.data.message === "disliked post") {
+                    //좋아요 취소
+                    thunkAPI.dispatch(decreaseLike());
+                } else {
+                    //좋아요
+                    thunkAPI.dispatch(increaseLike());
+                }
+            }
+        } catch (err) {
+            return thunkAPI.rejectWithValue(err.response.message);
+        }
+    },
+);
+
+/**
+ * @author heesungjang
+ * @param 없음
+ * @returns 서버연결 성공시, 자유게시판  인기 (핫이슈) 포스트 리스트 / 서버연결 실패시, 에러메세지
+ * @역할 댓글 + 조회수가 높은 현재 이슈 게시글들 리스트 불러오기
+ * @필수값 없음
+ */
+
+export const getIssuePostListDB = createAsyncThunk(
+    "freeBoard/issue/list",
+    async (data, thunkAPI) => {
+        try {
+            const response = await freeBoardApi.getIssueList();
+            if (response.data.ok) {
+                return response.data.result;
+            }
         } catch (err) {
             return thunkAPI.rejectWithValue(err.response.message);
         }

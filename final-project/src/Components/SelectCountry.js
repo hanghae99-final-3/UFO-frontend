@@ -1,4 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import styled from "styled-components";
+import { useCookies } from "react-cookie";
 
 import Select from "@material-ui/core/Select";
 import InputBase from "@material-ui/core/InputBase";
@@ -24,19 +26,7 @@ const BootstrapInput = withStyles(theme => ({
         fontSize: 16,
         padding: "10px 26px 10px 12px",
         transition: theme.transitions.create(["border-color", "box-shadow"]),
-        // Use the system font instead of the default Roboto font.
-        fontFamily: [
-            "-apple-system",
-            "BlinkMacSystemFont",
-            '"Segoe UI"',
-            "Roboto",
-            '"Helvetica Neue"',
-            "Arial",
-            "sans-serif",
-            '"Apple Color Emoji"',
-            '"Segoe UI Emoji"',
-            '"Segoe UI Symbol"',
-        ].join(","),
+
         "&:focus": {
             borderRadius: 4,
             borderColor: "#80bdff",
@@ -54,13 +44,25 @@ const useStyles = makeStyles(theme => ({
 export default function SelectCountry() {
     const dispatch = useDispatch();
     const classes = useStyles();
-    const [country, setCountry] = React.useState(0);
+    const [country, setCountry] = useState(0);
+    const [cookies, setCookie] = useCookies(["rememberCountry"]);
 
     useEffect(() => {
+        if (cookies.rememberCountry !== undefined) {
+            setCountry(parseInt(cookies.rememberCountry));
+        }
         dispatch(setCountryReducer(country));
     }, [country, dispatch]);
 
     const handleChange = event => {
+        if (
+            cookies.rememberCountry !== event.target.value ||
+            cookies.rememberCountry === undefined
+        ) {
+            setCookie("rememberCountry", event.target.value, {
+                maxAge: 60 * 60 * 24,
+            });
+        }
         setCountry(event.target.value);
     };
     return (
@@ -85,3 +87,19 @@ export default function SelectCountry() {
         </div>
     );
 }
+
+//----스타일 컴포넌트---
+const Input = styled.input`
+    border-radius: 4;
+    position: relative;
+    /* backgroundColor: theme.palette.background.paper; */
+    border: 1px solid #ced4da;
+    font-size: 16;
+    padding: 10px 26px 10px 12px;
+    /* transition: theme.transitions.create(["border-color", "box-shadow"]) */
+    :focus {
+        border-radius: 4;
+        border-color: #80bdff;
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    }
+`;

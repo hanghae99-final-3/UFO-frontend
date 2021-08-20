@@ -1,17 +1,28 @@
 import React from "react";
 import styled from "styled-components";
+import mixin from "../styles/Mixin";
+
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-editor-classic/src/classiceditor";
 
 //플러그인
-import Essentials from "@ckeditor/ckeditor5-essentials/src/essentials";
-import Bold from "@ckeditor/ckeditor5-basic-styles/src/bold";
-import Underline from "@ckeditor/ckeditor5-basic-styles/src/underline";
-import Link from "@ckeditor/ckeditor5-link/src/link";
-import Heading from "@ckeditor/ckeditor5-heading/src/heading";
+import Heading from "@ckeditor/ckeditor5-heading/src/heading.js";
+import Paragraph from "@ckeditor/ckeditor5-paragraph/src/paragraph.js";
+import Bold from "@ckeditor/ckeditor5-basic-styles/src/bold.js";
+import Italic from "@ckeditor/ckeditor5-basic-styles/src/italic.js";
+import Strikethrough from "@ckeditor/ckeditor5-basic-styles/src/strikethrough.js";
+import Underline from "@ckeditor/ckeditor5-basic-styles/src/underline.js";
+
+import FontColor from "@ckeditor/ckeditor5-font/src/fontcolor.js";
+import FontBackgroundColor from "@ckeditor/ckeditor5-font/src/fontbackgroundcolor";
+
+import Essentials from "@ckeditor/ckeditor5-essentials/src/essentials.js"; //undo
+
+import BlockQuote from "@ckeditor/ckeditor5-block-quote/src/blockquote.js";
+import Link from "@ckeditor/ckeditor5-link/src/link.js";
+import PasteFromOffice from "@ckeditor/ckeditor5-paste-from-office/src/pastefromoffice";
 import Image from "@ckeditor/ckeditor5-image/src/image";
 import ImageUpload from "@ckeditor/ckeditor5-image/src/imageupload";
-import Base64UploadAdapter from "@ckeditor/ckeditor5-upload/src/adapters/base64uploadadapter";
 
 //파이어베이스
 import { firebase } from "../firebase";
@@ -101,23 +112,35 @@ class MyUploadAdapter {
 const editorConfiguration = {
     language: "ko",
     plugins: [
-        Essentials,
+        BlockQuote,
         Bold,
+        Essentials,
+        FontColor,
+        FontBackgroundColor,
         Heading,
-        Underline,
-        Link,
         Image,
         ImageUpload,
-        Base64UploadAdapter,
+        Italic,
+        Link,
+        Paragraph,
+        PasteFromOffice,
+        Strikethrough,
+        Underline,
     ],
     extraPlgins: [],
     toolbar: [
         "heading",
         "|",
+        "fontColor",
+        "fontBackgroundColor",
+        "|",
         "bold",
+        "italic",
+        "strikethrough",
         "underline",
         "|",
         "link",
+        "blockQuote",
         "imageUpload",
         "|",
         "undo",
@@ -189,16 +212,26 @@ const Editor = ({ getContentFromEditor, originContent }) => {
 };
 
 const StyledEditor = styled.div`
-    padding: 10px 0;
     min-height: 100px;
 
-    .ck-toolbar {
+    .ck.ck-toolbar.ck-toolbar_grouping {
         padding: 10px;
-        border-radius: 10px 10px 0 0 !important;
+        border: none;
+        background-color: ${({ theme }) => theme.color.white};
+        ${mixin.outline("1px solid", "gray3", "bottom")};
     }
     .ck-content {
-        min-height: 200px;
-        border-radius: 0 0 10px 10px !important;
+        min-height: 500px;
+        padding: 30px;
+        border: none;
+        ${mixin.outline("1px solid", "gray3", "bottom")};
+        transition: all 0.7s ease;
+    }
+    .ck-content.ck-editor__editable.ck-rounded-corners.ck-editor__editable_inline.ck-focused {
+        border: none;
+        ${mixin.outline("1px solid", "gray3", "bottom")};
+        /* box-shadow : 오른쪽 위쪽 블러 분사 */
+        box-shadow: inset 0px -15px 8px -6px #ededed;
     }
 `;
 

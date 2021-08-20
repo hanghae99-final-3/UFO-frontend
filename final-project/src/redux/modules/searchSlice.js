@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import { getSearchResult } from "../async/search";
+import { getSearchResult, getUnivSearchResult } from "../async/search";
 
 const initialState = {
     isFetching: false,
@@ -18,10 +18,23 @@ const searchSlice = createSlice({
         },
         [getSearchResult.fulfilled]: (state, { payload: result }) => {
             state.isFetching = false;
+            // state.searchResult = [...state.searchResult, ...result];
             state.searchResult = result;
             state.errorMessage = "";
         },
         [getSearchResult.rejected]: (state, { payload: message }) => {
+            state.isFetching = false;
+            state.errorMessage = message;
+        },
+        [getUnivSearchResult.pending]: (state, action) => {
+            state.isFetching = true;
+        },
+        [getUnivSearchResult.fulfilled]: (state, { payload: result }) => {
+            state.isFetching = false;
+            state.searchResult = result;
+            state.errorMessage = "";
+        },
+        [getUnivSearchResult.rejected]: (state, { payload: message }) => {
             state.isFetching = false;
             state.errorMessage = message;
         },

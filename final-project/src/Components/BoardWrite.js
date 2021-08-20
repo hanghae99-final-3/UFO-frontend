@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 import { history } from "../redux/configureStore";
 import { useParams } from "react-router";
-import { freeBoardApi, univBoardApi } from "../api";
+import instance, { freeBoardApi, univBoardApi } from "../api";
 import { addFreePostDB, editFreePostDB } from "../redux/async/freeBoard";
 import {
     addUnivBoardPostDB,
@@ -11,6 +11,8 @@ import {
 } from "../redux/async/univBoard";
 import categories from "../categories";
 import Editor from "../Components/Editor";
+import mixin from "../styles/Mixin";
+import DefaultButton from "../Elements/Buttons/DefaultButton";
 
 /**
  * @author jiyeong
@@ -26,8 +28,8 @@ const BoardWrite = ({ boardName }) => {
     const [post, setPost] = useState(null); //이 state는 입력값들이 들어갈 공간입니다!
     const { id: postId } = useParams();
     const isEdit = postId ? true : false; //수정모드인지 아닌지 판별 state
-
-    console.log(post);
+    const [isAnnouncement, setIsAnnouncement] = useState(false); // 게시물 공지 설정 값
+    const [isAdmin, setIsAdmin] = useState(false);
 
     const getContentFromEditor = content => {
         //에디터로부터 content 값 가져오기
@@ -37,9 +39,7 @@ const BoardWrite = ({ boardName }) => {
     //┏-----------------게시글 수정파트-----------------┓
     //----state에 있는 post 정보 불러오기. boardName이 freeboard면 자유게시판, 아니면 대학게시판을 가져온다.
     const postFromState = useSelector(state =>
-        boardName === "freeboard"
-            ? state.freeBoard.post
-            : state.univBoard.postDetail,
+        boardName === "freeboard" ? state.freeBoard.post : state.univBoard.post,
     );
 
     const goBackPostDetail = () => {
@@ -65,6 +65,14 @@ const BoardWrite = ({ boardName }) => {
                     .then(res => setPost(res.data.result));
             }
         }
+        const checkAdmin = async () => {
+            await instance.get("/api/is-admin").then(res => {
+                if (res.data.ok && res.data?.result?.admin_id) {
+                    setIsAdmin(true);
+                }
+            });
+        };
+        checkAdmin();
     }, []);
     //----
 
@@ -85,6 +93,7 @@ const BoardWrite = ({ boardName }) => {
                 content: post.content,
                 country_id: post.country_id,
                 post_id: post.post_id,
+                img_list: post.img_list,
             };
             history.push(`/freeboard/detail/${postId}`);
             dispatch(editFreePostDB(req));
@@ -95,11 +104,12 @@ const BoardWrite = ({ boardName }) => {
                 category: post.category,
                 content: post.content,
                 post_id: post.post_id,
-                is_fixed: false,
+                is_fixed: post.is_fixed,
                 univ_id: user.univ_id,
+                img_list: post.img_list,
             };
             dispatch(editUnivBoardPostDB(req));
-            history.push(`univboard/detail/${postId}`);
+            history.push(`/univboard/detail/${postId}`);
         }
     };
     //┗-----------------게시글 수정파트-----------------┛
@@ -117,6 +127,14 @@ const BoardWrite = ({ boardName }) => {
         //뒤로가기를 누르면 원래 게시판페이지로 돌아갑니다.
         if (boardName === "freeboard") history.push(`/freeboard`);
         if (boardName === "univboard") history.push(`/univboard`);
+    };
+
+    const setCategory = (keyName, value) => {
+        // 선택한 카테고리 값을 가져와서 setPost해주는 함수입니다.
+        setPost({
+            ...post,
+            [keyName]: value,
+        });
     };
 
     const addPost = () => {
@@ -148,7 +166,7 @@ const BoardWrite = ({ boardName }) => {
                 title: post.title,
                 category: post.category,
                 content: post.content,
-                is_fixed: false,
+                is_fixed: isAnnouncement,
                 univ_id: user.univ_id,
             };
             dispatch(addUnivBoardPostDB(req));
@@ -160,6 +178,14 @@ const BoardWrite = ({ boardName }) => {
         return (
             //게시글 수정모드
             <>
+                {/* 게시판제목 */}
+                <BoardTitle>
+                    <h3>
+                        {boardName === "freeboard"
+                            ? "자유게시판"
+                            : "대학게시판"}
+                    </h3>
+                </BoardTitle>
                 <InputTitle
                     placeholder="제목을 입력해주세요!"
                     onChange={e => setPost({ ...post, title: e.target.value })}
@@ -171,8 +197,10 @@ const BoardWrite = ({ boardName }) => {
                 />
 
                 <Controls>
-                    <button onClick={goBackPostDetail}>취소</button>
-                    <button onClick={editfreePost}>수정</button>
+                    <DefaultButton rightGap="10px" onClick={goBackPostDetail}>
+                        취소
+                    </DefaultButton>
+                    <DefaultButton onClick={editfreePost}>수정</DefaultButton>
                 </Controls>
             </>
         );
@@ -181,20 +209,25 @@ const BoardWrite = ({ boardName }) => {
     return (
         // 게시글 작성모드
         <>
+            {/* 게시판제목 */}
+            <BoardTitle>
+                <h3>
+                    {boardName === "freeboard" ? "자유게시판" : "대학게시판"}
+                </h3>
+            </BoardTitle>
+
+            {/* 태그선택 */}
             <SelectBox>
                 {boardName === "freeboard" && (
                     <CountrySelect>
                         {/* 자유게시판이면 국가선택란이 나타난다. */}
-                        <span>국가 설정</span>
+                        <SelectTitle>국가 설정</SelectTitle>
                         {categories.country.map(ele => (
                             <SelectBtn
                                 selected={post?.country_id === ele.countryId}
                                 key={ele.countryId}
                                 onClick={() =>
-                                    setPost({
-                                        ...post,
-                                        country_id: ele.countryId,
-                                    })
+                                    setCategory("country_id", ele.countryId)
                                 }
                             >
                                 {ele.countryName}
@@ -203,84 +236,112 @@ const BoardWrite = ({ boardName }) => {
                     </CountrySelect>
                 )}
                 <TagSelect>
-                    {/* 카테고리 중 카테고리 선택하기 */}
-                    <span>태그 설정</span>
+                    {/* 카테고리 중  선택하기 */}
+                    <SelectTitle>태그 설정</SelectTitle>
                     {categoryList.map(ele => (
                         <SelectBtn
                             selected={Number(post?.category) === ele.categoryId}
                             key={ele.categoryId}
-                            onClick={() => {
-                                setPost({
-                                    ...post,
-                                    category: `${ele.categoryId}`,
-                                });
-                            }}
+                            onClick={() =>
+                                setCategory("category", ele.categoryId)
+                            }
                         >
                             #{ele.categoryName}
                         </SelectBtn>
                     ))}
                 </TagSelect>
+                {boardName === "univboard" && isAdmin && (
+                    <TagSelect>
+                        {/* 카테고리 중 카테고리 선택하기 */}
+                        <SelectTitle>공지 설정</SelectTitle>
+                        <SelectBtn
+                            selected={isAnnouncement}
+                            onClick={() => setIsAnnouncement(!isAnnouncement)}
+                        >
+                            공지글
+                        </SelectBtn>
+                    </TagSelect>
+                )}
             </SelectBox>
+
+            {/* 제목입력란 */}
             <InputTitle
                 placeholder="제목을 입력해주세요!"
                 onChange={e => setPost({ ...post, title: e.target.value })}
             />
+
+            {/* 컨텐츠입력란 (에디터) */}
             <Editor getContentFromEditor={getContentFromEditor} />
+
+            {/* 컨트롤 버튼 */}
             <Controls>
-                <button onClick={goBackBoard}>취소</button>
-                <button onClick={addPost}>등록</button>
+                <DefaultButton rightGap="15px" onClick={goBackBoard}>
+                    취소
+                </DefaultButton>
+                <DefaultButton onClick={addPost}>등록</DefaultButton>
             </Controls>
         </>
     );
 };
 
-const SelectBox = styled.div`
-    padding: 20px;
-    border-top: 2px solid #707070;
-    border-bottom: 2px solid #707070;
+const BoardTitle = styled.div`
+    ${mixin.outline("1px solid", "gray3", "bottom")}
+    h3 {
+        ${mixin.textProps(30, "extraBold", "black")}
+        margin-bottom: 10px;
+    }
+`;
 
-    span {
+const SelectBox = styled.div``;
+
+const CountrySelect = styled.div`
+    padding: 15px 0;
+    ${mixin.outline("1px solid", "gray3", "bottom")}
+`;
+
+const TagSelect = styled.div`
+    padding: 15px 0;
+    ${mixin.outline("1px solid", "gray3", "bottom")}
+`;
+
+const SelectTitle = styled.span`
+    ${mixin.textProps(14, "semiBold", "gray3")}
+    margin-right: 10px;
+`;
+
+const SelectBtn = styled.button`
+    min-width: 79px;
+    box-sizing: border-box;
+    border-radius: 16px;
+    transition: all 0.3s ease;
+    ${props =>
+        props.selected
+            ? `box-shadow: inset -1px 5px 5px -5px #cdcdcd;`
+            : `box-shadow:  0 5px 5px -5px #cdcdcd;`}
+    background-color: ${({ theme }) => theme.color.white};
+    color: ${props => props.selected && props.theme.color.black};
+    ${props =>
+        props.selected
+            ? mixin.outline("2px solid", "mainMint")
+            : mixin.outline("2px solid", "blue3")}
+    ${mixin.textProps(18, "semiBold", "gray3")}
+    &:not(:last-child) {
         margin-right: 10px;
     }
 `;
 
-const CountrySelect = styled.div`
-    margin-bottom: 10px;
-    margin-bottom: 10px;
-`;
-
-const TagSelect = styled.div``;
-
-const SelectBtn = styled.button`
-    padding: 0 10px;
-    margin-right: 10px;
-    border: 1px solid #3b3b3b;
-    border-radius: 10px;
-    color: ${props => (props.selected ? "#fff" : "#505050")};
-    cursor: pointer;
-    background: ${props => (props.selected ? "#3b3b3b" : "#fff")};
-`;
-
 const InputTitle = styled.input`
     all: unset;
-    border-bottom: 1px solid #000;
-    font-size: 30px;
-    margin: 20px;
-    width: calc(100% - 40px);
+    ${mixin.outline("1px solid", "gray3", "bottom")};
+    ${mixin.textProps(30, "extraBold", "black")};
+    padding: 20px 0;
+    width: 100%;
 `;
 
 const Controls = styled.div`
+    margin-top: 30px;
     display: flex;
     justify-content: center;
-    button {
-        border: 1px solid #e7e7e7;
-        background: white;
-        padding: 5px 25px;
-        font-size: 12px;
-        :not(:last-child) {
-            margin-right: 10px;
-        }
-    }
 `;
 
 export default BoardWrite;

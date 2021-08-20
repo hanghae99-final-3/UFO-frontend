@@ -1,5 +1,7 @@
 import axios from "axios";
 import { getToken } from "./utils";
+import Swal from "sweetalert2";
+import { history } from "./redux/configureStore";
 
 // Axios 인스턴스 설정
 const instance = axios.create({
@@ -15,27 +17,37 @@ instance.interceptors.request.use(async config => {
     config.headers["authorization"] = await getToken();
     return config;
 });
+
 // ┏----------interceptor를 통한 response 설정----------┓
+
 instance.interceptors.response.use(
-    response => {
+    async response => {
         if (response.data.message === "new token") {
             const { config } = response;
             const originalRequest = config;
-            const newAccessToken = response.data.myNewToken;
 
-            // localStorage.setItem("token", newAccessToken);
-            // axios.defaults.headers.common.Authorization = `Bearer ${newAccessToken}`;
-            // originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
-            // return axios(originalRequest);
+            const newAccessToken = response.data.myNewToken;
+            localStorage.setItem("token", newAccessToken);
+
+            axios.defaults.headers.common.authorization = `Bearer ${newAccessToken}`;
+            originalRequest.headers.authorization = `Bearer ${newAccessToken}`;
+
+            return axios(originalRequest);
         }
+
         return response;
     },
-    // async error => {
-    //     const {
-    //         config,
-    //         response: { status },
-    //     } = error;
-    // },
+    async error => {
+        const {
+            config,
+            response: { status },
+        } = error;
+        if (status === 401) {
+            localStorage.removeItem("token");
+            Swal.fire("로그인", "로그인 시간이 만료되었습니다.", "error");
+        }
+        history.replace("/");
+    },
 );
 
 // 사용자 관련 axios API 통신
@@ -75,6 +87,23 @@ export const userApi = {
         }),
     // 계정 삭제
     deleteAccount: userId => instance.delete(`api/user/${userId}`),
+    // 내가 쓴 글 불러오기
+    getMyPosts: data =>
+        instance.get("/api/user/my-post", {
+            params: {
+                pageSize: data.pageSize,
+                pageNum: data.pageNum,
+            },
+        }),
+    getMyCommentedPost: data =>
+        instance.get("/api/user/my-comment", {
+            params: {
+                pageSize: data.pageSize,
+                pageNum: data.pageNum,
+            },
+        }),
+    // 관리자 확인
+    checkAdmin: () => instance.get("/api/is-admin"),
 };
 
 export const freeBoardApi = {
@@ -88,6 +117,10 @@ export const freeBoardApi = {
                 country_id: data?.country_id,
             },
         }),
+
+    // 인기 게시물 불러오기
+
+    getIssueList: data => instance.get("/issue"),
 
     //게시물추가하기
     addPost: post => instance.post("free/post", post),
@@ -126,8 +159,6 @@ export const freeCommentApi = {
         instance.delete(`free/comment/${comment.comment_id}`),
 };
 
-export const issueApi = {};
-
 export const univBoardApi = {
     //UnivBoard 목록 불러오기
     getList: data => {
@@ -152,13 +183,22 @@ export const univBoardApi = {
         }),
 
     // 대학 게시판 게시물 수정
-    editPost: ({ title, content, category, is_fixed, univ_id, post_id }) =>
+    editPost: ({
+        title,
+        content,
+        category,
+        is_fixed,
+        univ_id,
+        post_id,
+        img_list,
+    }) =>
         instance.put(`univ/post/${post_id}`, {
             univ_id,
             title,
             content,
             is_fixed,
             category,
+            img_list,
         }),
 
     //게시물 상제정보 불러오기
@@ -188,6 +228,9 @@ export const univBoardApi = {
 
     // 게시물 모든 댓글 불러오기
     getComment: post_id => instance.get(`univ/comment/${post_id}`),
+
+    //게시물 좋아요/취소
+    univLikeToggle: post_id => instance.get(`/univ/post/${post_id}/like`),
 };
 
 export const searchApi = {
@@ -200,12 +243,91 @@ export const searchApi = {
                 category: data?.category,
                 country_id: data?.country_id,
                 keyword: data?.keyword,
+                sort: data?.sort,
+            },
+        }),
+    searchUnivBySearchTerm: data =>
+        instance.get("univ/search", {
+            params: {
+                pageSize: data.pageSize,
+                pageNum: data.pageNum,
+                category: data?.category,
+                country_id: data?.country_id,
+                keyword: data?.keyword,
+                sort: data?.sort,
             },
         }),
 };
 
-export const electionApi = {};
+export const electionApi = {
+    //전체선거게시글 조회
+    getElectionList: () => instance.get("election"),
 
-export const voteApi = {};
+    //특정선거게시글 조회
+    getElection: election_id => instance.get(`election/${election_id}`),
+
+    //선거게시글 추가
+    addElection: ({
+        name,
+        content,
+        country_id,
+        univ_id,
+        candidates,
+        start_date,
+        end_date,
+    }) =>
+        instance.post("election", {
+            name,
+            content,
+            country_id,
+            univ_id,
+            candidates,
+            start_date,
+            end_date,
+        }),
+
+    //특정 선거게시글 수정
+    editElection: ({
+        name,
+        content,
+        country_id,
+        univ_id,
+        candidates,
+        start_date,
+        end_date,
+        election_id,
+    }) =>
+        instance.put(`election/${election_id}`, {
+            name,
+            content,
+            country_id,
+            univ_id,
+            candidates,
+            start_date,
+            end_date,
+        }),
+
+    //특정 선거게시글 삭제
+    deleteElection: ({ election_id }) =>
+        instance.delete(`election/${election_id}`),
+};
+
+export const voteApi = {
+    //투표추가
+    addVote: ({ election_id, candidate_id }) =>
+        instance.post(`election/vote/${election_id}`, { candidate_id }),
+
+    //특정 선거게시글 결과조회
+    getResult: ({ election_id }) =>
+        instance.get(`election/${election_id}/result`),
+};
+
+export const imageApi = {
+    //단일 이미지 업로드
+    uploadImage: ({ img }) => instance.post("util/image", { img }),
+
+    //대량 이미지 업로드
+    uploadImages: ({ img }) => instance.post("util/bulk-image", { img }),
+};
 
 export default instance;

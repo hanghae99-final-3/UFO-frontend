@@ -7,7 +7,9 @@ import SearchBox from "../Components/SearchBox";
 import Pagination from "@material-ui/lab/Pagination";
 import { getFreeListDB } from "../redux/async/freeBoard";
 import { useDispatch, useSelector } from "react-redux";
-import instance, { freeBoardApi } from "../api";
+import { freeBoardApi } from "../api";
+import { makeStyles, MuiThemeProvider } from "@material-ui/core";
+import { MuiTheme } from "../styles/MuiTheme";
 
 /**
  * @author kwonjiyeong & heesung
@@ -16,19 +18,49 @@ import instance, { freeBoardApi } from "../api";
  * @역할 자유게시판 뷰 렌더링, 자유게시판 CRUD 기능 중 R
  * @필수값 없음
  */
+
+const useStyles = makeStyles(theme => ({
+    root: {
+        "& > *": {
+            marginTop: theme.spacing(2),
+        },
+        "& .MuiPaginationItem-icon": {
+            backgroundColor: "#AFB1FF",
+            borderRadius: "20px",
+        },
+        "& .MuiPaginationItem-page": {
+            border: "3px solid #D8D9FF",
+            borderRadius: "20px",
+            backgroundColor: "white",
+        },
+
+        "& .Mui-selected": {
+            border: "3px solid #bcffe2",
+            borderRadius: "20px",
+            backgroundColor: "white",
+        },
+        "& .Mui-disabled": {
+            border: "3px solid #bcffe2",
+        },
+    },
+}));
+
 const FreeBoard = () => {
     //----자유게시판 목록 불러와서 list에 저장하기
     const dispatch = useDispatch();
+    const classes = useStyles();
     const [page, setPage] = React.useState(1); // pagination의  현재 페이지 값 설정
     const freeBoardPostList = useSelector(state => state.freeBoard.list); // 자유 게시판 게시글 구독
     const selectedTag = useSelector(state => state.freeBoard.selectedTag); // 현재 선택된 카테고리 구독
     const selectedCountry = useSelector(
         state => state.freeBoard.selectedCountry,
     ); // 현재 선택된 국가 코드
+    const freeBoardTotalPage = useSelector(state => state.freeBoard.pageCount);
 
     useEffect(() => {
+        window.scrollTo(0, 0);
         const postListQueryData = {
-            pageSize: 10,
+            pageSize: 14,
             pageNum: page,
             category: selectedTag === null ? undefined : selectedTag,
             country_id: selectedCountry === 0 ? undefined : selectedCountry,
@@ -38,38 +70,39 @@ const FreeBoard = () => {
 
     // pagination 상태 값 업데이트
     const handlePage = async (e, value) => {
-        if (
-            freeBoardPostList &&
-            freeBoardPostList.length < 10 &&
-            value > page
-        ) {
-            return alert("마지막 페이지");
-        }
         const postListQueryData = {
             pageSize: 10,
             pageNum: value,
             category: selectedTag === null ? undefined : selectedTag,
             country_id: selectedCountry === 0 ? undefined : selectedCountry,
         };
-        const response = await freeBoardApi.getList(postListQueryData);
-        if (response.data.result.length === 0) {
-            return alert("게시물이 없는 페이지 입니다.");
-        } else {
-            setPage(value);
-        }
+        await freeBoardApi.getList(postListQueryData);
+        setPage(value);
     };
     //----
 
     return (
         <>
-            <SearchBox searchTag={categories.freeBoardTags} page="freeboard" />
+            <SearchBox
+                searchTag={categories.freeBoardTags}
+                page="freeboard"
+                pushButton={true}
+            />
             <BoardBox
                 postList={freeBoardPostList && freeBoardPostList}
                 preview={true}
-                boardName="freeBoard"
+                boardName="freeboard"
             />
             <PaginationContainer>
-                <Pagination count={10} page={page} onChange={handlePage} />
+                <MuiThemeProvider theme={MuiTheme}>
+                    <div className={classes.root}>
+                        <Pagination
+                            count={freeBoardTotalPage && freeBoardTotalPage}
+                            page={page}
+                            onChange={handlePage}
+                        />
+                    </div>
+                </MuiThemeProvider>
             </PaginationContainer>
         </>
     );

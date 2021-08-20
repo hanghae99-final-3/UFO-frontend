@@ -9,14 +9,41 @@ import SearchBox from "../Components/SearchBox";
 import categories from "../categories";
 import BoardBox from "../Components/BoardBox";
 import { withRouter } from "react-router-dom";
-import { history } from "../redux/configureStore";
+import { makeStyles, MuiThemeProvider } from "@material-ui/core";
+import { MuiTheme } from "../styles/MuiTheme";
+
+const useStyles = makeStyles(theme => ({
+    root: {
+        "& > *": {
+            marginTop: theme.spacing(2),
+        },
+        "& .MuiPaginationItem-icon": {
+            backgroundColor: "#AFB1FF",
+            borderRadius: "20px",
+        },
+
+        "& .Mui-selected": {
+            border: "3px solid #bcffe2",
+            borderRadius: "20px",
+            backgroundColor: "white",
+        },
+        "& .MuiPaginationItem-page": {
+            // border: "3px solid #D8D9FF",
+            borderRadius: "20px",
+            backgroundColor: "white",
+        },
+    },
+}));
 
 const UnivBoard = () => {
     const dispatch = useDispatch();
+    const classes = useStyles();
     const [page, setPage] = useState(1); // pagination 현재 페이지 값
     const univId = useSelector(state => state.user?.user?.univ_id); // 로그인의 인증 대학교 아이디
     const UnivPostList = useSelector(state => state.univBoard.list); // 대학교 게시판 게시글
     const selectedTag = useSelector(state => state.freeBoard.selectedTag); // 현재 선택된 카테고리 구독
+    const totalUnivPage = useSelector(state => state.univBoard.pageCount); // 총 대학 게시판 게시글 페이지 수
+    const announcement = useSelector(state => state.univBoard.fixedList);
 
     // 현재 페이지가 변하면 useEffect 발동, 다음 페이지 대학 게시글 요청
     useEffect(() => {
@@ -48,17 +75,37 @@ const UnivBoard = () => {
 
     return (
         <>
-            <SearchBox searchTag={categories.univBoardTags} page="univboard" />
+            <SearchBox
+                searchTag={categories.univBoardTags}
+                page="univboard"
+                pushButton={true}
+            />
             <BoardContentContainer>
+                {announcement && announcement.length > 0 && (
+                    <BoardBox
+                        postList={announcement && announcement}
+                        preview={true}
+                        boardName="univboard"
+                        announcement={true}
+                    />
+                )}
                 <BoardBox
                     postList={UnivPostList && UnivPostList}
                     preview={true}
                     boardName="univboard"
                 />
             </BoardContentContainer>
-            <PaginationContainer>
-                <Pagination count={10} page={page} onChange={handlePage} />
-            </PaginationContainer>
+            <MuiThemeProvider theme={MuiTheme}>
+                <PaginationContainer>
+                    <div className={classes.root}>
+                        <Pagination
+                            count={totalUnivPage && totalUnivPage}
+                            page={page}
+                            onChange={handlePage}
+                        />
+                    </div>
+                </PaginationContainer>
+            </MuiThemeProvider>
         </>
     );
 };

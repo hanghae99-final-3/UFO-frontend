@@ -1,7 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { univBoardApi, likeApi } from "../../api";
+import { univBoardApi } from "../../api";
 import { history } from "../configureStore";
-
+import { increaseLike, decreaseLike } from "../modules/univBoardSlice";
 /**
  * @author heesung & junghoo
  * @param none
@@ -16,7 +16,7 @@ export const getUnivBoardDB = createAsyncThunk(
             // 게시물 조회 요청
             const response = await univBoardApi.getList(data);
             if (response.data.ok) {
-                return response.data.result;
+                return response.data;
             } else if (!response.data.ok) {
                 return thunkAPI.rejectWithValue(response.data.message);
             }
@@ -95,7 +95,7 @@ export const detailUnivBoardPostDB = createAsyncThunk(
             // 대학 게시판 게시물 상세정보 요청
             const response = await univBoardApi.getPostDetail(data);
             if (response.data.ok) {
-                return response.data.result;
+                return { ...response.data.like, ...response.data.result };
             }
         } catch (error) {
             alert("앗..네트워크 오류가 발생했습니다. 다시 시도해주세요😓 ");
@@ -230,6 +230,25 @@ export const deleteUnivBoardCommentDB = createAsyncThunk(
         } catch (error) {
             alert("댓글 삭제 실패😭 다시 시도해주세요.");
             return thunkAPI.rejectWithValue(error.response.data.message);
+        }
+    },
+);
+export const univLikeToggleDB = createAsyncThunk(
+    "univBoard/like/post",
+    async (data, thunkAPI) => {
+        try {
+            const response = await univBoardApi.univLikeToggle(data);
+            if (response.data.ok) {
+                if (response.data.message === "disliked post") {
+                    //좋아요 취소
+                    thunkAPI.dispatch(decreaseLike());
+                } else {
+                    //좋아요
+                    thunkAPI.dispatch(increaseLike());
+                }
+            }
+        } catch (err) {
+            return thunkAPI.rejectWithValue(err.response.message);
         }
     },
 );

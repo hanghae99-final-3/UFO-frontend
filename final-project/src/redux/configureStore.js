@@ -9,6 +9,7 @@ import freeBoardSlice from "./modules/freeBoardSlice";
 import userSlice from "./modules/userSlice";
 import univBoardSlice from "./modules/univBoardSlice";
 import searchSlice from "./modules/searchSlice";
+import electionSlice from "./modules/electionSlice";
 
 export const history = createBrowserHistory();
 
@@ -18,6 +19,7 @@ const reducer = combineReducers({
     freeBoard: freeBoardSlice.reducer,
     univBoard: univBoardSlice.reducer,
     user: userSlice.reducer,
+    election: electionSlice.reducer,
     search: searchSlice.reducer,
 });
 

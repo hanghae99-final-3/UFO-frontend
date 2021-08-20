@@ -3,20 +3,23 @@ import {
     getUnivBoardDB,
     detailUnivBoardPostDB,
     addUnivBoardPostDB,
-    getUnivBoardCommentDB,
+    editUnivBoardPostDB,
     deleteUnivBoardPostDB,
+    getUnivBoardCommentDB,
     addUnivBoardCommentDB,
     editUnivBoardCommentDB,
     deleteUnivBoardCommentDB,
-    editUnivBoardPostDB,
+    univLikeToggleDB,
 } from "../async/univBoard";
 
 const initialState = {
     list: [],
-    postDetail: null,
+    post: null,
     commentList: [],
+    fixedList: [],
     isFetching: false,
     errorMessage: "",
+    pageCount: null,
     addRequestErrorMessage: "",
     deleteRequestErrorMessage: "",
     editRequestErrorMessage: "",
@@ -34,14 +37,28 @@ const univBoardSlice = createSlice({
         onLogout: state => {
             state.list = [];
         },
+        //사용자가 로그인하고 게시글에 처음 들어갔을때 바로 뷰 카운트를 추가해주는 리듀서
+        setUnivViewReducer: (state, action) => {
+            state.post.view_count += 1;
+        },
+        //사용자가 게시글 좋아요를 누르면 바로 게시글의 전체 좋아요 수를 증가해주는 리듀서
+        increaseLike: (state, action) => {
+            state.post.all_like += 1;
+        },
+        //사용자가 게시글 좋아요를 지우면 바로 게시글의 전체 좋아요 수를 감소해주는 리듀서
+        decreaseLike: (state, action) => {
+            state.post.all_like -= 1;
+        },
     },
     extraReducers: {
         //┏---------------대학교 게시판 게시글 불러오기 reducer------------┓
         [getUnivBoardDB.pending]: (state, { payload }) => {
             state.isFetching = true;
         },
-        [getUnivBoardDB.fulfilled]: (state, { payload: univBoardList }) => {
-            state.list = univBoardList;
+        [getUnivBoardDB.fulfilled]: (state, { payload }) => {
+            state.list = payload.result;
+            state.fixedList = payload.fixed_post;
+            state.pageCount = payload.page_count;
             state.isFetching = false;
             state.getUnivBoardErrorMessage = "";
         },
@@ -56,7 +73,7 @@ const univBoardSlice = createSlice({
         },
         [detailUnivBoardPostDB.fulfilled]: (state, { payload: detail }) => {
             state.isFetching = false;
-            state.postDetail = detail;
+            state.post = detail;
             state.getDetailBoardErrorMessage = "";
         },
         [detailUnivBoardPostDB.rejected]: (state, { payload }) => {
@@ -86,7 +103,7 @@ const univBoardSlice = createSlice({
         },
         [editUnivBoardPostDB.fulfilled]: (state, { payload: updatedPost }) => {
             state.isFetching = false;
-            state.postDetail = updatedPost;
+            state.post = updatedPost;
             state.editRequestErrorMessage = "";
         },
         [editUnivBoardPostDB.rejected]: (state, { payload: errorMessage }) => {
@@ -170,9 +187,23 @@ const univBoardSlice = createSlice({
             state.isFetching = false;
             state.deleteCommentErrorMessage = payload; //errorMessage
         },
+
+        //--------------------------대학게시판 좋아요처리하는 리듀서------------------------
+        [univLikeToggleDB.pending]: (state, action) => {
+            state.isFetching = true;
+        },
+        [univLikeToggleDB.fulfilled]: (state, action) => {
+            state.isFetching = false;
+            state.deleteCommentErrorMessage = "";
+        },
+        [univLikeToggleDB.rejected]: (state, { payload }) => {
+            state.isFetching = false;
+            state.deleteCommentErrorMessage = payload; //errorMessage
+        },
     },
 });
 
-export const { onLogout } = univBoardSlice.actions;
+export const { onLogout, setUnivViewReducer, increaseLike, decreaseLike } =
+    univBoardSlice.actions;
 
 export default univBoardSlice;

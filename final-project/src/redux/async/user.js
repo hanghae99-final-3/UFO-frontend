@@ -2,6 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { history } from "../configureStore";
 import { userApi } from "../../api";
 import jwt from "jwt-decode";
+import Swal from "sweetalert2";
 
 /**
  * @author jangheesung
@@ -55,18 +56,25 @@ export const loginUserDB = createAsyncThunk(
                 const getUserResponse = await userApi.getUser(userId);
                 if (getUserResponse.data.ok) {
                     const user = getUserResponse.data.result;
-                    window.alert("로그인 성공");
+                    Swal.fire({
+                        icon: "success",
+                        title: "성공",
+                        contents: "로그인 성공했습니다.",
+                        showConfirmButton: false,
+                        timer: 1500,
+                    });
                     history.replace("/");
                     return user;
-                } else {
-                    // 서버 로그인 실패 에러 메세지 반환
-                    return thunkAPI.rejectWithValue(
-                        getUserResponse.data.errorMessage,
-                    );
                 }
             }
         } catch (error) {
             // api요청중 일어나는 에러 메세지 반환
+            Swal.fire({
+                icon: "error",
+                title: "이메일 또는 비밀번호를 확인하세요.",
+                showConfirmButton: false,
+                timer: 2000,
+            });
             return thunkAPI.rejectWithValue(error.response.data.message);
         }
     },
@@ -146,6 +154,20 @@ export const deleteAccountDB = createAsyncThunk(
         // 유저 삭제 요청
         await userApi.deleteAccount(userId);
         // 예외처리 추가 필요함
+    },
+);
+
+//관리자 여부 확인하세요
+export const checkAdminDB = createAsyncThunk(
+    "user/check/admin",
+    async (data, thunkAPI) => {
+        // 유저 삭제 요청
+        const response = await userApi.checkAdmin();
+        if (response.data.ok && response.data?.result?.admin_id) {
+            return true;
+        } else {
+            return false;
+        }
     },
 );
 
