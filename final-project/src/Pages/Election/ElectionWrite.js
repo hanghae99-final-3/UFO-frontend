@@ -6,6 +6,7 @@ import moment from "moment";
 import confirm from "../../confirm";
 import DefaultButton from "../../Elements/Buttons/DefaultButton";
 import { history } from "../../redux/configureStore";
+import mixin from "../../styles/Mixin";
 
 //통신
 import axios from "axios";
@@ -272,41 +273,45 @@ const ElectionWrite = () => {
         );
     return (
         <ElectionWriteContainer>
-            {/* 선거 게시글의 제목, 내용, 시작일, 종료일을 입력하는 곳입니다. */}
+            {/* 선거 게시글의 제목, 내용을 입력하는 곳입니다. */}
             <WriteElectionInfoBox>
+                <Title>투표 정보</Title>
                 {/* 선거게시글 제목입력란 */}
-                <TextField
+                <InputTitle
                     name="name"
-                    label="제목"
                     type="text"
+                    placeholder="투표 제목을 입력해주세요."
                     value={post.name ? post.name : ""}
-                    className={classes.textField}
-                    InputLabelProps={{
-                        shrink: true,
-                    }}
                     onChange={e => setElectionInfo(e)}
                 />
                 {/* 선거게시글 내용입력란 */}
-                <TextField
+                <InputContent
                     name="content"
-                    label="내용"
                     type="text"
+                    placeholder="투표 내용을 입력해주세요."
                     value={post.content ? post.content : ""}
-                    className={classes.textField}
-                    InputLabelProps={{
-                        shrink: true,
-                    }}
                     onChange={e => setElectionInfo(e)}
                 />
+            </WriteElectionInfoBox>
+
+            {/* 투표기간을 입력하는 공간입니다. */}
+            <WriteElectionDurationBox>
+                <Title>투표 기간</Title>
                 <DateTimePicker
                     defaultDate={defaultDate}
                     originStartDate={post?.start_date}
                     originEndDate={post?.end_date}
                     getDateInfo={setElectionInfo}
                 />
-            </WriteElectionInfoBox>
+            </WriteElectionDurationBox>
+
             {/* 선거 후보자의 이름, 학과, 소개, 사진을 입력하는 곳입니다. */}
             <WriteCandidateBox className={classes.root}>
+                <Title bottomGap>후보자 정보</Title>
+                <CandidateControls>
+                    <span>현재 후보자 인원: {post?.candidates.length}명</span>
+                    <DefaultButton onClick={addCard}>후보자 추가</DefaultButton>
+                </CandidateControls>
                 {post &&
                     post.candidates.map((ele, idx) => (
                         // 머테리얼 ui의 Accordion을 적용한 부분입니다.
@@ -392,9 +397,7 @@ const ElectionWrite = () => {
                             </AccordionDetails>
                         </Accordion>
                     ))}
-                <DefaultButton rightGap="15px" onClick={addCard}>
-                    후보자 추가
-                </DefaultButton>
+
                 <DefaultButton onClick={addElection}>등록</DefaultButton>
             </WriteCandidateBox>
         </ElectionWriteContainer>
@@ -402,13 +405,44 @@ const ElectionWrite = () => {
 };
 const ElectionWriteContainer = styled.div``;
 
-const WriteElectionInfoBox = styled.div`
-    padding: 50px 40px;
-    display: flex;
-    flex-direction: column;
+const Title = styled.h5`
+    ${mixin.textProps(30, "extraBold", "black")};
+    ${mixin.outline("1px solid", "gray4", "bottom")}
+    padding-bottom: 10px;
 `;
 
+const WriteElectionInfoBox = styled.div`
+    ${mixin.flexBox(null, null, "column")};
+    margin-bottom: 70px;
+`;
+
+const InputTitle = styled.input`
+    border: none;
+    padding: 15px 0;
+    ${mixin.outline("1px solid", "gray4", "bottom")}
+    ${mixin.textProps(40, "extraBold", "gray2")};
+    ::placeholder {
+        ${mixin.textProps(40, "extraBold", "gray4")};
+    }
+`;
+const InputContent = styled.textarea`
+    border: none;
+    padding: 30px 0;
+    ${mixin.outline("1px solid", "gray4", "bottom")}
+    ${mixin.textProps(20, "regular", "gray2")};
+    ::placeholder {
+        ${mixin.textProps(20, "regular", "gray4")};
+    }
+`;
+
+const WriteElectionDurationBox = styled.div``;
+
 const WriteCandidateBox = styled.div``;
+
+const CandidateControls = styled.div`
+    margin: 10px 0;
+    ${mixin.flexBox("space-between", "center")}
+`;
 
 const Freeview = styled.div`
     position: relative;

@@ -21,7 +21,7 @@ const color = {
     // 가장 진한 색이 1이며, 숫자가 커질수록 점점 옅은 색으로 셋팅해두었습니다.
     mainBlue: "#5327ff",
     mainMint: "#83ffca",
-    mainGray: "#dfdfe0",
+    mainGray: "#dedfe0",
     white: "#fff",
     black: "#292b2d",
     mint: "#bcffe2",

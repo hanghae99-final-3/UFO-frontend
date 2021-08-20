@@ -77,7 +77,7 @@ const Container = styled.div`
 const DateBox = styled.div`
     ${mixin.flexBox("center", "center")}
     width: max-content;
-    margin: 10px 0 60px 0;
+    margin: 10px 0 40px 0;
     span {
         ${mixin.textProps(20, "extraBold", "gray1")}
         margin-right: 10px;
