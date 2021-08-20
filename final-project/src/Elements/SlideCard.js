@@ -56,17 +56,17 @@ const CardContainer = styled.div`
     padding: 45px 51px 0 51px;
     position: relative;
     cursor: pointer;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
+    ${mixin.textOverflow()}
 `;
 const InnerContentContainer = styled.div``;
 
 const TitleSpan = styled.div`
     font-size: 20px;
     margin-bottom: 10px;
+    ${mixin.textProps(20, "extraBold", "black")}
 `;
 
 const PreviewSpan = styled.span`
     font-size: 14px;
+    ${mixin.textProps(14, "semiBold", "gray2")}
 `;

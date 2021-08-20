@@ -70,8 +70,8 @@ const MainSlider = ({ postList }) => {
 
 //---------스타일 컴포넌트---------
 const PageTitle = styled.span`
-    font-size: 35px;
     margin-bottom: 20px;
+    ${mixin.textProps(30, "extraBold", "black")}
 `;
 
 const SlideContainer = styled.div`
