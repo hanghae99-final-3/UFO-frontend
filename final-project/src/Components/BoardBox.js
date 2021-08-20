@@ -36,7 +36,11 @@ const BoardBox = ({
 
     // 더보기 클릭 이벤트 헨들러
     const onToMoreClicked = () => {
-        history.push(boardName);
+        if (tag) {
+            history.push(`${boardName}/${tag?.categoryId}`);
+        } else {
+            history.push(boardName);
+        }
     };
 
     //-------리턴 컴포넌트----------
@@ -234,29 +238,36 @@ const AnnounceTitle = styled.p`
 const SmallTag = styled.span`
     margin-right: 20px;
     border-radius: 16px;
-    background-color: white;
+    background-color: ${props =>
+        props.announcement ? props.theme.color.mint : "white"};
     height: ${props => (props.title || props.tag ? " 22px" : "32px")};
     min-width: ${props => (props.title || props.tag ? " 74px" : "94px")};
     line-height: ${props => (props.title || props.tag ? "18px" : "28px")};
     ${props =>
         props.title || props.tag
             ? mixin.textProps(12, "semiBold", "gray1", "center")
-            : mixin.textProps(18, "semiBold", "gray1", "center")}
+            : mixin.textProps(
+                  18,
+                  "semiBold",
+                  props.announcement ? "black" : "gray1",
+                  "center",
+              )}
     ${props =>
-        mixin.outline("2px solid", props.announcement ? "mint" : "blue3")}
+        mixin.outline("2px solid", props.announcement ? "mint" : "blue2")}
 `;
 
 const AnnounceTag = styled.span`
     margin-right: 20px;
     border-radius: 16px;
-    background-color: white;
+    background-color: ${props => props.theme.color.mint};
     height: ${props => (props.title || props.tag ? " 22px" : "32px")};
     min-width: ${props => (props.title || props.tag ? " 74px" : "94px")};
     line-height: ${props => (props.title || props.tag ? "18px" : "28px")};
     ${props =>
         props.title || props.tag
-            ? mixin.textProps(12, "semiBold", "gray1", "center")
-            : mixin.textProps(18, "semiBold", "gray1", "center")}
+            ? mixin.textProps(12, "semiBold", "black", "center")
+            : mixin.textProps(18, "semiBold", "gray1", "center")};
+
     ${mixin.outline("2px solid", "mint")}
 `;
 
