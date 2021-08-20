@@ -12,7 +12,6 @@ import { FaArrowRight, FaArrowLeft } from "react-icons/fa";
 
 //애니메이션
 import Boop from "../../Elements/Boop";
-import { transform } from "lodash";
 
 const CandidateSlider = ({ candidateList }) => {
     const NextArrow = ({ onClick }) => {
@@ -93,7 +92,7 @@ const CandidateSlider = ({ candidateList }) => {
 const SlideContainer = styled.div`
     margin: 30px 0;
     .slick-list {
-        padding: 0 71px !important;
+        padding: 10px 71px !important;
     }
 `;
 
