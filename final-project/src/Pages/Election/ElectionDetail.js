@@ -223,6 +223,7 @@ const CountdownContainer = styled.div`
 `;
 
 const ElectionDate = styled.div`
+    margin-top: 5px;
     ${mixin.flexBox("space-between", "flex-end")};
     span {
         ${mixin.textProps(20, "extraBold", "black")};
