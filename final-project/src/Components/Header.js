@@ -73,19 +73,6 @@ const Header = () => {
                             <Control>
                                 <Link
                                     to={{
-                                        pathname: "/freeboard",
-                                        state: {
-                                            isMatchPathname:
-                                                pathname.includes("/freeboard"),
-                                        },
-                                    }}
-                                >
-                                    자유게시판
-                                </Link>
-                            </Control>
-                            <Control>
-                                <Link
-                                    to={{
                                         pathname: "/univboard",
                                         state: {
                                             isMatchPathname:
@@ -94,6 +81,19 @@ const Header = () => {
                                     }}
                                 >
                                     대학게시판
+                                </Link>
+                            </Control>
+                            <Control>
+                                <Link
+                                    to={{
+                                        pathname: "/freeboard",
+                                        state: {
+                                            isMatchPathname:
+                                                pathname.includes("/freeboard"),
+                                        },
+                                    }}
+                                >
+                                    자유게시판
                                 </Link>
                             </Control>
                             <Control>
