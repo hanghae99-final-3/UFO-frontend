@@ -16,6 +16,7 @@ export const getFreeListDB = createAsyncThunk(
     async (data, thunkAPI) => {
         try {
             const response = await freeBoardApi.getList(data);
+            console.log(response);
             if (response.data.ok) {
                 return response.data;
             }

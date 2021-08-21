@@ -102,6 +102,7 @@ const Post = styled.div`
     border-radius: 20px;
     ${mixin.flexBox("center", "center", null, "100px")};
     ${mixin.floatBox("relative")}
+    cursor: pointer;
 `;
 
 const VotingComplete = styled.div`
