@@ -14,7 +14,7 @@ const Main = ({ children }) => {
 };
 
 const MainContainer = styled.main`
-    width: 1060px;
+    max-width: 1050px;
     margin: 35px auto 50px auto;
 `;
 

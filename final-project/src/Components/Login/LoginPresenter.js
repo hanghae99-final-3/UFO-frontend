@@ -58,6 +58,7 @@ const LoginPresenter = ({
             <Grid className={classes.titleContainer}>
                 <LoginText variant="h4">로그인</LoginText>
             </Grid>
+            {/* <SocialLogin toggleLoginMode={toggleLoginMode} /> */}
             {socialLoginMode ? (
                 <SocialLogin toggleLoginMode={toggleLoginMode} />
             ) : (
@@ -135,6 +136,7 @@ const LoginPresenter = ({
 };
 
 const LoginText = styled.div`
+    width: 120px;
     ${mixin.textProps(40, "extraBold", "black")}
 `;
 const AutoLogin = styled.div`

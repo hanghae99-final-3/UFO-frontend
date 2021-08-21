@@ -68,8 +68,8 @@ const freeBoardSlice = createSlice({
     extraReducers: {
         //----자유게시판 목록 불러오는 리듀서
         [getFreeListDB.fulfilled]: (state, { payload }) => {
-            state.list = payload?.result;
-            state.pageCount = payload?.page_count;
+            state.list = payload?.result.rows;
+            state.pageCount = payload?.result.count;
             state.isFetching = false;
             state.errorMessage = null;
         },

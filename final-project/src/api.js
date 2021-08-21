@@ -19,7 +19,6 @@ instance.interceptors.request.use(async config => {
 });
 
 // ┏----------interceptor를 통한 response 설정----------┓
-
 instance.interceptors.response.use(
     async response => {
         if (response.data.message === "new token") {
@@ -31,7 +30,6 @@ instance.interceptors.response.use(
 
             axios.defaults.headers.common.authorization = `Bearer ${newAccessToken}`;
             originalRequest.headers.authorization = `Bearer ${newAccessToken}`;
-
             return axios(originalRequest);
         }
 
@@ -42,11 +40,15 @@ instance.interceptors.response.use(
             config,
             response: { status },
         } = error;
-        if (status === 401) {
+
+        if (
+            status === 401 &&
+            error.response.data.message !== "비밀번호가 틀렸습니다."
+        ) {
             localStorage.removeItem("token");
             Swal.fire("로그인", "로그인 시간이 만료되었습니다.", "error");
         }
-        history.replace("/");
+        return Promise.reject(error);
     },
 );
 
@@ -80,9 +82,9 @@ export const userApi = {
             school_email: email,
         }),
     // 인증 코드 확인
-    checkVerifyCode: ({ userId, email }) =>
+    checkVerifyCode: ({ user_id, email }) =>
         instance.post("/auth/email/check", {
-            user_id: userId,
+            user_id: user_id,
             school_email: email,
         }),
     // 계정 삭제
@@ -257,6 +259,8 @@ export const searchApi = {
                 sort: data?.sort,
             },
         }),
+
+    searchMain: () => instance.get("util/search"),
 };
 
 export const electionApi = {

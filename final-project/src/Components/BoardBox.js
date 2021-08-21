@@ -22,7 +22,6 @@ const BoardBox = ({
     tag,
     boardName,
     myPostTitle,
-    mypage,
     announcement,
 }) => {
     // 게시물 클릭시 이벤틀 헨들러
@@ -68,58 +67,43 @@ const BoardBox = ({
                                 _onClick(post.post_id);
                             }}
                         >
-                            <Title>
-                                <AnnounceTag title={title} tag={tag}>
-                                    공지
-                                </AnnounceTag>
-                                <AnnounceTitle title={title} tag={tag}>
-                                    {post.title}
-                                </AnnounceTitle>
-                            </Title>
+                            <AnnounceTag title={title} tag={tag}>
+                                공지
+                            </AnnounceTag>
+                            <AnnounceTitle title={title} tag={tag}>
+                                {post.title}
+                            </AnnounceTitle>
 
-                            {!mypage && (
-                                <IconContainer>
-                                    {!tag ? (
-                                        <>
-                                            <Icon title={title} tag={tag}>
-                                                {post?.like?.is_like ===
-                                                false ? (
-                                                    <FavoriteBorder />
-                                                ) : (
-                                                    <FavoriteIcon
-                                                        style={{
-                                                            fill: "#FF5372",
-                                                        }}
-                                                    />
-                                                )}
-                                                <span>
-                                                    {post.like &&
-                                                        post.like.all_like}
-                                                </span>
-                                            </Icon>
-                                            <Icon title={title} tag={tag}>
-                                                <MdComment />
-                                                <span>{post.coment_count}</span>
-                                            </Icon>
-                                        </>
-                                    ) : null}
-
-                                    <Icon title={title} tag={tag}>
-                                        <VisibilityIcon />
-                                        <span>{post.view_count}</span>
-                                    </Icon>
-                                </IconContainer>
-                            )}
-                            {mypage && (
-                                <IconContainer>
-                                    <span>
-                                        {post &&
-                                            moment(post.createdAt).format(
-                                                "YYYY.MM.DD",
+                            <IconContainer>
+                                {!tag ? (
+                                    <>
+                                        <Icon title={title} tag={tag}>
+                                            {post?.like?.is_like === false ? (
+                                                <FavoriteBorder />
+                                            ) : (
+                                                <FavoriteIcon
+                                                    style={{
+                                                        fill: "#FF5372",
+                                                    }}
+                                                />
                                             )}
-                                    </span>
-                                </IconContainer>
-                            )}
+                                            <span>
+                                                {post.like &&
+                                                    post.like.all_like}
+                                            </span>
+                                        </Icon>
+                                        <Icon title={title} tag={tag}>
+                                            <MdComment />
+                                            <span>{post.coment_count}</span>
+                                        </Icon>
+                                    </>
+                                ) : null}
+
+                                <Icon title={title} tag={tag}>
+                                    <VisibilityIcon />
+                                    <span>{post.view_count}</span>
+                                </Icon>
+                            </IconContainer>
                         </PostContainer>
                     ))}
                 {postList &&
@@ -130,74 +114,59 @@ const BoardBox = ({
                                 _onClick(post.post_id);
                             }}
                         >
-                            <Title>
-                                <SmallTag
-                                    title={title}
-                                    tag={tag}
-                                    announcement={announcement}
-                                >
-                                    {!announcement && "#"}
-                                    {boardName === "freeboard" &&
-                                        !announcement &&
-                                        categories.freeCategory[post.category]
-                                            ?.categoryName}
-                                    {boardName === "univboard" &&
-                                        !announcement &&
-                                        categories.univCategory[post.category]
-                                            ?.categoryName}
-                                    {boardName === "univboard" &&
-                                        boardName &&
-                                        announcement &&
-                                        "공지"}
-                                </SmallTag>
-                                <PostTitle tag={tag} title={title}>
-                                    {post.title}
-                                </PostTitle>
-                            </Title>
+                            <SmallTag
+                                title={title}
+                                tag={tag}
+                                announcement={announcement}
+                            >
+                                {!announcement && "#"}
+                                {boardName === "freeboard" &&
+                                    !announcement &&
+                                    categories.freeCategory[post.category]
+                                        ?.categoryName}
+                                {boardName === "univboard" &&
+                                    !announcement &&
+                                    categories.univCategory[post.category]
+                                        ?.categoryName}
+                                {boardName === "univboard" &&
+                                    boardName &&
+                                    announcement &&
+                                    "공지"}
+                            </SmallTag>
+                            <PostTitle tag={tag} title={title}>
+                                {post.title}
+                            </PostTitle>
 
-                            {!mypage && (
-                                <IconContainer>
-                                    {!tag || !title ? (
-                                        <>
-                                            <Icon title={title} tag={tag}>
-                                                {post?.like?.is_like ===
-                                                false ? (
-                                                    <FavoriteBorder />
-                                                ) : (
-                                                    <FavoriteIcon
-                                                        style={{
-                                                            fill: "#FF5372",
-                                                        }}
-                                                    />
-                                                )}
-                                                <span>
-                                                    {post.like &&
-                                                        post.like.all_like}
-                                                </span>
-                                            </Icon>
-                                            <Icon title={title} tag={tag}>
-                                                <MdComment />
-                                                <span>{post.coment_count}</span>
-                                            </Icon>
-                                        </>
-                                    ) : null}
-
-                                    <Icon title={title} tag={tag}>
-                                        <VisibilityIcon />
-                                        <span>{post.view_count}</span>
-                                    </Icon>
-                                </IconContainer>
-                            )}
-                            {mypage && (
-                                <IconContainer>
-                                    <span>
-                                        {post &&
-                                            moment(post.createdAt).format(
-                                                "YYYY.MM.DD",
+                            <IconContainer>
+                                {!tag || !title ? (
+                                    <>
+                                        <Icon title={title} tag={tag}>
+                                            {post?.like?.is_like === false ? (
+                                                <FavoriteBorder />
+                                            ) : (
+                                                <FavoriteIcon
+                                                    style={{
+                                                        fill: "#FF5372",
+                                                    }}
+                                                />
                                             )}
-                                    </span>
-                                </IconContainer>
-                            )}
+                                            <span>
+                                                {post.like &&
+                                                    post.like.all_like}
+                                            </span>
+                                        </Icon>
+                                        <Icon title={title} tag={tag}>
+                                            <MdComment />
+                                            <span>{post.coment_count}</span>
+                                        </Icon>
+                                    </>
+                                ) : null}
+
+                                <Icon title={title} tag={tag}>
+                                    <VisibilityIcon />
+                                    <span>{post.view_count}</span>
+                                </Icon>
+                            </IconContainer>
                         </PostContainer>
                     ))}
             </Content>
@@ -284,19 +253,15 @@ const More = styled.span`
 const Content = styled.div``;
 
 const PostContainer = styled.div`
-    display: flex;
+    display: grid;
+    grid-template-columns: max-content 1fr max-content;
     margin-bottom: 12px;
-    justify-content: space-between;
-`;
-
-const Title = styled.div`
-    display: flex;
-    align-items: center;
+    cursor: pointer;
 `;
 
 const IconContainer = styled.div`
-    display: flex;
-    width: 130px;
+    display: grid;
+    grid-template-columns: repeat(3, 40px);
 `;
 
 const Icon = styled.div`
@@ -304,10 +269,10 @@ const Icon = styled.div`
     align-items: center;
     span {
         line-height: 1;
+        font-size: ${({ theme }) => theme.fontSize["12"]};
     }
     svg {
         font-size: ${props => (props.title || props.tag ? "17px" : "20px")};
-        margin: 0 5px 0 10px;
     }
 `;
 

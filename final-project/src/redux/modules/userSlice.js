@@ -34,6 +34,9 @@ const userSlice = createSlice({
             state.user = {};
             state.isLoggedIn = false;
         },
+        updateUsername: (state, action) => {
+            state.user.nickname = action.payload;
+        },
     },
     extraReducers: {
         //┏---------------회원가입 Reducer-----------------------┓
@@ -106,6 +109,7 @@ const userSlice = createSlice({
     },
 });
 
-export const { resetSignupSuccess, logoutUser } = userSlice.actions;
+export const { resetSignupSuccess, logoutUser, updateUsername } =
+    userSlice.actions;
 
 export default userSlice;

@@ -231,7 +231,7 @@ const TagSelectText = styled.span`
     margin-right: 10px;
 `;
 const TagButton = styled.button`
-    width: 80px;
+    width: 79px;
     height: 30px;
     text-align: center;
     margin-right: 7px;
