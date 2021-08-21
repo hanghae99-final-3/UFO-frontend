@@ -25,7 +25,7 @@ import Count from "../../Components/CountDown/Count";
 import ProgressBar from "../../Components/Election/ProgressBar";
 import CandidateBox from "../../Components/Election/CandidateBox";
 import CandidateCard from "../../Components/Election/CandidateCard";
-import Boop from "../../Elements/Boop";
+import UnvotedBox from "../../Components/Election/UnvotedBox";
 
 const ElectionDetail = () => {
     const dispatch = useDispatch();
@@ -93,25 +93,7 @@ const ElectionDetail = () => {
         <ElectionDetailContainer>
             <UnvotedContainer>
                 <Title>미완료 투표함</Title>
-                <UnvotedBox>
-                    {!unvotedElectionList ? (
-                        <p>모든 투표가 완료되었어요!</p>
-                    ) : (
-                        unvotedElectionList.map(post => (
-                            <Boop timing={200} y={-7}>
-                                <UnvotedCard
-                                    onClick={() =>
-                                        history.push(
-                                            `/election/detail/${post.election_id}`,
-                                        )
-                                    }
-                                >
-                                    <span>{post.name}</span>
-                                </UnvotedCard>
-                            </Boop>
-                        ))
-                    )}
-                </UnvotedBox>
+                <UnvotedBox list={unvotedElectionList} />
             </UnvotedContainer>
             <ElectionInfoContainer>
                 <ElectionTitle>
@@ -217,25 +199,6 @@ const Title = styled.h5`
         !props.borderNone && mixin.outline("1px solid", "gray4", "bottom")}
     padding-bottom: 10px;
     margin-bottom: 15px;
-`;
-
-const UnvotedBox = styled.div`
-    padding: 15px 0;
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 18px;
-`;
-
-const UnvotedCard = styled.div`
-    width: 100%;
-    background-color: ${({ theme }) => theme.color.mainGray};
-    border-radius: 35px;
-    padding: 30px;
-    cursor: pointer;
-
-    span {
-        ${mixin.textboxOverflow(1)}
-    }
 `;
 
 const ElectionInfoContainer = styled.div`
