@@ -205,7 +205,6 @@ const BoardWrite = ({ boardName }) => {
             </>
         );
     }
-
     return (
         // 게시글 작성모드
         <>
@@ -243,7 +242,7 @@ const BoardWrite = ({ boardName }) => {
                             selected={Number(post?.category) === ele.categoryId}
                             key={ele.categoryId}
                             onClick={() =>
-                                setCategory("category", ele.categoryId)
+                                setCategory("category", `${ele.categoryId}`)
                             }
                         >
                             #{ele.categoryName}
