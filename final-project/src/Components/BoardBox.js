@@ -68,14 +68,12 @@ const BoardBox = ({
                                 _onClick(post.post_id);
                             }}
                         >
-                            <Title>
-                                <AnnounceTag title={title} tag={tag}>
-                                    공지
-                                </AnnounceTag>
-                                <AnnounceTitle title={title} tag={tag}>
-                                    {post.title}
-                                </AnnounceTitle>
-                            </Title>
+                            <AnnounceTag title={title} tag={tag}>
+                                공지
+                            </AnnounceTag>
+                            <AnnounceTitle title={title} tag={tag}>
+                                {post.title}
+                            </AnnounceTitle>
 
                             {!mypage && (
                                 <IconContainer>
@@ -130,30 +128,28 @@ const BoardBox = ({
                                 _onClick(post.post_id);
                             }}
                         >
-                            <Title>
-                                <SmallTag
-                                    title={title}
-                                    tag={tag}
-                                    announcement={announcement}
-                                >
-                                    {!announcement && "#"}
-                                    {boardName === "freeboard" &&
-                                        !announcement &&
-                                        categories.freeCategory[post.category]
-                                            ?.categoryName}
-                                    {boardName === "univboard" &&
-                                        !announcement &&
-                                        categories.univCategory[post.category]
-                                            ?.categoryName}
-                                    {boardName === "univboard" &&
-                                        boardName &&
-                                        announcement &&
-                                        "공지"}
-                                </SmallTag>
-                                <PostTitle tag={tag} title={title}>
-                                    {post.title}
-                                </PostTitle>
-                            </Title>
+                            <SmallTag
+                                title={title}
+                                tag={tag}
+                                announcement={announcement}
+                            >
+                                {!announcement && "#"}
+                                {boardName === "freeboard" &&
+                                    !announcement &&
+                                    categories.freeCategory[post.category]
+                                        ?.categoryName}
+                                {boardName === "univboard" &&
+                                    !announcement &&
+                                    categories.univCategory[post.category]
+                                        ?.categoryName}
+                                {boardName === "univboard" &&
+                                    boardName &&
+                                    announcement &&
+                                    "공지"}
+                            </SmallTag>
+                            <PostTitle tag={tag} title={title}>
+                                {post.title}
+                            </PostTitle>
 
                             {!mypage && (
                                 <IconContainer>
@@ -284,19 +280,14 @@ const More = styled.span`
 const Content = styled.div``;
 
 const PostContainer = styled.div`
-    display: flex;
+    display: grid;
+    grid-template-columns: max-content 1fr max-content;
     margin-bottom: 12px;
-    justify-content: space-between;
-`;
-
-const Title = styled.div`
-    display: flex;
-    align-items: center;
 `;
 
 const IconContainer = styled.div`
-    display: flex;
-    width: 130px;
+    display: grid;
+    grid-template-columns: repeat(3, 40px);
 `;
 
 const Icon = styled.div`
@@ -307,7 +298,6 @@ const Icon = styled.div`
     }
     svg {
         font-size: ${props => (props.title || props.tag ? "17px" : "20px")};
-        margin: 0 5px 0 10px;
     }
 `;
 
