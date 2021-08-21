@@ -42,13 +42,14 @@ const Container = styled.div`
 `;
 
 const CandidateImage = styled.div`
-    height: 100%;
+    height: 210px;
+    width: 210px;
     margin-right: 30px;
     img {
         width: 100%;
         height: 100%;
         object-fit: cover;
-        border-radius: 20px;
+        border-radius: 50%;
     }
 `;
 
@@ -67,6 +68,7 @@ const CandidateIntro = styled.div`
     display: grid;
     grid-template-columns: 50px 1fr;
     gap: 10px;
+    align-items: center;
     ${mixin.textProps(20, "regular", "gray1")}
 
     span {
