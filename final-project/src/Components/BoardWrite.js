@@ -139,6 +139,24 @@ const BoardWrite = ({ boardName }) => {
 
     const addPost = () => {
         //서버에 필요한 정보를 정리하고, 포스트를 추가하는 미들웨어 함수로 보낸다.
+
+        //----본문에서 imgSrc들을 가져옵니다.
+        const apiUrl = "http://3.36.90.60/";
+        let imgList = [];
+        const getImgList = () => {
+            let result = [];
+            let _imgList = post.content.split(apiUrl).slice(1);
+            for (let i = 0; i < _imgList.length; i++) {
+                const startIdx = _imgList[i][0];
+                const endIdx = _imgList[i].indexOf(">") - 1;
+                const imgSrc = _imgList[i].slice(startIdx, endIdx);
+                result.push(imgSrc);
+            }
+            return result;
+        };
+        if (post.content.includes(apiUrl)) imgList = getImgList();
+        //----
+
         if (!user.user_id) return alert("로그인을 해주세요!");
 
         if (user.user_id && !post.category)
@@ -156,11 +174,11 @@ const BoardWrite = ({ boardName }) => {
                 category: post.category,
                 content: post.content,
                 country_id: post.country_id,
+                img_list: imgList,
             };
             dispatch(addFreePostDB(req));
             history.push("/freeboard");
         }
-
         if (boardName === "univboard") {
             const req = {
                 title: post.title,
@@ -168,6 +186,7 @@ const BoardWrite = ({ boardName }) => {
                 content: post.content,
                 is_fixed: isAnnouncement,
                 univ_id: user.univ_id,
+                img_list: imgList,
             };
             dispatch(addUnivBoardPostDB(req));
             history.push("/univboard");
