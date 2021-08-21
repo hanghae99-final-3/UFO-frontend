@@ -58,7 +58,7 @@ const univBoardSlice = createSlice({
         [getUnivBoardDB.fulfilled]: (state, { payload }) => {
             state.list = payload.result.rows;
             state.fixedList = payload.fixed_post.rows;
-            state.pageCount = payload.result.count;
+            state.pageCount = payload.page_count;
             state.isFetching = false;
             state.getUnivBoardErrorMessage = "";
         },

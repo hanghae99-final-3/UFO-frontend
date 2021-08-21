@@ -243,7 +243,7 @@ const MypageAccount = props => {
             });
         };
 
-        confirm.deleteAccountConfirm(deleteAccountDB);
+        confirm.deleteConfirm(deleteAccountDB);
     };
 
     return (
