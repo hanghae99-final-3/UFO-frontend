@@ -24,14 +24,20 @@ import Count from "../../Components/CountDown/Count";
 import ProgressBar from "../../Components/Election/ProgressBar";
 import CandidateBox from "../../Components/Election/CandidateBox";
 import CandidateCard from "../../Components/Election/CandidateCard";
+import Boop from "../../Elements/Boop";
 
 const ElectionDetail = () => {
     const dispatch = useDispatch();
     const { id: electionId } = useParams();
     const userInfo = useSelector(state => state.user.user);
     const isAdmin = useSelector(state => state.user.isAdmin); //관리자인지 아닌지에 대한 판별값
+    const electionList = useSelector(state => state.election.list); // 모든 선거게시물의 리스트입니다.
     const post = useSelector(state => state.election.post); //선거게시물의 데이터가 들어있습니다.
     const [selectCandidateId, setSelectCandidateId] = useState(null); //선택한 후보자의 번호를 담는 state입니다.
+    const unvotedElectionList = electionList.filter(
+        post => post.votes.length < 1 && moment().isBefore(post.end_date),
+    ); //미투표&&기간종료되지않은 투표리스트
+    console.log(unvotedElectionList);
 
     useEffect(() => {
         dispatch(getElectionDB(electionId));
@@ -83,10 +89,22 @@ const ElectionDetail = () => {
         );
     return (
         <ElectionDetailContainer>
-            <ElectionContainer>
-                <Title>투표함</Title>
-                <ElectionBox></ElectionBox>
-            </ElectionContainer>
+            <UnvotedContainer>
+                <Title>미완료 투표함</Title>
+                <UnvotedBox>
+                    {!unvotedElectionList ? (
+                        <p>모든 투표가 완료되었어요!</p>
+                    ) : (
+                        unvotedElectionList.map(post => (
+                            <Boop timing={200} y={-7}>
+                                <UnvotedCard>
+                                    <span>{post.name}</span>
+                                </UnvotedCard>
+                            </Boop>
+                        ))
+                    )}
+                </UnvotedBox>
+            </UnvotedContainer>
             <ElectionInfoContainer>
                 <ElectionTitle>
                     <h5>{post?.name}</h5>
@@ -181,7 +199,7 @@ const ElectionDetailContainer = styled.div`
     position: relative;
 `;
 
-const ElectionContainer = styled.div`
+const UnvotedContainer = styled.div`
     width: 100%;
 `;
 
@@ -193,8 +211,23 @@ const Title = styled.h5`
     margin-bottom: 15px;
 `;
 
-const ElectionBox = styled.div`
+const UnvotedBox = styled.div`
     padding: 15px 0;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 18px;
+`;
+
+const UnvotedCard = styled.div`
+    width: 100%;
+    background-color: ${({ theme }) => theme.color.mainGray};
+    border-radius: 35px;
+    padding: 30px;
+    cursor: pointer;
+
+    span {
+        ${mixin.textboxOverflow(1)}
+    }
 `;
 
 const ElectionInfoContainer = styled.div`

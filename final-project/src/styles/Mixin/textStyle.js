@@ -18,4 +18,16 @@ const textOverflow = () => {
     `;
 };
 
-export { textProps, textOverflow };
+const textboxOverflow = (line = 2, lineHeight = 1.5) => {
+    return css`
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: ${line};
+        -webkit-box-orient: vertical;
+        line-height: ${lineHeight};
+        height: ${line * lineHeight}em;
+    `;
+};
+
+export { textProps, textOverflow, textboxOverflow };
