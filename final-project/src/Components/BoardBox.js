@@ -283,6 +283,7 @@ const PostContainer = styled.div`
     display: grid;
     grid-template-columns: max-content 1fr max-content;
     margin-bottom: 12px;
+    cursor: pointer;
 `;
 
 const IconContainer = styled.div`
