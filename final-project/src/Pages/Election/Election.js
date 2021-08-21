@@ -40,17 +40,10 @@ const Election = () => {
     return (
         <ElectionContainer>
             <Title>투표함</Title>
-            <Controls>
-                <DefaultButton
-                    rightGap="15px"
-                    onClick={() => setIsFinished(false)}
-                >
-                    진행중선거
-                </DefaultButton>
-                <DefaultButton onClick={() => setIsFinished(true)}>
-                    종료된선거
-                </DefaultButton>
-            </Controls>
+            <Selecter selected={isFinished}>
+                <button onClick={() => setIsFinished(false)}>진행중선거</button>
+                <button onClick={() => setIsFinished(true)}>종료된선거</button>
+            </Selecter>
             <GridContainer>
                 {currentList &&
                     currentList.map(ele => (
@@ -69,9 +62,11 @@ const Election = () => {
                         </Post>
                     ))}
             </GridContainer>
-            <DefaultButton onClick={() => history.push(`/election/write`)}>
-                추가하기
-            </DefaultButton>
+            <Controls>
+                <DefaultButton onClick={() => history.push(`/election/write`)}>
+                    추가하기
+                </DefaultButton>
+            </Controls>
         </ElectionContainer>
     );
 };
@@ -86,8 +81,36 @@ const Title = styled.h5`
     margin-bottom: 15px;
 `;
 
-const Controls = styled.div`
+const Selecter = styled.div`
     margin-bottom: 15px;
+    button {
+        padding: 0 10px;
+        height: 30px;
+        text-align: center;
+        margin-right: 7px;
+        border-radius: 16px;
+        ${mixin.textProps(18, "semiBold", "gray1")};
+        background-color: ${props => props.theme.color.white};
+        :first-child {
+            ${props =>
+                mixin.outline(
+                    "2px solid",
+                    !props.selected ? "mainMint" : "blue2",
+                )}
+            margin-right: 15px;
+        }
+        :last-child {
+            ${props =>
+                mixin.outline(
+                    "2px solid",
+                    props.selected ? "mainMint" : "blue2",
+                )}
+        }
+    }
+`;
+
+const Controls = styled.div`
+    text-align: center;
 `;
 
 const GridContainer = styled.div`

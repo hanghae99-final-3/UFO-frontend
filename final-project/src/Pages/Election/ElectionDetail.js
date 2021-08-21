@@ -52,6 +52,9 @@ const ElectionDetail = () => {
 
     const addVote = () => {
         //투표를 처리하는 함수입니다.
+        if (!selectCandidateId)
+            return Swal.fire("에러", "후보자를 선택해주세요!", "error");
+
         const req = {
             election_id: electionId,
             candidate_id: selectCandidateId,

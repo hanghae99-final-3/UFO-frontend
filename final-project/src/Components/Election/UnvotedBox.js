@@ -11,8 +11,8 @@ const UnvotedBox = ({ list }) => {
             {!list ? (
                 <p>모든 투표가 완료되었어요!</p>
             ) : (
-                list.map(post => (
-                    <Boop timing={200} y={-7}>
+                list.map((post, idx) => (
+                    <Boop timing={200} y={-7} key={idx}>
                         <UnvotedCard
                             onClick={() =>
                                 history.push(
