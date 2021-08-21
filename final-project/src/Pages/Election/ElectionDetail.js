@@ -11,6 +11,7 @@ import Swal from "sweetalert2";
 //통신
 import {
     getElectionDB,
+    getElectionListDB,
     deleteElectionDB,
     addVoteDB,
 } from "../../redux/async/election";
@@ -40,8 +41,9 @@ const ElectionDetail = () => {
     console.log(unvotedElectionList);
 
     useEffect(() => {
+        dispatch(getElectionListDB());
         dispatch(getElectionDB(electionId));
-    }, []);
+    }, [electionId]);
 
     const selectCandidate = id => {
         //후보자를 선택하면 setSelectCandidateId에 후보자id를 저장합니다.
@@ -97,7 +99,13 @@ const ElectionDetail = () => {
                     ) : (
                         unvotedElectionList.map(post => (
                             <Boop timing={200} y={-7}>
-                                <UnvotedCard>
+                                <UnvotedCard
+                                    onClick={() =>
+                                        history.push(
+                                            `/election/detail/${post.election_id}`,
+                                        )
+                                    }
+                                >
                                     <span>{post.name}</span>
                                 </UnvotedCard>
                             </Boop>
