@@ -296,6 +296,7 @@ const Icon = styled.div`
     align-items: center;
     span {
         line-height: 1;
+        font-size: ${({ theme }) => theme.fontSize["12"]};
     }
     svg {
         font-size: ${props => (props.title || props.tag ? "17px" : "20px")};
