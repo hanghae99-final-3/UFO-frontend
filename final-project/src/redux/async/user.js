@@ -33,6 +33,7 @@ export const signupUserDB = createAsyncThunk(
         }
     },
 );
+//카카오 로그인DB
 
 /**
  * @author jangheesung

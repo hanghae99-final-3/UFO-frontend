@@ -24,6 +24,8 @@ import ElectionDetail from "./Pages/Election/ElectionDetail"; //선거게시판 
 import ElectionWrite from "./Pages/Election/ElectionWrite"; //선거게시글 작성페이지 or 수정페이지
 import SearchResult from "./Pages/SearchResult"; // 자유 게시판 검색 결과 페이지
 import SocialLogin from "./Components/Login/SocialLogin"; // 소셜로그인 페이지
+import ToggleLogin from "./Components/Login/ToggleLogin";
+import KakaoLogin from "./KakaoLogin";
 //정후님을 위한 테스트 페이지 :-)
 import Test from "./Pages/Test";
 
@@ -53,13 +55,19 @@ function App() {
                 <Layout>
                     <Switch>
                         <Route path="/" exact component={Home} />
+                        <Route
+                            path="/auth/kakao/callback"
+                            component={KakaoLogin}
+                        />
                         <Route path="/signup" exact component={Signup} />
                         <Route path="/login" exact component={Login} />
+
                         <Route
                             path="/freeboard/write"
                             exact
                             component={FreeBoardWrite}
                         />
+
                         <Route path="/freeboard" exact component={FreeBoard} />
                         <Route
                             path="/freeboard/:id"

@@ -4,6 +4,7 @@ import theme from "../../styles/theme";
 import styled from "styled-components";
 import mixin from "../../styles/Mixin";
 import { history } from "../../redux/configureStore";
+import axios from "axios";
 
 const SocialLogin = ({ toggleLoginMode }) => {
     return (
@@ -17,7 +18,7 @@ const SocialLogin = ({ toggleLoginMode }) => {
                 <a href="http://3.36.90.60/auth/kakao">카카오 로그인</a>
             </KakaoButtonBox>
             <MemberCheckBox>
-                <p>아직 아이디가 없으신가요?</p>
+                <DoYouHaveID>아직 아이디가 없으신가요?</DoYouHaveID>
                 <GoSignUp
                     onClick={() => {
                         history.push("/signup");
@@ -69,11 +70,13 @@ const GoogleButtonBox = styled.button`
 const MemberCheckBox = styled.div`
     margin-top: 27px;
     display: flex;
-    ${mixin.textProps(20, "regular", "gray3")}
+`;
+const DoYouHaveID = styled.p`
+    ${mixin.textProps(20, "semiBold", "gray3")}
 `;
 const GoSignUp = styled.button`
     background-color: ${({ theme }) => theme.color.white};
-    ${mixin.textProps(20, "regular", "mainBlue")}
+    ${mixin.textProps(20, "extraBold", "mainBlue")}
 `;
 
 export default SocialLogin;
