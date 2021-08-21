@@ -59,7 +59,7 @@ const ElectionWrite = () => {
 
         //선거게시글ID와 state로부터 원본 게시글 정보를 불러올 수 있으면 입력값 통합 state에 저장한다.
         if (electionPostId && electionPostFromState)
-            setPost(electionPostFromState);
+            return setPost(electionPostFromState);
         if (electionPostId && !electionPostFromState) {
             //만약 스테이트에 post값이 없으면, api 요청해서 바로 값을 가져와서 post에 집어넣어준다.
             electionApi
@@ -160,7 +160,6 @@ const ElectionWrite = () => {
 
     const addElection = () => {
         //서버로 보낼 데이터를 정리하고, 선거를 추가하는 미들웨어함수로 보낸다.
-
         //----선거게시글에 대한 내용이 빠져있으면 return 한다.
         if (!post.name || !post.content || !post.start_date || !post.end_date)
             return Swal.fire(
@@ -195,22 +194,20 @@ const ElectionWrite = () => {
         //----
 
         // 후보자에 대한 정보가 있는지 없는지 알아보고, 없으면 return한다.
-        let isWriteCandidatesInfo = true;
         for (let i = 0; i < post.candidates.length; i++)
             if (
                 !post.candidates[i].name ||
                 !post.candidates[i].content ||
                 !post.candidates[i].major
             ) {
-                isWriteCandidatesInfo = false;
+                Swal.fire(
+                    "에러",
+                    "후보자의 정보를 모두 입력해주세요.",
+                    "error",
+                );
                 return;
             }
-        if (!isWriteCandidatesInfo)
-            return Swal.fire(
-                "에러",
-                "후보자의 정보를 모두 입력해주세요.",
-                "error",
-            );
+
         //----
 
         //----서버로 보낼 데이터를 정리하고, 선거게시글을 수정하는 미들웨어 함수로 보낸다.
