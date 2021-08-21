@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 import { useDispatch, useSelector } from "react-redux";
 import { getFreeListDB, getIssuePostListDB } from "../redux/async/freeBoard";
+import { getMainSearchResult } from "../redux/async/search";
 import BoardBox from "../Components/BoardBox";
 import { getUnivBoardDB } from "../redux/async/univBoard";
 import categories from "../categories";
@@ -47,6 +48,7 @@ const Home = () => {
     useEffect(() => {
         dispatch(getFreeListDB(postListQueryData));
         dispatch(getIssuePostListDB());
+        dispatch(getMainSearchResult());
         // 유저에게 등록된 univId가 있다면 대학 게시판 게시글 조회 요청
         if (isLoggedIn && univId) {
             dispatch(getUnivBoardDB(UnivListQueryData));

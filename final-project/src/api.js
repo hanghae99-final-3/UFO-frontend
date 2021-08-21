@@ -19,7 +19,6 @@ instance.interceptors.request.use(async config => {
 });
 
 // ┏----------interceptor를 통한 response 설정----------┓
-
 instance.interceptors.response.use(
     async response => {
         if (response.data.message === "new token") {
@@ -31,7 +30,6 @@ instance.interceptors.response.use(
 
             axios.defaults.headers.common.authorization = `Bearer ${newAccessToken}`;
             originalRequest.headers.authorization = `Bearer ${newAccessToken}`;
-
             return axios(originalRequest);
         }
 
@@ -261,6 +259,8 @@ export const searchApi = {
                 sort: data?.sort,
             },
         }),
+
+    searchMain: () => instance.get("util/search"),
 };
 
 export const electionApi = {
