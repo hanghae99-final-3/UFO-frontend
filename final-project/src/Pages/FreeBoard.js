@@ -58,7 +58,10 @@ const FreeBoard = () => {
     const freeBoardTotalPage = useSelector(state => state.freeBoard.pageCount);
 
     useEffect(() => {
-        window.scrollTo(0, 0);
+        window.scrollTo({
+            top: (0, 0),
+            behavior: "smooth",
+        });
         const postListQueryData = {
             pageSize: 14,
             pageNum: page,

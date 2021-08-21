@@ -47,6 +47,23 @@ const deleteConfirm = (confirmProcess, dismissProcess) => {
     });
 };
 
-const confirm = { deleteConfirm, addConfirm };
+const deleteAccountConfirm = (confirmProcess, dismissProcess) => {
+    Swal.fire({
+        title: "정말 계정을 삭제하시겠어요?",
+        text: "삭제를 하면 되돌릴 수 없어요!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "네",
+        cancelButtonText: "아니오",
+    }).then(result => {
+        if (result.isConfirmed) {
+            confirmProcess();
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+            if (dismissProcess) dismissProcess();
+        }
+    });
+};
+
+const confirm = { deleteConfirm, addConfirm, deleteAccountConfirm };
 
 export default confirm;
