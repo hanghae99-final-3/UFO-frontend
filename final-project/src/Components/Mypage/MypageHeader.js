@@ -110,7 +110,7 @@ const ActivityButton = styled.div`
     border-radius: 76px;
     ${mixin.flexBox("center", "center", null, "40px")};
     ${mixin.outline("2px solid", "blue3")};
-    ${mixin.textProps(18, "semiBold", "gray2")}
+    ${mixin.textProps(18, "semiBold", "gray3")}
 `;
 const ActivityButtonText = styled.span``;
 

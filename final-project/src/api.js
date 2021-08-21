@@ -42,11 +42,15 @@ instance.interceptors.response.use(
             config,
             response: { status },
         } = error;
-        if (status === 401) {
+
+        if (
+            status === 401 &&
+            error.response.data.message !== "비밀번호가 틀렸습니다."
+        ) {
             localStorage.removeItem("token");
             Swal.fire("로그인", "로그인 시간이 만료되었습니다.", "error");
         }
-        history.replace("/");
+        return Promise.reject(error);
     },
 );
 
@@ -80,9 +84,9 @@ export const userApi = {
             school_email: email,
         }),
     // 인증 코드 확인
-    checkVerifyCode: ({ userId, email }) =>
+    checkVerifyCode: ({ user_id, email }) =>
         instance.post("/auth/email/check", {
-            user_id: userId,
+            user_id: user_id,
             school_email: email,
         }),
     // 계정 삭제

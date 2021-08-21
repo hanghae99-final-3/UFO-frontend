@@ -22,7 +22,6 @@ const BoardBox = ({
     tag,
     boardName,
     myPostTitle,
-    mypage,
     announcement,
 }) => {
     // 게시물 클릭시 이벤틀 헨들러
@@ -75,49 +74,36 @@ const BoardBox = ({
                                 {post.title}
                             </AnnounceTitle>
 
-                            {!mypage && (
-                                <IconContainer>
-                                    {!tag ? (
-                                        <>
-                                            <Icon title={title} tag={tag}>
-                                                {post?.like?.is_like ===
-                                                false ? (
-                                                    <FavoriteBorder />
-                                                ) : (
-                                                    <FavoriteIcon
-                                                        style={{
-                                                            fill: "#FF5372",
-                                                        }}
-                                                    />
-                                                )}
-                                                <span>
-                                                    {post.like &&
-                                                        post.like.all_like}
-                                                </span>
-                                            </Icon>
-                                            <Icon title={title} tag={tag}>
-                                                <MdComment />
-                                                <span>{post.coment_count}</span>
-                                            </Icon>
-                                        </>
-                                    ) : null}
-
-                                    <Icon title={title} tag={tag}>
-                                        <VisibilityIcon />
-                                        <span>{post.view_count}</span>
-                                    </Icon>
-                                </IconContainer>
-                            )}
-                            {mypage && (
-                                <IconContainer>
-                                    <span>
-                                        {post &&
-                                            moment(post.createdAt).format(
-                                                "YYYY.MM.DD",
+                            <IconContainer>
+                                {!tag ? (
+                                    <>
+                                        <Icon title={title} tag={tag}>
+                                            {post?.like?.is_like === false ? (
+                                                <FavoriteBorder />
+                                            ) : (
+                                                <FavoriteIcon
+                                                    style={{
+                                                        fill: "#FF5372",
+                                                    }}
+                                                />
                                             )}
-                                    </span>
-                                </IconContainer>
-                            )}
+                                            <span>
+                                                {post.like &&
+                                                    post.like.all_like}
+                                            </span>
+                                        </Icon>
+                                        <Icon title={title} tag={tag}>
+                                            <MdComment />
+                                            <span>{post.coment_count}</span>
+                                        </Icon>
+                                    </>
+                                ) : null}
+
+                                <Icon title={title} tag={tag}>
+                                    <VisibilityIcon />
+                                    <span>{post.view_count}</span>
+                                </Icon>
+                            </IconContainer>
                         </PostContainer>
                     ))}
                 {postList &&
@@ -151,49 +137,36 @@ const BoardBox = ({
                                 {post.title}
                             </PostTitle>
 
-                            {!mypage && (
-                                <IconContainer>
-                                    {!tag || !title ? (
-                                        <>
-                                            <Icon title={title} tag={tag}>
-                                                {post?.like?.is_like ===
-                                                false ? (
-                                                    <FavoriteBorder />
-                                                ) : (
-                                                    <FavoriteIcon
-                                                        style={{
-                                                            fill: "#FF5372",
-                                                        }}
-                                                    />
-                                                )}
-                                                <span>
-                                                    {post.like &&
-                                                        post.like.all_like}
-                                                </span>
-                                            </Icon>
-                                            <Icon title={title} tag={tag}>
-                                                <MdComment />
-                                                <span>{post.coment_count}</span>
-                                            </Icon>
-                                        </>
-                                    ) : null}
-
-                                    <Icon title={title} tag={tag}>
-                                        <VisibilityIcon />
-                                        <span>{post.view_count}</span>
-                                    </Icon>
-                                </IconContainer>
-                            )}
-                            {mypage && (
-                                <IconContainer>
-                                    <span>
-                                        {post &&
-                                            moment(post.createdAt).format(
-                                                "YYYY.MM.DD",
+                            <IconContainer>
+                                {!tag || !title ? (
+                                    <>
+                                        <Icon title={title} tag={tag}>
+                                            {post?.like?.is_like === false ? (
+                                                <FavoriteBorder />
+                                            ) : (
+                                                <FavoriteIcon
+                                                    style={{
+                                                        fill: "#FF5372",
+                                                    }}
+                                                />
                                             )}
-                                    </span>
-                                </IconContainer>
-                            )}
+                                            <span>
+                                                {post.like &&
+                                                    post.like.all_like}
+                                            </span>
+                                        </Icon>
+                                        <Icon title={title} tag={tag}>
+                                            <MdComment />
+                                            <span>{post.coment_count}</span>
+                                        </Icon>
+                                    </>
+                                ) : null}
+
+                                <Icon title={title} tag={tag}>
+                                    <VisibilityIcon />
+                                    <span>{post.view_count}</span>
+                                </Icon>
+                            </IconContainer>
                         </PostContainer>
                     ))}
             </Content>
