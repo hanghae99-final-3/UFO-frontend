@@ -50,6 +50,7 @@ const CandidateImage = styled.div`
         height: 100%;
         object-fit: cover;
         border-radius: 50%;
+        ${mixin.boxShadow()}
     }
 `;
 
