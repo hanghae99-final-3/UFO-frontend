@@ -352,8 +352,13 @@ const InputTitle = styled.input`
     all: unset;
     ${mixin.outline("1px solid", "gray3", "bottom")};
     ${mixin.textProps(30, "extraBold", "black")};
+    transition: border-bottom 1s ease;
     padding: 20px 0;
     width: 100%;
+    transition: border-bottom 1s ease;
+    :focus {
+        ${mixin.outline("1px solid", "black", "bottom")};
+    }
 `;
 
 const Controls = styled.div`

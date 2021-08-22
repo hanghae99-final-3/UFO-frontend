@@ -49,7 +49,6 @@ const ElectionWrite = () => {
         start_date: defaultDate.start,
         end_date: defaultDate.end,
     });
-    console.log(post);
 
     useEffect(() => {
         if (!isAdmin) {
@@ -316,19 +315,27 @@ const WriteElectionInfoBox = styled.div`
 const InputTitle = styled.input`
     border: none;
     padding: 15px 0;
+    transition: border-bottom 1s ease;
     ${mixin.outline("1px solid", "gray4", "bottom")}
     ${mixin.textProps(40, "extraBold", "gray2")};
     ::placeholder {
         ${mixin.textProps(40, "extraBold", "gray4")};
     }
+    :focus {
+        ${mixin.outline("1px solid", "black", "bottom")};
+    }
 `;
 const InputContent = styled.textarea`
     border: none;
     padding: 30px 0;
+    transition: border-bottom 1s ease;
     ${mixin.outline("1px solid", "gray4", "bottom")}
     ${mixin.textProps(20, "regular", "gray2")};
     ::placeholder {
         ${mixin.textProps(20, "regular", "gray4")};
+    }
+    :focus {
+        ${mixin.outline("1px solid", "black", "bottom")};
     }
 `;
 

@@ -38,7 +38,6 @@ const ElectionDetail = () => {
     const unvotedElectionList = electionList.filter(
         post => post.votes.length < 1 && moment().isBefore(post.end_date),
     ); //미투표&&기간종료되지않은 투표리스트
-    console.log(unvotedElectionList);
 
     useEffect(() => {
         dispatch(getElectionListDB());
