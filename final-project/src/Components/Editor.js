@@ -8,8 +8,8 @@ import axios from "axios";
 import Swal from "sweetalert2";
 
 //플러그인
-import Heading from "@ckeditor/ckeditor5-heading/src/heading.js";
-import Paragraph from "@ckeditor/ckeditor5-paragraph/src/paragraph.js";
+import Heading from "@ckeditor/ckeditor5-heading/src/heading";
+import Paragraph from "@ckeditor/ckeditor5-paragraph/src/paragraph";
 import Bold from "@ckeditor/ckeditor5-basic-styles/src/bold.js";
 import Italic from "@ckeditor/ckeditor5-basic-styles/src/italic.js";
 import Strikethrough from "@ckeditor/ckeditor5-basic-styles/src/strikethrough.js";
@@ -88,20 +88,20 @@ class MyUploadAdapter {
 const editorConfiguration = {
     language: "ko",
     plugins: [
-        BlockQuote,
-        Bold,
-        Essentials,
-        FontColor,
-        FontBackgroundColor,
         Heading,
-        Image,
-        ImageUpload,
-        Italic,
-        Link,
         Paragraph,
-        PasteFromOffice,
+        Bold,
+        Italic,
         Strikethrough,
         Underline,
+        FontColor,
+        FontBackgroundColor,
+        Link,
+        BlockQuote,
+        PasteFromOffice,
+        Essentials,
+        Image,
+        ImageUpload,
         ImageResize,
     ],
     extraPlgins: [],
@@ -123,6 +123,27 @@ const editorConfiguration = {
         "undo",
         "redo",
     ],
+    heading: {
+        options: [
+            {
+                model: "paragraph",
+                title: "Paragraph",
+                class: "ck-heading_paragraph",
+            },
+            {
+                model: "heading1",
+                view: "h1",
+                title: "Heading 1",
+                class: "ck-heading_heading1",
+            },
+            {
+                model: "heading2",
+                view: "h2",
+                title: "Heading 2",
+                class: "ck-heading_heading2",
+            },
+        ],
+    },
 
     image: {
         resizeUnit: "px",
@@ -193,19 +214,82 @@ const Editor = ({ getContentFromEditor, originContent }) => {
 const StyledEditor = styled.div`
     min-height: 100px;
 
+    /* 툴바 스타일링 */
     .ck.ck-toolbar.ck-toolbar_grouping {
         padding: 10px;
         border: none;
         background-color: ${({ theme }) => theme.color.white};
+
+        /* 툴바 버튼스타일 */
+        .ck-button {
+            ${mixin.textProps(18, "regular", "gray1")}
+            cursor: pointer;
+        }
+
+        /* 툴바 폰트조절 셀렉터 스타일링 */
+        .ck-dropdown__button {
+            background: white;
+            .ck-dropdown__arrow {
+                transition: all 0.5s ease;
+            }
+            &.ck-on {
+                .ck-dropdown__arrow {
+                    color: ${({ theme }) => theme.color.mainMint};
+                }
+            }
+        }
+
+        .ck-dropdown__panel {
+            border-radius: 0 20px 20px 20px;
+            transition: all 0.5s ease;
+
+            .ck-list {
+                padding: 20px 0;
+                border-radius: 0 20px 20px 20px;
+                background: ${({ theme }) => theme.color.mainBlue};
+                .ck-list__item {
+                    :not(:last-child) {
+                        padding-bottom: 10px;
+                        height: max-content;
+                    }
+                    .ck-button {
+                        background: transparent;
+                        .ck-button__label {
+                            color: ${({ theme }) => theme.color.mainGray};
+                            line-height: 1;
+                        }
+                        &.ck-on {
+                            .ck-button__label {
+                                color: ${({ theme }) => theme.color.mainMint};
+                            }
+                        }
+                    }
+                    .ck-heading_paragraph {
+                        ${mixin.textProps(20, "regular", "gray1")}
+                    }
+                    .ck-heading_heading1 {
+                        ${mixin.textProps(40, "semiBold", "gray1")}
+                    }
+                    .ck-heading_heading2 {
+                        ${mixin.textProps(30, "semiBold", "gray1")}
+                    }
+                }
+            }
+        }
+
         ${mixin.outline("1px solid", "gray3", "bottom")};
     }
+
+    /* 콘텐츠 안쪽영역 스타일링 */
     .ck-content {
-        min-height: 500px;
-        padding: 30px;
+        min-height: 530px;
+        padding: 30px 0;
         border: none;
         ${mixin.outline("1px solid", "gray3", "bottom")};
         transition: all 0.7s ease;
     }
+
+    /* 콘텐츠 바깥영역 스타일링 */
     .ck-content.ck-editor__editable.ck-rounded-corners.ck-editor__editable_inline.ck-focused {
         border: none;
         ${mixin.outline("1px solid", "gray3", "bottom")};
