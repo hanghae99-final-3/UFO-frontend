@@ -14,17 +14,16 @@ import Bold from "@ckeditor/ckeditor5-basic-styles/src/bold.js";
 import Italic from "@ckeditor/ckeditor5-basic-styles/src/italic.js";
 import Strikethrough from "@ckeditor/ckeditor5-basic-styles/src/strikethrough.js";
 import Underline from "@ckeditor/ckeditor5-basic-styles/src/underline.js";
-
 import FontColor from "@ckeditor/ckeditor5-font/src/fontcolor.js";
 import FontBackgroundColor from "@ckeditor/ckeditor5-font/src/fontbackgroundcolor";
-
 import Essentials from "@ckeditor/ckeditor5-essentials/src/essentials.js"; //undo
-
 import BlockQuote from "@ckeditor/ckeditor5-block-quote/src/blockquote.js";
 import Link from "@ckeditor/ckeditor5-link/src/link.js";
 import PasteFromOffice from "@ckeditor/ckeditor5-paste-from-office/src/pastefromoffice";
+
 import Image from "@ckeditor/ckeditor5-image/src/image";
 import ImageUpload from "@ckeditor/ckeditor5-image/src/imageupload";
+import ImageResize from "@ckeditor/ckeditor5-image/src/imageresize";
 
 /**
  * @author jiyeong
@@ -103,6 +102,7 @@ const editorConfiguration = {
         PasteFromOffice,
         Strikethrough,
         Underline,
+        ImageResize,
     ],
     extraPlgins: [],
     toolbar: [
