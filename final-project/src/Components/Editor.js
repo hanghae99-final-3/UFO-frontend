@@ -18,7 +18,6 @@ import FontColor from "@ckeditor/ckeditor5-font/src/fontcolor.js";
 import FontBackgroundColor from "@ckeditor/ckeditor5-font/src/fontbackgroundcolor";
 import Essentials from "@ckeditor/ckeditor5-essentials/src/essentials.js"; //undo
 import BlockQuote from "@ckeditor/ckeditor5-block-quote/src/blockquote.js";
-import Link from "@ckeditor/ckeditor5-link/src/link.js";
 import PasteFromOffice from "@ckeditor/ckeditor5-paste-from-office/src/pastefromoffice";
 
 import Image from "@ckeditor/ckeditor5-image/src/image";
@@ -96,7 +95,7 @@ const editorConfiguration = {
         Underline,
         FontColor,
         FontBackgroundColor,
-        Link,
+
         BlockQuote,
         PasteFromOffice,
         Essentials,
@@ -116,7 +115,6 @@ const editorConfiguration = {
         "strikethrough",
         "underline",
         "|",
-        "link",
         "blockQuote",
         "imageUpload",
         "|",
