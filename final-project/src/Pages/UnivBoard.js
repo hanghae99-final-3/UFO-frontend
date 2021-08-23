@@ -110,21 +110,6 @@ const UnivBoard = () => {
     );
 };
 
-const Title = styled.div`
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    span {
-        font-size: 40px;
-        color: #707070;
-    }
-    button {
-        height: 40px;
-        padding: 0 20px;
-        border-radius: 10px;
-    }
-`;
-
 const BoardContentContainer = styled.div`
     width: 100%;
 `;
@@ -133,7 +118,6 @@ const PaginationContainer = styled.div`
     display: flex;
     justify-content: center;
     margin-top: 10px;
-    margin-bottom: 100px;
 `;
 
 export default withRouter(UnivBoard);

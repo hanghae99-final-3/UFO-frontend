@@ -26,8 +26,6 @@ import SearchResult from "./Pages/SearchResult"; // 자유 게시판 검색 결�
 import SocialLogin from "./Components/Login/SocialLogin"; // 소셜로그인 페이지
 import ToggleLogin from "./Components/Login/ToggleLogin";
 import KakaoLogin from "./KakaoLogin";
-//정후님을 위한 테스트 페이지 :-)
-import Test from "./Pages/Test";
 
 //utils
 import { checkAdminDB, checkLoggedInUser } from "./redux/async/user"; // 로그인 체크
@@ -148,7 +146,6 @@ function App() {
                             exact
                             component={ElectionWrite}
                         />
-                        <Route path="/test" exact component={Test} />
 
                         <Redirect from="*" to="/" />
                     </Switch>
