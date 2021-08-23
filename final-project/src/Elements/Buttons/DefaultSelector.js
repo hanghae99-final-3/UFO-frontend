@@ -1,0 +1,45 @@
+import React from "react";
+import styled from "styled-components";
+import mixin from "../../styles/Mixin";
+
+const DefaultSelector = ({ isSelected, onClick, children, ...props }) => {
+    return (
+        <Button isSelected={isSelected} onClick={onClick} {...props}>
+            {children}
+        </Button>
+    );
+};
+
+const Button = styled.button`
+    padding: 0 10px;
+    min-width: 79px;
+    min-height: 32px;
+    box-sizing: border-box;
+    border-radius: 16px;
+    transition: all 0.5s ease;
+    background-color: ${({ theme }) => theme.color.white};
+    ${props =>
+        props.isSelected
+            ? mixin.textProps(18, "semiBold", "gray1")
+            : mixin.textProps(18, "semiBold", "gray3")}
+    ${props =>
+        props.isSelected
+            ? `box-shadow: inset -2px 5px 5px -5px #cdcdcd;`
+            : `box-shadow:  0 5px 5px -4px #cdcdcd;`}
+            ${props =>
+        mixin.outline("2px solid", props.isSelected ? "mainMint" : "blue2")}
+    ${props => props.rightGap && `margin-right:${props.rightGap};`}
+    ${props => props.leftGap && `margin-left:${props.leftGap};`}
+    ${props =>
+        props.lastNoGap &&
+        `:last-child{
+        margin:0;
+    }`}
+    ${props =>
+        props.fistNoGap &&
+        `:first-child{
+        margin:0;
+    }`}
+`;
+
+export default DefaultSelector;

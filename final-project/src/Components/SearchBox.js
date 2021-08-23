@@ -21,6 +21,7 @@ import Input from "@material-ui/core/Input";
 import CloseIcon from "@material-ui/icons/Close";
 import { MuiTheme } from "../styles/MuiTheme";
 import { makeStyles, MuiThemeProvider, NativeSelect } from "@material-ui/core";
+import DefaultSelector from "../Elements/Buttons/DefaultSelector";
 
 /**
  * @author heesung
@@ -66,6 +67,7 @@ const SearchBox = ({ searchTag, deactivateSearch, page, pushButton }) => {
 
     //태그 클릭 이벤트 핸들링
     const handleTagSelect = e => {
+        console.log(e.target.value);
         setSelectedTag(parseInt(e.target.value));
     };
 
@@ -134,15 +136,17 @@ const SearchBox = ({ searchTag, deactivateSearch, page, pushButton }) => {
                                 y={-7}
                                 key={idx}
                             >
-                                <TagButton
+                                <DefaultSelector
                                     // 선택 여부로 styled component에서 조건부 css 적용(아래 TagButton styled component 참고)
-                                    selected={selectedTag === idx}
+                                    isSelected={selectedTag === idx}
                                     value={idx}
                                     onClick={handleTagSelect}
                                     key={idx}
+                                    rightGap="8px"
+                                    lastNoGap={searchTag.length - 1 === idx}
                                 >
                                     #{tag}
-                                </TagButton>
+                                </DefaultSelector>
                             </Boop>
                         );
                     })}
@@ -220,19 +224,9 @@ const TagContainer = styled.div`
 `;
 const TagSelectText = styled.span`
     ${mixin.textProps(14, "semiBold", "gray3")};
-    margin-right: 10px;
+    margin-right: 5px;
 `;
-const TagButton = styled.button`
-    width: 79px;
-    height: 30px;
-    text-align: center;
-    margin-right: 7px;
-    border-radius: 16px;
-    ${mixin.textProps(18, "semiBold", "gray1")};
-    ${props =>
-        mixin.outline("2px solid", props.selected ? "mainMint" : "blue2")}
-    background-color: ${props => props.theme.color.white};
-`;
+
 const CancelButton = styled.button`
     width: 40px;
     height: 30px;
