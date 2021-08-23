@@ -35,21 +35,6 @@ const color = {
     danger: "#ff8b6f",
 };
 
-// const deviceSize = {
-//     mobile: 360,
-//     tablet: 768,
-// };
-
-//참고 : https://wonit.tistory.com/367
-// // 참고: https://www.styled-components.com/docs/advanced#media-templates
-// const media = Object.keys(deviceSize).reduce((acc, label) => {
-//     acc[label] = (...args) => css`
-//         @media (max-width: ${deviceSize[label] / 16}em) {
-//             ${css(...args)};
-//         }
-//     `;
-// });
-
 const theme = {
     fontSize,
     fontWeight,
