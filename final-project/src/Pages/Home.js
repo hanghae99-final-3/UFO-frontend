@@ -43,6 +43,7 @@ const Home = () => {
         pageNum: 1,
         univ_id: univId,
     };
+    // 메인화면 검색
 
     useEffect(() => {
         dispatch(getFreeListDB(postListQueryData)); // 자유 게시판 디스페치
