@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import mixin from "../../styles/Mixin";
 
+//isSelected가 true/false일 때 스타일링이 적용되어있습니다.
 const DefaultSelector = ({ isSelected, onClick, children, ...props }) => {
     return (
         <Button isSelected={isSelected} onClick={onClick} {...props}>

@@ -3,10 +3,9 @@ import styled from "styled-components";
 import mixin from "../../styles/Mixin";
 
 // gap은 '10px'처럼 string 형식으로 주어야하며, 오른쪽 여백을 줍니다.
-const DefaultButton = ({ children, rightGap, leftGap, onClick }) => {
-    const styles = { rightGap, leftGap };
+const DefaultButton = ({ children, onClick, ...props }) => {
     return (
-        <Button onClick={onClick} {...styles}>
+        <Button onClick={onClick} {...props}>
             {children}
         </Button>
     );
@@ -24,6 +23,16 @@ const Button = styled.button`
     &:hover {
         background: ${({ theme }) => theme.color.mainBlue};
     }
+    ${props =>
+        props.lastNoGap &&
+        `:last-child{
+        margin:0;
+    }`}
+    ${props =>
+        props.fistNoGap &&
+        `:first-child{
+        margin:0;
+    }`}
 `;
 
 export default DefaultButton;
