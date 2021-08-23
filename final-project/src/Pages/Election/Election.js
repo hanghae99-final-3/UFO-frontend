@@ -61,15 +61,16 @@ const Election = () => {
                         {currentList.map(ele => (
                             <Post
                                 key={ele.election_id}
+                                isVoted={ele.votes.length > 0}
                                 onClick={() =>
                                     history.push(
                                         `/election/detail/${ele.election_id}`,
                                     )
                                 }
                             >
-                                <h3>{ele.name}</h3>
+                                <span>{ele.name}</span>
                                 {ele.votes.length > 0 && (
-                                    <VotingComplete>투표완료</VotingComplete>
+                                    <VotingComplete>투표 완료!</VotingComplete>
                                 )}
                             </Post>
                         ))}
@@ -82,33 +83,7 @@ const Election = () => {
 
 const ElectionContainer = styled.div``;
 
-const ListNone = styled.div`
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin-top: 100px;
-    p {
-        ${mixin.textProps(40, "extraBold", "black")};
-    }
-    button {
-        margin-top: 30px;
-        padding: 0 10px;
-        height: 46px;
-        min-width: 164px;
-        border-radius: 20px;
-        background: ${({ theme }) => theme.color.mainGray};
-        ${mixin.textProps(18, "semiBold", "white")};
-        ${props => props.rightGap && `margin-right: ${props.rightGap};`};
-        ${props => props.leftGap && `margin-left: ${props.leftGap};`};
-        &:hover {
-            background: ${({ theme }) => theme.color.danger};
-        }
-    }
-`;
-
-const Title = styled.h5`
+const Title = styled.div`
     ${mixin.outline("1px solid", "gray4", "bottom")};
     ${mixin.flexBox("space-between", "flex-end")};
     padding-bottom: 10px;
@@ -145,32 +120,36 @@ const Selecter = styled.div`
     }
 `;
 
-const Controls = styled.div`
-    text-align: center;
-`;
-
 const GridContainer = styled.div`
-    margin: 15px 0;
+    padding: 15px 0;
     width: 100%;
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1px;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 30px 25px;
 `;
 
 const Post = styled.div`
-    ${mixin.outline("3px solid", "gray4")}
-    border-radius: 20px;
+    overflow: hidden;
+    border-radius: 50px;
+    cursor: pointer;
+    padding: 20px;
+    ${mixin.outline("3px solid", "blue2")}
     ${mixin.flexBox("center", "center", null, "100px")};
     ${mixin.floatBox("relative")}
-    cursor: pointer;
+    ${props =>
+        props.isVoted
+            ? mixin.outline("3px solid", "gray1")
+            : mixin.outline("3px solid", "blue2")}
+    span {
+        ${mixin.textboxOverflow(2)}
+    }
 `;
 
 const VotingComplete = styled.div`
     ${mixin.floatBox("absolute")}
     width: 100%;
-    background: rgba(0, 0, 0, 0.6);
-    border-radius: 18px;
-    ${mixin.textProps(20, "regular", "white")}
+    background: rgba(0, 0, 0, 0.55);
+    ${mixin.textProps(20, "regular", "mainMint")}
     ${mixin.flexBox("center", "center")};
 `;
 
