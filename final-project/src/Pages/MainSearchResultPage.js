@@ -1,12 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { history } from "../redux/configureStore";
+import styled from "styled-components";
 import { getMainSearchResult } from "../redux/async/search";
+import MainSearch from "../Elements/MainSearch";
+import mixin from "../styles/Mixin";
+import theme from "../styles/theme";
+import BoardBox from "../Components/BoardBox";
+import MainSearchList from "../Components/MainSearchList";
 
 const MainSearchResultPage = props => {
     const dispatch = useDispatch();
     const Keyword = history.location.pathname.split("/")[3];
     const [searchResult, setSearchResult] = useState([]);
+    const SearchResult = useSelector(state => state.search.searchResult);
     useEffect(() => {
         const MainSearchQueryDB = {
             keyword: Keyword,
@@ -18,13 +25,27 @@ const MainSearchResultPage = props => {
 
     return (
         <React.Fragment>
-            <h1>Main Search Result</h1>
+            <MainSearch handleSearch />
+            <SearchKeyword>"{Keyword}" 검색 결과</SearchKeyword>
+            <hr
+                style={{
+                    opacity: "0.35",
+                    border: "solid 1.5px #dedfe0",
+                    marginTop: "9px",
+                }}
+            />
             <div>
-                <h3>검색어 : </h3>
-                {Keyword}
+                {SearchResult &&
+                    SearchResult.map((post, idx) => <p>{post.title}</p>)}
             </div>
+            <MainSearchList />
         </React.Fragment>
     );
 };
+
+const SearchKeyword = styled.div`
+    margin-top: 76px;
+    ${mixin.textProps(30, "extraBold", "black")}
+`;
 
 export default MainSearchResultPage;
