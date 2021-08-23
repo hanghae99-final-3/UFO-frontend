@@ -1,13 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import mixin from "../styles/Mixin";
+import { getMainSearchResult } from "../redux/async/search";
+import { useDispatch } from "react-redux";
 
 const MainSearch = props => {
+    const dispatch = useDispatch();
     const [focused, setFocused] = useState(false);
     const [searchTerm, setSearchTerm] = useState("");
 
     const handleSearchTermChange = e => {
         setSearchTerm(e.target.value);
+        dispatch(getMainSearchResult());
     };
     const handleFocus = () => {
         setFocused(true);
@@ -16,6 +20,15 @@ const MainSearch = props => {
         setSearchTerm("");
         setFocused(false);
     };
+
+    useEffect(() => {
+        const mainSearchData = {
+            pageSize: 10,
+            pageNum: 1,
+            keyword: searchTerm,
+        };
+        dispatch(getMainSearchResult(mainSearchData));
+    }, [dispatch, searchTerm]);
     return (
         <React.Fragment>
             <SearchForm focused={focused}>

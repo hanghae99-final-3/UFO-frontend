@@ -40,11 +40,13 @@ export const getUnivSearchResult = createAsyncThunk(
 export const getMainSearchResult = createAsyncThunk(
     "search/getMainSearchResult",
     async (data, thunkAPI) => {
-        try {
-            const response = await searchApi.searchMain();
-            console.log(response);
-        } catch (err) {
-            console.log("main search err", err);
-        }
+        const response = await searchApi.searchMain(data);
+        console.log("main search response", response);
+        // try {
+        //     const response = await searchApi.searchMain(data);
+        //     console.log("main search response", response);
+        // } catch (err) {
+        //     console.log("main search err :", err);
+        // }
     },
 );

@@ -260,7 +260,14 @@ export const searchApi = {
             },
         }),
 
-    searchMain: () => instance.get("util/search"),
+    searchMain: data =>
+        instance.get("util/search", {
+            params: {
+                pageSize: data?.pageSize,
+                pageNum: data?.pageNum,
+                keyword: data?.keyword,
+            },
+        }),
 };
 
 export const electionApi = {
