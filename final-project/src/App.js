@@ -26,6 +26,7 @@ import SearchResult from "./Pages/SearchResult"; // 자유 게시판 검색 결�
 import SocialLogin from "./Components/Login/SocialLogin"; // 소셜로그인 페이지
 import ToggleLogin from "./Components/Login/ToggleLogin";
 import KakaoLogin from "./KakaoLogin";
+import MainSearchResultPage from "./Pages/MainSearchResultPage";
 //정후님을 위한 테스트 페이지 :-)
 import Test from "./Pages/Test";
 
@@ -61,6 +62,11 @@ function App() {
                         />
                         <Route path="/signup" exact component={Signup} />
                         <Route path="/login" exact component={Login} />
+                        <Route
+                            path="/util/search/:keyword"
+                            exact
+                            component={MainSearchResultPage}
+                        />
 
                         <Route
                             path="/freeboard/write"
