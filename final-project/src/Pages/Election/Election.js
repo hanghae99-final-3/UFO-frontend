@@ -33,7 +33,7 @@ const Election = () => {
             <Message
                 message="대학인증을 한 사람만 선거게시글을 볼 수 있어요"
                 link="/mypage"
-                buttonValue="대학인증하러가기"
+                buttonValue="대학인증 하러가기"
             />
         );
 
@@ -44,34 +44,71 @@ const Election = () => {
                 <button onClick={() => setIsFinished(false)}>진행중선거</button>
                 <button onClick={() => setIsFinished(true)}>종료된선거</button>
             </Selecter>
-            <GridContainer>
-                {currentList &&
-                    currentList.map(ele => (
-                        <Post
-                            key={ele.election_id}
-                            onClick={() =>
-                                history.push(
-                                    `/election/detail/${ele.election_id}`,
-                                )
-                            }
+            {currentList && currentList.length < 1 ? (
+                <Message
+                    message="아직 투표가 없습니다"
+                    link="/"
+                    buttonValue="홈으로"
+                />
+            ) : (
+                <>
+                    <GridContainer>
+                        {currentList.map(ele => (
+                            <Post
+                                key={ele.election_id}
+                                onClick={() =>
+                                    history.push(
+                                        `/election/detail/${ele.election_id}`,
+                                    )
+                                }
+                            >
+                                <h3>{ele.name}</h3>
+                                {ele.votes.length > 0 && (
+                                    <VotingComplete>투표완료</VotingComplete>
+                                )}
+                            </Post>
+                        ))}
+                    </GridContainer>
+                    <Controls>
+                        <DefaultButton
+                            onClick={() => history.push(`/election/write`)}
                         >
-                            <h3>{ele.name}</h3>
-                            {ele.votes.length > 0 && (
-                                <VotingComplete>투표완료</VotingComplete>
-                            )}
-                        </Post>
-                    ))}
-            </GridContainer>
-            <Controls>
-                <DefaultButton onClick={() => history.push(`/election/write`)}>
-                    추가하기
-                </DefaultButton>
-            </Controls>
+                            추가하기
+                        </DefaultButton>
+                    </Controls>
+                </>
+            )}
         </ElectionContainer>
     );
 };
 
 const ElectionContainer = styled.div``;
+
+const ListNone = styled.div`
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 100px;
+    p {
+        ${mixin.textProps(40, "extraBold", "black")};
+    }
+    button {
+        margin-top: 30px;
+        padding: 0 10px;
+        height: 46px;
+        min-width: 164px;
+        border-radius: 20px;
+        background: ${({ theme }) => theme.color.mainGray};
+        ${mixin.textProps(18, "semiBold", "white")};
+        ${props => props.rightGap && `margin-right: ${props.rightGap};`};
+        ${props => props.leftGap && `margin-left: ${props.leftGap};`};
+        &:hover {
+            background: ${({ theme }) => theme.color.danger};
+        }
+    }
+`;
 
 const Title = styled.h5`
     ${mixin.textProps(30, "extraBold", "black")};
@@ -114,6 +151,7 @@ const Controls = styled.div`
 `;
 
 const GridContainer = styled.div`
+    width: 100%;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 1px;
