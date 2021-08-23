@@ -220,6 +220,10 @@ const LeftColumn = styled.div`
 
 const Logo = styled.div`
     cursor: pointer;
+    img {
+        width: 122px;
+        height: 41px;
+    }
 `;
 
 const RightColumn = styled.div`
