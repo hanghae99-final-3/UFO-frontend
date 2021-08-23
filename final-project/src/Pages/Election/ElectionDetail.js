@@ -59,7 +59,7 @@ const ElectionDetail = () => {
             candidate_id: selectCandidateId,
         };
 
-        dispatch(addVoteDB(req));
+        confirm.addConfirm(() => dispatch(addVoteDB(req)));
     };
 
     const deleteElection = () => {
@@ -209,20 +209,22 @@ const ElectionInfoContainer = styled.div`
 
 const ElectionTitle = styled.div`
     ${mixin.outline("1px solid", "gray4", "bottom")};
-    ${mixin.flexBox("space-between", "flex-end")};
+    ${mixin.flexBox("space-between", "center")};
     padding-bottom: 10px;
     margin-bottom: 15px;
     h5 {
         ${mixin.textProps(30, "extraBold", "black")};
-        line-height: 1;
+        line-height: 1.5;
+        width: 80%;
     }
-
     p {
         ${mixin.textProps(20, "regular", "black")};
     }
 `;
 
-const TitleControls = styled.div``;
+const TitleControls = styled.div`
+    width: max-content;
+`;
 
 const CountdownContainer = styled.div`
     margin-bottom: 70px;

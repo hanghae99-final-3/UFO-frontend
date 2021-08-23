@@ -9,7 +9,7 @@ import Swal from "sweetalert2";
  */
 const addConfirm = (confirmProcess, dismissProcess) => {
     Swal.fire({
-        title: "게시글을 추가하시겠어요?",
+        title: "정말 등록하시겠어요?",
         icon: "warning",
         showCancelButton: true,
         confirmButtonText: "네",
