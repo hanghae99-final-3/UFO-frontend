@@ -21,14 +21,14 @@ const MainSearch = props => {
         setFocused(false);
     };
 
-    useEffect(() => {
-        const mainSearchData = {
-            pageSize: 10,
-            pageNum: 1,
-            keyword: searchTerm,
-        };
-        dispatch(getMainSearchResult(mainSearchData));
-    }, [dispatch, searchTerm]);
+    // useEffect(() => {
+    //     const mainSearchData = {
+    //         pageSize: 10,
+    //         pageNum: 1,
+    //         keyword: searchTerm,
+    //     };
+    //     dispatch(getMainSearchResult(mainSearchData));
+    // }, [dispatch, searchTerm]);
     return (
         <React.Fragment>
             <SearchForm focused={focused}>

@@ -8,21 +8,19 @@ import Boop from "../Elements/Boop";
 import { history } from "../redux/configureStore";
 import PushButton from "../Elements/Buttons/PushButton";
 
-//-----------------redux----------------
+//redux
 import {
     resetSearchOrder,
     resetTagReducer,
     setSearchOrder,
     setTagReducer,
 } from "../redux/modules/freeBoardSlice";
-//-----
 
-//--------------material Ui---------------
+//material Ui
 import Input from "@material-ui/core/Input";
-import { makeStyles, MuiThemeProvider, NativeSelect } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import { MuiTheme } from "../styles/MuiTheme";
-//-----
+import { makeStyles, MuiThemeProvider, NativeSelect } from "@material-ui/core";
 
 /**
  * @author heesung
@@ -31,6 +29,7 @@ import { MuiTheme } from "../styles/MuiTheme";
  * @역할 검색 / 태그 선택
  * @필수값  searchTag 검색창 위에 보여지는 tag 배열
  */
+
 const useStyles = makeStyles(theme => ({
     selectRoot: {
         //...other styles
@@ -65,26 +64,23 @@ const SearchBox = ({ searchTag, deactivateSearch, page, pushButton }) => {
         dispatch(setTagReducer(selectedTag));
     }, [dispatch, selectedTag, id]);
 
-    //----------------태그 클릭 이벤트 핸들링----------------------
+    //태그 클릭 이벤트 핸들링
     const handleTagSelect = e => {
         setSelectedTag(parseInt(e.target.value));
     };
-    //----
 
-    //---------태그 리셋 버튼 이벤트 핸들링---------
+    //태그 리셋 버튼 이벤트 핸들링
     const handleReset = e => {
         setSelectedTag(null);
         dispatch(resetTagReducer());
     };
-    //----
 
-    //-------검색어 입력창 onChange 이벤트 핸들링------
+    //검색어 입력창 onChange 이벤트 핸들링
     const onSearchTermChange = e => {
         setSearchTerm(e.target.value);
     };
-    //----
 
-    //-------검색창 form onSubmit 이벤트 핸들링--------
+    //검색창 form onSubmit 이벤트 핸들링
     const handleSearch = e => {
         e.preventDefault();
         if (searchTerm === "") {
@@ -96,8 +92,6 @@ const SearchBox = ({ searchTag, deactivateSearch, page, pushButton }) => {
             history.push(`/univboard/search/${searchTerm}`);
         }
     };
-    //----
-
     // 작성일 or  관련순 정렬  이벤트 핸들링
     const handleOrderChange = event => {
         setOrder(event.target.value);
@@ -132,7 +126,6 @@ const SearchBox = ({ searchTag, deactivateSearch, page, pushButton }) => {
                     <TagSelectText>태그 설정</TagSelectText>
                     {searchTag.map((tag, idx) => {
                         // map 함수로 props로 전달된 태그 배열의 태그들 마다 TagButton 컴포넌트 랜더링
-
                         return (
                             <Boop
                                 rotation={0}
@@ -169,7 +162,7 @@ const SearchBox = ({ searchTag, deactivateSearch, page, pushButton }) => {
                                     value={searchTerm}
                                     onChange={onSearchTermChange}
                                     classes={{ root: classes.MuiOutlinedInput }}
-                                    endAdornment={
+                                    startAdornment={
                                         <NativeSelect
                                             classes={{
                                                 root: classes.selectRoot,
@@ -179,7 +172,6 @@ const SearchBox = ({ searchTag, deactivateSearch, page, pushButton }) => {
                                             outlined="false"
                                             onChange={handleOrderChange}
                                             style={{
-                                                width: "80px",
                                                 fontSize: "12px",
                                                 color: "#A6ABB2",
                                             }}
@@ -205,11 +197,14 @@ const SearchBox = ({ searchTag, deactivateSearch, page, pushButton }) => {
 export default SearchBox;
 
 //-------스타일 컴포넌트--------
+const SearchForm = styled.form``;
+const InputContainer = styled.div`
+    width: 100%;
+`;
 const SearchBoxContainer = styled.div`
     margin-bottom: 15px;
 `;
 
-// -----타이틀-----
 const TitleContainer = styled.div`
     margin-bottom: 10px;
     padding-bottom: 10px;
@@ -219,9 +214,6 @@ const TitleContainer = styled.div`
 const TitleSpan = styled.span`
     ${mixin.textProps(30, "extraBold", "black")}
 `;
-//----
-
-//-----태그-----
 const TagContainer = styled.div`
     margin-bottom: 15px;
     ${mixin.flexBox(null, "center", null)}
@@ -241,8 +233,6 @@ const TagButton = styled.button`
         mixin.outline("2px solid", props.selected ? "mainMint" : "blue2")}
     background-color: ${props => props.theme.color.white};
 `;
-//----
-
 const CancelButton = styled.button`
     width: 40px;
     height: 30px;
@@ -255,9 +245,3 @@ const CancelButton = styled.button`
         props.selected ? props.theme.color.white : props.theme.color.gray1};
     background-color: ${props => (props.selected ? "#707071" : "#ffffff")};
 `;
-
-const InputContainer = styled.div`
-    width: 100%;
-`;
-
-const SearchForm = styled.form``;

@@ -311,40 +311,61 @@ const MypageAccount = props => {
                 {/* 이메일 인증 formik validation && input 창 */}
                 {isSchoolEditMode && (
                     <InputContainer>
-                        <InputForm onSubmit={emailAuthFormik.handleSubmit}>
-                            <Input
-                                id="email"
-                                placeholder="학교 메일을 입력해주세요"
-                                {...emailAuthFormik.getFieldProps("email")}
-                                onBlur={emailAuthFormik.handleBlur}
-                            />
-                            {emailAuthMsg === "" &&
-                            emailAuthFormik.touched.email &&
-                            emailAuthFormik.errors.email ? (
-                                <div>{emailAuthFormik.errors.email}</div>
-                            ) : null}
-                            {emailAuthMsg ? <div>{emailAuthMsg}</div> : null}
-                            <InputButton type="submit">확인</InputButton>
-                        </InputForm>
-                        <InputForm onSubmit={authCodeFormik.handleSubmit}>
-                            <Input
-                                id="inputAuthCode"
-                                placeholder="인증번호를 입력해주세요"
-                                {...authCodeFormik.getFieldProps(
-                                    "inputAuthCode",
-                                )}
-                            />
-                            {authCodeMsg === "" &&
-                            authCodeFormik.touched.inputAuthCode &&
-                            authCodeFormik.errors.inputAuthCode ? (
-                                <div>{authCodeFormik.errors.inputAuthCode}</div>
-                            ) : null}
-                            {authCodeFormik.touched.inputAuthCode &&
-                            authCodeMsg ? (
-                                <div>{authCodeMsg}</div>
-                            ) : null}
-                            <InputButton type="submit">인증</InputButton>
-                        </InputForm>
+                        <FirstInputForm onSubmit={emailAuthFormik.handleSubmit}>
+                            <FirstInputWrapper>
+                                <ButtonContainer>
+                                    <Input
+                                        id="email"
+                                        placeholder="학교 메일을 입력해주세요"
+                                        {...emailAuthFormik.getFieldProps(
+                                            "email",
+                                        )}
+                                        onBlur={emailAuthFormik.handleBlur}
+                                    />
+                                    <InputButton type="submit">
+                                        확인
+                                    </InputButton>
+                                </ButtonContainer>
+                                {emailAuthMsg === "" &&
+                                emailAuthFormik.touched.email &&
+                                emailAuthFormik.errors.email ? (
+                                    <ErrorBox>
+                                        {emailAuthFormik.errors.email}
+                                    </ErrorBox>
+                                ) : null}
+                                {emailAuthMsg ? (
+                                    <ErrorBox>{emailAuthMsg}</ErrorBox>
+                                ) : null}
+                            </FirstInputWrapper>
+                        </FirstInputForm>
+
+                        <FirstInputForm onSubmit={authCodeFormik.handleSubmit}>
+                            <InputWrapper>
+                                <ButtonContainer>
+                                    <Input
+                                        id="inputAuthCode"
+                                        placeholder="인증번호를 입력해주세요"
+                                        {...authCodeFormik.getFieldProps(
+                                            "inputAuthCode",
+                                        )}
+                                    />
+                                    <FirstInputButton type="submit">
+                                        인증
+                                    </FirstInputButton>
+                                </ButtonContainer>
+                                {authCodeMsg === "" &&
+                                authCodeFormik.touched.inputAuthCode &&
+                                authCodeFormik.errors.inputAuthCode ? (
+                                    <ErrorBox>
+                                        {authCodeFormik.errors.inputAuthCode}
+                                    </ErrorBox>
+                                ) : null}
+                                {authCodeFormik.touched.inputAuthCode &&
+                                authCodeMsg ? (
+                                    <ErrorBox>{authCodeMsg}</ErrorBox>
+                                ) : null}
+                            </InputWrapper>
+                        </FirstInputForm>
                     </InputContainer>
                 )}
                 {/* 닉네임 변경 모드 핸들러 버튼 */}
@@ -373,9 +394,9 @@ const MypageAccount = props => {
                                 />
                                 {nicknameChangeFormik.touched.password &&
                                 nicknameChangeFormik.errors.password ? (
-                                    <div>
+                                    <ErrorBox>
                                         {nicknameChangeFormik.errors.password}
-                                    </div>
+                                    </ErrorBox>
                                 ) : null}
                                 <ButtonContainer>
                                     <Input
@@ -385,19 +406,17 @@ const MypageAccount = props => {
                                             "nickname",
                                         )}
                                     />
-                                    {nicknameChangeFormik.touched.nickname &&
-                                    nicknameChangeFormik.errors.nickname ? (
-                                        <div>
-                                            {
-                                                nicknameChangeFormik.errors
-                                                    .nickname
-                                            }
-                                        </div>
-                                    ) : null}
+
                                     <InputButton type="submit">
                                         확인
                                     </InputButton>
                                 </ButtonContainer>
+                                {nicknameChangeFormik.touched.nickname &&
+                                nicknameChangeFormik.errors.nickname ? (
+                                    <ErrorBox>
+                                        {nicknameChangeFormik.errors.nickname}
+                                    </ErrorBox>
+                                ) : null}
                             </InputWrapper>
                         </InputForm>
                     </InputContainer>
@@ -429,9 +448,9 @@ const MypageAccount = props => {
 
                                     {loginEmailFormik.touched.password &&
                                     loginEmailFormik.errors.password ? (
-                                        <div>
+                                        <ErrorBox>
                                             {loginEmailFormik.errors.password}
-                                        </div>
+                                        </ErrorBox>
                                     ) : null}
                                     <ButtonContainer>
                                         <Input
@@ -442,19 +461,16 @@ const MypageAccount = props => {
                                                 "newEmail",
                                             )}
                                         />
-                                        {loginEmailFormik.touched.newEmail &&
-                                        loginEmailFormik.errors.newEmail ? (
-                                            <div>
-                                                {
-                                                    loginEmailFormik.errors
-                                                        .newEmail
-                                                }
-                                            </div>
-                                        ) : null}
                                         <InputButton type="submit">
                                             확인
                                         </InputButton>
                                     </ButtonContainer>
+                                    {loginEmailFormik.touched.newEmail &&
+                                    loginEmailFormik.errors.newEmail ? (
+                                        <ErrorBox>
+                                            {loginEmailFormik.errors.newEmail}
+                                        </ErrorBox>
+                                    ) : null}
                                 </InputWrapper>
                             </InputForm>
                         </InputContainer>
@@ -488,12 +504,12 @@ const MypageAccount = props => {
                                         .currentPassword &&
                                     passwordResetFormik.errors
                                         .currentPassword ? (
-                                        <div>
+                                        <ErrorBox>
                                             {
                                                 passwordResetFormik.errors
                                                     .currentPassword
                                             }
-                                        </div>
+                                        </ErrorBox>
                                     ) : null}
                                     <Input
                                         placeholder="새로운 비빌번호"
@@ -504,12 +520,12 @@ const MypageAccount = props => {
                                     />
                                     {passwordResetFormik.touched.newPassword &&
                                     passwordResetFormik.errors.newPassword ? (
-                                        <div>
+                                        <ErrorBox>
                                             {
                                                 passwordResetFormik.errors
                                                     .newPassword
                                             }
-                                        </div>
+                                        </ErrorBox>
                                     ) : null}
                                     <ButtonContainer>
                                         <Input
@@ -519,21 +535,22 @@ const MypageAccount = props => {
                                                 "newPasswordConfirm",
                                             )}
                                         />
-                                        {passwordResetFormik.touched
-                                            .newPasswordConfirm &&
-                                        passwordResetFormik.errors
-                                            .newPasswordConfirm ? (
-                                            <div>
-                                                {
-                                                    passwordResetFormik.errors
-                                                        .newPasswordConfirm
-                                                }
-                                            </div>
-                                        ) : null}
+
                                         <InputButton type="submit">
                                             설정
                                         </InputButton>
                                     </ButtonContainer>
+                                    {passwordResetFormik.touched
+                                        .newPasswordConfirm &&
+                                    passwordResetFormik.errors
+                                        .newPasswordConfirm ? (
+                                        <ErrorBox>
+                                            {
+                                                passwordResetFormik.errors
+                                                    .newPasswordConfirm
+                                            }
+                                        </ErrorBox>
+                                    ) : null}
                                 </InputWrapper>
                             </InputForm>
                         </InputContainer>
@@ -568,6 +585,7 @@ const ButtonWrapper = styled.div``;
 const ControlButton = styled.button`
     height: 35px;
     padding: 0 20px;
+    margin-bottom: 15px;
     width: fit-content;
     border-radius: 20px;
     background-color: white;
@@ -585,20 +603,34 @@ const ControlButton = styled.button`
 `;
 
 const InputContainer = styled.div`
-    margin: 15px 0 40px 40px;
-    ${mixin.flexBox(null, null, "column")}
+    width: 100%;
+    ${mixin.flexBox(null, null, "column")};
 `;
-const InputForm = styled.form`
+
+const FirstInputForm = styled.form`
+    width: 100%;
     ${mixin.flexBox(null, "flex-end")}
 `;
+
+const InputForm = styled.form`
+    width: 100%;
+    margin-bottom: 21px;
+    ${mixin.flexBox(null, "flex-end")}
+`;
+
 const Input = styled.input`
-    height: 37px;
-    width: 35%;
+    margin-top: 5px;
+    height: 25px;
+    width: 90%;
     border: none;
-    ${mixin.outline("1px solid", "gray2", "bottom")}
-    ${mixin.textProps(18, "semiBold", "gray1")}
+    ${props => mixin.outline("1px solid", "gray2", "bottom")};
+    :focus {
+        ${props => mixin.outline("1px solid", "mainBlue", "bottom")};
+    }
+    transition: border-color 1s ease;
+    ${mixin.textProps(18, "semiBold", "gray1")};
     ::placeholder {
-        ${mixin.textProps(18, "semiBold", "gray3")}
+        ${mixin.textProps(18, "semiBold", "gray3")};
     }
 `;
 const InputButton = styled.button`
@@ -606,17 +638,36 @@ const InputButton = styled.button`
     height: 32px;
     border-radius: 40px;
     margin-left: 10px;
-    ${mixin.textProps(18, "semiBold", "white")}
-    background-color: ${props => props.theme.color.blue1}
+    ${mixin.textProps(18, "semiBold", "white")};
+    background-color: ${props => props.theme.color.blue1};
 `;
 
+const FirstInputButton = styled.button`
+    margin-top: 15px;
+    width: 80px;
+    height: 32px;
+    border-radius: 40px;
+    margin-left: 10px;
+    ${mixin.textProps(18, "semiBold", "white")};
+    background-color: ${props => props.theme.color.blue1};
+`;
+
+const FirstInputWrapper = styled.div`
+    width: 100%;
+    ${mixin.flexBox(null, null, "column")};
+`;
 const InputWrapper = styled.div`
     width: 100%;
-    ${mixin.flexBox(null, null, "column")}
+    margin-bottom: 20px;
+    ${mixin.flexBox(null, null, "column")};
 `;
 
 const ButtonContainer = styled.div`
     ${mixin.flexBox(null, "flex-end")}
 `;
 
+const ErrorBox = styled.div`
+    margin-top: 4px;
+    ${mixin.textProps(12, "semiBold", "danger")}
+`;
 export default MypageAccount;

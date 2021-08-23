@@ -19,6 +19,10 @@ const MypageHeader = props => {
         localStorage.removeItem("token");
         history.replace("/");
     };
+
+    const handleGoToMypost = () => {
+        history.push("/mypost");
+    };
     return (
         <React.Fragment>
             <MyPageHeader>
@@ -52,9 +56,7 @@ const MypageHeader = props => {
                     >
                         <ActivityButtonText>최근 알림</ActivityButtonText>
                     </ActivityButton>
-                    <ActivityButton
-                        onClick={() => alert("서비스 준비중 입니다")}
-                    >
+                    <ActivityButton onClick={handleGoToMypost}>
                         <ActivityButtonText>내가 쓴 글</ActivityButtonText>
                     </ActivityButton>
                     <ActivityButton
@@ -88,7 +90,7 @@ const LogoutButton = styled.button`
     width: 108px;
     height: 32px;
     border-radius: 60px;
-    background-color: ${props => props.theme.color.blue1};
+    background-color: ${props => props.theme.color.mainBlue};
     ${mixin.textProps(18, "semiBold", "white")}
 `;
 

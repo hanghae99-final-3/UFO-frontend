@@ -32,7 +32,6 @@ body{
     display: none;
   }
   height: 100vh;
-  /* background-color: #EEF1F5; */
 }
 
 /* CKEditor css설정 */

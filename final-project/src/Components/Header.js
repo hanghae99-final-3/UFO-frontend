@@ -48,10 +48,10 @@ const Header = () => {
                 <LeftColumn>
                     <Logo onClick={() => history.push("/")}>
                         <Boop rotation={20} timing={200} x={0} y={0}>
-                            <img src={logo} />
+                            <img src={logo} alt="" />
                         </Boop>
                     </Logo>
-                    {/* <SelectCountry /> */}
+                    <SelectCountry />
                 </LeftColumn>
                 <RightColumn>
                     <Sparkles>
