@@ -16,6 +16,26 @@ const MypageAccount = props => {
     const dispatch = useDispatch();
     const user = useSelector(state => state.user.user); // 로그인 유저 정보
 
+    // 서버에서 유저에게 발송하는 이메일 인증 코드 저장
+    const [authCode, setAuthCode] = useState(randomString.generate(7));
+    // 이메일 인증 성공 메세지
+    const [emailAuthMsg, setEmailAuthMsg] = useState("");
+    // 버튼의 클릭 유뮤로 styled component의 색상을 변경해주기 위한 상태 값
+    const [selectedButton, setSelectedButton] = useState("");
+    // 유저가 선택한 버튼에 맞는 수정 입력창의 보여주기 위한 상태 값
+    const [isSchoolEditMode, setIsSchoolEditMode] = useState(false);
+    // 유저가 입력한 학교 이메일
+    const [inputEmail, setInputEmail] = useState("");
+    // 학교 인증코드 verification 메세지
+    const [authCodeMsg, setAuthCodeMsg] = useState("");
+    // 닉네임 변경 모드인지 확인하는 상태 값
+    const [isNicknameEditMode, setIsNicknameEditMode] = useState(false);
+    // 로그인 이메일 변경 모드 확인하는 상태 값
+    const [isLoginEmailEditMode, setIsLoginEmailEditMode] = useState(false);
+    // 비밀번호 설정 모드 값
+    const [isResetPasswordEditMode, setIsResetPasswordEditMode] =
+        useState(false);
+
     // 버튼 클릭 핸들러
     const handleButtonClick = event => {
         // 선택된 버튼 (유저가 클리한 버튼)
@@ -29,23 +49,45 @@ const MypageAccount = props => {
             setSelectedButton("");
         }
     };
-    // 버튼의 클릭 유뮤로 styled component의 색상을 변경해주기 위한 상태 값
-    const [selectedButton, setSelectedButton] = useState("");
-    // 유저가 선택한 버튼에 맞는 수정 입력창의 보여주기 위한 상태 값
-    const [isSchoolEditMode, setIsSchoolEditMode] = useState(false);
-    // 이메일 인증 성공 메세지
-    const [emailAuthMsg, setEmailAuthMsg] = useState("");
-    // 서버에서 유저에게 발송하는 이메일 인증 코드 저장
-    const [authCode, setAuthCode] = useState(randomString.generate(7));
-    // 유저가 입력한 학교 이메일
-    const [inputEmail, setInputEmail] = useState("");
-    // 학교 인증코드 verification 메세지
-    const [authCodeMsg, setAuthCodeMsg] = useState("");
     // 이메일 인증 모드 핸들러
     const handleSchoolAuth = e => {
         setIsNicknameEditMode(false);
         setIsLoginEmailEditMode(false);
         setIsSchoolEditMode(!isSchoolEditMode);
+    };
+    // 닉네임 변경 모드 핸들러
+    const handleNicknameEditMode = e => {
+        setIsSchoolEditMode(false);
+        setIsLoginEmailEditMode(false);
+        setIsResetPasswordEditMode(false);
+        setIsNicknameEditMode(!isNicknameEditMode);
+    };
+    // 로그인 이메일 변경 모드 핸들러
+    const handleLoginEmailEditMode = e => {
+        setIsSchoolEditMode(false);
+        setIsNicknameEditMode(false);
+        setIsResetPasswordEditMode(false);
+        setIsLoginEmailEditMode(!isLoginEmailEditMode);
+    };
+    // 비밀번호 설정 모드 핸들러
+    const handlePasswordResetMode = e => {
+        setIsSchoolEditMode(false);
+        setIsLoginEmailEditMode(false);
+        setIsNicknameEditMode(false);
+        setIsResetPasswordEditMode(!isResetPasswordEditMode);
+    };
+    // 계정 삭제 핸들러
+    const handleDeleteAccount = () => {
+        const deleteAccountDB = async () => {
+            await userApi.deleteAccount(user.user_id).then(res => {
+                if (res.data.ok) {
+                    Swal.fire("완료", "회원 탈퇴 성공", "success");
+                    dispatch(logoutUser());
+                }
+            });
+        };
+
+        confirm.deleteConfirm(deleteAccountDB);
     };
     // 이메일 인증 유효성 formik & submit handler
     const emailAuthFormik = useFormik({
@@ -112,16 +154,6 @@ const MypageAccount = props => {
             }
         },
     });
-
-    // 닉네임 변경 모드인지 확인하는 상태 값
-    const [isNicknameEditMode, setIsNicknameEditMode] = useState(false);
-    // 닉네임 변경 모드 핸들러
-    const handleNicknameEditMode = e => {
-        setIsSchoolEditMode(false);
-        setIsLoginEmailEditMode(false);
-        setIsResetPasswordEditMode(false);
-        setIsNicknameEditMode(!isNicknameEditMode);
-    };
     // 닉네임 변경 formik && onSubmit handler
     const nicknameChangeFormik = useFormik({
         initialValues: {
@@ -153,7 +185,6 @@ const MypageAccount = props => {
                     }
                 })
                 .catch(error => {
-                    console.log(error.response);
                     if (error.response.data.message === "닉네임 중복") {
                         nicknameChangeFormik.errors.nickname =
                             "이미 사용중인 닉네임입니다.";
@@ -167,15 +198,6 @@ const MypageAccount = props => {
                 });
         },
     });
-    // 로그인 이메일 변경 모드 확인하는 상태 값
-    const [isLoginEmailEditMode, setIsLoginEmailEditMode] = useState(false);
-    // 로그인 이메일 변경 모드 핸들러
-    const handleLoginEmailEditMode = e => {
-        setIsSchoolEditMode(false);
-        setIsNicknameEditMode(false);
-        setIsResetPasswordEditMode(false);
-        setIsLoginEmailEditMode(!isLoginEmailEditMode);
-    };
     // 로그인 이메일 변경 formik && onSubmit handler
     const loginEmailFormik = useFormik({
         initialValues: {
@@ -217,34 +239,55 @@ const MypageAccount = props => {
                 });
         },
     });
+    // 비밀번호 재설정 formik && onSubmit handler
+    const passwordResetFormik = useFormik({
+        initialValues: {
+            currentPassword: "",
+            newPassword: "",
+            newPasswordConfirm: "",
+        },
+        validationSchema: Yup.object({
+            currentPassword:
+                Yup.string().required("현재 비빌번호를 입력해주세요"),
+            newPassword:
+                Yup.string().required("새로운 비빌번호를 입력해주세요 "),
 
-    // 비밀번호 설정 모드 값
-    const [isResetPasswordEditMode, setIsResetPasswordEditMode] =
-        useState(false);
-
-    // 비밀번호 설정 모드 핸들러
-    const handlePasswordResetMode = e => {
-        setIsSchoolEditMode(false);
-        setIsLoginEmailEditMode(false);
-        setIsNicknameEditMode(false);
-        setIsResetPasswordEditMode(!isResetPasswordEditMode);
-    };
-
-    // 비
-
-    // 계정 삭제 핸들러
-    const handleDeleteAccount = () => {
-        const deleteAccountDB = async () => {
-            await userApi.deleteAccount(user.user_id).then(res => {
-                if (res.data.ok) {
-                    Swal.fire("완료", "회원 탈퇴 성공", "success");
-                    dispatch(logoutUser());
-                }
-            });
-        };
-
-        confirm.deleteConfirm(deleteAccountDB);
-    };
+            newPasswordConfirm: Yup.string()
+                .required("비밀번호 확인을 입력해주세요.")
+                .oneOf(
+                    [Yup.ref("newPassword"), null],
+                    "비밀번호가 같지 않습니다.",
+                ),
+        }),
+        onSubmit: async (
+            { currentPassword, newPassword, newPasswordConfirm },
+            actions,
+        ) => {
+            const req = {
+                password: currentPassword,
+                newPassword: newPassword,
+                userId: user.user_id,
+            };
+            await userApi
+                .editUserProfile(req)
+                .then(res => {
+                    if (res.data.ok) {
+                        actions.resetForm(passwordResetFormik.initialValues);
+                        setSelectedButton("");
+                        setIsResetPasswordEditMode(false);
+                        Swal.fire("완료", "비밀번호 변경 성공", "success");
+                    }
+                })
+                .catch(error => {
+                    if (
+                        error.response.data.message === "비밀번호가 틀렸습니다."
+                    ) {
+                        passwordResetFormik.errors.currentPassword =
+                            "비밀번호가 틀렸습니다.";
+                    }
+                });
+        },
+    });
 
     return (
         <>
@@ -430,13 +473,66 @@ const MypageAccount = props => {
                     </ControlButton>
                     {isResetPasswordEditMode && (
                         <InputContainer>
-                            <InputForm>
+                            <InputForm
+                                onSubmit={passwordResetFormik.handleSubmit}
+                            >
                                 <InputWrapper>
-                                    <Input placeholder="현재 비밀번호" />
-                                    <Input placeholder="새로운 비빌번호" />
+                                    <Input
+                                        placeholder="현재 비밀번호"
+                                        type="password"
+                                        {...passwordResetFormik.getFieldProps(
+                                            "currentPassword",
+                                        )}
+                                    />
+                                    {passwordResetFormik.touched
+                                        .currentPassword &&
+                                    passwordResetFormik.errors
+                                        .currentPassword ? (
+                                        <div>
+                                            {
+                                                passwordResetFormik.errors
+                                                    .currentPassword
+                                            }
+                                        </div>
+                                    ) : null}
+                                    <Input
+                                        placeholder="새로운 비빌번호"
+                                        type="password"
+                                        {...passwordResetFormik.getFieldProps(
+                                            "newPassword",
+                                        )}
+                                    />
+                                    {passwordResetFormik.touched.newPassword &&
+                                    passwordResetFormik.errors.newPassword ? (
+                                        <div>
+                                            {
+                                                passwordResetFormik.errors
+                                                    .newPassword
+                                            }
+                                        </div>
+                                    ) : null}
                                     <ButtonContainer>
-                                        <Input placeholder="새로운 비밀번호 확인" />
-                                        <InputButton>설정</InputButton>
+                                        <Input
+                                            type="password"
+                                            placeholder="새로운 비밀번호 확인"
+                                            {...passwordResetFormik.getFieldProps(
+                                                "newPasswordConfirm",
+                                            )}
+                                        />
+                                        {passwordResetFormik.touched
+                                            .newPasswordConfirm &&
+                                        passwordResetFormik.errors
+                                            .newPasswordConfirm ? (
+                                            <div>
+                                                {
+                                                    passwordResetFormik.errors
+                                                        .newPasswordConfirm
+                                                }
+                                            </div>
+                                        ) : null}
+                                        <InputButton type="submit">
+                                            설정
+                                        </InputButton>
                                     </ButtonContainer>
                                 </InputWrapper>
                             </InputForm>
