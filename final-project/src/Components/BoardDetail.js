@@ -1,9 +1,21 @@
 import React, { useEffect, useState } from "react";
-import styled from "styled-components";
-import { history } from "../redux/configureStore";
-import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
+import { useCookies } from "react-cookie"; // 쿠키 훅스
+import { useParams } from "react-router-dom"; // 쿼리 스트링 훅스
 import { setViewReducer } from "../redux/modules/freeBoardSlice";
+import { setUnivViewReducer } from "../redux/modules/univBoardSlice";
+import instance from "../api"; // api instance 객체
+
+import Cookies from "js-cookie";
+import mixin from "../styles/Mixin"; //css 믹스인 객체
+import styled from "styled-components"; // 스타일 컴포넌트
+import moment from "moment"; // moment 날짜 라이브러리
+import categories from "../categories"; // 태그 카테고리
+import { history } from "../redux/configureStore"; //  히스토리 객체
+import TimeCounting from "time-counting"; // 작성일 표시 라이브러리
+import { ToastContainer, toast } from "react-toastify"; // 토스티 파이 라이브러리
+import "react-toastify/dist/ReactToastify.css"; // 토스티파이 css
+
 import {
     getFreePostDB,
     deleteFreePostDB,
@@ -17,44 +29,35 @@ import {
     univLikeToggleDB,
 } from "../redux/async/univBoard";
 
-import moment from "moment";
-import { Button as Mbutton } from "@material-ui/core";
-import AccessTimeIcon from "@material-ui/icons/AccessTime";
-import LinkIcon from "@material-ui/icons/Link";
-
-import categories from "../categories";
-import VisibilityIcon from "@material-ui/icons/Visibility";
-
-import TimeCounting from "time-counting";
-
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-
-import { useCookies } from "react-cookie";
-import Cookies from "js-cookie";
-import instance from "../api";
-import { setUnivViewReducer } from "../redux/modules/univBoardSlice";
-
-//----좋아요
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
-import FavoriteBorder from "@material-ui/icons/FavoriteBorder";
-import FavoriteIcon from "@material-ui/icons/Favorite";
-//----
-
-import mixin from "../styles/Mixin";
+import LinkIcon from "@material-ui/icons/Link"; // 링크 공유 아이콘
+import { Button as Mbutton } from "@material-ui/core"; // 버튼 아이콘
+import VisibilityIcon from "@material-ui/icons/Visibility"; // 조회수 아이콘
+import AccessTimeIcon from "@material-ui/icons/AccessTime"; // 작성일 아이콘
+import FavoriteIcon from "@material-ui/icons/Favorite"; // 좋아요 아이콘 (색상 있음)
+import FavoriteBorder from "@material-ui/icons/FavoriteBorder"; //좋아요 아이콘 (색상 없음)
 
 const BoardDetail = ({ page }) => {
     const dispatch = useDispatch();
-    const { id: postId } = useParams();
-    // 게시물 상세 정보 스토어 구독
+    const { id: postId } = useParams(); // 게시물 아이디
+    const userId = useSelector(state => state.user.user.user_id); // 유저 아이디
+    const isLoggedInt = useSelector(state => state.user.isLoggedIn); // 로그인 상태
+
+    let now = new Date(); // 게시물 조회 최초 시간
+    let after20m = new Date(); // 최초 조회후 20분이후 시간
+    const viewCookie = page === "freeboard" ? `f${postId}` : `u${postId}`; // 조회 이력 쿠키 정보
+    const [_, setCookie, __] = useCookies([viewCookie]); // useCookie 훅스
+
+    // 게시물 상세 정보
     const post = useSelector(state =>
         page === "freeboard" ? state.freeBoard.post : state.univBoard.post,
     );
-    // 유저 아이디 스토어 구독
-    const userId = useSelector(state => state.user.user.user_id);
-    const isLoggedin = useSelector(state => state.user.isLoggedIn);
-    //작성 시간 config 설정
+    // 좋아요 유무
+    const isLike = useSelector(state =>
+        page === "freeboard"
+            ? state.freeBoard.post?.is_like
+            : state.univBoard.post?.is_like,
+    );
+    // TimeCounting Configure 정보
     const timeOption = {
         lang: "ko",
         // objectTime: "2020-08-10 06:00:00",
@@ -64,34 +67,57 @@ const BoardDetail = ({ page }) => {
         },
     };
 
-    const isLike = useSelector(state =>
-        page === "freeboard"
-            ? state.freeBoard.post?.is_like
-            : state.univBoard.post?.is_like,
-    );
-    //-------------조회수--------------
-    let now = new Date();
-    let after20m = new Date();
-    const viewCookie = page === "freeboard" ? `f${postId}` : `u${postId}`;
-    const [cookies, setCookie, removeCookie] = useCookies([viewCookie]);
+    // 게시물 삭제 핸들러
+    const handleDeletePost = () => {
+        const req = {
+            post_id: post.post_id,
+        };
+        dispatch(
+            page === "freeboard"
+                ? deleteFreePostDB(req)
+                : deleteUnivBoardPostDB(req),
+        );
+    };
+    // 게시물 링크 공유 버튼 핸들러
+    const handleCopyUrl = () => {
+        const el = document.createElement("input");
+        el.value = window.location.href;
+        document.body.appendChild(el);
+        el.select();
+        document.execCommand("copy");
+        document.body.removeChild(el);
+        toast("게시물 링크가 클립보드에 복사되었습니다!");
+    };
+    // 좋아요 핸들러
+    const handleLikeButton = () => {
+        if (isLoggedInt) {
+            page === "freeboard"
+                ? dispatch(postLikeToggleDB(postId))
+                : dispatch(univLikeToggleDB(postId));
+        }
+    };
+    // 게시물 작성 버튼 (글쓰기) 핸들러
+    const handlePostWrite = () => history.push(`/${page}/write`);
+    // 게시물 수정 버튼 핸들러
+    const handlePostEdit = () => history.push(`/${page}/edit/${postId}`);
+    // 목록으로 돌아가기 버튼 핸들러
+    const handleGoToList = () => history.push(`/${page}`);
 
     useEffect(() => {
-        window.scrollTo({
-            top: (0, 0),
-            behavior: "smooth",
-        });
-
+        // 상세보기 페이지 url을 확인후 자유 게시판 or 대학 게시판 게시물 판별
         dispatch(
             page === "freeboard"
                 ? getFreePostDB(postId)
                 : detailUnivBoardPostDB(postId),
         );
-        // 게시물 상세정보 api 요청 미들웨어
+        // 게시물 상세정보 요청
         dispatch(
             page === "freeboard"
                 ? getFreeCommentListDB(postId)
                 : getUnivBoardCommentDB(postId),
         ); //특정게시물의 댓글목록 가져오는 함수
+
+        // 조회수 증감 함수
         const callView = async () => {
             if (page === "freeboard") {
                 await instance.get(`free/post/${postId}/view_count`);
@@ -125,35 +151,9 @@ const BoardDetail = ({ page }) => {
             });
             callView();
         }
-        //이미 좋아요 눌렀던 게시물이면 빨간하트 return
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [dispatch, postId, page, isLike]);
 
-    //서버에 필요한 정보를 정리하고, 포스트를 삭제하는 미들웨어 함수로 보낸다.
-    const deletePost = () => {
-        const req = {
-            post_id: post.post_id,
-        };
-        dispatch(
-            page === "freeboard"
-                ? deleteFreePostDB(req)
-                : deleteUnivBoardPostDB(req),
-        );
-    };
-
-    const copyUrl = () => {
-        const el = document.createElement("input");
-        el.value = window.location.href;
-        document.body.appendChild(el);
-        el.select();
-        document.execCommand("copy");
-        document.body.removeChild(el);
-        toast("게시물 링크가 클립보드에 복사되었습니다!");
-    };
-    const onLikeClick = () => {
-        page === "freeboard"
-            ? dispatch(postLikeToggleDB(postId))
-            : dispatch(univLikeToggleDB(postId));
-    };
     return (
         <MainContentContainer>
             <ContentHeaderContainer>
@@ -177,60 +177,36 @@ const BoardDetail = ({ page }) => {
 
                     <IconContainer>
                         <ToastContainer limit={1} />
-
                         <Mbutton
                             disableElevation
                             disableRipple
-                            onClick={copyUrl}
+                            onClick={handleCopyUrl}
                         >
                             <Icon>
                                 <LinkIcon />
                             </Icon>
                         </Mbutton>
                         <Icon>
-                            <FormControlLabel
-                                style={{ width: "30px" }}
-                                control={
-                                    <Checkbox
-                                        disableElevation
-                                        disableRipple
-                                        disabled={!isLoggedin}
-                                        onClick={onLikeClick}
-                                        style={
-                                            ({ cursor: "pointer" },
-                                            { backgroundColor: "transparent" })
-                                        }
-                                        icon={
-                                            isLike ? (
-                                                <FavoriteIcon
-                                                    style={{ fill: "#FF5372" }}
-                                                />
-                                            ) : (
-                                                <FavoriteBorder />
-                                            )
-                                        }
-                                        checkedIcon={
-                                            isLike ? (
-                                                <FavoriteBorder />
-                                            ) : (
-                                                <FavoriteIcon
-                                                    style={{ fill: "#FF5372" }}
-                                                />
-                                            )
-                                        }
-                                    />
-                                }
-                            />
-                            <span>{post && post.all_like}</span>
+                            {isLike ? (
+                                <FavoriteIcon style={{ fill: "#FF5372" }} />
+                            ) : (
+                                <FavoriteBorder />
+                            )}
+                            <CountSpan>{post && post.all_like}</CountSpan>
                         </Icon>
                         <Icon>
                             <VisibilityIcon />
-                            <span>{post && post.view_count}</span>
+                            <CountSpan>{post && post.view_count}</CountSpan>
                         </Icon>
 
                         <Icon>
                             <AccessTimeIcon />
-                            {TimeCounting(post && post.createdAt, timeOption)}
+                            <CountSpan>
+                                {TimeCounting(
+                                    post && post.createdAt,
+                                    timeOption,
+                                )}
+                            </CountSpan>
                         </Icon>
                     </IconContainer>
                 </NicknameIconContainer>
@@ -246,26 +222,18 @@ const BoardDetail = ({ page }) => {
 
             <ButtonContainer>
                 <ButtonWrapper>
-                    <Button>좋아요</Button>
+                    <Button onClick={handleLikeButton}>좋아요</Button>
                 </ButtonWrapper>
                 <ButtonWrapper>
-                    <Button onClick={() => history.push(`/${page}`)}>
-                        목록
-                    </Button>
-                    <Button>글쓰기</Button>
+                    <Button onClick={handleGoToList}>목록</Button>
+                    <Button onClick={handlePostWrite}>글쓰기</Button>
                     {userId &&
                         post &&
                         post.user &&
                         userId === post.user.user_id && (
                             <>
-                                <Button
-                                    onClick={() =>
-                                        history.push(`/${page}/edit/${postId}`)
-                                    }
-                                >
-                                    수정
-                                </Button>
-                                <Button onClick={deletePost}>삭제</Button>
+                                <Button onClick={handlePostEdit}>수정</Button>
+                                <Button onClick={handleDeletePost}>삭제</Button>
                             </>
                         )}
                 </ButtonWrapper>
@@ -277,7 +245,6 @@ const BoardDetail = ({ page }) => {
 const MainContentContainer = styled.div`
     margin-top: 30px;
 `;
-
 const Tag = styled.span`
     height: 32px;
     min-width: 80px;
@@ -292,6 +259,10 @@ const Title = styled.h3`
     display: block;
     margin: 20px 0 0 0;
     ${mixin.textProps(30, "extraBlack", "black")}
+`;
+
+const CountSpan = styled.span`
+    ${mixin.textProps(12, "semiBold", "gray3")}
 `;
 const Nickname = styled.span`
     ${mixin.textProps(14, "semiBold", "gray2")}
