@@ -151,6 +151,9 @@ const VotingComplete = styled.div`
     background: rgba(0, 0, 0, 0.55);
     ${mixin.textProps(20, "regular", "mainMint")}
     ${mixin.flexBox("center", "center")};
+    :hover {
+        opacity: 0;
+    }
 `;
 
 export default Election;
