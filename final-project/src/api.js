@@ -62,11 +62,12 @@ export const userApi = {
             password: data.password,
         }),
     // 유저 프로필 변경
-    editUserProfile: ({ nickname, email, password, userId }) =>
+    editUserProfile: ({ nickname, email, password, userId, newPassword }) =>
         instance.put(`api/user/${userId}`, {
             email,
             nickname,
             password,
+            new_password: newPassword,
         }),
     // 로그인
     login: data =>
@@ -260,7 +261,14 @@ export const searchApi = {
             },
         }),
 
-    searchMain: () => instance.get("util/search"),
+    searchMain: data =>
+        instance.get("util/search", {
+            params: {
+                pageSize: data?.pageSize,
+                pageNum: data?.pageNum,
+                keyword: data?.keyword,
+            },
+        }),
 };
 
 export const electionApi = {

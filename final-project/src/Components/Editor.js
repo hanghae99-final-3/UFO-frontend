@@ -1,31 +1,28 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import mixin from "../styles/Mixin";
 
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-editor-classic/src/classiceditor";
+import axios from "axios";
+import Swal from "sweetalert2";
 
 //플러그인
-import Heading from "@ckeditor/ckeditor5-heading/src/heading.js";
-import Paragraph from "@ckeditor/ckeditor5-paragraph/src/paragraph.js";
+import Heading from "@ckeditor/ckeditor5-heading/src/heading";
+import Paragraph from "@ckeditor/ckeditor5-paragraph/src/paragraph";
 import Bold from "@ckeditor/ckeditor5-basic-styles/src/bold.js";
 import Italic from "@ckeditor/ckeditor5-basic-styles/src/italic.js";
 import Strikethrough from "@ckeditor/ckeditor5-basic-styles/src/strikethrough.js";
 import Underline from "@ckeditor/ckeditor5-basic-styles/src/underline.js";
-
 import FontColor from "@ckeditor/ckeditor5-font/src/fontcolor.js";
 import FontBackgroundColor from "@ckeditor/ckeditor5-font/src/fontbackgroundcolor";
-
 import Essentials from "@ckeditor/ckeditor5-essentials/src/essentials.js"; //undo
-
 import BlockQuote from "@ckeditor/ckeditor5-block-quote/src/blockquote.js";
-import Link from "@ckeditor/ckeditor5-link/src/link.js";
 import PasteFromOffice from "@ckeditor/ckeditor5-paste-from-office/src/pastefromoffice";
+
 import Image from "@ckeditor/ckeditor5-image/src/image";
 import ImageUpload from "@ckeditor/ckeditor5-image/src/imageupload";
-
-//파이어베이스
-import { firebase } from "../firebase";
+import ImageResize from "@ckeditor/ckeditor5-image/src/imageresize";
 
 /**
  * @author jiyeong
@@ -42,68 +39,46 @@ class MyUploadAdapter {
     // Starts the upload process.
     upload() {
         return this.loader.file.then(
+            // file은 파일객체이다.
             file =>
                 new Promise((resolve, reject) => {
-                    console.log(file);
-                    console.log("firebase", firebase);
-                    let storageRef = firebase.storage().ref("images/");
-                    let uploadTask = storageRef.child(file.name).put(file);
-                    console.log(uploadTask);
-                    uploadTask.on(
-                        firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
-                        function (snapshot) {
-                            // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
-                            var progress =
-                                (snapshot.bytesTransferred /
-                                    snapshot.totalBytes) *
-                                100;
-                            console.log("Upload is " + progress + "% done");
-                            switch (snapshot.state) {
-                                case firebase.storage.TaskState.PAUSED: // or 'paused'
-                                    console.log("Upload is paused");
-                                    break;
-                                case firebase.storage.TaskState.RUNNING: // or 'running'
-                                    console.log("Upload is running");
-                                    break;
-                            }
-                        },
-                        function (error) {
-                            // A full list of error codes is available at
-                            // https://firebase.google.com/docs/storage/web/handle-errors
-                            // eslint-disable-next-line default-case
-                            switch (error.code) {
-                                case "storage/unauthorized":
-                                    reject(
-                                        " User doesn't have permission to access the object",
-                                    );
-                                    break;
+                    //----사용할 데이터를 정리하고, 서버에 데이터(이미지 객체)를 전달하고 url을 얻어서 post에 저장한다.
+                    const req = { img: file };
 
-                                case "storage/canceled":
-                                    reject("User canceled the upload");
-                                    break;
+                    //multer를 사용하려면 formData 안에 request들을 넣어주어야 한다
+                    let formData = new FormData();
+                    for (let entry of Object.entries(req)) {
+                        formData.append(entry[0], entry[1]);
+                    }
 
-                                case "storage/unknown":
-                                    reject(
-                                        "Unknown error occurred, inspect error.serverResponse",
-                                    );
-                                    break;
-                            }
-                        },
-                        function () {
-                            // Upload completed successfully, now we can get the download URL
-                            uploadTask.snapshot.ref
-                                .getDownloadURL()
-                                .then(function (downloadURL) {
-                                    console.log(
-                                        "File available at",
-                                        downloadURL,
-                                    );
-                                    resolve({
-                                        default: downloadURL,
-                                    });
+                    //통신헤더설정
+                    const config = {
+                        header: { "content-type": "multipart/form-data" },
+                    };
+
+                    async function sendImg() {
+                        //서버에 파일 객체를 보내서 imgUrl을 얻어온다.
+                        try {
+                            const response = await axios.post(
+                                "http://3.36.90.60/util/image",
+                                formData,
+                                config,
+                            );
+                            if (response.data.ok) {
+                                const downloadURL = `http://3.36.90.60/${response.data.result}`;
+                                resolve({
+                                    default: downloadURL,
                                 });
-                        },
-                    );
+                            }
+                        } catch (err) {
+                            Swal.fire(
+                                "에러",
+                                "이미지를 등록할 수 없습니다.",
+                                "error",
+                            );
+                        }
+                    }
+                    sendImg();
                 }),
         );
     }
@@ -112,20 +87,21 @@ class MyUploadAdapter {
 const editorConfiguration = {
     language: "ko",
     plugins: [
-        BlockQuote,
-        Bold,
-        Essentials,
-        FontColor,
-        FontBackgroundColor,
         Heading,
-        Image,
-        ImageUpload,
-        Italic,
-        Link,
         Paragraph,
-        PasteFromOffice,
+        Bold,
+        Italic,
         Strikethrough,
         Underline,
+        FontColor,
+        FontBackgroundColor,
+
+        BlockQuote,
+        PasteFromOffice,
+        Essentials,
+        Image,
+        ImageUpload,
+        ImageResize,
     ],
     extraPlgins: [],
     toolbar: [
@@ -139,13 +115,33 @@ const editorConfiguration = {
         "strikethrough",
         "underline",
         "|",
-        "link",
         "blockQuote",
         "imageUpload",
         "|",
         "undo",
         "redo",
     ],
+    heading: {
+        options: [
+            {
+                model: "paragraph",
+                title: "Paragraph",
+                class: "ck-heading_paragraph",
+            },
+            {
+                model: "heading1",
+                view: "h1",
+                title: "Heading 1",
+                class: "ck-heading_heading1",
+            },
+            {
+                model: "heading2",
+                view: "h2",
+                title: "Heading 2",
+                class: "ck-heading_heading2",
+            },
+        ],
+    },
 
     image: {
         resizeUnit: "px",
@@ -156,6 +152,8 @@ const editorConfiguration = {
 };
 
 const Editor = ({ getContentFromEditor, originContent }) => {
+    const [isLoading, setIsloading] = useState(false);
+    console.log(isLoading);
     //수정모드
     if (originContent)
         return (
@@ -214,19 +212,82 @@ const Editor = ({ getContentFromEditor, originContent }) => {
 const StyledEditor = styled.div`
     min-height: 100px;
 
+    /* 툴바 스타일링 */
     .ck.ck-toolbar.ck-toolbar_grouping {
         padding: 10px;
         border: none;
         background-color: ${({ theme }) => theme.color.white};
+
+        /* 툴바 버튼스타일 */
+        .ck-button {
+            ${mixin.textProps(18, "regular", "gray1")}
+            cursor: pointer;
+        }
+
+        /* 툴바 폰트조절 셀렉터 스타일링 */
+        .ck-dropdown__button {
+            background: white;
+            .ck-dropdown__arrow {
+                transition: all 0.5s ease;
+            }
+            &.ck-on {
+                .ck-dropdown__arrow {
+                    color: ${({ theme }) => theme.color.mainMint};
+                }
+            }
+        }
+
+        .ck-dropdown__panel {
+            border-radius: 0 20px 20px 20px;
+            transition: all 0.5s ease;
+
+            .ck-list {
+                padding: 20px 0;
+                border-radius: 0 20px 20px 20px;
+                background: ${({ theme }) => theme.color.mainBlue};
+                .ck-list__item {
+                    :not(:last-child) {
+                        padding-bottom: 10px;
+                        height: max-content;
+                    }
+                    .ck-button {
+                        background: transparent;
+                        .ck-button__label {
+                            color: ${({ theme }) => theme.color.mainGray};
+                            line-height: 1;
+                        }
+                        &.ck-on {
+                            .ck-button__label {
+                                color: ${({ theme }) => theme.color.mainMint};
+                            }
+                        }
+                    }
+                    .ck-heading_paragraph {
+                        ${mixin.textProps(20, "regular", "gray1")}
+                    }
+                    .ck-heading_heading1 {
+                        ${mixin.textProps(40, "semiBold", "gray1")}
+                    }
+                    .ck-heading_heading2 {
+                        ${mixin.textProps(30, "semiBold", "gray1")}
+                    }
+                }
+            }
+        }
+
         ${mixin.outline("1px solid", "gray3", "bottom")};
     }
+
+    /* 콘텐츠 안쪽영역 스타일링 */
     .ck-content {
-        min-height: 500px;
-        padding: 30px;
+        min-height: 530px;
+        padding: 30px 0;
         border: none;
         ${mixin.outline("1px solid", "gray3", "bottom")};
         transition: all 0.7s ease;
     }
+
+    /* 콘텐츠 바깥영역 스타일링 */
     .ck-content.ck-editor__editable.ck-rounded-corners.ck-editor__editable_inline.ck-focused {
         border: none;
         ${mixin.outline("1px solid", "gray3", "bottom")};

@@ -34,4 +34,20 @@ body{
   /* background-color: #EEF1F5; */
 }
 
+/* CKEditor css설정 */
+.ck-content{
+    *{
+        font-size: ${({ theme }) => theme.fontSize["20"]};
+        color:${({ theme }) => theme.color.gray1};
+    }
+    h1{
+        font-size: ${({ theme }) => theme.fontSize["40"]};
+    }
+    h2{
+        font-size: ${({ theme }) => theme.fontSize["30"]};
+    }
+    a{
+        color:${({ theme }) => theme.color.mainBlue};
+    } 
+}
 `;

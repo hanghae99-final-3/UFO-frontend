@@ -42,7 +42,7 @@ export const getMainSearchResult = createAsyncThunk(
     async (data, thunkAPI) => {
         try {
             const response = await searchApi.searchMain();
-            console.log(response);
+            console.log("main search response", response);
         } catch (err) {
             console.log("main search err", err);
         }

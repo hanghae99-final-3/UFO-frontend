@@ -43,12 +43,11 @@ const Home = () => {
         pageNum: 1,
         univ_id: univId,
     };
+    // 메인화면 검색
 
-    //학교 게시판 or자유 게시판 thunk dispatch
     useEffect(() => {
-        dispatch(getFreeListDB(postListQueryData));
-        dispatch(getIssuePostListDB());
-        dispatch(getMainSearchResult());
+        dispatch(getFreeListDB(postListQueryData)); // 자유 게시판 디스페치
+        dispatch(getIssuePostListDB()); // 인기 게시글 리스트 디스패치
         // 유저에게 등록된 univId가 있다면 대학 게시판 게시글 조회 요청
         if (isLoggedIn && univId) {
             dispatch(getUnivBoardDB(UnivListQueryData));
@@ -161,13 +160,7 @@ const HomeContainer = styled.div``;
 const BoardContainer = styled.div`
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 2px;
-
-    > div {
-        background: #fff;
-        padding: 20px;
-        width: 510px;
-    }
+    gap: 70px 50px;
 `;
 
 const SpareBox = styled.div`
