@@ -61,6 +61,9 @@ const ElectionDetail = () => {
 
     const addVote = () => {
         //투표를 처리하는 함수입니다.
+        if (isBefore)
+            return Swal.fire("에러", "아직 투표가 시작되지 않았어요!", "error");
+
         if (!selectCandidateId)
             return Swal.fire("에러", "후보자를 선택해주세요!", "error");
 
@@ -266,7 +269,7 @@ const TimeBox = styled.div`
     span {
         font-size: 100px;
         ${props =>
-            props.isCountdown
+            props.isCountdown || props.isFinished
                 ? mixin.textProps(null, "extraBold", "mainBlue")
                 : mixin.textProps(null, "extraBold", "gray3")}
     }
