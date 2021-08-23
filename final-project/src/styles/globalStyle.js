@@ -31,6 +31,7 @@ body{
   &::-webkit-scrollbar {
     display: none;
   }
+  height: 100vh;
   /* background-color: #EEF1F5; */
 }
 
