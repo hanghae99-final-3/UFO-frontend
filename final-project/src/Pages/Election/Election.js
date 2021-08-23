@@ -39,7 +39,12 @@ const Election = () => {
 
     return (
         <ElectionContainer>
-            <Title>투표함</Title>
+            <Title>
+                <h5>투표함</h5>
+                <DefaultButton onClick={() => history.push(`/election/write`)}>
+                    추가하기
+                </DefaultButton>
+            </Title>
             <Selecter selected={isFinished}>
                 <button onClick={() => setIsFinished(false)}>진행중선거</button>
                 <button onClick={() => setIsFinished(true)}>종료된선거</button>
@@ -69,13 +74,6 @@ const Election = () => {
                             </Post>
                         ))}
                     </GridContainer>
-                    <Controls>
-                        <DefaultButton
-                            onClick={() => history.push(`/election/write`)}
-                        >
-                            추가하기
-                        </DefaultButton>
-                    </Controls>
                 </>
             )}
         </ElectionContainer>
@@ -111,15 +109,16 @@ const ListNone = styled.div`
 `;
 
 const Title = styled.h5`
-    ${mixin.textProps(30, "extraBold", "black")};
-    ${props =>
-        !props.borderNone && mixin.outline("1px solid", "gray4", "bottom")}
+    ${mixin.outline("1px solid", "gray4", "bottom")};
+    ${mixin.flexBox("space-between", "flex-end")};
     padding-bottom: 10px;
     margin-bottom: 15px;
+    h5 {
+        ${mixin.textProps(30, "extraBold", "black")};
+    }
 `;
 
 const Selecter = styled.div`
-    margin-bottom: 15px;
     button {
         padding: 0 10px;
         height: 30px;
@@ -151,11 +150,11 @@ const Controls = styled.div`
 `;
 
 const GridContainer = styled.div`
+    margin: 15px 0;
     width: 100%;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 1px;
-    margin-bottom: 15px;
 `;
 
 const Post = styled.div`
