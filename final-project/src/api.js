@@ -264,9 +264,9 @@ export const searchApi = {
     searchMain: data =>
         instance.get("util/search", {
             params: {
+                keyword: data?.keyword,
                 pageSize: data?.pageSize,
                 pageNum: data?.pageNum,
-                keyword: data?.keyword,
             },
         }),
 };

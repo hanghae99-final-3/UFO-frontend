@@ -103,7 +103,6 @@ const MypageAccount = props => {
             await userApi
                 .verifyUniEmail(email)
                 .then(res => {
-                    console.log(res.data.authCode);
                     setAuthCode(res.data.authCode);
                     setInputEmail(email);
                     setEmailAuthMsg("인증번호가 전송되었습니다.");

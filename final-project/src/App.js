@@ -26,6 +26,7 @@ import SearchResult from "./Pages/SearchResult"; // 자유 게시판 검색 결�
 import SocialLogin from "./Components/Login/SocialLogin"; // 소셜로그인 페이지
 import ToggleLogin from "./Components/Login/ToggleLogin";
 import KakaoLogin from "./KakaoLogin";
+import MainSearchResultPage from "./Pages/MainSearchResultPage"; //메인검색결과페이지
 
 //utils
 import { checkAdminDB, checkLoggedInUser } from "./redux/async/user"; // 로그인 체크
@@ -59,6 +60,11 @@ function App() {
                         />
                         <Route path="/signup" exact component={Signup} />
                         <Route path="/login" exact component={Login} />
+                        <Route
+                            path="/util/search/:keyword"
+                            exact
+                            component={MainSearchResultPage}
+                        />
 
                         <Route
                             path="/freeboard/write"

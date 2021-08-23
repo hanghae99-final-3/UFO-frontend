@@ -24,7 +24,6 @@ const MyCommentedList = () => {
             });
         requestCall(req).then(res => {
             if (res.data.ok) {
-                console.log(res.data.comments);
                 setPostList(res.data.comments);
             }
         });

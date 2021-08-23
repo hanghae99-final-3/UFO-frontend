@@ -18,7 +18,6 @@ const MyPostList = () => {
     };
     // 게시글 api 요청 콜
     const requestCall = async ({ pageNum, pageSize }) => {
-        console.log(currentPage);
         setIsLoading(true);
         await instance
             .get("/api/user/my-post", {
@@ -29,7 +28,6 @@ const MyPostList = () => {
             })
             .then(res => {
                 if (res.data.ok) {
-                    console.log(res.data.posts);
                     setPostList(prev => [...prev, ...res.data.posts]);
                 }
             });
@@ -47,7 +45,6 @@ const MyPostList = () => {
 
     return (
         <React.Fragment>
-            {console.log(currentPage)}
             <MyPostBoardBox
                 nextCall={nextCall}
                 postList={postList}

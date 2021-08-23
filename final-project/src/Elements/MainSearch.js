@@ -3,6 +3,7 @@ import styled from "styled-components";
 import mixin from "../styles/Mixin";
 import { getMainSearchResult } from "../redux/async/search";
 import { useDispatch } from "react-redux";
+import { history } from "../redux/configureStore";
 
 const MainSearch = props => {
     const dispatch = useDispatch();
@@ -11,7 +12,6 @@ const MainSearch = props => {
 
     const handleSearchTermChange = e => {
         setSearchTerm(e.target.value);
-        dispatch(getMainSearchResult());
     };
     const handleFocus = () => {
         setFocused(true);
@@ -20,18 +20,16 @@ const MainSearch = props => {
         setSearchTerm("");
         setFocused(false);
     };
-
-    // useEffect(() => {
-    //     const mainSearchData = {
-    //         pageSize: 10,
-    //         pageNum: 1,
-    //         keyword: searchTerm,
-    //     };
-    //     dispatch(getMainSearchResult(mainSearchData));
-    // }, [dispatch, searchTerm]);
+    const handleSearch = e => {
+        e.preventDefault();
+        if (searchTerm === "") {
+            return window.alert("검색어를 입력해 주세요.");
+        }
+        history.push(`/util/search/${searchTerm}`);
+    };
     return (
         <React.Fragment>
-            <SearchForm focused={focused}>
+            <SearchForm focused={focused} onSubmit={handleSearch}>
                 <Input
                     value={searchTerm}
                     onChange={handleSearchTermChange}
