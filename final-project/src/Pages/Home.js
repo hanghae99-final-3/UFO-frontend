@@ -44,11 +44,9 @@ const Home = () => {
         univ_id: univId,
     };
 
-    //학교 게시판 or자유 게시판 thunk dispatch
     useEffect(() => {
-        dispatch(getFreeListDB(postListQueryData));
-        dispatch(getIssuePostListDB());
-        dispatch(getMainSearchResult());
+        dispatch(getFreeListDB(postListQueryData)); // 자유 게시판 디스페치
+        dispatch(getIssuePostListDB()); // 인기 게시글 리스트 디스패치
         // 유저에게 등록된 univId가 있다면 대학 게시판 게시글 조회 요청
         if (isLoggedIn && univId) {
             dispatch(getUnivBoardDB(UnivListQueryData));

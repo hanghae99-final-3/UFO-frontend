@@ -16,6 +16,26 @@ const MypageAccount = props => {
     const dispatch = useDispatch();
     const user = useSelector(state => state.user.user); // 로그인 유저 정보
 
+    // 서버에서 유저에게 발송하는 이메일 인증 코드 저장
+    const [authCode, setAuthCode] = useState(randomString.generate(7));
+    // 이메일 인증 성공 메세지
+    const [emailAuthMsg, setEmailAuthMsg] = useState("");
+    // 버튼의 클릭 유뮤로 styled component의 색상을 변경해주기 위한 상태 값
+    const [selectedButton, setSelectedButton] = useState("");
+    // 유저가 선택한 버튼에 맞는 수정 입력창의 보여주기 위한 상태 값
+    const [isSchoolEditMode, setIsSchoolEditMode] = useState(false);
+    // 유저가 입력한 학교 이메일
+    const [inputEmail, setInputEmail] = useState("");
+    // 학교 인증코드 verification 메세지
+    const [authCodeMsg, setAuthCodeMsg] = useState("");
+    // 닉네임 변경 모드인지 확인하는 상태 값
+    const [isNicknameEditMode, setIsNicknameEditMode] = useState(false);
+    // 로그인 이메일 변경 모드 확인하는 상태 값
+    const [isLoginEmailEditMode, setIsLoginEmailEditMode] = useState(false);
+    // 비밀번호 설정 모드 값
+    const [isResetPasswordEditMode, setIsResetPasswordEditMode] =
+        useState(false);
+
     // 버튼 클릭 핸들러
     const handleButtonClick = event => {
         // 선택된 버튼 (유저가 클리한 버튼)
@@ -29,23 +49,45 @@ const MypageAccount = props => {
             setSelectedButton("");
         }
     };
-    // 버튼의 클릭 유뮤로 styled component의 색상을 변경해주기 위한 상태 값
-    const [selectedButton, setSelectedButton] = useState("");
-    // 유저가 선택한 버튼에 맞는 수정 입력창의 보여주기 위한 상태 값
-    const [isSchoolEditMode, setIsSchoolEditMode] = useState(false);
-    // 이메일 인증 성공 메세지
-    const [emailAuthMsg, setEmailAuthMsg] = useState("");
-    // 서버에서 유저에게 발송하는 이메일 인증 코드 저장
-    const [authCode, setAuthCode] = useState(randomString.generate(7));
-    // 유저가 입력한 학교 이메일
-    const [inputEmail, setInputEmail] = useState("");
-    // 학교 인증코드 verification 메세지
-    const [authCodeMsg, setAuthCodeMsg] = useState("");
     // 이메일 인증 모드 핸들러
     const handleSchoolAuth = e => {
         setIsNicknameEditMode(false);
         setIsLoginEmailEditMode(false);
         setIsSchoolEditMode(!isSchoolEditMode);
+    };
+    // 닉네임 변경 모드 핸들러
+    const handleNicknameEditMode = e => {
+        setIsSchoolEditMode(false);
+        setIsLoginEmailEditMode(false);
+        setIsResetPasswordEditMode(false);
+        setIsNicknameEditMode(!isNicknameEditMode);
+    };
+    // 로그인 이메일 변경 모드 핸들러
+    const handleLoginEmailEditMode = e => {
+        setIsSchoolEditMode(false);
+        setIsNicknameEditMode(false);
+        setIsResetPasswordEditMode(false);
+        setIsLoginEmailEditMode(!isLoginEmailEditMode);
+    };
+    // 비밀번호 설정 모드 핸들러
+    const handlePasswordResetMode = e => {
+        setIsSchoolEditMode(false);
+        setIsLoginEmailEditMode(false);
+        setIsNicknameEditMode(false);
+        setIsResetPasswordEditMode(!isResetPasswordEditMode);
+    };
+    // 계정 삭제 핸들러
+    const handleDeleteAccount = () => {
+        const deleteAccountDB = async () => {
+            await userApi.deleteAccount(user.user_id).then(res => {
+                if (res.data.ok) {
+                    Swal.fire("완료", "회원 탈퇴 성공", "success");
+                    dispatch(logoutUser());
+                }
+            });
+        };
+
+        confirm.deleteConfirm(deleteAccountDB);
     };
     // 이메일 인증 유효성 formik & submit handler
     const emailAuthFormik = useFormik({
@@ -112,16 +154,6 @@ const MypageAccount = props => {
             }
         },
     });
-
-    // 닉네임 변경 모드인지 확인하는 상태 값
-    const [isNicknameEditMode, setIsNicknameEditMode] = useState(false);
-    // 닉네임 변경 모드 핸들러
-    const handleNicknameEditMode = e => {
-        setIsSchoolEditMode(false);
-        setIsLoginEmailEditMode(false);
-        setIsResetPasswordEditMode(false);
-        setIsNicknameEditMode(!isNicknameEditMode);
-    };
     // 닉네임 변경 formik && onSubmit handler
     const nicknameChangeFormik = useFormik({
         initialValues: {
@@ -167,15 +199,6 @@ const MypageAccount = props => {
                 });
         },
     });
-    // 로그인 이메일 변경 모드 확인하는 상태 값
-    const [isLoginEmailEditMode, setIsLoginEmailEditMode] = useState(false);
-    // 로그인 이메일 변경 모드 핸들러
-    const handleLoginEmailEditMode = e => {
-        setIsSchoolEditMode(false);
-        setIsNicknameEditMode(false);
-        setIsResetPasswordEditMode(false);
-        setIsLoginEmailEditMode(!isLoginEmailEditMode);
-    };
     // 로그인 이메일 변경 formik && onSubmit handler
     const loginEmailFormik = useFormik({
         initialValues: {
@@ -217,34 +240,6 @@ const MypageAccount = props => {
                 });
         },
     });
-
-    // 비밀번호 설정 모드 값
-    const [isResetPasswordEditMode, setIsResetPasswordEditMode] =
-        useState(false);
-
-    // 비밀번호 설정 모드 핸들러
-    const handlePasswordResetMode = e => {
-        setIsSchoolEditMode(false);
-        setIsLoginEmailEditMode(false);
-        setIsNicknameEditMode(false);
-        setIsResetPasswordEditMode(!isResetPasswordEditMode);
-    };
-
-    // 비
-
-    // 계정 삭제 핸들러
-    const handleDeleteAccount = () => {
-        const deleteAccountDB = async () => {
-            await userApi.deleteAccount(user.user_id).then(res => {
-                if (res.data.ok) {
-                    Swal.fire("완료", "회원 탈퇴 성공", "success");
-                    dispatch(logoutUser());
-                }
-            });
-        };
-
-        confirm.deleteConfirm(deleteAccountDB);
-    };
 
     return (
         <>

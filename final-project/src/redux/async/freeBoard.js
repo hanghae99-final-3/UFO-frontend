@@ -16,7 +16,6 @@ export const getFreeListDB = createAsyncThunk(
     async (data, thunkAPI) => {
         try {
             const response = await freeBoardApi.getList(data);
-            console.log(response);
             if (response.data.ok) {
                 return response.data;
             }
@@ -58,6 +57,7 @@ export const addFreePostDB = createAsyncThunk(
     async (data, thunkAPI) => {
         try {
             const response = await freeBoardApi.addPost(data);
+            console.log(response);
             history.push("/freeboard");
 
             if (response.data.ok) return response.data.result;
