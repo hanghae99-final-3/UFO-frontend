@@ -19,6 +19,7 @@ import Sparkles from "../Elements/Sparkles";
 import useSound from "use-sound";
 import clicked from "../assets/sound/click2.wav";
 import logoSound from "../assets/sound/logoSound.wav";
+import { cleanup } from "@testing-library/react";
 /**
  * @author jiyeong, heesung
  * @param
@@ -38,7 +39,9 @@ const Header = () => {
 
     //----pathname이 변화하면 메뉴를 닫을 수 있도록 합니다
     useEffect(() => {
+        document.addEventListener("scroll", () => setMenuOn(false));
         setMenuOn(false);
+        return document.removeEventListener("scroll", () => {});
     }, [pathname]);
     //----
 
