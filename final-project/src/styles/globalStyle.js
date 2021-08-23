@@ -28,9 +28,9 @@ button {
 }
 body{
   /* 스크롤바 제거 */
-  &::-webkit-scrollbar {
+  /* &::-webkit-scrollbar {
     display: none;
-  }
+  } */
   /* background-color: #EEF1F5; */
 }
 

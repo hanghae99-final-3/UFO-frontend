@@ -13,24 +13,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { setCountryReducer } from "../redux/modules/freeBoardSlice";
 
 const BootstrapInput = withStyles(theme => ({
-    root: {
-        "label + &": {
-            marginTop: theme.spacing(3),
-        },
-    },
+    root: {},
     input: {
-        borderRadius: 4,
         position: "relative",
-        backgroundColor: theme.palette.background.paper,
-        border: "1px solid #ced4da",
+        backgroundColor: "white",
+        border: "none",
         fontSize: 16,
-        padding: "10px 26px 10px 12px",
-        transition: theme.transitions.create(["border-color", "box-shadow"]),
-
+        // transition: theme.transitions.create(["border-color", "box-shadow"]),
         "&:focus": {
-            borderRadius: 4,
-            borderColor: "#80bdff",
-            boxShadow: "0 0 0 0.2rem rgba(0,123,255,.25)",
+            backgroundColor: "white",
         },
     },
 }))(InputBase);
@@ -68,13 +59,19 @@ export default function SelectCountry() {
     return (
         <div>
             <FormControl className={classes.margin}>
-                <InputLabel id="demo-customized-select-label">국가</InputLabel>
                 <Select
-                    labelId="demo-customized-select-label"
                     id="demo-customized-select"
                     value={country}
                     onChange={handleChange}
                     input={<BootstrapInput />}
+                    IconComponent={() => null}
+                    MenuProps={{
+                        anchorOrigin: {
+                            vertical: "bottom",
+                            horizontal: "left",
+                        },
+                        getContentAnchorEl: null,
+                    }}
                 >
                     <MenuItem value={0}>전체</MenuItem>
                     <MenuItem value={3}>미국</MenuItem>
@@ -89,7 +86,7 @@ export default function SelectCountry() {
 }
 
 //----스타일 컴포넌트---
-const Input = styled.input`
+const SSelect = styled.select`
     border-radius: 4;
     position: relative;
     /* backgroundColor: theme.palette.background.paper; */

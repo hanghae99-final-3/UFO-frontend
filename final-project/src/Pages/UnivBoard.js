@@ -47,10 +47,6 @@ const UnivBoard = () => {
 
     // 현재 페이지가 변하면 useEffect 발동, 다음 페이지 대학 게시글 요청
     useEffect(() => {
-        window.scrollTo({
-            top: (0, 0),
-            behavior: "smooth",
-        });
         // 유저가 대학교 아이디 값을 가지고 있을 경우에만 실행
         if (univId) {
             if (selectedTag === null) {
@@ -87,7 +83,7 @@ const UnivBoard = () => {
             <BoardContentContainer>
                 {announcement && announcement.length > 0 && (
                     <BoardBox
-                        postList={announcement && announcement}
+                        postList={announcement && announcement.slice(0, 3)}
                         preview={true}
                         boardName="univboard"
                         announcement={true}

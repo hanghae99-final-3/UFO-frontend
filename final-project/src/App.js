@@ -31,7 +31,7 @@ import Test from "./Pages/Test";
 
 //utils
 import { checkAdminDB, checkLoggedInUser } from "./redux/async/user"; // 로그인 체크
-import MyPostList from "./Pages/MyPostList";
+import MyPost from "./Pages/MyPost";
 
 function App() {
     // redux dispatch
@@ -75,7 +75,7 @@ function App() {
                             component={FreeBoard}
                         />
 
-                        <Route path="/mypost" exact component={MyPostList} />
+                        <Route path="/mypost" exact component={MyPost} />
                         <Route
                             path="/freeboard/detail/:id"
                             exact

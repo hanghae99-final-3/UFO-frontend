@@ -46,24 +46,19 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const FreeBoard = () => {
-    //----자유게시판 목록 불러와서 list에 저장하기
     const dispatch = useDispatch();
     const classes = useStyles();
     const [page, setPage] = React.useState(1); // pagination의  현재 페이지 값 설정
     const freeBoardPostList = useSelector(state => state.freeBoard.list); // 자유 게시판 게시글 구독
     const selectedTag = useSelector(state => state.freeBoard.selectedTag); // 현재 선택된 카테고리 구독
+    // 현재 선택된 국가 코드
     const selectedCountry = useSelector(
         state => state.freeBoard.selectedCountry,
-    ); // 현재 선택된 국가 코드
-    const freeBoardTotalPage = useSelector(state => state.freeBoard.pageCount);
-
+    );
+    const freeBoardTotalPage = useSelector(state => state.freeBoard.pageCount); // 게시물 총 페이지
     useEffect(() => {
-        window.scrollTo({
-            top: (0, 0),
-            behavior: "smooth",
-        });
         const postListQueryData = {
-            pageSize: 14,
+            pageSize: 10,
             pageNum: page,
             category: selectedTag === null ? undefined : selectedTag,
             country_id: selectedCountry === 0 ? undefined : selectedCountry,

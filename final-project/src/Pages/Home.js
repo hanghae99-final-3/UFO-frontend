@@ -1,14 +1,14 @@
 import React, { useEffect } from "react";
-import styled from "styled-components";
+import styled from "styled-components"; // 스타일 컴포넌트 라이브러리
+import { useDispatch, useSelector } from "react-redux"; // 리액트 리덕스 라이브러리
 
-import { useDispatch, useSelector } from "react-redux";
-import { getFreeListDB, getIssuePostListDB } from "../redux/async/freeBoard";
-import { getMainSearchResult } from "../redux/async/search";
-import BoardBox from "../Components/BoardBox";
-import { getUnivBoardDB } from "../redux/async/univBoard";
-import categories from "../categories";
-import MainSlider from "../Components/MainSlider";
-import MainSearch from "../Elements/MainSearch";
+import categories from "../categories"; // 태그 카테고리 객체
+import MainSlider from "../Components/MainSlider"; // 메인 페이지 슬라이더 컴포넌트
+import MainSearch from "../Elements/MainSearch"; // 메인 페이지 통합 검색 컴포넌트
+import PreviewBoardBox from "../Components/PreviewBoardBox"; // 게시물 presenter 컴포넌트
+
+import { getUnivBoardDB } from "../redux/async/univBoard"; // 대학 게시물 조회 thunk
+import { getFreeListDB, getIssuePostListDB } from "../redux/async/freeBoard"; // 자유 게시판 thunks
 
 const Home = () => {
     const dispatch = useDispatch();
@@ -68,7 +68,7 @@ const Home = () => {
 
             <BoardContainer>
                 {/* 학교 게시판 불러오기*/}
-                <BoardBox
+                <PreviewBoardBox
                     title="학교 게시판"
                     fixedList={announcement && announcement.slice(0, 2)}
                     postList={
@@ -80,7 +80,7 @@ const Home = () => {
                 {selectedCountry === 0 ? (
                     /* country ==== 0 , 즉 전체 선택의 경우 
                     필터하지 않은 포스트를 props로 전달한다.*/
-                    <BoardBox
+                    <PreviewBoardBox
                         title="자유 게시판"
                         postList={
                             freeBoardPostList && freeBoardPostList.slice(0, 8)
@@ -90,7 +90,7 @@ const Home = () => {
                 ) : (
                     /*  유저가 특정 국가를 선택했을 경우, 자유 게시판을 
                     해당 국의 게시글로 필터링하여 props로 전달한다.*/
-                    <BoardBox
+                    <PreviewBoardBox
                         title="자유 게시판"
                         postList={
                             freeBoardPostList &&
@@ -112,7 +112,7 @@ const Home = () => {
                     categories.freeCategory.map((category, idx) => {
                         if (selectedCountry === 0) {
                             return (
-                                <BoardBox
+                                <PreviewBoardBox
                                     key={idx}
                                     tag={category}
                                     postList={freeBoardPostList
@@ -129,7 +129,7 @@ const Home = () => {
                             /* 특정 국가가 선택되어 있는 경우, 해당 국가의 게시글로 
                             필러팅하여 props로 게시글 리스트를 전달하여 준다.*/
                             return (
-                                <BoardBox
+                                <PreviewBoardBox
                                     key={idx}
                                     tag={category.categoryName}
                                     boardName="freeboard"

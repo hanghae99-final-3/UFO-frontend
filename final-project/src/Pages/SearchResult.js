@@ -62,12 +62,17 @@ const SearchResult = props => {
                 deactivateSearch={true}
             />
             <BoardBox
-                postList={searchResultList && searchResultList}
+                postList={searchResultList && searchResultList.rows}
                 preview={true}
                 boardName={currentLocation}
+                selectedTag={selectedTag}
             />
             <PaginationContainer>
-                <Pagination count={10} page={page} onChange={handlePage} />
+                <Pagination
+                    count={Math.ceil(searchResultList?.count / 10)}
+                    page={page}
+                    onChange={handlePage}
+                />
             </PaginationContainer>
         </>
     );
