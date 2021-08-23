@@ -29,13 +29,13 @@ const ProgressBar = ({ start, end }) => {
 const Container = styled.div`
     width: 100%;
     height: 10px;
-    background-color: ${({ theme }) => theme.color.mint};
+    background-color: ${({ theme }) => theme.color.blue2};
 `;
 
 const Bar = styled.div`
     height: 100%;
     animation: progressbar 1.5s ease-in-out forwards;
-    background-color: ${({ theme }) => theme.color.blue2};
+    background-color: ${({ theme }) => theme.color.mint};
 
     @keyframes progressbar {
         0% {
