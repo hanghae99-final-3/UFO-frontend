@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { getElectionResultDB } from "../../redux/async/election";
 import { useParams } from "react-router";
 import mixin from "../../styles/Mixin";
+import CelebrationBox from "./CelebrationBox";
 
 const ElectedCard = ({ postId, candidates }) => {
     const dispatch = useDispatch();
@@ -59,8 +60,8 @@ const ElectedCard = ({ postId, candidates }) => {
                             기호 {electedInfo.idx}번 {electedInfo?.name}
                         </ElectedName>
                         <ElectedMajor>{electedInfo?.major}</ElectedMajor>
+                        <CelebrationBox />
                     </ElectedInfo>
-                    <CelebrationBox />
                 </ElectedBox>
             )}
         </Container>
