@@ -48,10 +48,10 @@ const Header = () => {
                 <LeftColumn>
                     <Logo onClick={() => history.push("/")}>
                         <Boop rotation={20} timing={200} x={0} y={0}>
-                            <img src={logo} />
+                            <img src={logo} alt="" />
                         </Boop>
                     </Logo>
-                    {/* <SelectCountry /> */}
+                    <SelectCountry />
                 </LeftColumn>
                 <RightColumn>
                     <Sparkles>
@@ -220,6 +220,10 @@ const LeftColumn = styled.div`
 
 const Logo = styled.div`
     cursor: pointer;
+    img {
+        width: 122px;
+        height: 41px;
+    }
 `;
 
 const RightColumn = styled.div`

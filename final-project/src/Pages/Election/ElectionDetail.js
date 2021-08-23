@@ -26,10 +26,11 @@ import ProgressBar from "../../Components/Election/ProgressBar";
 import CandidateBox from "../../Components/Election/CandidateBox";
 import CandidateCard from "../../Components/Election/CandidateCard";
 import UnvotedBox from "../../Components/Election/UnvotedBox";
+import ElectedCard from "../../Components/Election/ElectedCard";
 
 const ElectionDetail = () => {
     const dispatch = useDispatch();
-    const { id: electionId } = useParams();
+    const { id: electionPostId } = useParams();
     const userInfo = useSelector(state => state.user.user);
     const isAdmin = useSelector(state => state.user.isAdmin); //관리자인지 아닌지에 대한 판별값
     const electionList = useSelector(state => state.election.list); // 모든 선거게시물의 리스트입니다.
@@ -38,11 +39,20 @@ const ElectionDetail = () => {
     const unvotedElectionList = electionList.filter(
         post => post.votes.length < 1 && moment().isBefore(post.end_date),
     ); //미투표&&기간종료되지않은 투표리스트
+    const isFinished =
+        moment().isAfter(post?.end_date) && !moment().isSame(post?.start_date)
+            ? true
+            : false; //선거가 끝났는지에 대한 판별값
+    const isBefore =
+        moment().isBefore(post?.start_date) &&
+        !moment().isSame(post?.start_date)
+            ? true
+            : false; //선거가 시작되기 전인지에 대한 판별값
 
     useEffect(() => {
         dispatch(getElectionListDB());
-        dispatch(getElectionDB(electionId));
-    }, [electionId]);
+        dispatch(getElectionDB(electionPostId));
+    }, [electionPostId]);
 
     const selectCandidate = id => {
         //후보자를 선택하면 setSelectCandidateId에 후보자id를 저장합니다.
@@ -51,22 +61,25 @@ const ElectionDetail = () => {
 
     const addVote = () => {
         //투표를 처리하는 함수입니다.
+        if (isBefore)
+            return Swal.fire("에러", "아직 투표가 시작되지 않았어요!", "error");
+
         if (!selectCandidateId)
             return Swal.fire("에러", "후보자를 선택해주세요!", "error");
 
         const req = {
-            election_id: electionId,
+            election_id: electionPostId,
             candidate_id: selectCandidateId,
         };
 
-        dispatch(addVoteDB(req));
+        confirm.addConfirm(() => dispatch(addVoteDB(req)));
     };
 
     const deleteElection = () => {
         //선거를 삭제하는 함수입니다.
         confirm.deleteConfirm(() => {
             const req = {
-                election_id: electionId,
+                election_id: electionPostId,
             };
             dispatch(deleteElectionDB(req));
         });
@@ -82,18 +95,11 @@ const ElectionDetail = () => {
             />
         );
 
-    // 선거 종료일이 현재보다 뒤에 있다면 결과페이지로 연결하는 버튼을 보여줍니다.
-    if (moment().isAfter(post?.end_date))
-        return (
-            <Message
-                message="선거가 끝났어요! 결과를 보러 가시겠어요?"
-                buttonValue="결과보러가기"
-                link={`election/${electionId}/result`}
-            />
-        );
     return (
         <ElectionDetailContainer>
+            {isFinished && <p>끝났다!</p>}
             <UnvotedContainer>
+                {/* 현재 진행중이지만, 투표를 하지 않은 게시글을 보여줍니다. */}
                 <Title>미완료 투표함</Title>
                 <UnvotedBox list={unvotedElectionList} />
             </UnvotedContainer>
@@ -102,20 +108,18 @@ const ElectionDetail = () => {
                     <h5>{post?.name}</h5>
                     <TitleControls>
                         {/* 선거시작일이 현재보다 이전이거나 같지 않고, 관리자면 수정하기 버튼을 볼 수 있습니다.  */}
-                        {moment().isBefore(post?.start_date) &&
-                            !moment().isSame(post?.start_date) &&
-                            isAdmin && (
-                                <DangerButton
-                                    rightGap="15px"
-                                    onClick={() =>
-                                        history.push(
-                                            `/election/edit/${post.election_id}`,
-                                        )
-                                    }
-                                >
-                                    수정하기
-                                </DangerButton>
-                            )}
+                        {isBefore && isAdmin && (
+                            <DangerButton
+                                rightGap="15px"
+                                onClick={() =>
+                                    history.push(
+                                        `/election/edit/${post.election_id}`,
+                                    )
+                                }
+                            >
+                                수정하기
+                            </DangerButton>
+                        )}
                         {/* 관리자면 삭제하기 버튼을 볼 수 있습니다. */}
                         {isAdmin && (
                             <DangerButton onClick={deleteElection}>
@@ -128,15 +132,20 @@ const ElectionDetail = () => {
             </ElectionInfoContainer>
             <CountdownContainer>
                 <Title>투표까지 남은 시간</Title>
-                {/* 투표가 아직 시작 전이면 투표 시작 전 문구를 렌더링, 아니면 시간을 카운팅합니다. */}
-                {moment().isBefore(post?.start_date) ||
-                moment().isSame(post?.start_date) ? (
-                    <BeforeElection>
-                        <span>투표 시작 전</span>
-                    </BeforeElection>
-                ) : (
-                    <Count deadline={post?.end_date && post.end_date} />
-                )}
+                {/* 투표진행기간이면 카운트다운을 실행시키고, 진행전이면 투표 시작 전 문구를 렌더링, 끝났으면 투표 종료 문구를 렌더링합니다. */}
+                <TimeBox
+                    isCountdown={!isBefore && !isFinished}
+                    isFinished={isFinished}
+                >
+                    {/* 시작전 */}
+                    {isBefore && <span>투표 시작 전</span>}
+                    {/* 시작 */}
+                    {!isBefore && !isFinished && (
+                        <Count deadline={post?.end_date && post.end_date} />
+                    )}
+                    {/* 종료 */}
+                    {isFinished && <span>투표 종료</span>}
+                </TimeBox>
                 <ProgressBar
                     start={post?.start_date && post.start_date}
                     end={post?.end_date && post.end_date}
@@ -156,32 +165,48 @@ const ElectionDetail = () => {
                     <CandidateSlider candidateList={post && post.candidates} />
                 )}
             </CandidatesContainer>
-            <VoteContainer>
-                <VoteTitle>
-                    <h5>투표하기</h5>
-                    <p>비밀 투표이며, 투표 완료시, 변경이 불가합니다.</p>
-                </VoteTitle>
-                <VoteBox>
-                    {post &&
-                        post.candidates.map((candidate, idx) => (
-                            <CandidateCard
-                                key={idx}
-                                candidate={candidate}
-                                selectCandidate={selectCandidate}
-                                isVote
-                                isSelected={
-                                    selectCandidateId === candidate.candidate_id
-                                }
-                                cursor
-                            />
-                        ))}
-                </VoteBox>
-            </VoteContainer>
-            <Controls>
-                <DefaultButton rightGap="15px" onClick={addVote}>
-                    투표하기
-                </DefaultButton>
-            </Controls>
+            {/* 투표 종료 전이면 투표할 수 있는 컴포넌트를 렌더링하고 아니면 결과페이지를 보여줍니다. */}
+            {!isFinished ? (
+                <>
+                    <VoteContainer>
+                        <VoteTitle>
+                            <h5>투표하기</h5>
+                            <p>
+                                비밀 투표이며, 투표 완료시, 변경이 불가합니다.
+                            </p>
+                        </VoteTitle>
+                        <VoteBox>
+                            {post &&
+                                post.candidates.map((candidate, idx) => (
+                                    <CandidateCard
+                                        key={idx}
+                                        candidate={candidate}
+                                        selectCandidate={selectCandidate}
+                                        isVote
+                                        isSelected={
+                                            selectCandidateId ===
+                                            candidate.candidate_id
+                                        }
+                                        cursor
+                                    />
+                                ))}
+                        </VoteBox>
+                    </VoteContainer>
+                    <Controls>
+                        <DefaultButton rightGap="15px" onClick={addVote}>
+                            투표하기
+                        </DefaultButton>
+                    </Controls>
+                </>
+            ) : (
+                <ElectedContainer>
+                    <Title>당선자</Title>
+                    <ElectedCard
+                        candidates={post?.candidates}
+                        postId={electionPostId}
+                    />
+                </ElectedContainer>
+            )}
         </ElectionDetailContainer>
     );
 };
@@ -209,20 +234,22 @@ const ElectionInfoContainer = styled.div`
 
 const ElectionTitle = styled.div`
     ${mixin.outline("1px solid", "gray4", "bottom")};
-    ${mixin.flexBox("space-between", "flex-end")};
+    ${mixin.flexBox("space-between", "center")};
     padding-bottom: 10px;
     margin-bottom: 15px;
     h5 {
         ${mixin.textProps(30, "extraBold", "black")};
-        line-height: 1;
+        line-height: 1.5;
+        width: 80%;
     }
-
     p {
         ${mixin.textProps(20, "regular", "black")};
     }
 `;
 
-const TitleControls = styled.div``;
+const TitleControls = styled.div`
+    width: max-content;
+`;
 
 const CountdownContainer = styled.div`
     margin-bottom: 70px;
@@ -236,11 +263,15 @@ const ElectionDate = styled.div`
     }
 `;
 
-const BeforeElection = styled.div`
+const TimeBox = styled.div`
     text-align: center;
-    > span {
-        ${mixin.textProps(null, "extraBold", "gray3")}
+    padding: 10px 0;
+    span {
         font-size: 100px;
+        ${props =>
+            props.isCountdown || props.isFinished
+                ? mixin.textProps(null, "extraBold", "mainBlue")
+                : mixin.textProps(null, "extraBold", "gray3")}
     }
 `;
 
@@ -277,5 +308,7 @@ const VoteBox = styled.div`
 const Controls = styled.div`
     ${mixin.flexBox("center")}
 `;
+
+const ElectedContainer = styled.div``;
 
 export default ElectionDetail;

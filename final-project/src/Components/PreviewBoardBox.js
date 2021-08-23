@@ -1,7 +1,9 @@
 import React from "react";
-import mixin from "../styles/Mixin"; // 믹스인 css 객체
 import styled from "styled-components"; // 스타일 컴포넌트 라이브러리
-import categories from "../categories"; // 게시물 태그 카테고리 객체
+import mixin from "../styles/Mixin"; // 믹스인 css 객체
+
+import Boop from "../Elements/Boop"; // 에니메이션 boop 컴포넌트
+import categories from "../categories"; // 게시물 태그 객체
 import { history } from "../redux/configureStore"; // 히스토리 객체
 
 import { MdComment } from "react-icons/md"; // 댓글 아이콘
@@ -16,11 +18,18 @@ const useStyles = makeStyles({
     },
 });
 
-const BoardBox = ({ postList, fixedList, boardName, announcement }) => {
-    // material ui css class
+const PreviewBoardBox = ({
+    postList,
+    fixedList,
+    title,
+    tag,
+    boardName,
+    myPostTitle,
+    announcement,
+}) => {
     const classes = useStyles();
-    // 게시물 디테일 페지이 이동
-    const _onClick = postId => {
+    // 게시물 클릭시 이벤틀 헨들러
+    const handleOnClick = postId => {
         //자유게시판일때,
         if (boardName === "freeboard")
             return history.push(`/freeboard/detail/${postId}`);
@@ -28,15 +37,32 @@ const BoardBox = ({ postList, fixedList, boardName, announcement }) => {
         return history.push(`/univboard/detail/${postId}`);
     };
 
+    // 더보기 클릭 이벤트 헨들러
+    const onToMoreClicked = () => {
+        if (tag) {
+            history.push(`${boardName}/${tag?.categoryId}`);
+        } else {
+            history.push(boardName);
+        }
+    };
+
     return (
         <BoardContainer>
+            <Header>
+                {tag && <LargeTag>#{tag.categoryName}</LargeTag>}
+                {title && <TitleHeading>{title}</TitleHeading>}
+                {myPostTitle && <TitleHeading>{myPostTitle}</TitleHeading>}
+                <Boop rotation={15} timing={200}>
+                    <More onClick={onToMoreClicked}>더보기</More>
+                </Boop>
+            </Header>
             <Content>
                 {fixedList &&
                     fixedList.map((post, idx) => (
                         <PostContainer
                             key={idx}
                             onClick={() => {
-                                _onClick(post.post_id);
+                                handleOnClick(post.post_id);
                             }}
                         >
                             <AnnounceTag>공지</AnnounceTag>
@@ -74,7 +100,7 @@ const BoardBox = ({ postList, fixedList, boardName, announcement }) => {
                         <PostContainer
                             key={idx}
                             onClick={() => {
-                                _onClick(post.post_id);
+                                handleOnClick(post.post_id);
                             }}
                         >
                             <SmallTag announcement={announcement}>
@@ -95,27 +121,24 @@ const BoardBox = ({ postList, fixedList, boardName, announcement }) => {
                             <PostTitle>{post.title}</PostTitle>
 
                             <IconContainer>
-                                <>
-                                    <Icon>
-                                        {post?.like?.is_like === false ? (
-                                            <FavoriteBorder />
-                                        ) : (
-                                            <FavoriteIcon
-                                                className={classes.heart}
-                                            />
-                                        )}
-                                        <IconSpan>
-                                            {post.like && post.like.all_like}
-                                        </IconSpan>
-                                    </Icon>
-                                    <Icon>
-                                        <MdComment />
-                                        <IconSpan>
-                                            {post.comment_count}
-                                        </IconSpan>
-                                    </Icon>
-                                </>
                                 <Icon>
+                                    {post?.like?.is_like === false ? (
+                                        <FavoriteBorder />
+                                    ) : (
+                                        <FavoriteIcon
+                                            className={classes.heart}
+                                        />
+                                    )}
+                                    <IconSpan>
+                                        {post.like && post.like.all_like}
+                                    </IconSpan>
+                                </Icon>
+                                <Icon title={title} tag={tag}>
+                                    <MdComment />
+                                    <IconSpan>{post.comment_count}</IconSpan>
+                                </Icon>
+
+                                <Icon title={title} tag={tag}>
                                     <VisibilityIcon />
                                     <IconSpan>{post.view_count}</IconSpan>
                                 </Icon>
@@ -127,53 +150,79 @@ const BoardBox = ({ postList, fixedList, boardName, announcement }) => {
     );
 };
 
-// 스타일 컴포넌트
+//--------스타일 컴포넌트-----------
+
 const BoardContainer = styled.div`
     width: 100%;
 `;
+
+const IconSpan = styled.span`
+    ${mixin.textProps(12, "semiBold", "gray3")}
+`;
+const Header = styled.div`
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    ${mixin.outline("1.5px solid", "gray4", "bottom")}
+    ${mixin.flexBox("space-between", "flex-end", null, null)}
+`;
+
+const LargeTag = styled.span`
+    ${mixin.textProps(30, "extraBold", "black")}
+`;
+const TitleHeading = styled.span`
+    ${mixin.textProps(30, "extraBold", "black")}
+`;
 const PostTitle = styled.p`
-    ${mixin.textProps(20, "semiBold", "gray2")};
+    ${mixin.textProps(14, "semiBold", "gray2")}
 `;
 const AnnounceTitle = styled.p`
-    ${mixin.textProps(20, "semiBold", "gray2")};
+    ${mixin.textProps(14, "semiBold", "gray2")}
 `;
 const SmallTag = styled.span`
-    height: 32px;
-    min-width: 94px;
-    line-height: 28px;
+    height: 22px;
+    line-height: 18px;
+    min-width: 74px;
     margin-right: 20px;
     border-radius: 16px;
     background-color: ${props =>
         props.announcement ? props.theme.color.mint : "white"};
     ${props =>
         mixin.textProps(
-            18,
+            12,
             "semiBold",
             props.announcement ? "black" : "gray1",
             "center",
-        )};
+        )}
     ${props =>
-        mixin.outline("2px solid", props.announcement ? "mint" : "blue2")};
+        mixin.outline("2px solid", props.announcement ? "mint" : "blue2")}
 `;
 
 const AnnounceTag = styled.span`
-    height: 32px;
+    height: 22px;
     min-width: 74px;
-    line-height: 28px;
+    line-height: 18px;
     margin-right: 20px;
     border-radius: 16px;
+    ${mixin.outline("2px solid", "mint")}
     background-color: ${props => props.theme.color.mint};
-    ${mixin.outline("2px solid", "mint")};
-    ${mixin.textProps(18, "semiBold", "gray1", "center")};
+    ${props => mixin.textProps(12, "semiBold", "black", "center")};
+`;
+
+// 더보기 버튼
+const More = styled.span`
+    ${mixin.textProps(14, "semiBold", "gray3")}
+    :hover {
+        cursor: pointer;
+    }
 `;
 
 const Content = styled.div``;
 
 const PostContainer = styled.div`
     display: grid;
-    grid-template-columns: max-content 1fr max-content;
-    margin-bottom: 12px;
     cursor: pointer;
+    margin-bottom: 12px;
+    grid-template-columns: max-content 1fr max-content;
 `;
 
 const IconContainer = styled.div`
@@ -189,12 +238,8 @@ const Icon = styled.div`
         font-size: ${({ theme }) => theme.fontSize["12"]};
     }
     svg {
-        font-size: 20px;
+        font-size: 17px;
     }
 `;
 
-const IconSpan = styled.span`
-    ${mixin.textProps(12, "semiBold", "gray3")}
-`;
-
-export default BoardBox;
+export default PreviewBoardBox;

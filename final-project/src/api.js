@@ -264,9 +264,9 @@ export const searchApi = {
     searchMain: data =>
         instance.get("util/search", {
             params: {
+                keyword: data?.keyword,
                 pageSize: data?.pageSize,
                 pageNum: data?.pageNum,
-                keyword: data?.keyword,
             },
         }),
 };
@@ -331,7 +331,9 @@ export const voteApi = {
 
     //특정 선거게시글 결과조회
     getResult: ({ election_id }) =>
-        instance.get(`election/${election_id}/result`),
+        instance.get(`election/${election_id}/result`, {
+            params: { election_id },
+        }),
 };
 
 export const imageApi = {

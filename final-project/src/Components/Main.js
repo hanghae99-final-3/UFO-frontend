@@ -15,7 +15,8 @@ const Main = ({ children }) => {
 
 const MainContainer = styled.main`
     max-width: 1050px;
-    margin: 35px auto 50px auto;
+    margin: 35px auto 0 auto;
+    padding-bottom: 60px;
 `;
 
 export default Main;

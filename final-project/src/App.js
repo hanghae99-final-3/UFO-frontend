@@ -26,12 +26,11 @@ import SearchResult from "./Pages/SearchResult"; // 자유 게시판 검색 결�
 import SocialLogin from "./Components/Login/SocialLogin"; // 소셜로그인 페이지
 import ToggleLogin from "./Components/Login/ToggleLogin";
 import KakaoLogin from "./KakaoLogin";
-//정후님을 위한 테스트 페이지 :-)
-import Test from "./Pages/Test";
+import MainSearchResultPage from "./Pages/MainSearchResultPage"; //메인검색결과페이지
 
 //utils
 import { checkAdminDB, checkLoggedInUser } from "./redux/async/user"; // 로그인 체크
-import MyPostList from "./Pages/MyPostList";
+import MyPost from "./Pages/MyPost";
 
 function App() {
     // redux dispatch
@@ -61,6 +60,11 @@ function App() {
                         />
                         <Route path="/signup" exact component={Signup} />
                         <Route path="/login" exact component={Login} />
+                        <Route
+                            path="/util/search/:keyword"
+                            exact
+                            component={MainSearchResultPage}
+                        />
 
                         <Route
                             path="/freeboard/write"
@@ -75,7 +79,7 @@ function App() {
                             component={FreeBoard}
                         />
 
-                        <Route path="/mypost" exact component={MyPostList} />
+                        <Route path="/mypost" exact component={MyPost} />
                         <Route
                             path="/freeboard/detail/:id"
                             exact
@@ -148,7 +152,6 @@ function App() {
                             exact
                             component={ElectionWrite}
                         />
-                        <Route path="/test" exact component={Test} />
 
                         <Redirect from="*" to="/" />
                     </Switch>

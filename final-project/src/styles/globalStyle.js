@@ -31,7 +31,7 @@ body{
   &::-webkit-scrollbar {
     display: none;
   }
-  /* background-color: #EEF1F5; */
+  height: 100vh;
 }
 
 /* CKEditor css설정 */
