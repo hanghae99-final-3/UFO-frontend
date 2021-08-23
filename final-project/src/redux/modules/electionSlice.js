@@ -6,6 +6,7 @@ import {
     editElectionDB,
     deleteElectionDB,
     addVoteDB,
+    getElectionResultDB,
 } from "../async/election";
 
 /**
@@ -16,6 +17,7 @@ import {
 const initialState = {
     list: [],
     post: null,
+    resultList: [],
     isFetching: false,
     errorMessage: null,
 };
@@ -110,6 +112,21 @@ const electionSlice = createSlice({
             state.isFetching = true;
         },
         [addVoteDB.rejected]: (state, { payload: errorMessage }) => {
+            state.isFetching = false;
+            state.errorMessage = errorMessage;
+        },
+        //----
+
+        //----특정 선거 게시물 결과를 불러오는 리듀서
+        [getElectionResultDB.fulfilled]: (state, { payload }) => {
+            state.resultList = payload;
+            state.isFetching = false;
+            state.errorMessage = null;
+        },
+        [getElectionResultDB.pending]: (state, { payload }) => {
+            state.isFetching = true;
+        },
+        [getElectionResultDB.rejected]: (state, { payload: errorMessage }) => {
             state.isFetching = false;
             state.errorMessage = errorMessage;
         },

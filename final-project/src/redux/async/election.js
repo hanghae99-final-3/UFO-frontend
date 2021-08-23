@@ -143,3 +143,22 @@ export const addVoteDB = createAsyncThunk(
         }
     },
 );
+
+/**
+ * @author kwonjiyeong
+ * @param data = election_id
+ * @returns 서버연결 성공시, 특정 선거게시글 결과값 / 서버연결 실패시, 에러메세지
+ * @역할 특정 선거게시글 결과값 불러오기
+ * @필수값 없음
+ */
+export const getElectionResultDB = createAsyncThunk(
+    "election/getResult",
+    async (data, thunkAPI) => {
+        try {
+            const response = await voteApi.getResult(data);
+            if (response.data.ok) return response.data.result;
+        } catch (err) {
+            return thunkAPI.rejectWithValue(err.response.message);
+        }
+    },
+);
