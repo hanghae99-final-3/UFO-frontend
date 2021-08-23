@@ -240,6 +240,55 @@ const MypageAccount = props => {
                 });
         },
     });
+    // 비밀번호 재설정 formik && onSubmit handler
+    const passwordResetFormik = useFormik({
+        initialValues: {
+            currentPassword: "",
+            newPassword: "",
+            newPasswordConfirm: "",
+        },
+        validationSchema: Yup.object({
+            currentPassword:
+                Yup.string().required("현재 비빌번호를 입력해주세요"),
+            newPassword:
+                Yup.string().required("새로운 비빌번호를 입력해주세요 "),
+
+            newPasswordConfirm: Yup.string()
+                .required("비밀번호 확인을 입력해주세요.")
+                .oneOf(
+                    [Yup.ref("newPassword"), null],
+                    "비밀번호가 같지 않습니다.",
+                ),
+        }),
+        onSubmit: async (
+            { currentPassword, newPassword, newPasswordConfirm },
+            actions,
+        ) => {
+            const req = {
+                password: currentPassword,
+                newPassword: newPassword,
+                userId: user.user_id,
+            };
+            await userApi
+                .editUserProfile(req)
+                .then(res => {
+                    if (res.data.ok) {
+                        actions.resetForm(passwordResetFormik.initialValues);
+                        setSelectedButton("");
+                        setIsResetPasswordEditMode(false);
+                        Swal.fire("완료", "비밀번호 변경 성공", "success");
+                    }
+                })
+                .catch(error => {
+                    if (
+                        error.response.data.message === "비밀번호가 틀렸습니다."
+                    ) {
+                        passwordResetFormik.errors.currentPassword =
+                            "비밀번호가 틀렸습니다.";
+                    }
+                });
+        },
+    });
 
     return (
         <>
@@ -425,13 +474,66 @@ const MypageAccount = props => {
                     </ControlButton>
                     {isResetPasswordEditMode && (
                         <InputContainer>
-                            <InputForm>
+                            <InputForm
+                                onSubmit={passwordResetFormik.handleSubmit}
+                            >
                                 <InputWrapper>
-                                    <Input placeholder="현재 비밀번호" />
-                                    <Input placeholder="새로운 비빌번호" />
+                                    <Input
+                                        placeholder="현재 비밀번호"
+                                        type="password"
+                                        {...passwordResetFormik.getFieldProps(
+                                            "currentPassword",
+                                        )}
+                                    />
+                                    {passwordResetFormik.touched
+                                        .currentPassword &&
+                                    passwordResetFormik.errors
+                                        .currentPassword ? (
+                                        <div>
+                                            {
+                                                passwordResetFormik.errors
+                                                    .currentPassword
+                                            }
+                                        </div>
+                                    ) : null}
+                                    <Input
+                                        placeholder="새로운 비빌번호"
+                                        type="password"
+                                        {...passwordResetFormik.getFieldProps(
+                                            "newPassword",
+                                        )}
+                                    />
+                                    {passwordResetFormik.touched.newPassword &&
+                                    passwordResetFormik.errors.newPassword ? (
+                                        <div>
+                                            {
+                                                passwordResetFormik.errors
+                                                    .newPassword
+                                            }
+                                        </div>
+                                    ) : null}
                                     <ButtonContainer>
-                                        <Input placeholder="새로운 비밀번호 확인" />
-                                        <InputButton>설정</InputButton>
+                                        <Input
+                                            type="password"
+                                            placeholder="새로운 비밀번호 확인"
+                                            {...passwordResetFormik.getFieldProps(
+                                                "newPasswordConfirm",
+                                            )}
+                                        />
+                                        {passwordResetFormik.touched
+                                            .newPasswordConfirm &&
+                                        passwordResetFormik.errors
+                                            .newPasswordConfirm ? (
+                                            <div>
+                                                {
+                                                    passwordResetFormik.errors
+                                                        .newPasswordConfirm
+                                                }
+                                            </div>
+                                        ) : null}
+                                        <InputButton type="submit">
+                                            설정
+                                        </InputButton>
                                     </ButtonContainer>
                                 </InputWrapper>
                             </InputForm>
