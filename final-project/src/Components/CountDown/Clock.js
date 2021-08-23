@@ -43,24 +43,14 @@ class Clock extends Component {
     }
     render() {
         return (
-            <TimeBox>
-                <span>D-{this.leading0(this.state.days)}일 </span>
-                <span>
-                    {this.leading0(this.state.hours)}:
-                    {this.leading0(this.state.minutes)}:
-                    {this.leading0(this.state.seconds)}
-                </span>
-            </TimeBox>
+            <span>
+                D-{this.leading0(this.state.days)}일{" "}
+                {this.leading0(this.state.hours)}:
+                {this.leading0(this.state.minutes)}:
+                {this.leading0(this.state.seconds)}
+            </span>
         );
     }
 }
 
-const TimeBox = styled.div`
-    text-align: center;
-    padding: 10px 0;
-    span {
-        font-size: 100px;
-        ${mixin.textProps(null, "extraBold", "mainBlue")}
-    }
-`;
 export default Clock;

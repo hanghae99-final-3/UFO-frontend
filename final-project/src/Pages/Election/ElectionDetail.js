@@ -94,6 +94,7 @@ const ElectionDetail = () => {
     return (
         <ElectionDetailContainer>
             <UnvotedContainer>
+                {/* 현재 진행중이지만, 투표를 하지 않은 게시글을 보여줍니다. */}
                 <Title>미완료 투표함</Title>
                 <UnvotedBox list={unvotedElectionList} />
             </UnvotedContainer>
@@ -131,11 +132,13 @@ const ElectionDetail = () => {
                 {/* 투표가 아직 시작 전이면 투표 시작 전 문구를 렌더링, 아니면 시간을 카운팅합니다. */}
                 {moment().isBefore(post?.start_date) ||
                 moment().isSame(post?.start_date) ? (
-                    <BeforeElection>
+                    <TimeBox isBefore={true}>
                         <span>투표 시작 전</span>
-                    </BeforeElection>
+                    </TimeBox>
                 ) : (
-                    <Count deadline={post?.end_date && post.end_date} />
+                    <TimeBox isBefore={false}>
+                        <Count deadline={post?.end_date && post.end_date} />
+                    </TimeBox>
                 )}
                 <ProgressBar
                     start={post?.start_date && post.start_date}
@@ -238,11 +241,15 @@ const ElectionDate = styled.div`
     }
 `;
 
-const BeforeElection = styled.div`
+const TimeBox = styled.div`
     text-align: center;
-    > span {
-        ${mixin.textProps(null, "extraBold", "gray3")}
+    padding: 10px 0;
+    span {
         font-size: 100px;
+        ${props =>
+            props.isBefore
+                ? mixin.textProps(null, "extraBold", "gray3")
+                : mixin.textProps(null, "extraBold", "mainBlue")}
     }
 `;
 
