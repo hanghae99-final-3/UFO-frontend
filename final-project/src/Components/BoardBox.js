@@ -94,7 +94,7 @@ const BoardBox = ({
                                         </Icon>
                                         <Icon title={title} tag={tag}>
                                             <MdComment />
-                                            <span>{post.coment_count}</span>
+                                            <span>{post.comment_count}</span>
                                         </Icon>
                                     </>
                                 ) : null}
@@ -157,7 +157,7 @@ const BoardBox = ({
                                         </Icon>
                                         <Icon title={title} tag={tag}>
                                             <MdComment />
-                                            <span>{post.coment_count}</span>
+                                            <span>{post.comment_count}</span>
                                         </Icon>
                                     </>
                                 ) : null}
