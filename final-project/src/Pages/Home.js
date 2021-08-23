@@ -160,13 +160,7 @@ const HomeContainer = styled.div``;
 const BoardContainer = styled.div`
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 2px;
-
-    > div {
-        background: #fff;
-        padding: 20px;
-        width: 510px;
-    }
+    gap: 70px 50px;
 `;
 
 const SpareBox = styled.div`
