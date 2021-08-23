@@ -194,6 +194,7 @@ const Editor = ({ getContentFromEditor, originContent }) => {
                 onChange={(event, editor) => {
                     const data = editor.getData();
                     getContentFromEditor(data);
+                    console.log(editor);
                 }}
                 onReady={editor => {
                     if (editor?.plugins) {
