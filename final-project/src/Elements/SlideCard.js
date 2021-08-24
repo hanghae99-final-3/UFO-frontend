@@ -1,14 +1,8 @@
 import mixin from ".././styles/Mixin";
 import React from "react";
-import categories from "../categories";
 import styled from "styled-components";
 import { history } from "../redux/configureStore";
-import textOverflow from "../styles/Mixin/textStyle";
 
-//----머테이얼 유아이 컴포넌트 & 아이콘------
-import VisibilityIcon from "@material-ui/icons/Visibility";
-import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
 //-----
 
 //-----작성일자 (e.g 방금 전, 1시간전) 계산 라이브러리----
@@ -17,7 +11,7 @@ import TimeCounting from "time-counting";
 import Boop from "./Boop";
 //-----
 
-export default function SlideCard({ post, rank }) {
+export default function SlideCard({ post, rank, active }) {
     // TimeCounting 옵션 설정
     const timeOption = {
         lang: "ko",
@@ -42,10 +36,12 @@ export default function SlideCard({ post, rank }) {
         post.img_list[0] === "";
 
     return (
-        <CardContainer onClick={onDetailButtonClick}>
+        <CardContainer active={active} onClick={onDetailButtonClick}>
             <Preview imageNone={imageNone}>
-                <PreviewTitle>{post.title}</PreviewTitle>
-                <PreviewContent>{previewContent}</PreviewContent>
+                <PreviewTitle active={active}>{post.title}</PreviewTitle>
+                <PreviewContent active={active}>
+                    {previewContent}
+                </PreviewContent>
             </Preview>
             {!imageNone && (
                 <PreviewImage
@@ -67,12 +63,21 @@ const CardContainer = styled.div`
     position: relative;
     cursor: pointer;
     ${mixin.flexBox("space-between", "center")};
+    ${props =>
+        props.active &&
+        `
+            background:${props.theme.color.mainBlue};
+            border:none;
+        `};
 `;
 
 const PreviewTitle = styled.div`
     font-size: 20px;
     margin-bottom: 10px;
-    ${mixin.textProps(20, "extraBold", "black")};
+    ${props =>
+        props.active
+            ? mixin.textProps(20, "extraBold", "white")
+            : mixin.textProps(20, "extraBold", "black")}
 `;
 
 const Preview = styled.div`
@@ -90,4 +95,8 @@ const PreviewContent = styled.p`
     font-size: 14px;
     ${mixin.textProps(14, "semiBold", "gray2")};
     ${mixin.textOverflow()}
+    ${props =>
+        props.active
+            ? mixin.textProps(20, "regular", "blue3")
+            : mixin.textProps(20, "regular", "gray2")}
 `;

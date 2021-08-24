@@ -8,8 +8,10 @@ import MainSlider from "../Components/MainSlider"; // 메인 페이지 슬라이
 import MainSearch from "../Elements/MainSearch"; // 메인 페이지 통합 검색 컴포넌트
 import PreviewBoardBox from "../Components/PreviewBoardBox"; // 게시물 presenter 컴포넌트
 
+import Message from "../Components/Message";
 import { getUnivBoardDB } from "../redux/async/univBoard"; // 대학 게시물 조회 thunk
 import { getFreeListDB, getIssuePostListDB } from "../redux/async/freeBoard"; // 자유 게시판 thunks
+import mixin from "../styles/Mixin";
 
 const Home = () => {
     const dispatch = useDispatch();
@@ -32,6 +34,7 @@ const Home = () => {
     const selectedCountry = useSelector(
         state => state.freeBoard.selectedCountry,
     );
+    const isAuthenticated = useSelector(state => state.user?.user.school_auth);
 
     //자유 게시판 요청 쿼리 데이터
     const postListQueryData = {
@@ -72,14 +75,31 @@ const Home = () => {
 
             <BoardContainer>
                 {/* 학교 게시판 불러오기*/}
-                <PreviewBoardBox
-                    title="학교 게시판"
-                    fixedList={announcement && announcement.slice(0, 2)}
-                    postList={
-                        univBoardPostList && univBoardPostList.slice(0, 6)
-                    }
-                    boardName="univboard"
-                />
+                {isAuthenticated !== null && (
+                    <PreviewBoardBox
+                        title="학교 게시판"
+                        fixedList={announcement && announcement.slice(0, 2)}
+                        postList={
+                            univBoardPostList && univBoardPostList.slice(0, 6)
+                        }
+                        boardName="univboard"
+                    />
+                )}
+                {isAuthenticated === null && (
+                    <PostContainer>
+                        <Content>
+                            <Header>
+                                <TitleHeading>학교 게시판</TitleHeading>
+                            </Header>
+                            <Message
+                                message="학교 인증 후 학교 게시판을 이용하실 수 있습니다."
+                                link="/mypage"
+                                buttonValue="대학인증하러가기"
+                            />
+                        </Content>
+                    </PostContainer>
+                )}
+
                 {/* 자유 게시판 불러오기*/}
                 {selectedCountry === 0 ? (
                     /* country ==== 0 , 즉 전체 선택의 경우 
@@ -107,7 +127,6 @@ const Home = () => {
                         boardName="freeboard"
                     />
                 )}
-
                 {/* 카테고리별 게시판 불러오기*/}
                 {freeBoardPostList &&
                     /*자유 게시판의 게시글들을 카테고리별로 map을 돌려서
@@ -151,9 +170,7 @@ const Home = () => {
                         }
                     })}
                 {/* 카테고리가 홀수이면 div를 스페어로 넣는다. */}
-                {categories.freeCategory.length % 2 !== 0 && (
-                    <SpareBox></SpareBox>
-                )}
+                {/* {categories.freeCategory.length % 2 !== 0 && } */}
             </BoardContainer>
         </HomeContainer>
     );
@@ -167,11 +184,31 @@ const BoardContainer = styled.div`
     gap: 70px 50px;
 `;
 
+const PostContainer = styled.div`
+    display: grid;
+    cursor: pointer;
+    margin-bottom: 12px;
+    grid-template-columns: max-content 1fr max-content;
+`;
+
 const SpareBox = styled.div`
     text-align: center;
     img {
         width: 50%;
     }
+`;
+
+const Header = styled.div`
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    ${mixin.outline("1.5px solid", "gray4", "bottom")}
+    ${mixin.flexBox("space-between", "flex-end", null, null)}
+`;
+
+const Content = styled.div``;
+
+const TitleHeading = styled.span`
+    ${mixin.textProps(30, "extraBold", "black")}
 `;
 
 export default Home;

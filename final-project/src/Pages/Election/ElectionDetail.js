@@ -32,6 +32,7 @@ const ElectionDetail = () => {
     const dispatch = useDispatch();
     const { id: electionPostId } = useParams();
     const userInfo = useSelector(state => state.user.user);
+    const isLogin = useSelector(state => state.user.isLoggedIn); //login을 했는지 안했는지 판별값으로 사용합니다.
     const isAdmin = useSelector(state => state.user.isAdmin); //관리자인지 아닌지에 대한 판별값
     const electionList = useSelector(state => state.election.list); // 모든 선거게시물의 리스트입니다.
     const post = useSelector(state => state.election.post); //선거게시물의 데이터가 들어있습니다.
@@ -50,9 +51,11 @@ const ElectionDetail = () => {
             : false; //선거가 시작되기 전인지에 대한 판별값
 
     useEffect(() => {
-        dispatch(getElectionListDB());
-        dispatch(getElectionDB(electionPostId));
-    }, [electionPostId]);
+        if (isLogin) {
+            dispatch(getElectionListDB());
+            dispatch(getElectionDB(electionPostId));
+        }
+    }, [electionPostId, isLogin]);
 
     const selectCandidate = id => {
         //후보자를 선택하면 setSelectCandidateId에 후보자id를 저장합니다.
@@ -84,6 +87,16 @@ const ElectionDetail = () => {
             dispatch(deleteElectionDB(req));
         });
     };
+
+    //로그인한 유저만 볼 수 있도록 예외처리를 합니다.
+    if (!userInfo.user_id)
+        return (
+            <Message
+                message="로그인을 한 사람만 선거게시글을 볼 수 있어요"
+                link="/login"
+                buttonValue="로그인 하러가기"
+            />
+        );
 
     //대학 인증을 한 사람만 볼 수 있도록 예외처리를 합니다.
     if (!userInfo.univ_id || !userInfo.country_id)

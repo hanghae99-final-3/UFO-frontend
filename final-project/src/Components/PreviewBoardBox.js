@@ -11,6 +11,7 @@ import VisibilityIcon from "@material-ui/icons/Visibility"; // 조회수 아이�
 import FavoriteIcon from "@material-ui/icons/Favorite"; // 좋아요 아이콘
 import FavoriteBorder from "@material-ui/icons/FavoriteBorder"; // 좋아요 아이콘
 import { makeStyles } from "@material-ui/core"; // material ui 스타일링 훅스
+import { useSelector } from "react-redux";
 
 const useStyles = makeStyles({
     heart: {
@@ -28,6 +29,9 @@ const PreviewBoardBox = ({
     announcement,
 }) => {
     const classes = useStyles();
+
+    // 로그인 유무
+    const isLoggedIn = useSelector(state => state.user.isLoggedIn);
     // 게시물 클릭시 이벤틀 헨들러
     const handleOnClick = postId => {
         //자유게시판일때,
@@ -238,6 +242,7 @@ const Icon = styled.div`
         font-size: ${({ theme }) => theme.fontSize["12"]};
     }
     svg {
+        margin-right: 2px;
         font-size: 17px;
     }
 `;

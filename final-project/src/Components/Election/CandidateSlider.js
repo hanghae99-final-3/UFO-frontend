@@ -55,12 +55,15 @@ const CandidateSlider = ({ candidateList }) => {
             <Slider {...settings}>
                 {candidateList &&
                     candidateList.map((candidate, idx) => (
-                        <Slide active={idx === cardIndex}>
+                        <Slide key={idx} active={idx === cardIndex}>
                             <CandidateCard candidate={candidate} />
                         </Slide>
                     ))}
             </Slider>
-            <CandidateIntroBox candidate={candidateList} idx={cardIndex} />
+            <CandidateIntroBox
+                candidates={candidateList}
+                idx={cardIndex && cardIndex}
+            />
         </SlideContainer>
     );
 };
@@ -76,15 +79,10 @@ const SlideContainer = styled.div`
 const ArrowContainer = styled.div`
     cursor: pointer;
     z-index: 99;
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    background: ${({ theme }) => theme.color.blue3};
-    ${mixin.textProps(20, "regular", "white")}
-    ${mixin.flexBox("center", "center", null, null)}
+    ${mixin.textProps(20, "regular", "black")}
     :hover {
         svg {
-            color: ${({ theme }) => theme.color.mainBlue};
+            color: ${({ theme }) => theme.color.blue2};
         }
     }
     svg {

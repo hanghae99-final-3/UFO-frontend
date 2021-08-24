@@ -41,18 +41,6 @@ const searchSlice = createSlice({
             state.isFetching = false;
             state.errorMessage = message;
         },
-        [getMainSearchResult.pending]: (state, action) => {
-            state.isFetching = true;
-        },
-        [getMainSearchResult.fulfilled]: (state, { payload: result }) => {
-            state.isFetching = false;
-            state.searchResult = result;
-            state.errorMessage = "";
-        },
-        [getMainSearchResult.rejected]: (state, { payload: message }) => {
-            state.isFetching = false;
-            state.errorMessage = message;
-        },
     },
 });
 

@@ -260,15 +260,6 @@ export const searchApi = {
                 sort: data?.sort,
             },
         }),
-
-    searchMain: data =>
-        instance.get("util/search", {
-            params: {
-                keyword: data?.keyword,
-                pageSize: data?.pageSize,
-                pageNum: data?.pageNum,
-            },
-        }),
 };
 
 export const electionApi = {

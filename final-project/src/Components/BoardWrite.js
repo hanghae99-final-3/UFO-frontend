@@ -16,6 +16,7 @@ import mixin from "../styles/Mixin";
 import Editor from "../Components/Editor";
 import DefaultButton from "../Elements/Buttons/DefaultButton";
 import DefaultSelector from "../Elements/Buttons/DefaultSelector";
+import NoticeSelector from "../Elements/Buttons/NoticeSelector";
 
 /**
  * @author jiyeong
@@ -273,14 +274,14 @@ const BoardWrite = ({ boardName }) => {
                     <TagSelect>
                         {/* 카테고리 중 카테고리 선택하기 */}
                         <SelectTitle>공지 설정</SelectTitle>
-                        <DefaultSelector
+                        <NoticeSelector
                             isSelected={isAnnouncement}
                             rightGap="10px"
                             lastNoGap
                             onClick={() => setIsAnnouncement(!isAnnouncement)}
                         >
                             공지글
-                        </DefaultSelector>
+                        </NoticeSelector>
                     </TagSelect>
                 )}
             </SelectBox>
@@ -330,27 +331,6 @@ const SelectTitle = styled.span`
     margin-right: 10px;
 `;
 
-const SelectBtn = styled.button`
-    min-width: 79px;
-    box-sizing: border-box;
-    border-radius: 16px;
-    transition: all 0.3s ease;
-    ${props =>
-        props.selected
-            ? `box-shadow: inset -1px 5px 5px -5px #cdcdcd;`
-            : `box-shadow:  0 5px 5px -5px #cdcdcd;`}
-    background-color: ${({ theme }) => theme.color.white};
-    color: ${props => props.selected && props.theme.color.black};
-    ${props =>
-        props.selected
-            ? mixin.outline("2px solid", "mainMint")
-            : mixin.outline("2px solid", "blue3")}
-    ${mixin.textProps(18, "semiBold", "gray3")}
-    &:not(:last-child) {
-        margin-right: 10px;
-    }
-`;
-
 const InputTitle = styled.input`
     all: unset;
     ${mixin.outline("1px solid", "gray3", "bottom")};
@@ -361,6 +341,9 @@ const InputTitle = styled.input`
     transition: border-bottom 1s ease;
     :focus {
         ${mixin.outline("1px solid", "black", "bottom")};
+    }
+    ::placeholder {
+        ${mixin.textProps(30, "extraBold", "mainGray")};
     }
 `;
 

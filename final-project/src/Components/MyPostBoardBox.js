@@ -1,17 +1,16 @@
 import React from "react";
-
-import styled from "styled-components";
+import styled from "styled-components"; // 스타일 컴포넌트 라이브러리
 import categories from "../categories";
+import TimeCounting from "time-counting";
 import { history } from "../redux/configureStore";
 
-//-----아이콘------
 import { MdComment } from "react-icons/md";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import FavoriteBorder from "@material-ui/icons/FavoriteBorder";
 import mixin from "../styles/Mixin";
 import InfinityScroll from "../InfinityScroll";
-//----
+import moment from "moment";
 
 const MyPostBoardBox = ({
     postList,
@@ -23,6 +22,15 @@ const MyPostBoardBox = ({
 }) => {
     // 게시물 클릭시 이벤틀 헨들러
     const _onClick = postId => {};
+
+    const timeOption = {
+        lang: "ko",
+        // objectTime: "2020-08-10 06:00:00",
+        objectTime: moment().format(`YYYY-MM-DD HH:mm:ss`),
+        calculate: {
+            justNow: 61,
+        },
+    };
 
     //-------리턴 컴포넌트----------
     return (
@@ -59,38 +67,38 @@ const MyPostBoardBox = ({
                                         <IconContainer>
                                             <>
                                                 <Icon>
-                                                    {post?.like?.is_like ===
-                                                    false ? (
-                                                        <FavoriteBorder />
-                                                    ) : (
-                                                        <FavoriteIcon
-                                                            style={{
-                                                                fill: "#FF5372",
-                                                            }}
-                                                        />
-                                                    )}
-                                                    <span>
-                                                        {post.like &&
-                                                            post.like.all_like}
-                                                    </span>
+                                                    <IconSpan>
+                                                        {TimeCounting(
+                                                            post.createdAt,
+                                                            timeOption,
+                                                        )}
+                                                    </IconSpan>
                                                 </Icon>
                                                 <Icon>
                                                     <MdComment />
-                                                    <span>
+                                                    <IconSpan>
                                                         {post.comment_count}
-                                                    </span>
+                                                    </IconSpan>
                                                 </Icon>
                                                 <Icon>
                                                     <VisibilityIcon />
-                                                    <span>
+                                                    <IconSpan>
                                                         {post.view_count}
-                                                    </span>
+                                                    </IconSpan>
                                                 </Icon>
                                             </>
                                         </IconContainer>
                                     )}
                                 </PostContainer>
-                                {/* <Comment>sds</Comment> */}
+                                {Comment && (
+                                    <CommentContent>
+                                        <MyComment>
+                                            {post.board === "free"
+                                                ? post["free_comments.content"]
+                                                : post["univ_comments.content"]}
+                                        </MyComment>
+                                    </CommentContent>
+                                )}
                             </React.Fragment>
                         ))}
                 </InfinityScroll>
@@ -101,40 +109,34 @@ const MyPostBoardBox = ({
 
 //스타일 컴포넌트
 const Content = styled.div``;
+const CommentContent = styled.div`
+    margin-bottom: 20px;
+`;
+const IconSpan = styled.span`
+    ${mixin.textProps(12, "semiBold", "gray3")}
+`;
 const BoardContainer = styled.div`
     width: 100%;
 `;
 const PostTitle = styled.p`
-    ${props =>
-        props.title || props.tag
-            ? mixin.textProps(14, "semiBold", "gray2")
-            : mixin.textProps(20, "semiBold", "gray2")}
+    ${mixin.flexBox(null, "center")}
+    ${mixin.textProps(20, "semiBold", "gray2")}
 `;
 const SmallTag = styled.span`
+    height: 32px;
+    min-width: 94px;
+    line-height: 28px;
     margin-right: 20px;
     border-radius: 16px;
-    background-color: ${props =>
-        props.announcement ? props.theme.color.mint : "white"};
-    height: ${props => (props.title || props.tag ? " 22px" : "32px")};
-    min-width: ${props => (props.title || props.tag ? " 74px" : "94px")};
-    line-height: ${props => (props.title || props.tag ? "18px" : "28px")};
-    ${props =>
-        props.title || props.tag
-            ? mixin.textProps(12, "semiBold", "gray1", "center")
-            : mixin.textProps(
-                  18,
-                  "semiBold",
-                  props.announcement ? "black" : "gray1",
-                  "center",
-              )}
-    ${props =>
-        mixin.outline("2px solid", props.announcement ? "mint" : "blue2")}
+    background-color: white;
+    ${mixin.textProps(18, "semiBold", "gray1", "center")}
+    ${mixin.outline("2px solid", "blue2")}
 `;
 const PostContainer = styled.div`
     display: grid;
-    grid-template-columns: max-content 1fr max-content;
-    margin-bottom: 12px;
     cursor: pointer;
+    margin-bottom: 20px;
+    grid-template-columns: max-content 1fr max-content;
 `;
 const IconContainer = styled.div`
     display: grid;
@@ -150,6 +152,10 @@ const Icon = styled.div`
     svg {
         font-size: ${props => (props.title || props.tag ? "17px" : "20px")};
     }
+`;
+const MyComment = styled.span`
+    margin-left: 11%;
+    ${mixin.textProps(20, "semiBold", "gray1")}
 `;
 
 export default MyPostBoardBox;
