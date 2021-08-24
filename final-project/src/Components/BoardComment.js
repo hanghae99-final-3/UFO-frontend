@@ -72,16 +72,15 @@ const BoardComment = ({ boardName }) => {
     return (
         <BoardCommentContainer>
             <CommentWrite>
-                <Input
+                <CommentInput
                     type="text"
                     onChange={e => setContent(e.target.value)}
                     onKeyPress={e => e.key === "Enter" && addComment()} //엔터키를 눌렀을 때, 코멘트가 추가되도록 설정!
                     value={content} //나중에 댓글을 추가하고 value 값을 지울 때, state를 활용하여 지우기 위해 value props를 설정!
-                    placeholder="댓글을 적어주세요 댓글댓글"
+                    placeholder="댓글을 적어주세요"
                 />
                 <button onClick={addComment}>등록</button>
             </CommentWrite>
-
             {/* 자유게시판일 때 렌더링 */}
             {commentList && (
                 <>
@@ -111,12 +110,12 @@ const BoardCommentContainer = styled.div``;
 
 const CommentWrite = styled.div`
     margin: 20px 0;
-    ${mixin.outline("2px solid", "gray4", "bottom")}
-    ${mixin.flexBox("space-between")}
     padding-bottom: 10px;
-    input {
-        all: unset;
-        width: 95%;
+    transition: border-bottom 0.3s ease;
+    ${mixin.flexBox("space-between")}
+    ${mixin.outline("2px solid", "gray4", "bottom")}
+    :hover {
+        ${mixin.outline("2px solid", "black", "bottom")}
     }
     button {
         background: white;
@@ -219,16 +218,16 @@ const Comment = ({ comment, boardName, postId }) => {
             <CommentContainer>
                 <Header>
                     {/* 유저이미지 */}
-                    <img
+                    <UserImage
                         src={require("../assets/pngegg2.webp").default}
                         alt="user"
                     />
 
                     {/* 유저닉네임 */}
-                    <Span>{comment.user.nickname}</Span>
+                    <UserName>{comment.user.nickname}</UserName>
 
                     {/* 현재시간과 댓글생성시간과 비교한 시간 (지금은 댓글생성시간으로 표기됨) */}
-                    <Span>{TimeCounting(comment.createdAt, timeOption)}</Span>
+                    <Time>{TimeCounting(comment.createdAt, timeOption)}</Time>
 
                     <Controls>
                         {/* 댓글의 작성자가 아니면 답글버튼이 나타납니다. */}
@@ -264,9 +263,10 @@ const Comment = ({ comment, boardName, postId }) => {
                 <Content>
                     {/* 수정모드면 input이 나타나고, 아니면 text가 나타납니다. */}
                     {isEdit ? (
-                        <input
+                        <EditInput
                             type="text"
                             value={content}
+                            placeholder="댓글을 적어주세요"
                             onChange={e => setContent(e.target.value)}
                         />
                     ) : (
@@ -284,7 +284,6 @@ const CommentContainer = styled.div`
 
 const Header = styled.div`
     ${mixin.flexBox(null, "center")}
-    height: 30px;
     > * {
         height: 100%;
     }
@@ -293,9 +292,15 @@ const Header = styled.div`
     }
 `;
 
+const UserImage = styled.img`
+    height: 25px;
+    width: 25px;
+`;
+
 const Controls = styled.div`
+    line-height: 1;
     button {
-        padding: 0 10px;
+        ${mixin.textProps(14, "semiBod", "gray1")}
         border-radius: 10px;
         background: white;
     }
@@ -304,18 +309,35 @@ const Controls = styled.div`
     }
 `;
 const Content = styled.div`
-    input {
-        all: unset;
-        border-bottom: 2px solid black;
-        width: 30%;
-    }
+    ${mixin.textProps(20, "regular", "black")}
+    margin-top: 3px;
 `;
 
-const Span = styled.span`
+const UserName = styled.span`
+    ${mixin.textProps(14, "semiBod", "gray2")}
+`;
+const Time = styled.span`
     ${mixin.textProps(14, "semiBod", "gray2")}
 `;
 
-const Input = styled.input``;
+const CommentInput = styled.input`
+    all: unset;
+    width: 95%;
+`;
+
+const EditInput = styled.input`
+    all: unset;
+    ${mixin.outline("1px solid", "gray4", "bottom")}
+    width: 40%;
+    transition: border-bottom 0.3s ease;
+    :focus {
+        ${mixin.outline("1px solid", "black", "bottom")}
+    }
+    ::placeholder {
+        ${mixin.textProps(20, "regular", "gray4")}
+    }
+`;
+
 const CommentContent = styled.span`
     ${mixin.textProps(20, "regular", "black")}
 `;

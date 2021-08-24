@@ -14,9 +14,10 @@ import mixin from "../styles/Mixin";
 
 //컴포넌트
 import Editor from "../Components/Editor";
+import Boop from "../Elements/Boop";
 import DefaultButton from "../Elements/Buttons/DefaultButton";
 import DefaultSelector from "../Elements/Buttons/DefaultSelector";
-import NoticeSelector from "../Elements/Buttons/NoticeSelector";
+import AnnounceSelector from "../Elements/Buttons/AnnounceSelector";
 
 /**
  * @author jiyeong
@@ -254,34 +255,36 @@ const BoardWrite = ({ boardName }) => {
                 <TagSelect>
                     {/* 카테고리 중  선택하기 */}
                     <SelectTitle>태그 설정</SelectTitle>
-                    {categoryList.map(ele => (
-                        <DefaultSelector
-                            isSelected={
-                                Number(post?.category) === ele.categoryId
-                            }
-                            key={ele.categoryId}
-                            rightGap="10px"
-                            lastNoGap
-                            onClick={() =>
-                                setCategory("category", `${ele.categoryId}`)
-                            }
-                        >
-                            #{ele.categoryName}
-                        </DefaultSelector>
+                    {categoryList.map((ele, idx) => (
+                        <Boop rotation={0} timing={200} x={0} y={-7} key={idx}>
+                            <DefaultSelector
+                                isSelected={
+                                    Number(post?.category) === ele.categoryId
+                                }
+                                key={ele.categoryId}
+                                rightGap="8px"
+                                lastNoGap={categoryList.length - 1 === idx}
+                                onClick={() =>
+                                    setCategory("category", `${ele.categoryId}`)
+                                }
+                            >
+                                #{ele.categoryName}
+                            </DefaultSelector>
+                        </Boop>
                     ))}
                 </TagSelect>
                 {boardName === "univboard" && isAdmin && (
                     <TagSelect>
                         {/* 카테고리 중 카테고리 선택하기 */}
                         <SelectTitle>공지 설정</SelectTitle>
-                        <NoticeSelector
+                        <AnnounceSelector
                             isSelected={isAnnouncement}
                             rightGap="10px"
                             lastNoGap
                             onClick={() => setIsAnnouncement(!isAnnouncement)}
                         >
                             공지글
-                        </NoticeSelector>
+                        </AnnounceSelector>
                     </TagSelect>
                 )}
             </SelectBox>
@@ -328,7 +331,7 @@ const TagSelect = styled.div`
 
 const SelectTitle = styled.span`
     ${mixin.textProps(14, "semiBold", "gray3")}
-    margin-right: 10px;
+    margin-right: 15px;
 `;
 
 const InputTitle = styled.input`

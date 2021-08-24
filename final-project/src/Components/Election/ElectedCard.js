@@ -2,11 +2,10 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 import { getElectionResultDB } from "../../redux/async/election";
-import { useParams } from "react-router";
 import mixin from "../../styles/Mixin";
-import CelebrationBox from "./CelebrationBox";
+import CongratulationMessageBox from "./CongratulationMessageBox";
 
-const ElectedCard = ({ postId, candidates }) => {
+const ElectedCard = ({ electionPostId, candidates }) => {
     const dispatch = useDispatch();
     const result = useSelector(state => state.election.resultList);
 
@@ -37,9 +36,9 @@ const ElectedCard = ({ postId, candidates }) => {
         });
 
     useEffect(() => {
-        if (!postId) return;
+        if (!electionPostId) return;
         const req = {
-            election_id: Number(postId),
+            election_id: electionPostId,
         };
         dispatch(getElectionResultDB(req));
     }, []);
@@ -64,7 +63,9 @@ const ElectedCard = ({ postId, candidates }) => {
                             기호 {electedInfo.idx}번 {electedInfo?.name}
                         </ElectedName>
                         <ElectedMajor>{electedInfo?.major}</ElectedMajor>
-                        <CelebrationBox />
+                        <CongratulationMessageBox
+                            electionPostId={electionPostId}
+                        />
                     </ElectedInfo>
                 </ElectedBox>
             )}

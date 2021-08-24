@@ -75,7 +75,7 @@ const Home = () => {
 
             <BoardContainer>
                 {/* 학교 게시판 불러오기*/}
-                {isAuthenticated !== null && (
+                {isAuthenticated !== null && isLoggedIn && (
                     <PreviewBoardBox
                         title="학교 게시판"
                         fixedList={announcement && announcement.slice(0, 2)}
@@ -86,18 +86,28 @@ const Home = () => {
                     />
                 )}
                 {isAuthenticated === null && (
-                    <PostContainer>
-                        <Content>
-                            <Header>
-                                <TitleHeading>학교 게시판</TitleHeading>
-                            </Header>
-                            <Message
-                                message="학교 인증 후 학교 게시판을 이용하실 수 있습니다."
-                                link="/mypage"
-                                buttonValue="대학인증하러가기"
-                            />
-                        </Content>
-                    </PostContainer>
+                    <Content>
+                        <Header>
+                            <TitleHeading>학교 게시판</TitleHeading>
+                        </Header>
+                        <UnivBoardMessageContainer>
+                            <UnivBoardMessage>
+                                학교 인증 후, 학교 게시판을 이용하실 수 있습니다
+                            </UnivBoardMessage>
+                        </UnivBoardMessageContainer>
+                    </Content>
+                )}
+                {isLoggedIn === false && (
+                    <Content>
+                        <Header>
+                            <TitleHeading>학교 게시판</TitleHeading>
+                        </Header>
+                        <UnivBoardMessageContainer>
+                            <UnivBoardMessage>
+                                학교 게시판은 로그인 후 이용하실 수 있습니다
+                            </UnivBoardMessage>
+                        </UnivBoardMessageContainer>
+                    </Content>
                 )}
 
                 {/* 자유 게시판 불러오기*/}
@@ -184,20 +194,6 @@ const BoardContainer = styled.div`
     gap: 70px 50px;
 `;
 
-const PostContainer = styled.div`
-    display: grid;
-    cursor: pointer;
-    margin-bottom: 12px;
-    grid-template-columns: max-content 1fr max-content;
-`;
-
-const SpareBox = styled.div`
-    text-align: center;
-    img {
-        width: 50%;
-    }
-`;
-
 const Header = styled.div`
     margin-bottom: 10px;
     padding-bottom: 8px;
@@ -209,6 +205,15 @@ const Content = styled.div``;
 
 const TitleHeading = styled.span`
     ${mixin.textProps(30, "extraBold", "black")}
+`;
+
+const UnivBoardMessageContainer = styled.div`
+    height: 60%;
+    ${mixin.flexBox("center", "center", null, null)};
+`;
+
+const UnivBoardMessage = styled.span`
+    ${mixin.textProps(18, "semiBold", "gray2")}
 `;
 
 export default Home;

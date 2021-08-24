@@ -216,7 +216,7 @@ const ElectionDetail = () => {
                     <Title>당선자</Title>
                     <ElectedCard
                         candidates={post?.candidates}
-                        postId={electionPostId}
+                        electionPostId={electionPostId}
                     />
                 </ElectedContainer>
             )}
