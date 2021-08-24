@@ -13,6 +13,9 @@ import FavoriteBorder from "@material-ui/icons/FavoriteBorder"; // 좋아요 아
 import { makeStyles } from "@material-ui/core"; // material ui 스타일링 훅스
 import { useSelector } from "react-redux";
 
+//컴포넌트
+import SmallTag from "../Elements/Tag/SmallTag";
+
 const useStyles = makeStyles({
     heart: {
         fill: "#FF5372",
@@ -182,24 +185,6 @@ const PostTitle = styled.p`
 const AnnounceTitle = styled.p`
     ${mixin.textProps(14, "semiBold", "gray2")}
 `;
-const SmallTag = styled.span`
-    height: 22px;
-    line-height: 18px;
-    min-width: 74px;
-    margin-right: 20px;
-    border-radius: 16px;
-    background-color: ${props =>
-        props.announcement ? props.theme.color.mint : "white"};
-    ${props =>
-        mixin.textProps(
-            12,
-            "semiBold",
-            props.announcement ? "black" : "gray1",
-            "center",
-        )}
-    ${props =>
-        mixin.outline("2px solid", props.announcement ? "mint" : "blue2")}
-`;
 
 const AnnounceTag = styled.span`
     height: 22px;
@@ -209,7 +194,7 @@ const AnnounceTag = styled.span`
     border-radius: 16px;
     ${mixin.outline("2px solid", "mint")}
     background-color: ${props => props.theme.color.mint};
-    ${props => mixin.textProps(12, "semiBold", "black", "center")};
+    ${mixin.textProps(12, "semiBold", "black", "center")};
 `;
 
 // 더보기 버튼

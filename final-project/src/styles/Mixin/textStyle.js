@@ -6,7 +6,7 @@ const textProps = (fontSize, fontWeight, color, textAlign, lineHeight) => {
         font-weight: ${({ theme }) => theme.fontWeight[fontWeight]};
         color: ${({ theme }) => theme.color[color]};
         ${textAlign && `text-align: ${textAlign}`};
-        ${textAlign && `line-height: ${lineHeight}`};
+        ${lineHeight && `line-height: ${lineHeight}`};
     `;
 };
 

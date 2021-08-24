@@ -10,6 +10,10 @@ import FavoriteIcon from "@material-ui/icons/Favorite"; // 좋아요 아이콘
 import FavoriteBorder from "@material-ui/icons/FavoriteBorder"; // 좋아요 아이콘
 import { makeStyles } from "@material-ui/core"; // material ui 스타일링 훅스
 
+//컴포넌트
+import AnnounceTag from "../Elements/Tag/AnnounceTag";
+import DefaultTag from "../Elements/Tag/DefaultTag";
+
 const useStyles = makeStyles({
     heart: {
         fill: "#FF5372",
@@ -28,6 +32,8 @@ const BoardBox = ({ postList, fixedList, boardName, announcement }) => {
         return history.push(`/univboard/detail/${postId}`);
     };
 
+    console.log("🦄💖💖" + fixedList);
+
     return (
         <BoardContainer>
             <Content>
@@ -39,7 +45,7 @@ const BoardBox = ({ postList, fixedList, boardName, announcement }) => {
                                 _onClick(post.post_id);
                             }}
                         >
-                            <AnnounceTag>공지</AnnounceTag>
+                            <AnnounceTag rightGap="20px">공지</AnnounceTag>
                             <AnnounceTitle>{post.title}</AnnounceTitle>
                             <IconContainer>
                                 <>
@@ -77,7 +83,10 @@ const BoardBox = ({ postList, fixedList, boardName, announcement }) => {
                                 _onClick(post.post_id);
                             }}
                         >
-                            <SmallTag announcement={announcement}>
+                            <DefaultTag
+                                announcement={announcement}
+                                rightGap="20px"
+                            >
                                 {!announcement && "#"}
                                 {boardName === "freeboard" &&
                                     !announcement &&
@@ -91,7 +100,7 @@ const BoardBox = ({ postList, fixedList, boardName, announcement }) => {
                                     boardName &&
                                     announcement &&
                                     "공지"}
-                            </SmallTag>
+                            </DefaultTag>
                             <PostTitle>{post.title}</PostTitle>
 
                             <IconContainer>
@@ -137,35 +146,6 @@ const PostTitle = styled.p`
 const AnnounceTitle = styled.p`
     ${mixin.textProps(20, "semiBold", "gray2")};
 `;
-const SmallTag = styled.span`
-    height: 32px;
-    min-width: 94px;
-    line-height: 28px;
-    margin-right: 20px;
-    border-radius: 16px;
-    background-color: ${props =>
-        props.announcement ? props.theme.color.mint : "white"};
-    ${props =>
-        mixin.textProps(
-            18,
-            "semiBold",
-            props.announcement ? "black" : "gray1",
-            "center",
-        )};
-    ${props =>
-        mixin.outline("2px solid", props.announcement ? "mint" : "blue2")};
-`;
-
-const AnnounceTag = styled.span`
-    height: 32px;
-    min-width: 74px;
-    line-height: 28px;
-    margin-right: 20px;
-    border-radius: 16px;
-    background-color: ${props => props.theme.color.mint};
-    ${mixin.outline("2px solid", "mint")};
-    ${mixin.textProps(18, "semiBold", "gray1", "center")};
-`;
 
 const Content = styled.div``;
 
@@ -174,6 +154,7 @@ const PostContainer = styled.div`
     grid-template-columns: max-content 1fr max-content;
     margin-bottom: 12px;
     cursor: pointer;
+    align-items: center;
 `;
 
 const IconContainer = styled.div`
