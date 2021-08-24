@@ -273,7 +273,7 @@ const StyledEditor = styled.div`
             }
         }
 
-        ${mixin.outline("1px solid", "gray3", "bottom")};
+        ${mixin.outline("1px solid", "gray4", "bottom")};
     }
 
     /* 콘텐츠 안쪽영역 스타일링 */

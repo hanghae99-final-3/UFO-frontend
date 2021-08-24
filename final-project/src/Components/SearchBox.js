@@ -225,7 +225,7 @@ const TagContainer = styled.div`
 `;
 const TagSelectText = styled.span`
     ${mixin.textProps(14, "semiBold", "gray3")};
-    margin-right: 5px;
+    margin-right: 15px;
 `;
 
 const CancelButton = styled.button`

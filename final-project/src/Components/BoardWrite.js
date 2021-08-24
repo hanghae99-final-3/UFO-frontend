@@ -226,7 +226,7 @@ const BoardWrite = ({ boardName }) => {
             {/* 게시판제목 */}
             <BoardTitle>
                 <h3>
-                    {boardName === "freeboard" ? "자유게시판" : "대학게시판"}
+                    {boardName === "freeboard" ? "자유 게시판" : "대학 게시판"}
                 </h3>
             </BoardTitle>
 
@@ -307,7 +307,7 @@ const BoardWrite = ({ boardName }) => {
 };
 
 const BoardTitle = styled.div`
-    ${mixin.outline("1px solid", "gray3", "bottom")}
+    ${mixin.outline("1px solid", "gray4", "bottom")}
     h3 {
         ${mixin.textProps(30, "extraBold", "black")}
         margin-bottom: 10px;
@@ -317,13 +317,13 @@ const BoardTitle = styled.div`
 const SelectBox = styled.div``;
 
 const CountrySelect = styled.div`
-    padding: 15px 0;
-    ${mixin.outline("1px solid", "gray3", "bottom")}
+    padding: 10px 0;
+    ${mixin.outline("1px solid", "gray4", "bottom")}
 `;
 
 const TagSelect = styled.div`
-    padding: 15px 0;
-    ${mixin.outline("1px solid", "gray3", "bottom")}
+    padding: 10px 0;
+    ${mixin.outline("1px solid", "gray4", "bottom")}
 `;
 
 const SelectTitle = styled.span`
@@ -333,7 +333,7 @@ const SelectTitle = styled.span`
 
 const InputTitle = styled.input`
     all: unset;
-    ${mixin.outline("1px solid", "gray3", "bottom")};
+    ${mixin.outline("1px solid", "gray4", "bottom")};
     ${mixin.textProps(30, "extraBold", "black")};
     transition: border-bottom 1s ease;
     padding: 20px 0;
