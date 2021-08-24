@@ -17,7 +17,7 @@ const Election = () => {
     const electionList = useSelector(state => state.election.list);
     const user = useSelector(state => state.user.user);
     const isLogin = useSelector(state => state.user.isLoggedIn); //login을 했는지 안했는지 판별값으로 사용합니다.
-    const [isOngoing, setIsOngoing] = useState(false);
+    const [isOngoing, setIsOngoing] = useState(true);
     useEffect(() => {
         if (isLogin) dispatch(getElectionListDB());
     }, [isLogin]);
@@ -135,13 +135,13 @@ const ElectionContainer = styled.div``;
 const Title = styled.div`
     ${mixin.outline("1px solid", "gray4", "bottom")};
     padding-bottom: 10px;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
     ${mixin.textProps(30, "extraBold", "black")};
 `;
 
 const Controls = styled.div`
     ${mixin.flexBox("space-between", "flex-end")};
-    padding-bottom: 15px;
+    padding-bottom: 10px;
     ${mixin.outline("1px solid", "gray4", "bottom")};
 `;
 
