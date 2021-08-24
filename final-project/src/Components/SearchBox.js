@@ -34,6 +34,8 @@ import DefaultSelector from "../Elements/Buttons/DefaultSelector";
 const useStyles = makeStyles(theme => ({
     selectRoot: {
         //...other styles
+        width: "32px",
+        fontWeight: 600,
         "&:focus": {
             backgroundColor: "white",
         },

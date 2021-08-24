@@ -5,6 +5,7 @@ import { getElectionListDB } from "../../redux/async/election";
 import { history } from "../../redux/configureStore";
 import moment from "moment";
 import mixin from "../../styles/Mixin";
+import { Helmet } from "react-helmet";
 
 //컴포넌트
 import Message from "../../Components/Message";
@@ -41,6 +42,9 @@ const Election = () => {
 
     return (
         <ElectionContainer>
+            <Helmet>
+                <title>UFO - 투표함</title>
+            </Helmet>
             <Title>투표함</Title>
             <Controls>
                 <Selecter>

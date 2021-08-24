@@ -84,19 +84,3 @@ export default function SelectCountry() {
         </div>
     );
 }
-
-//----스타일 컴포넌트---
-const SSelect = styled.select`
-    border-radius: 4;
-    position: relative;
-    /* backgroundColor: theme.palette.background.paper; */
-    border: 1px solid #ced4da;
-    font-size: 16;
-    padding: 10px 26px 10px 12px;
-    /* transition: theme.transitions.create(["border-color", "box-shadow"]) */
-    :focus {
-        border-radius: 4;
-        border-color: #80bdff;
-        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
-    }
-`;

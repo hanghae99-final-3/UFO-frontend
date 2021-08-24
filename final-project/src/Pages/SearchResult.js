@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import styled from "styled-components"; // 스타일 컴포넌트 객체
 import { getSearchResult, getUnivSearchResult } from "../redux/async/search";
 
-import styled from "styled-components";
 import Pagination from "@material-ui/lab/Pagination";
 import BoardBox from "../Components/BoardBox";
 import SearchBox from "../Components/SearchBox";
@@ -12,8 +12,8 @@ import { resetSearchOrder } from "../redux/modules/freeBoardSlice";
 import { history } from "../redux/configureStore";
 
 const SearchResult = props => {
-    const currentLocation = history.location.pathname.split("/")[1];
     const dispatch = useDispatch();
+    const currentLocation = history.location.pathname.split("/")[1];
     const [page, setPage] = useState(1);
     const { param: searchTerm } = useParams();
     const selectedTag = useSelector(state => state.freeBoard?.selectedTag);
@@ -59,7 +59,6 @@ const SearchResult = props => {
                         ? categories.freeBoardTags
                         : categories.univBoardTags
                 }
-                deactivateSearch={true}
             />
             <BoardBox
                 postList={searchResultList && searchResultList.rows}
@@ -82,7 +81,6 @@ const PaginationContainer = styled.div`
     display: flex;
     justify-content: center;
     margin-top: 10px;
-    margin-bottom: 100px;
 `;
 
 const Title = styled.span`
@@ -96,7 +94,7 @@ const SearchTerm = styled.span`
 `;
 const TitleContainer = styled.div`
     margin-top: 30px;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
     vertical-align: middle;
 `;
 

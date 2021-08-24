@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Helmet } from "react-helmet";
 
 import { getUnivBoardDB } from "../redux/async/univBoard";
 
@@ -75,6 +76,9 @@ const UnivBoard = () => {
 
     return (
         <>
+            <Helmet>
+                <title>UFO - 대학 게시판</title>
+            </Helmet>
             <SearchBox
                 searchTag={categories.univBoardTags}
                 page="univboard"
