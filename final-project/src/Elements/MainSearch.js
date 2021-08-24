@@ -26,6 +26,7 @@ const MainSearch = props => {
             return window.alert("검색어를 입력해 주세요.");
         }
         history.push(`/util/search/${searchTerm}`);
+        setSearchTerm("");
     };
     return (
         <React.Fragment>
