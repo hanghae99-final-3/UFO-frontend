@@ -238,6 +238,7 @@ const Icon = styled.div`
         font-size: ${({ theme }) => theme.fontSize["12"]};
     }
     svg {
+        margin-right: 2px;
         font-size: 17px;
     }
 `;
