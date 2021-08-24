@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import MyPostList from "../Components/MyPostList";
 import styled from "styled-components";
 import { Helmet } from "react-helmet";
+import { useParams } from "react-router";
 
 import { userApi } from "../api";
 import mixin from "../styles/Mixin";
@@ -9,8 +10,19 @@ import { useSelector } from "react-redux";
 import MyCommentedList from "../Components/MyCommentedList";
 
 const MyPost = props => {
+    const { path } = useParams();
     const username = useSelector(state => state.user.user.nickname); // 로그인 유저 닉네임
     const [selectedButton, setSelectedButton] = useState(""); // 선택된 버튼 값
+
+    useEffect(() => {
+        if (path) {
+            if (path === "post") {
+                setSelectedButton("myPostButton");
+            } else if (path === "comment") {
+                setSelectedButton("myCommentButton");
+            }
+        }
+    }, []);
 
     // 버튼 클릭 핸들러
     const handleButtonSelect = e => {
@@ -35,7 +47,7 @@ const MyPost = props => {
                 <Button
                     name="alarmButton"
                     selectedButton={selectedButton}
-                    onClick={handleButtonSelect}
+                    onClick={() => window.alert("서비스 준비중입니다.")}
                 >
                     최근 알림
                 </Button>
@@ -66,7 +78,7 @@ const MyPostHeaderContainer = styled.div`
     padding-bottom: 10px;
 `;
 const ButtonContainer = styled.div`
-    padding: 10px 0;
+    padding: 9px 0;
     margin-bottom: 19px;
     ${mixin.outline("1.5px solid", "gray4", "top")}
     ${mixin.outline("1.5px solid", "gray4", "bottom")}
@@ -76,7 +88,7 @@ const MyPostHeader = styled.span`
 `;
 const Button = styled.button`
     height: 40px;
-    width: 158px;
+    width: 164px;
     background: none;
     border-radius: 75px;
     :nth-child(2) {

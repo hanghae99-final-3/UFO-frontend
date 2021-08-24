@@ -59,6 +59,7 @@
         "react": "^17.0.2",
         "react-animated-checkbox": "^0.1.4",
         "react-canvas-confetti": "^1.2.1",
+        "react-content-loader": "^6.0.3",
         "react-cookie": "^4.0.3",
         "react-date-countdown-timer": "^1.0.9",
         "react-date-picker": "^8.2.0",

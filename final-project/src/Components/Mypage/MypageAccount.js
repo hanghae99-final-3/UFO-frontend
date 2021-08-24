@@ -312,7 +312,7 @@ const MypageAccount = props => {
                     <InputContainer>
                         <FirstInputForm onSubmit={emailAuthFormik.handleSubmit}>
                             <FirstInputWrapper>
-                                <ButtonContainer>
+                                <FirstButtonContainer>
                                     <Input
                                         id="email"
                                         placeholder="학교 메일을 입력해주세요"
@@ -324,7 +324,7 @@ const MypageAccount = props => {
                                     <InputButton type="submit">
                                         확인
                                     </InputButton>
-                                </ButtonContainer>
+                                </FirstButtonContainer>
                                 {emailAuthMsg === "" &&
                                 emailAuthFormik.touched.email &&
                                 emailAuthFormik.errors.email ? (
@@ -338,7 +338,7 @@ const MypageAccount = props => {
                             </FirstInputWrapper>
                         </FirstInputForm>
 
-                        <FirstInputForm onSubmit={authCodeFormik.handleSubmit}>
+                        <InputForm onSubmit={authCodeFormik.handleSubmit}>
                             <InputWrapper>
                                 <ButtonContainer>
                                     <Input
@@ -364,7 +364,7 @@ const MypageAccount = props => {
                                     <ErrorBox>{authCodeMsg}</ErrorBox>
                                 ) : null}
                             </InputWrapper>
-                        </FirstInputForm>
+                        </InputForm>
                     </InputContainer>
                 )}
                 {/* 닉네임 변경 모드 핸들러 버튼 */}
@@ -526,7 +526,7 @@ const MypageAccount = props => {
                                             }
                                         </ErrorBox>
                                     ) : null}
-                                    <ButtonContainer>
+                                    <LastButtonContainer>
                                         <Input
                                             type="password"
                                             placeholder="새로운 비밀번호 확인"
@@ -538,7 +538,7 @@ const MypageAccount = props => {
                                         <InputButton type="submit">
                                             설정
                                         </InputButton>
-                                    </ButtonContainer>
+                                    </LastButtonContainer>
                                     {passwordResetFormik.touched
                                         .newPasswordConfirm &&
                                     passwordResetFormik.errors
@@ -566,21 +566,24 @@ const MypageAccount = props => {
     );
 };
 
+// 계정관리 타이틀 감싸는 div
 const TitleWrapper = styled.div`
-    margin-top: 80px;
     padding-bottom: 10px;
     margin-bottom: 10px;
     ${mixin.outline("1.5px solid", "gray4", "bottom")}
 `;
+// 계정관리 타이틀
 const Title = styled.span`
     display: block;
     ${mixin.textProps(30, "extraBold", "gray2")}
 `;
-
+// 학교 인증 닉네임 설정 등, 계정관리 버튼 감싸는 div
 const ControlContainer = styled.div`
     ${mixin.flexBox("space-between", null, "column", "40%")}
 `;
+// 버튼 감싸는 div
 const ButtonWrapper = styled.div``;
+// 학교인증, 닉네임 설정 등 계정 관리 버튼
 const ControlButton = styled.button`
     height: 35px;
     padding: 0 20px;
@@ -600,25 +603,24 @@ const ControlButton = styled.button`
             props.selected === props.name ? "black" : "gray3",
         )}
 `;
-
+// 인풋창 컨테이너
 const InputContainer = styled.div`
     width: 100%;
     ${mixin.flexBox(null, null, "column")};
 `;
-
+// 이메일 인증부분 인풋 form
 const FirstInputForm = styled.form`
     width: 100%;
     ${mixin.flexBox(null, "flex-end")}
 `;
-
+// 이메일 인증부분 제외 다른 계정관리 인풋 폼
 const InputForm = styled.form`
     width: 100%;
     margin-bottom: 21px;
     ${mixin.flexBox(null, "flex-end")}
 `;
-
+// 인풋 입력 창
 const Input = styled.input`
-    margin-top: 5px;
     height: 25px;
     width: 90%;
     border: none;
@@ -632,6 +634,7 @@ const Input = styled.input`
         ${mixin.textProps(18, "semiBold", "gray3")};
     }
 `;
+// 인풋 입력후 확인 / 설정 등 submit 버튼
 const InputButton = styled.button`
     width: 80px;
     height: 32px;
@@ -640,9 +643,8 @@ const InputButton = styled.button`
     ${mixin.textProps(18, "semiBold", "white")};
     background-color: ${props => props.theme.color.blue1};
 `;
-
+// 이메일 인증부분 submit 버튼
 const FirstInputButton = styled.button`
-    margin-top: 15px;
     width: 80px;
     height: 32px;
     border-radius: 40px;
@@ -650,7 +652,7 @@ const FirstInputButton = styled.button`
     ${mixin.textProps(18, "semiBold", "white")};
     background-color: ${props => props.theme.color.blue1};
 `;
-
+// 이메일 인증부분 인풋 컨테이너
 const FirstInputWrapper = styled.div`
     width: 100%;
     ${mixin.flexBox(null, null, "column")};
@@ -659,12 +661,28 @@ const InputWrapper = styled.div`
     width: 100%;
     margin-bottom: 20px;
     ${mixin.flexBox(null, null, "column")};
+    Input {
+        :nth-child(2) {
+            margin: 17px 0;
+        }
+    }
 `;
 
 const ButtonContainer = styled.div`
+    Input {
+        margin-top: 17px;
+    }
     ${mixin.flexBox(null, "flex-end")}
 `;
 
+const FirstButtonContainer = styled.div`
+    ${mixin.flexBox(null, "flex-end")}
+`;
+
+const LastButtonContainer = styled.div`
+    ${mixin.flexBox(null, "flex-end")}
+`;
+// 에러 메세지 div
 const ErrorBox = styled.div`
     margin-top: 4px;
     ${mixin.textProps(12, "semiBold", "danger")}

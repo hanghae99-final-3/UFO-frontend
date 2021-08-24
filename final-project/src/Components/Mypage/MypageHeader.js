@@ -20,8 +20,12 @@ const MypageHeader = props => {
         history.replace("/");
     };
 
-    const handleGoToMypost = () => {
-        history.push("/mypost");
+    const handleGoToMyPost = e => {
+        if (e.target.name === "myPost") {
+            history.push("/mypost/post");
+        } else {
+            history.push("/mypost/comment");
+        }
     };
     return (
         <React.Fragment>
@@ -38,31 +42,18 @@ const MypageHeader = props => {
                 </UnivNameBox>
                 <MyActivityContainer>
                     <ActivityTitle>내 활동 보기</ActivityTitle>
-                    {/* <Trend
-                        smooth
-                        autoDraw
-                        autoDrawDuration={3000}
-                        autoDrawEasing="ease-out"
-                        data={[0, 2, 5, 9, 5, 10, 3, 5, 0, 0, 1, 8, 2, 9, 0]}
-                        gradient={["#00c6ff", "#F0F", "#FF0"]}
-                        radius={10.5}
-                        strokeWidth={1.3}
-                        strokeLinecap={"butt"}
-                    /> */}
                 </MyActivityContainer>
                 <MyActivityButtonContainer>
                     <ActivityButton
                         onClick={() => alert("서비스 준비중 입니다")}
                     >
-                        <ActivityButtonText>최근 알림</ActivityButtonText>
+                        최근 알림
                     </ActivityButton>
-                    <ActivityButton onClick={handleGoToMypost}>
-                        <ActivityButtonText>내가 쓴 글</ActivityButtonText>
+                    <ActivityButton name="myPost" onClick={handleGoToMyPost}>
+                        내가 쓴 글
                     </ActivityButton>
-                    <ActivityButton
-                        onClick={() => alert("서비스 준비중 입니다")}
-                    >
-                        <ActivityButtonText>내가 쓴 댓글</ActivityButtonText>
+                    <ActivityButton name="myComment" onClick={handleGoToMyPost}>
+                        내가 쓴 댓글
                     </ActivityButton>
                 </MyActivityButtonContainer>
             </MyPageHeader>
@@ -70,22 +61,21 @@ const MypageHeader = props => {
     );
 };
 
-//-------- 마이페이지 해더 스타일-----------
-const MyPageHeader = styled.div``;
-
+// 스타일 컴포넌트
+const MyPageHeader = styled.div`
+    margin-bottom: 75px;
+`;
+// 대학교 이름 + 로그아웃 버튼 감싸는 div
 const UnivNameBox = styled.div`
-    margin-top: 20px;
     ${mixin.flexBox("space-between", "flex-end")}
 `;
-
+//대학교 이름
 const UnivName = styled.span`
     display: block;
+    margin-bottom: 10px;
     ${mixin.textProps(20, "semiBold", "gray2")}
 `;
-const Greeting = styled.span`
-    ${mixin.textProps(40, "extraBold", "black")}
-`;
-
+// 로그아웃 버튼
 const LogoutButton = styled.button`
     width: 108px;
     height: 32px;
@@ -93,27 +83,34 @@ const LogoutButton = styled.button`
     background-color: ${props => props.theme.color.mainBlue};
     ${mixin.textProps(18, "semiBold", "white")}
 `;
-
+// 유저네임 + 인사말 span
+const Greeting = styled.span`
+    margin-bottom: 70px;
+    ${mixin.textProps(40, "extraBold", "black")}
+`;
+// 내 활동 보기 버튼들을 감싸는 div 컨테이너
 const MyActivityContainer = styled.div`
-    margin: 70px 0 10px 0;
     padding-bottom: 5px;
     ${mixin.outline("1.5px solid", "gray4", "bottom")}
 `;
+// "내 활동 보기" 문구
 const ActivityTitle = styled.span`
     ${mixin.textProps(30, "extraBold", "black")}
 `;
-
+// 내 활동 보기 안에 버튼 3개 감싸는 div (최근 알림, 내가 쓴글, etc)
 const MyActivityButtonContainer = styled.div`
+    margin-top: 20px;
     width: 50%;
     ${mixin.flexBox("space-between")};
 `;
-const ActivityButton = styled.div`
+//내 활동 보기 버튼
+const ActivityButton = styled.button`
     width: 150px;
     border-radius: 76px;
+    background: none;
     ${mixin.flexBox("center", "center", null, "40px")};
     ${mixin.outline("2px solid", "blue3")};
     ${mixin.textProps(18, "semiBold", "gray3")}
 `;
-const ActivityButtonText = styled.span``;
 
 export default MypageHeader;
