@@ -69,7 +69,6 @@ const SearchBox = ({ searchTag, deactivateSearch, page, pushButton }) => {
 
     //태그 클릭 이벤트 핸들링
     const handleTagSelect = e => {
-        console.log(e.target.value);
         setSelectedTag(parseInt(e.target.value));
     };
 

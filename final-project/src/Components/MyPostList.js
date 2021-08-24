@@ -28,7 +28,6 @@ const MyPostList = () => {
             })
             .then(res => {
                 if (res.data.ok) {
-                    console.log(res.data.my_posts);
                     setPostList(prev => [...prev, ...res.data.my_posts]);
                     // setTotalPage(res.data.)
                 }
