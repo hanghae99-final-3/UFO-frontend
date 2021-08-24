@@ -50,6 +50,7 @@ const ElectionDetail = () => {
             : false; //선거가 시작되기 전인지에 대한 판별값
 
     useEffect(() => {
+        if (!userInfo.user_id) return;
         dispatch(getElectionListDB());
         dispatch(getElectionDB(electionPostId));
     }, [electionPostId]);
@@ -84,6 +85,16 @@ const ElectionDetail = () => {
             dispatch(deleteElectionDB(req));
         });
     };
+
+    //로그인한 유저만 볼 수 있도록 예외처리를 합니다.
+    if (!userInfo.user_id)
+        return (
+            <Message
+                message="로그인을 한 사람만 선거게시글을 볼 수 있어요"
+                link="/login"
+                buttonValue="로그인 하러가기"
+            />
+        );
 
     //대학 인증을 한 사람만 볼 수 있도록 예외처리를 합니다.
     if (!userInfo.univ_id || !userInfo.country_id)
