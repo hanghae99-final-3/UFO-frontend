@@ -12,7 +12,7 @@ const MyPostList = () => {
     // 게시물 요청시 옵션 정보 (페이수 per 게시물, 현재 페이지 )
     const req = {
         pageNum: currentPage,
-        pageSize: 12,
+        pageSize: 10,
     };
     // 게시글 api 요청 콜
     const requestCall = async ({ pageNum, pageSize }) => {
