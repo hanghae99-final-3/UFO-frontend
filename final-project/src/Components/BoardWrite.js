@@ -331,27 +331,6 @@ const SelectTitle = styled.span`
     margin-right: 10px;
 `;
 
-const SelectBtn = styled.button`
-    min-width: 79px;
-    box-sizing: border-box;
-    border-radius: 16px;
-    transition: all 0.3s ease;
-    ${props =>
-        props.selected
-            ? `box-shadow: inset -1px 5px 5px -5px #cdcdcd;`
-            : `box-shadow:  0 5px 5px -5px #cdcdcd;`}
-    background-color: ${({ theme }) => theme.color.white};
-    color: ${props => props.selected && props.theme.color.black};
-    ${props =>
-        props.selected
-            ? mixin.outline("2px solid", "mainMint")
-            : mixin.outline("2px solid", "blue3")}
-    ${mixin.textProps(18, "semiBold", "gray3")}
-    &:not(:last-child) {
-        margin-right: 10px;
-    }
-`;
-
 const InputTitle = styled.input`
     all: unset;
     ${mixin.outline("1px solid", "gray3", "bottom")};
@@ -362,6 +341,9 @@ const InputTitle = styled.input`
     transition: border-bottom 1s ease;
     :focus {
         ${mixin.outline("1px solid", "black", "bottom")};
+    }
+    ::placeholder {
+        ${mixin.textProps(30, "extraBold", "mainGray")};
     }
 `;
 
