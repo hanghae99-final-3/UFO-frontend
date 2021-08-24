@@ -60,8 +60,6 @@ const LoginPresenter = ({
             </Grid>
             {/* <SocialLogin toggleLoginMode={toggleLoginMode} /> */}
             {socialLoginMode ? (
-                <SocialLogin toggleLoginMode={toggleLoginMode} />
-            ) : (
                 <Grid className={classes.formContainer}>
                     <Formik
                         initialValues={{
@@ -113,23 +111,13 @@ const LoginPresenter = ({
                                     <Loginbtn type="submit" variant="outlined">
                                         로그인
                                     </Loginbtn>
-                                    <Button
-                                        style={{
-                                            marginTop: "20px",
-                                            width: "320px",
-                                            height: "40px",
-                                            borderRadius: "10px",
-                                        }}
-                                        variant="outlined"
-                                        onClick={toggleLoginMode}
-                                    >
-                                        소셜 로그인
-                                    </Button>
                                 </Form>
                             </Grid>
                         )}
                     </Formik>
                 </Grid>
+            ) : (
+                <SocialLogin toggleLoginMode={toggleLoginMode} />
             )}
         </Grid>
     );
