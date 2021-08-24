@@ -33,12 +33,10 @@ const Message = ({ message, link, buttonValue }) => {
 };
 
 const MessageContainer = styled.div`
+    ${mixin.floatBox("absolute")}
+    ${mixin.flexBox("center", "center", "column", null)};
     height: calc(100vh - ${props => props.top}px);
     width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
     p {
         ${mixin.textProps(40, "extraBold", "black")};
     }

@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import mixin from "../styles/Mixin";
 
 /**
  * @author jiyeong
@@ -14,6 +15,7 @@ const Main = ({ children }) => {
 };
 
 const MainContainer = styled.main`
+    ${mixin.floatBox("relative")}
     max-width: 1050px;
     margin: 35px auto 0 auto;
     padding-bottom: 60px;
