@@ -46,14 +46,18 @@ const ElectedCard = ({ postId, candidates }) => {
 
     return (
         <Container>
-            {notElected && <NotElected>당선자 없음</NotElected>}
+            {notElected && <NotElected>당선자가 없습니다</NotElected>}
             {electedInfo && (
                 <ElectedBox>
                     <ElectedImage>
-                        <img
-                            src={`http://3.36.90.60/${electedInfo?.photo}`}
-                            alt={electedInfo?.name}
-                        />
+                        {electedInfo.photo ? (
+                            <img
+                                src={`http://3.36.90.60/${electedInfo?.photo}`}
+                                alt={electedInfo?.name}
+                            />
+                        ) : (
+                            <span>이미지가 없습니다!</span>
+                        )}
                     </ElectedImage>
                     <ElectedInfo>
                         <ElectedName>
@@ -69,17 +73,27 @@ const ElectedCard = ({ postId, candidates }) => {
 };
 
 const Container = styled.div`
+    ${mixin.floatBox("relative")}
     background: ${({ theme }) => theme.color.mainBlue};
+    min-height: 480px;
     border-radius: 25px;
 `;
 
-const NotElected = styled.div``;
+const NotElected = styled.div`
+    ${mixin.floatBox("absolute", "50%", "50%")}
+    transform: translate(50%,-50%);
+    ${mixin.textProps(20, "regular", "white")}
+`;
 const ElectedBox = styled.div`
     ${mixin.flexBox("space-between")}
-    padding: 10px;
+    padding: 15px;
     gap: 40px;
 `;
 const ElectedImage = styled.div`
+    ${mixin.flexBox("center", "center")}
+    ${mixin.textProps(20, "regular", "white")}
+    width: 380px;
+    height: 100%;
     img {
         width: 380px;
         height: 450px;
