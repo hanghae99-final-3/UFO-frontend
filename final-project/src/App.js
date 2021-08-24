@@ -79,7 +79,7 @@ function App() {
                             component={FreeBoard}
                         />
 
-                        <Route path="/mypost" exact component={MyPost} />
+                        <Route path="/mypost/:path" exact component={MyPost} />
                         <Route
                             path="/freeboard/detail/:id"
                             exact

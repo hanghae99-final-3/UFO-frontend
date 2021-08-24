@@ -15,6 +15,9 @@ import { MuiTheme } from "../styles/MuiTheme";
 
 const useStyles = makeStyles(theme => ({
     root: {
+        svg: {
+            backgroundColor: "none",
+        },
         "& > *": {
             marginTop: theme.spacing(2),
         },
@@ -25,11 +28,6 @@ const useStyles = makeStyles(theme => ({
 
         "& .Mui-selected": {
             border: "3px solid #bcffe2",
-            borderRadius: "20px",
-            backgroundColor: "white",
-        },
-        "& .MuiPaginationItem-page": {
-            // border: "3px solid #D8D9FF",
             borderRadius: "20px",
             backgroundColor: "white",
         },
