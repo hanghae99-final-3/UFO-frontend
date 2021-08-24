@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import MyPostList from "../Components/MyPostList";
 import styled from "styled-components";
+import { Helmet } from "react-helmet";
 
 import { userApi } from "../api";
 import mixin from "../styles/Mixin";
@@ -24,6 +25,9 @@ const MyPost = props => {
 
     return (
         <React.Fragment>
+            <Helmet>
+                <title>UFO - 함께한 순간들</title>
+            </Helmet>
             <MyPostHeaderContainer>
                 <MyPostHeader>{username} 님과 UFO가 함께한 순간들</MyPostHeader>
             </MyPostHeaderContainer>

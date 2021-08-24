@@ -33,6 +33,8 @@ import { makeStyles, MuiThemeProvider, NativeSelect } from "@material-ui/core";
 const useStyles = makeStyles(theme => ({
     selectRoot: {
         //...other styles
+        width: "32px",
+        fontWeight: 600,
         "&:focus": {
             backgroundColor: "white",
         },
