@@ -86,13 +86,7 @@ const CardContainer = styled.div`
             ? `opacity: 1`
             : `    opacity: 0.5;
     `};
-    ${props =>
-        props.active &&
-        `div{
-            background:${props.theme.color.mainBlue};
-            border:none;
-            color : white;
-        }`};
+
     transition: ${props => !props.active && "transform 300ms"};
     img {
         width: ${props => !props.active && "width:20rem"};
@@ -102,20 +96,22 @@ const CardContainer = styled.div`
 
 // 슬라이더 방향표 버튼 스타일 컴포넌트
 const ArrowContainer = styled.div`
-    background-color: #fff;
-    position: absolute;
     cursor: pointer;
     z-index: 10;
-
-    svg {
-        transition: color 300ms;
-        :hover {
-            color: #afb1ff;
+    ${mixin.textProps(20, "regular", "black")}
+    :hover {
+        svg {
+            color: ${({ theme }) => theme.color.blue2};
         }
     }
-    right: ${props => props.direction === "next" && "0%"};
-    left: ${props => props.direction === "prev" && "0%"};
-    top: 50%;
+    svg {
+        transition: color 300ms;
+    }
+    ${props =>
+        props.direction === "next" && mixin.floatBox("absolute", "50%", "0")};
+    ${props =>
+        props.direction === "prev" &&
+        mixin.floatBox("absolute", "50%", null, null, "0")};
 `;
 
 export default MainSlider;
