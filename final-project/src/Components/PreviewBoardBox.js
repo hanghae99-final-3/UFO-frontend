@@ -15,6 +15,7 @@ import { useSelector } from "react-redux";
 
 //컴포넌트
 import SmallTag from "../Elements/Tag/SmallTag";
+import SmallAnnounceTag from "../Elements/Tag/SmallAnnounceTag";
 
 const useStyles = makeStyles({
     heart: {
@@ -72,7 +73,9 @@ const PreviewBoardBox = ({
                                 handleOnClick(post.post_id);
                             }}
                         >
-                            <AnnounceTag>공지</AnnounceTag>
+                            <SmallAnnounceTag rightGap="10px">
+                                공지
+                            </SmallAnnounceTag>
                             <AnnounceTitle>{post.title}</AnnounceTitle>
                             <IconContainer>
                                 <>
@@ -110,7 +113,10 @@ const PreviewBoardBox = ({
                                 handleOnClick(post.post_id);
                             }}
                         >
-                            <SmallTag announcement={announcement}>
+                            <SmallTag
+                                announcement={announcement}
+                                rightGap="10px"
+                            >
                                 {!announcement && "#"}
                                 {boardName === "freeboard" &&
                                     !announcement &&
@@ -184,17 +190,6 @@ const PostTitle = styled.p`
 `;
 const AnnounceTitle = styled.p`
     ${mixin.textProps(14, "semiBold", "gray2")}
-`;
-
-const AnnounceTag = styled.span`
-    height: 22px;
-    min-width: 74px;
-    line-height: 18px;
-    margin-right: 20px;
-    border-radius: 16px;
-    ${mixin.outline("2px solid", "mint")}
-    background-color: ${props => props.theme.color.mint};
-    ${mixin.textProps(12, "semiBold", "black", "center")};
 `;
 
 // 더보기 버튼

@@ -17,7 +17,8 @@ const Tag = styled.span`
     background-color: ${props => props.theme.color.mint};
     ${mixin.outline("2px solid", "mint")};
     ${mixin.textProps(18, "semiBold", "gray1", "center")};
-    transform: translatey(100px);
+    ${props => props.rightGap && `margin-right:${props.rightGap};`};
+    ${props => props.leftGap && `margin-left:${props.leftGap};`};
 `;
 
 export default AnnounceTag;
