@@ -59,7 +59,7 @@ export const loginUserDB = createAsyncThunk(
                     const user = getUserResponse.data.result;
                     Swal.fire({
                         icon: "success",
-                        title: "성공",
+                        title: "로그인 성공",
                         contents: "로그인 성공했습니다.",
                         showConfirmButton: false,
                         timer: 1500,

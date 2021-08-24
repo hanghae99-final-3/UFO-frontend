@@ -20,7 +20,8 @@ import {
 import Input from "@material-ui/core/Input";
 import CloseIcon from "@material-ui/icons/Close";
 import { MuiTheme } from "../styles/MuiTheme";
-import { makeStyles, MuiThemeProvider, NativeSelect } from "@material-ui/core";
+import { makeStyles, MuiThemeProvider } from "@material-ui/core";
+import { Select as MuiSelect } from "@material-ui/core";
 import DefaultSelector from "../Elements/Buttons/DefaultSelector";
 
 /**
@@ -168,18 +169,18 @@ const SearchBox = ({ searchTag, deactivateSearch, page, pushButton }) => {
                                     onChange={onSearchTermChange}
                                     classes={{ root: classes.MuiOutlinedInput }}
                                     startAdornment={
-                                        <NativeSelect
-                                            classes={{
-                                                root: classes.selectRoot,
+                                        <Select
+                                            MenuProps={{
+                                                disablePortal: true,
+                                                getContentAnchorEl: null,
+                                                anchorOrigin: {
+                                                    vertical: "bottom",
+                                                },
                                             }}
                                             disableUnderline
                                             value={order}
                                             outlined="false"
                                             onChange={handleOrderChange}
-                                            style={{
-                                                fontSize: "12px",
-                                                color: "#A6ABB2",
-                                            }}
                                         >
                                             <option value={"date"}>
                                                 작성일
@@ -187,7 +188,7 @@ const SearchBox = ({ searchTag, deactivateSearch, page, pushButton }) => {
                                             <option value={"rel"}>
                                                 관련순
                                             </option>
-                                        </NativeSelect>
+                                        </Select>
                                     }
                                 />
                             </MuiThemeProvider>
@@ -239,4 +240,27 @@ const CancelButton = styled.button`
     color: ${props =>
         props.selected ? props.theme.color.white : props.theme.color.gray1};
     background-color: ${props => (props.selected ? "#707071" : "#ffffff")};
+`;
+
+const Select = styled(MuiSelect)`
+    .MuiPaper-root {
+        color: ${props => props.theme.color.white};
+        background-color: ${props => props.theme.color.mainBlue};
+        ${mixin.flexBox("center", null, null, null)}
+        ${mixin.textProps(14, "semiBold", "blue3")};
+        border-radius: 0 15px 15px 15px;
+    }
+    .MuiSelect-root {
+        padding: 0;
+        ${mixin.textProps(12, "semiBold", "gray3")};
+        background-color: transparent;
+    }
+    .MuiSelect-select {
+        :focus {
+            background-color: transparent;
+        }
+    }
+    .MuiSvgIcon-root.MuiSelect-icon {
+        color: ${props => props.theme.color.gray3};
+    }
 `;

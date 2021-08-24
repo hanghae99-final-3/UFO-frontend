@@ -93,9 +93,7 @@ const MyPostBoardBox = ({
                                 {Comment && (
                                     <CommentContent>
                                         <MyComment>
-                                            {post.board === "free"
-                                                ? post["free_comments.content"]
-                                                : post["univ_comments.content"]}
+                                            {post.comment.content}
                                         </MyComment>
                                     </CommentContent>
                                 )}
