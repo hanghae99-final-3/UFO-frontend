@@ -18,7 +18,7 @@ const Election = () => {
     const user = useSelector(state => state.user.user);
     const [isOngoing, setIsOngoing] = useState(false);
     useEffect(() => {
-        dispatch(getElectionListDB());
+        if (user.user_id) dispatch(getElectionListDB());
     }, []);
 
     const ongoingElectionList = electionList.filter(post =>
@@ -29,6 +29,16 @@ const Election = () => {
     );
     const currentList = isOngoing ? ongoingElectionList : finishedElectionList;
     const currentListName = isOngoing ? "ongoing" : "finished";
+
+    //로그인한 유저만 볼 수 있도록 예외처리를 합니다.
+    if (!user.user_id)
+        return (
+            <Message
+                message="로그인을 한 사람만 선거게시글을 볼 수 있어요"
+                link="/login"
+                buttonValue="로그인 하러가기"
+            />
+        );
 
     //대학 인증을 한 사람만 볼 수 있도록 예외처리를 합니다.
     if (!user.univ_id || !user.country_id)
