@@ -16,10 +16,11 @@ const Election = () => {
     const dispatch = useDispatch();
     const electionList = useSelector(state => state.election.list);
     const user = useSelector(state => state.user.user);
+    const isLogin = useSelector(state => state.user.isLoggedIn); //login을 했는지 안했는지 판별값으로 사용합니다.
     const [isOngoing, setIsOngoing] = useState(false);
     useEffect(() => {
-        if (user.user_id) dispatch(getElectionListDB());
-    }, []);
+        if (isLogin) dispatch(getElectionListDB());
+    }, [isLogin]);
 
     const ongoingElectionList = electionList.filter(post =>
         moment().isBefore(post.end_date),

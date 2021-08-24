@@ -55,12 +55,15 @@ const CandidateSlider = ({ candidateList }) => {
             <Slider {...settings}>
                 {candidateList &&
                     candidateList.map((candidate, idx) => (
-                        <Slide active={idx === cardIndex}>
+                        <Slide key={idx} active={idx === cardIndex}>
                             <CandidateCard candidate={candidate} />
                         </Slide>
                     ))}
             </Slider>
-            <CandidateIntroBox candidate={candidateList} idx={cardIndex} />
+            <CandidateIntroBox
+                candidates={candidateList}
+                idx={cardIndex && cardIndex}
+            />
         </SlideContainer>
     );
 };
