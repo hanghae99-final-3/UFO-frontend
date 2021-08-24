@@ -35,7 +35,6 @@ const MyPostList = () => {
             });
         setIsLoading(false);
     };
-
     // 무한스크롤 다음 페이지 요청 핸들러
     const nextCall = () => {
         requestCall(req);
