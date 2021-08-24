@@ -16,6 +16,7 @@ import mixin from "../styles/Mixin";
 import Editor from "../Components/Editor";
 import DefaultButton from "../Elements/Buttons/DefaultButton";
 import DefaultSelector from "../Elements/Buttons/DefaultSelector";
+import NoticeSelector from "../Elements/Buttons/NoticeSelector";
 
 /**
  * @author jiyeong
@@ -273,14 +274,14 @@ const BoardWrite = ({ boardName }) => {
                     <TagSelect>
                         {/* 카테고리 중 카테고리 선택하기 */}
                         <SelectTitle>공지 설정</SelectTitle>
-                        <DefaultSelector
+                        <NoticeSelector
                             isSelected={isAnnouncement}
                             rightGap="10px"
                             lastNoGap
                             onClick={() => setIsAnnouncement(!isAnnouncement)}
                         >
                             공지글
-                        </DefaultSelector>
+                        </NoticeSelector>
                     </TagSelect>
                 )}
             </SelectBox>
