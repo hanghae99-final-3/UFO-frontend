@@ -1,18 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { getMainSearchResult } from "../redux/async/search"; // 통합 검색 thunk
-
-import MainSearch from "../Elements/MainSearch"; // 검색창 컴포넌트
-import BoardBox from "../Components/BoardBox"; // 결과 리스트 보여줄 boardbox 페이지
 
 import mixin from "../styles/Mixin"; // 믹스인 객체
-import styled from "styled-components"; // 스타일 컴포넌트 라이브러리
-import { history } from "../redux/configureStore"; // 히스토리 객체
-
 import instance from "../api";
+import { history } from "../redux/configureStore"; // 히스토리 객체
+import MainSearch from "../Elements/MainSearch"; // 검색창 컴포넌트
+import SearchBoardBox from "../Components/SearchBoardBox";
+
+import styled from "styled-components"; // 스타일 컴포넌트 라이브러리
 
 const MainSearchResultPage = props => {
-    const dispatch = useDispatch();
     const Keyword = history.location.pathname.split("/")[3]; //검색한 keyword값
     const [searchResult, setSearchResult] = useState([]); // 게시물 리스트 배열
     const [isLoading, setIsLoading] = useState(false); // loading 상태 값
@@ -37,6 +33,7 @@ const MainSearchResultPage = props => {
             })
             .then(res => {
                 if (res.data.ok) {
+                    console.log(res.data);
                     setSearchResult(res.data.result);
                 }
                 console.log("res", res);
@@ -51,10 +48,7 @@ const MainSearchResultPage = props => {
             <MainSearch handleSearch />
             <SearchKeyword>"{Keyword}" 검색 결과</SearchKeyword>
             <DivideLine />
-            <BoardBox
-                boardName="mainresult"
-                postList={searchResult && searchResult}
-            />
+            <SearchBoardBox postList={searchResult && searchResult} />
         </React.Fragment>
     );
 };
