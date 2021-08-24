@@ -1,14 +1,8 @@
 import mixin from ".././styles/Mixin";
 import React from "react";
-import categories from "../categories";
 import styled from "styled-components";
 import { history } from "../redux/configureStore";
-import textOverflow from "../styles/Mixin/textStyle";
 
-//----머테이얼 유아이 컴포넌트 & 아이콘------
-import VisibilityIcon from "@material-ui/icons/Visibility";
-import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
 //-----
 
 //-----작성일자 (e.g 방금 전, 1시간전) 계산 라이브러리----
