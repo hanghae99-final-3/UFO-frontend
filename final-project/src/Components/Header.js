@@ -214,7 +214,7 @@ const Inner = styled.div`
     padding: 0 30px;
     margin: auto;
     ${mixin.floatBox("relative")};
-    ${mixin.flexBox("space-between", "center", null, "86px")};
+    ${mixin.flexBox("space-between", "center", null, "80px")};
 `;
 
 const LeftColumn = styled.div`
@@ -224,8 +224,8 @@ const LeftColumn = styled.div`
 const Logo = styled.div`
     cursor: pointer;
     img {
-        width: 122px;
-        height: 41px;
+        width: 115px;
+        height: 45px;
     }
 `;
 
