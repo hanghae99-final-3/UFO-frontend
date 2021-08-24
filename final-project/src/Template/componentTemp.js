@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import mixin from "../styles/Mixin";
 
 /**
  * @param {*} props
@@ -8,7 +9,7 @@ import styled from "styled-components";
  * @필수값 컴포넌트 사용을 위해 어떤 props가 필요한지 명시해주기
  */
 
-const a = (props) => {
+const a = props => {
     return <React.Fragment>{/* something... */}</React.Fragment>;
 };
 

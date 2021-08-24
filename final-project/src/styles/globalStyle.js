@@ -27,11 +27,12 @@ button {
   cursor: pointer;
 }
 body{
+    height: 100vh;
+    position: relative;
   /* 스크롤바 제거 */
   &::-webkit-scrollbar {
     display: none;
   }
-  height: 100vh;
 }
 
 /* CKEditor css설정 */
