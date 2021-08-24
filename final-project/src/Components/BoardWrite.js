@@ -3,16 +3,19 @@ import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 import { history } from "../redux/configureStore";
 import { useParams } from "react-router";
-import instance, { freeBoardApi, univBoardApi } from "../api";
+import { freeBoardApi, univBoardApi } from "../api";
 import { addFreePostDB, editFreePostDB } from "../redux/async/freeBoard";
 import {
     addUnivBoardPostDB,
     editUnivBoardPostDB,
 } from "../redux/async/univBoard";
 import categories from "../categories";
-import Editor from "../Components/Editor";
 import mixin from "../styles/Mixin";
+
+//컴포넌트
+import Editor from "../Components/Editor";
 import DefaultButton from "../Elements/Buttons/DefaultButton";
+import DefaultSelector from "../Elements/Buttons/DefaultSelector";
 
 /**
  * @author jiyeong
@@ -29,7 +32,7 @@ const BoardWrite = ({ boardName }) => {
     const { id: postId } = useParams();
     const isEdit = postId ? true : false; //수정모드인지 아닌지 판별 state
     const [isAnnouncement, setIsAnnouncement] = useState(false); // 게시물 공지 설정 값
-    const [isAdmin, setIsAdmin] = useState(false);
+    const isAdmin = useSelector(state => state.user.isAdmin);
 
     const getContentFromEditor = content => {
         //에디터로부터 content 값 가져오기
@@ -65,14 +68,6 @@ const BoardWrite = ({ boardName }) => {
                     .then(res => setPost(res.data.result));
             }
         }
-        const checkAdmin = async () => {
-            await instance.get("/api/is-admin").then(res => {
-                if (res.data.ok && res.data?.result?.admin_id) {
-                    setIsAdmin(true);
-                }
-            });
-        };
-        checkAdmin();
     }, []);
     //----
 
@@ -241,15 +236,17 @@ const BoardWrite = ({ boardName }) => {
                         {/* 자유게시판이면 국가선택란이 나타난다. */}
                         <SelectTitle>국가 설정</SelectTitle>
                         {categories.country.map(ele => (
-                            <SelectBtn
-                                selected={post?.country_id === ele.countryId}
+                            <DefaultSelector
+                                isSelected={post?.country_id === ele.countryId}
                                 key={ele.countryId}
+                                rightGap="10px"
+                                lastNoGap
                                 onClick={() =>
                                     setCategory("country_id", ele.countryId)
                                 }
                             >
                                 {ele.countryName}
-                            </SelectBtn>
+                            </DefaultSelector>
                         ))}
                     </CountrySelect>
                 )}
@@ -257,27 +254,33 @@ const BoardWrite = ({ boardName }) => {
                     {/* 카테고리 중  선택하기 */}
                     <SelectTitle>태그 설정</SelectTitle>
                     {categoryList.map(ele => (
-                        <SelectBtn
-                            selected={Number(post?.category) === ele.categoryId}
+                        <DefaultSelector
+                            isSelected={
+                                Number(post?.category) === ele.categoryId
+                            }
                             key={ele.categoryId}
+                            rightGap="10px"
+                            lastNoGap
                             onClick={() =>
                                 setCategory("category", `${ele.categoryId}`)
                             }
                         >
                             #{ele.categoryName}
-                        </SelectBtn>
+                        </DefaultSelector>
                     ))}
                 </TagSelect>
                 {boardName === "univboard" && isAdmin && (
                     <TagSelect>
                         {/* 카테고리 중 카테고리 선택하기 */}
                         <SelectTitle>공지 설정</SelectTitle>
-                        <SelectBtn
-                            selected={isAnnouncement}
+                        <DefaultSelector
+                            isSelected={isAnnouncement}
+                            rightGap="10px"
+                            lastNoGap
                             onClick={() => setIsAnnouncement(!isAnnouncement)}
                         >
                             공지글
-                        </SelectBtn>
+                        </DefaultSelector>
                     </TagSelect>
                 )}
             </SelectBox>

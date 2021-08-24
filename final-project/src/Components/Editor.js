@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import mixin from "../styles/Mixin";
 
@@ -152,8 +152,6 @@ const editorConfiguration = {
 };
 
 const Editor = ({ getContentFromEditor, originContent }) => {
-    const [isLoading, setIsloading] = useState(false);
-    console.log(isLoading);
     //수정모드
     if (originContent)
         return (

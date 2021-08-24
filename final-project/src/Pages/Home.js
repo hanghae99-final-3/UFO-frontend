@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { Helmet } from "react-helmet";
 import styled from "styled-components"; // 스타일 컴포넌트 라이브러리
 import { useDispatch, useSelector } from "react-redux"; // 리액트 리덕스 라이브러리
 
@@ -57,6 +58,9 @@ const Home = () => {
 
     return (
         <HomeContainer>
+            <Helmet>
+                <title>UFO - 유학생들의 프리한 오늘</title>
+            </Helmet>
             {/* 메인 검색창 */}
             <MainSearch />
             {/* 인기 게시글 슬라이더 불러오기*/}
@@ -98,7 +102,7 @@ const Home = () => {
                                 .filter(
                                     post => post.country_id === selectedCountry,
                                 )
-                                .slice(0, 10)
+                                .slice(0, 8)
                         }
                         boardName="freeboard"
                     />
@@ -131,7 +135,7 @@ const Home = () => {
                             return (
                                 <PreviewBoardBox
                                     key={idx}
-                                    tag={category.categoryName}
+                                    tag={category}
                                     boardName="freeboard"
                                     postList={freeBoardPostList
                                         .filter(

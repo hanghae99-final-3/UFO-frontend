@@ -22,7 +22,6 @@ const searchSlice = createSlice({
         },
         [getSearchResult.fulfilled]: (state, { payload: result }) => {
             state.isFetching = false;
-            // state.searchResult = [...state.searchResult, ...result];
             state.searchResult = result;
             state.errorMessage = "";
         },

@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
+import { Helmet } from "react-helmet";
 
 import categories from "../categories";
 import BoardBox from "../Components/BoardBox";
@@ -81,6 +82,9 @@ const FreeBoard = () => {
 
     return (
         <>
+            <Helmet>
+                <title>UFO - 자유 게시판</title>
+            </Helmet>
             <SearchBox
                 searchTag={categories.freeBoardTags}
                 page="freeboard"

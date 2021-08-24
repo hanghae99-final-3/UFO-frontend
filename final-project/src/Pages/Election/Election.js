@@ -5,16 +5,18 @@ import { getElectionListDB } from "../../redux/async/election";
 import { history } from "../../redux/configureStore";
 import moment from "moment";
 import mixin from "../../styles/Mixin";
+import { Helmet } from "react-helmet";
 
 //컴포넌트
 import Message from "../../Components/Message";
 import DefaultButton from "../../Elements/Buttons/DefaultButton";
+import DefaultSelector from "../../Elements/Buttons/DefaultSelector";
 
 const Election = () => {
     const dispatch = useDispatch();
     const electionList = useSelector(state => state.election.list);
     const user = useSelector(state => state.user.user);
-    const [isFinished, setIsFinished] = useState(false);
+    const [isOngoing, setIsOngoing] = useState(false);
     useEffect(() => {
         dispatch(getElectionListDB());
     }, []);
@@ -25,9 +27,8 @@ const Election = () => {
     const finishedElectionList = electionList.filter(post =>
         moment().isAfter(post.end_date),
     );
-    const currentList = isFinished ? finishedElectionList : ongoingElectionList;
-    const currentListName = isFinished ? "finished" : "ongoing";
-    // const currentList = isFinished ? finishedElectionList:ongoingElectionList
+    const currentList = isOngoing ? ongoingElectionList : finishedElectionList;
+    const currentListName = isOngoing ? "ongoing" : "finished";
 
     //대학 인증을 한 사람만 볼 수 있도록 예외처리를 합니다.
     if (!user.univ_id || !user.country_id)
@@ -41,15 +42,25 @@ const Election = () => {
 
     return (
         <ElectionContainer>
+            <Helmet>
+                <title>UFO - 투표함</title>
+            </Helmet>
             <Title>투표함</Title>
             <Controls>
-                <Selecter selected={isFinished}>
-                    <button onClick={() => setIsFinished(false)}>
+                <Selecter>
+                    <DefaultSelector
+                        isSelected={isOngoing}
+                        rightGap="10px"
+                        onClick={() => setIsOngoing(true)}
+                    >
                         진행중선거
-                    </button>
-                    <button onClick={() => setIsFinished(true)}>
+                    </DefaultSelector>
+                    <DefaultSelector
+                        isSelected={!isOngoing}
+                        onClick={() => setIsOngoing(false)}
+                    >
                         종료된선거
-                    </button>
+                    </DefaultSelector>
                 </Selecter>
                 <DefaultButton onClick={() => history.push(`/election/write`)}>
                     추가하기
@@ -123,49 +134,7 @@ const Controls = styled.div`
     ${mixin.outline("1px solid", "gray4", "bottom")};
 `;
 
-const Selecter = styled.div`
-    button {
-        padding: 0 10px;
-        height: 30px;
-        text-align: center;
-        margin-right: 7px;
-        border-radius: 16px;
-        background-color: ${props => props.theme.color.white};
-        :first-child {
-            margin-right: 15px;
-            transition: all 0.3s ease;
-            ${props =>
-                props.selected
-                    ? mixin.textProps(18, "semiBold", "gray3")
-                    : mixin.textProps(18, "semiBold", "gray1")}
-            ${props =>
-                props.selected
-                    ? `box-shadow:  0 5px 5px -4px #cdcdcd;`
-                    : `box-shadow: inset -2px 5px 5px -5px #cdcdcd;`}
-            ${props =>
-                mixin.outline(
-                    "2px solid",
-                    !props.selected ? "mainMint" : "blue2",
-                )}
-        }
-        :last-child {
-            transition: all 0.3s ease;
-            ${props =>
-                props.selected
-                    ? mixin.textProps(18, "semiBold", "gray1")
-                    : mixin.textProps(18, "semiBold", "gray3")}
-            ${props =>
-                props.selected
-                    ? `box-shadow: inset -2px 5px 5px -4px #cdcdcd;`
-                    : `box-shadow:  0 5px 5px -6px #cdcdcd;`}
-            ${props =>
-                mixin.outline(
-                    "2px solid",
-                    props.selected ? "mainMint" : "blue3",
-                )}
-        }
-    }
-`;
+const Selecter = styled.div``;
 
 const GridContainer = styled.div`
     padding: 15px 0;

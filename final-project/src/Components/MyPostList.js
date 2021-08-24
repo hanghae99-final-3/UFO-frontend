@@ -7,7 +7,7 @@ import MyPostBoardBox from "./MyPostBoardBox";
 const MyPostList = () => {
     const [currentPage, setCurrentPage] = useState(1); //초기 페이지 값
     const [postList, setPostList] = useState([]); // 게시물 리스트 배열
-    const totalPage = 3; // 총 게시물 페이지 ==> 서버가 보내주는 값으로 변경 예정
+    const [totalPage, setTotalPage] = useState(0); // 총 게시물 페이지 ==> 서버가 보내주는 값으로 변경 예정
     const [isLoading, setIsLoading] = useState(false); // loading 상태 값
     const nextPage = currentPage + 1; // 다음 페이지가 있는지 확인, 만약 total page보다 작다면 무한스크롤 해제
 
@@ -28,7 +28,8 @@ const MyPostList = () => {
             })
             .then(res => {
                 if (res.data.ok) {
-                    setPostList(prev => [...prev, ...res.data.posts]);
+                    setPostList(prev => [...prev, ...res.data.my_posts]);
+                    // setTotalPage(res.data.)
                 }
             });
         setIsLoading(false);
