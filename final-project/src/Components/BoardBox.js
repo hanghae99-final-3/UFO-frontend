@@ -32,8 +32,6 @@ const BoardBox = ({ postList, fixedList, boardName, announcement }) => {
         return history.push(`/univboard/detail/${postId}`);
     };
 
-    console.log("🦄💖💖" + fixedList);
-
     return (
         <BoardContainer>
             <Content>
