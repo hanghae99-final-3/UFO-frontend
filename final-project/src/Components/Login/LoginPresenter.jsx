@@ -1,42 +1,17 @@
-import React, { useState } from "react";
-import { Formik } from "formik";
+import React from "react";
+
+import { useDispatch } from "react-redux";
+import { loginUserDB } from "../../Redux/Async/user";
+import { history } from "../../Redux/configureStore";
+
+import mixin from "../../Styles/Mixin";
+import styled from "styled-components";
+import SocialLogin from "./SocialLogin";
+
+import * as Yup from "yup";
 import { useFormik } from "formik";
 
-import SocialLogin from "./SocialLogin";
-import styled from "styled-components";
-import mixin from "../../styles/Mixin";
-import { makeStyles } from "@material-ui/styles";
-import { LoginTextField } from "./LoginTextField";
-import * as Yup from "yup";
-
-import { Grid, FormControlLabel, Checkbox } from "@material-ui/core";
-import { useDispatch } from "react-redux";
-import { loginUserDB } from "../../redux/async/user";
-import { history } from "../../redux/configureStore";
-
-const useStyles = makeStyles({
-    mainContainer: {
-        width: "100%",
-        height: "80vh",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        flexDirection: "column",
-    },
-    titleContainer: {
-        width: "100%",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        marginBottom: "30px",
-    },
-    formContainer: {
-        width: "100%",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-    },
-});
+import { FormControlLabel, Checkbox } from "@material-ui/core";
 
 const LoginPresenter = ({
     validate,
@@ -46,7 +21,6 @@ const LoginPresenter = ({
     isRememberEmailChecked,
     handleCheckBox,
 }) => {
-    const classes = useStyles();
     const dispatch = useDispatch();
     const loginFormik = useFormik({
         initialValues: {
@@ -68,86 +42,79 @@ const LoginPresenter = ({
         },
     });
     return (
-        <Grid item className={classes.mainContainer} xs={12}>
-            <Grid className={classes.titleContainer}>
+        <MainContainer>
+            <div>
                 <LoginText variant="h4">로그인</LoginText>
-            </Grid>
+            </div>
             {socialLoginMode ? (
                 <SocialLogin toggleLoginMode={toggleLoginMode} />
             ) : (
-                <Grid className={classes.formContainer}>
-                    <Grid className={classes.formContainer}>
-                        <Form onSubmit={loginFormik.handleSubmit}>
-                            <Input
-                                label="ID"
-                                id="email"
-                                name="email"
-                                type="email"
-                                placeholder="ID"
-                                {...loginFormik.getFieldProps("email")}
-                            />
-                            {loginFormik.touched.email &&
-                            loginFormik.errors.email ? (
-                                <ErrorBox>{loginFormik.errors.email}</ErrorBox>
-                            ) : null}
-                            <Input
-                                placeholder="PW"
-                                label="PW"
-                                id="password"
-                                name="password"
-                                type="password"
-                                {...loginFormik.getFieldProps("password")}
-                            />
-                            {loginFormik.touched.password &&
-                            loginFormik.errors.password ? (
-                                <ErrorBox>
-                                    {loginFormik.errors.password}
-                                </ErrorBox>
-                            ) : null}
-                            <AutoLogin>
-                                <FormControlLabel
-                                    control={
-                                        <Check
-                                            checked={isRememberEmailChecked}
-                                            onChange={handleCheckBox}
-                                            name="rememberEmail"
-                                            MenuProps={{
-                                                disablePortal: true,
-                                            }}
-                                        />
-                                    }
-                                    label="아이디 저장"
-                                />
-                                <FormControlLabel
-                                    control={
-                                        <Check
-                                            name="autoLogin"
-                                            color="primary"
-                                        />
-                                    }
-                                    label="자동 로그인"
-                                />
-                            </AutoLogin>
-                            <LoginBtn type="submit" variant="outlined">
-                                로그인
-                            </LoginBtn>
-                            <MemberCheckBox>
-                                <DoYouHaveID>UFO와 함께하실래요?</DoYouHaveID>
-                                <GoSignUp
-                                    onClick={() => {
-                                        history.push("/signup");
+                <Form onSubmit={loginFormik.handleSubmit}>
+                    <Input
+                        label="ID"
+                        id="email"
+                        name="email"
+                        type="email"
+                        placeholder="ID"
+                        {...loginFormik.getFieldProps("email")}
+                    />
+                    {loginFormik.touched.email && loginFormik.errors.email ? (
+                        <ErrorBox>{loginFormik.errors.email}</ErrorBox>
+                    ) : null}
+                    <Input
+                        placeholder="PW"
+                        label="PW"
+                        id="password"
+                        name="password"
+                        type="password"
+                        {...loginFormik.getFieldProps("password")}
+                    />
+                    {loginFormik.touched.password &&
+                    loginFormik.errors.password ? (
+                        <ErrorBox>{loginFormik.errors.password}</ErrorBox>
+                    ) : null}
+                    <AutoLogin>
+                        <FormControlLabel
+                            control={
+                                <Check
+                                    checked={isRememberEmailChecked}
+                                    onChange={handleCheckBox}
+                                    name="rememberEmail"
+                                    MenuProps={{
+                                        disablePortal: true,
                                     }}
-                                >
-                                    회원가입하기
-                                </GoSignUp>
-                            </MemberCheckBox>
-                        </Form>
-                    </Grid>
-                </Grid>
+                                />
+                            }
+                            label="아이디 저장"
+                        />
+                        <FormControlLabel
+                            control={<Check name="autoLogin" color="primary" />}
+                            label="자동 로그인"
+                        />
+                    </AutoLogin>
+                    <LoginBtn type="submit" variant="outlined">
+                        로그인
+                    </LoginBtn>
+                    <MemberCheckBox>
+                        <DoYouHaveID>UFO와 함께하실래요?</DoYouHaveID>
+                        <GoSignUp
+                            onClick={() => {
+                                history.push("/signup");
+                            }}
+                        >
+                            회원가입하기
+                        </GoSignUp>
+                    </MemberCheckBox>
+                </Form>
             )}
-        </Grid>
+        </MainContainer>
     );
 };
+
+const MainContainer = styled.div`
+    margin-top: 12%;
+    ${mixin.flexBox("center", "center", "column", null)};
+`;
 
 const LoginText = styled.div`
     width: 120px;
@@ -183,6 +150,7 @@ const Input = styled.input`
 `;
 
 const Form = styled.form`
+    margin-top: 50px;
     width: 320px;
 
     Input {
