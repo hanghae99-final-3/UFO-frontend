@@ -86,13 +86,33 @@ const InputCongratulation = styled.div`
 const CommentBox = styled.div``;
 
 const Comment = ({ comment }) => {
-    const [content, setContent] = useState(null);
+    const [content, setContent] = useState(
+        comment.content ? comment.content : "",
+    );
     const [isAuthor, setIsAuthor] = useState(false);
     const [isEdit, setIsEdit] = useState(false);
 
-    const editComment = () => {};
+    const editComment = () => {
+        const req = {
+            comment_id: comment.comment_id,
+            content: content,
+        };
+        CongratulationMessageApi.editMessage(req).then(res => {
+            if (res.data.ok) console.log(res);
+        });
+        setContent(content);
+        setIsEdit(false);
+    };
 
-    const deleteComment = () => {};
+    const deleteComment = () => {
+        const req = {
+            comment_id: comment.comment_id,
+        };
+        CongratulationMessageApi.deleteMessage(req).then(res => {
+            if (res.data.ok) console.log(res);
+        });
+        setIsEdit(false);
+    };
 
     // 댓글 작성 시간 표기 기본 옵션 설정
     const timeOption = {
@@ -115,6 +135,23 @@ const Comment = ({ comment }) => {
                 <Time>
                     {/* {TimeCounting(comment.createdAt, timeOption)} */}
                 </Time>
+                <Controls>
+                    {isEdit ? (
+                        <>
+                            <button onClick={() => setIsEdit(false)}>
+                                취소
+                            </button>
+                            <button onClick={editComment}>저장</button>
+                        </>
+                    ) : (
+                        <>
+                            <button onClick={() => setIsEdit(true)}>
+                                수정
+                            </button>
+                            <button onClick={deleteComment}>삭제</button>
+                        </>
+                    )}
+                </Controls>
             </Header>
             <Content>
                 {/* 수정모드면 input이 나타나고, 아니면 text가 나타납니다. */}
@@ -134,14 +171,28 @@ const Comment = ({ comment }) => {
 };
 const CommentContainer = styled.div``;
 
-const Header = styled.div``;
+const Header = styled.div`
+    ${mixin.flexBox(null, "center")}
+    > * {
+        height: 100%;
+    }
+    > :not(:last-child) {
+        margin-right: 10px;
+    }
+`;
 const Time = styled.span`
     ${mixin.textProps(14, "semiBod", "gray2")}
 `;
-const UserName = styled.span``;
-const UserImage = styled.img``;
+const UserName = styled.span`
+    ${mixin.textProps(14, "semiBod", "gray2")}
+`;
+
+const UserImage = styled.img`
+    height: 25px;
+    width: 25px;
+`;
 const Content = styled.div``;
 const EditInput = styled.input``;
 const CommentContent = styled.p``;
-
+const Controls = styled.div``;
 export default CongratulationMessageBox;
