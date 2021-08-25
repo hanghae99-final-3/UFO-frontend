@@ -152,7 +152,7 @@ const SearchBox = ({ searchTag, deactivateSearch, page, pushButton }) => {
                         <SearchForm onSubmit={handleSearch}>
                             <MuiThemeProvider theme={MuiTheme}>
                                 <InputBox
-                                    placeholder="키워드 태그를 설정 후 검색해보세요!"
+                                    placeholder="UFO에게 무엇이든 물어보세요!"
                                     fullWidth
                                     value={searchTerm}
                                     onChange={onSearchTermChange}

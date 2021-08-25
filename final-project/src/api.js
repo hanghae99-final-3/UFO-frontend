@@ -5,7 +5,7 @@ import { history } from "./redux/configureStore";
 
 // Axios 인스턴스 설정
 const instance = axios.create({
-    baseURL: "http://3.36.90.60/",
+    baseURL: "https://yzkim9501.site/",
 });
 
 //┏----------interceptor를 통한 header 설정----------┓

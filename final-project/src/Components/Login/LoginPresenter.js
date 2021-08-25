@@ -12,6 +12,7 @@ import * as Yup from "yup";
 import { Grid, FormControlLabel, Checkbox } from "@material-ui/core";
 import { useDispatch } from "react-redux";
 import { loginUserDB } from "../../redux/async/user";
+import { history } from "../../redux/configureStore";
 
 const useStyles = makeStyles({
     mainContainer: {
@@ -53,7 +54,9 @@ const LoginPresenter = ({
             password: "",
         },
         validationSchema: Yup.object({
-            email: Yup.string().email().required("이메일을 입력해주세요."),
+            email: Yup.string()
+                .email("이메일 형식을 확인하세요")
+                .required("이메일을 입력해주세요"),
             password: Yup.string().required("비밀번호를 입력해주세요."),
         }),
         onSubmit: async ({ email, password }, actions) => {
@@ -83,6 +86,10 @@ const LoginPresenter = ({
                                 placeholder="ID"
                                 {...loginFormik.getFieldProps("email")}
                             />
+                            {loginFormik.touched.email &&
+                            loginFormik.errors.email ? (
+                                <ErrorBox>{loginFormik.errors.email}</ErrorBox>
+                            ) : null}
                             <Input
                                 placeholder="PW"
                                 label="PW"
@@ -91,6 +98,12 @@ const LoginPresenter = ({
                                 type="password"
                                 {...loginFormik.getFieldProps("password")}
                             />
+                            {loginFormik.touched.password &&
+                            loginFormik.errors.password ? (
+                                <ErrorBox>
+                                    {loginFormik.errors.password}
+                                </ErrorBox>
+                            ) : null}
                             <AutoLogin>
                                 <FormControlLabel
                                     control={
@@ -118,6 +131,16 @@ const LoginPresenter = ({
                             <LoginBtn type="submit" variant="outlined">
                                 로그인
                             </LoginBtn>
+                            <MemberCheckBox>
+                                <DoYouHaveID>UFO와 함께하실래요?</DoYouHaveID>
+                                <GoSignUp
+                                    onClick={() => {
+                                        history.push("/signup");
+                                    }}
+                                >
+                                    회원가입하기
+                                </GoSignUp>
+                            </MemberCheckBox>
                         </Form>
                     </Grid>
                 </Grid>
@@ -182,4 +205,22 @@ const Check = styled(Checkbox)`
         color: ${props => props.theme.color.mint};
     }
 `;
+
+const MemberCheckBox = styled.div`
+    margin-top: 27px;
+    ${mixin.flexBox("center", null, null, null)}
+`;
+const DoYouHaveID = styled.p`
+    ${mixin.textProps(20, "semiBold", "gray3")}
+`;
+const GoSignUp = styled.button`
+    background-color: ${({ theme }) => theme.color.white};
+    ${mixin.textProps(20, "semiBold", "mainBlue")}
+`;
+
+const ErrorBox = styled.div`
+    margin-top: 2px;
+    ${mixin.textProps(12, "semiBold", "danger")}
+`;
+
 export default LoginPresenter;

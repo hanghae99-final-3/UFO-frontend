@@ -18,7 +18,7 @@ const SocialLogin = ({ toggleLoginMode }) => {
                 <a href="http://3.36.90.60/auth/kakao">카카오 로그인</a>
             </KakaoButtonBox>
             <MemberCheckBox>
-                <DoYouHaveID>아직 아이디가 없으신가요?</DoYouHaveID>
+                <DoYouHaveID>UFO와 함께하실래요?</DoYouHaveID>
                 <GoSignUp
                     onClick={() => {
                         history.push("/signup");
