@@ -193,6 +193,11 @@ const BoardContainer = styled.div`
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 70px 50px;
+
+    @media ${({ theme }) => theme.mobile} {
+        grid-template-columns: 1fr;
+        gap: ${({ theme }) => theme.calRem(45)};
+    }
 `;
 
 const Header = styled.div`
@@ -209,7 +214,7 @@ const TitleHeading = styled.span`
 `;
 
 const UnivBoardMessageContainer = styled.div`
-    height: 60%;
+    height: ${({ theme }) => theme.calRem(100)};
     ${mixin.flexBox("center", "center", null, null)};
 `;
 

@@ -26,6 +26,17 @@ const Tag = styled.span`
         mixin.outline("2px solid", props.announcement ? "mint" : "blue1")};
     ${props => props.rightGap && `margin-right:${props.rightGap};`};
     ${props => props.leftGap && `margin-left:${props.leftGap};`};
+
+    @media ${({ theme }) => theme.mobile} {
+        min-width: ${({ theme }) => theme.calRem(62)};
+        height: ${({ theme }) => theme.calRem(24)};
+        ${props =>
+            mixin.textProps(
+                11,
+                "semiBold",
+                props.announcement ? "black" : "gray1",
+            )}
+    }
 `;
 
 export default SmallTag;

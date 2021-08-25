@@ -21,12 +21,12 @@ const BootstrapInput = withStyles(theme => ({
     root: {},
     input: {
         position: "relative",
-        backgroundColor: "white",
+        backgroundColor: "transparent",
         border: "none",
         fontSize: 16,
-        // transition: theme.transitions.create(["border-color", "box-shadow"]),
+        lineHeight: 1.5,
         "&:focus": {
-            backgroundColor: "white",
+            backgroundColor: "transparent",
         },
     },
 }))(InputBase);
@@ -129,6 +129,9 @@ const Select = styled(MuiSelect)`
     #demo-customized-select {
         padding: 0;
         ${mixin.textProps(18, "semiBold", "gray2")};
+        @media ${({ theme }) => theme.mobile} {
+            ${mixin.textProps(18, "semiBold", "blue3")};
+        }
     }
 `;
 const StyleWrapper = styled.div`
@@ -140,6 +143,10 @@ const StyleWrapper = styled.div`
         line-height: 2;
     }
     ${mixin.flexBox("center", "center", null, null)};
+    @media ${({ theme }) => theme.mobile} {
+        ${mixin.flexBox("flex-start", "center", null, null)};
+        margin-left: 0;
+    }
 `;
 const ArrowUp = styled(ExpandLessIcon)`
     color: ${props => props.theme.color.mainMint};
