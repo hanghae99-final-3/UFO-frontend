@@ -43,6 +43,8 @@ const Header = () => {
     const userName = useSelector(state => state.user.user.nickname);
     const [menuOn, setMenuOn] = useState(false);
     const { pathname } = useLocation();
+    const isDesktop =
+        document.documentElement.clientWidth >= 1080 ? true : false;
 
     //----pathname이 변화하면 메뉴를 닫을 수 있도록 합니다
     useEffect(() => {
@@ -57,11 +59,15 @@ const Header = () => {
             <Inner>
                 <LeftColumn>
                     <Logo onClick={() => history.push("/")}>
-                        <Boop rotation={20} timing={200} x={0} y={0}>
-                            <img src={logo} alt="" />
-                        </Boop>
+                        {isDesktop ? (
+                            <Boop rotation={20} timing={200} x={0} y={0}>
+                                <img src={logo} alt="logo" />
+                            </Boop>
+                        ) : (
+                            <img src={logo} alt="logo" />
+                        )}
                     </Logo>
-                    <SelectCountry />
+                    {isDesktop && <SelectCountry />}
                 </LeftColumn>
                 <RightColumn>
                     <Sparkles color="#83ffca">
@@ -80,6 +86,11 @@ const Header = () => {
                     </MenuBtn>
                     <Menu menuOn={menuOn}>
                         <Controls>
+                            {!isDesktop && (
+                                <Control>
+                                    <SelectCountry />
+                                </Control>
+                            )}
                             <Control>
                                 <Link
                                     to={{
@@ -221,22 +232,38 @@ const HeaderContainer = styled.header`
 `;
 
 const Inner = styled.div`
-    width: 1080px;
+    max-width: 1050px;
     padding: 0 30px;
     margin: auto;
     ${mixin.floatBox("relative")};
     ${mixin.flexBox("space-between", "center", null, "80px")};
+
+    @media ${({ theme }) => theme.mobile} {
+        padding: ${({ theme }) => theme.calRem(10)}
+            ${({ theme }) => theme.calRem(15)};
+        height: 48px;
+    }
 `;
 
 const LeftColumn = styled.div`
-    display: flex;
+    ${mixin.flexBox(null, "center")}
 `;
 
 const Logo = styled.div`
     cursor: pointer;
+    @media ${({ theme }) => theme.mobile} {
+        width: ${({ theme }) => theme.calRem(80)};
+        height: ${({ theme }) => theme.calRem(25)};
+    }
+
     img {
         width: 115px;
         height: 45px;
+
+        @media ${({ theme }) => theme.mobile} {
+            width: ${({ theme }) => theme.calRem(80)};
+            height: ${({ theme }) => theme.calRem(25)};
+        }
     }
 `;
 
@@ -246,8 +273,12 @@ const RightColumn = styled.div`
 `;
 
 const UserName = styled.span`
-    margin-right: 20px;
+    margin-right: ${({ theme }) => theme.calRem(20)};
     ${mixin.textProps(30, "extraBold", "gray1")}
+
+    @media ${({ theme }) => theme.mobile} {
+        ${mixin.textProps(20, "extraBold", "gray1")}
+    }
 `;
 
 const MenuBtn = styled.button`
@@ -255,6 +286,9 @@ const MenuBtn = styled.button`
     line-height: 0;
     svg {
         ${mixin.textProps(30, "extraBold", "gray1")}
+        @media ${({ theme }) => theme.mobile} {
+            ${mixin.textProps(24, "extraBold", "gray1")}
+        }
     }
 `;
 
@@ -269,26 +303,53 @@ const Menu = styled.div`
     padding-left: 60px;
     background: ${({ theme }) => theme.color.mainBlue};
     ${mixin.floatBox("absolute", "86px", "0", null, null, 99)}
+
+    @media ${({ theme }) => theme.mobile} {
+        width: ${({ theme }) => theme.calRem(313)};
+        height: calc(100vh - 48px);
+        top: 48px;
+        padding: ${({ theme }) => theme.calRem(35)} 0 0
+            ${({ theme }) => theme.calRem(40)};
+        ${props => (props.menuOn ? `display:block` : "display:none;")};
+    }
 `;
 
 const Controls = styled.ul`
-    ${mixin.flexBox("space-between", null, "column", "75%")}
+    ${mixin.flexBox("space-between", null, "column", "75%")};
+    @media ${({ theme }) => theme.mobile} {
+        display: block;
+        height: max-content;
+    }
 `;
 
 const Control = styled.li`
     cursor: pointer;
     /* Link의 state를 활용하여 조건부 렌더링을 해보았습니다. */
+    @media ${({ theme }) => theme.mobile} {
+        margin-bottom: ${({ theme }) => theme.calRem(20)};
+    }
+
     a {
         ${({ children }) =>
             children.props.to?.state?.isMatchPathname
                 ? mixin.textProps(40, "extraBold", "mainMint")
                 : mixin.textProps(40, "extraBold", "blue3")};
+
+        @media ${({ theme }) => theme.mobile} {
+            ${({ children }) =>
+                children.props.to?.state?.isMatchPathname
+                    ? mixin.textProps(28, "extraBold", "mainMint")
+                    : mixin.textProps(28, "extraBold", "blue3")};
+        }
     }
 `;
 
 const AboutUs = styled.div`
     span {
         ${mixin.textProps(40, "extraBold", "blue3")}
+        @media ${({ theme }) => theme.mobile} {
+            ${mixin.textProps(28, "extraBold", "blue3")};
+        }
     }
 `;
 
