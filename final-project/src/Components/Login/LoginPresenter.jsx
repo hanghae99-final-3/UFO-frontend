@@ -112,23 +112,24 @@ const LoginPresenter = ({
 };
 
 const MainContainer = styled.div`
-    margin-top: 12%;
+    /* margin-top: ${({ theme }) => theme.calRem(197)}; */
+    height: 80vh;
     ${mixin.flexBox("center", "center", "column", null)};
 `;
 
 const LoginText = styled.div`
-    width: 120px;
+    width: ${({ theme }) => theme.calRem(120)};
     ${mixin.textProps(40, "extraBold", "black")}
 `;
 const AutoLogin = styled.div`
-    margin-top: 5px;
     width: 100%;
+    margin-top: ${({ theme }) => theme.calRem(5)};
 `;
 
 const LoginBtn = styled.button`
-    margin-top: 20px;
-    width: 334px;
-    height: 46px;
+    margin-top: ${({ theme }) => theme.calRem(20)};
+    width: ${({ theme }) => theme.calRem(334)};
+    height: ${({ theme }) => theme.calRem(46)};
     ${mixin.textProps(20, "extraBold", "white")}
     background-color : ${({ theme }) => theme.color.blue1};
     border-radius: 23px;
@@ -136,7 +137,7 @@ const LoginBtn = styled.button`
 
 const Input = styled.input`
     transition: border-color 1s ease;
-    padding-bottom: 5px;
+    padding-bottom: ${({ theme }) => theme.calRem(5)};
     width: 100%;
     border: none;
     ::placeholder {
@@ -150,12 +151,12 @@ const Input = styled.input`
 `;
 
 const Form = styled.form`
-    margin-top: 50px;
-    width: 320px;
+    margin-top: ${({ theme }) => theme.calRem(50)};
+    width: ${({ theme }) => theme.calRem(320)};
 
     Input {
         :nth-child(2) {
-            margin-top: 32px;
+            margin-top: ${({ theme }) => theme.calRem(32)};
         }
     }
     svg {
@@ -175,7 +176,7 @@ const Check = styled(Checkbox)`
 `;
 
 const MemberCheckBox = styled.div`
-    margin-top: 27px;
+    margin-top: ${({ theme }) => theme.calRem(27)};
     ${mixin.flexBox("center", null, null, null)}
 `;
 const DoYouHaveID = styled.p`
@@ -187,7 +188,7 @@ const GoSignUp = styled.button`
 `;
 
 const ErrorBox = styled.div`
-    margin-top: 2px;
+    margin-top: ${({ theme }) => theme.calRem(2)};
     ${mixin.textProps(12, "semiBold", "danger")}
 `;
 
