@@ -47,7 +47,7 @@ export default MainSearch;
 const SearchForm = styled.form`
     margin-top: 70px;
     width: 100%;
-    padding-bottom: 5px;
+    padding-bottom: ${({ theme }) => theme.calRem(5)};
     ${mixin.flexBox("center")}
     ${props =>
         mixin.outline(
@@ -56,6 +56,9 @@ const SearchForm = styled.form`
             "bottom",
         )};
     transition: border-color 1s ease;
+    @media ${({ theme }) => theme.mobile} {
+        margin-top: 0;
+    }
 `;
 const Input = styled.input`
     width: 75%;
@@ -65,4 +68,12 @@ const Input = styled.input`
         ${mixin.textProps(30, "extraBold", "gray3")};
     }
     ${mixin.outline("none")}
+    @media ${({ theme }) => theme.mobile} {
+        width: 100%;
+        text-align: start;
+        ${mixin.textProps(22, "extraBold", "gray2")};
+        ::placeholder {
+            ${mixin.textProps(22, "extraBold", "gray3")};
+        }
+    }
 `;
