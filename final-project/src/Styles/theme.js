@@ -49,6 +49,7 @@ const theme = {
     mobileFontSize,
     fontWeight,
     color,
+    calRem,
 };
 
 export default theme;
