@@ -15,6 +15,8 @@ const textOverflow = () => {
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
+        word-wrap: break-word;
+        word-break: break-all;
     `;
 };
 
@@ -27,6 +29,8 @@ const textboxOverflow = (line = 2, lineHeight = 1.5) => {
         -webkit-box-orient: vertical;
         line-height: ${lineHeight};
         height: ${line * lineHeight}em;
+        word-wrap: break-word;
+        word-break: break-all;
     `;
 };
 

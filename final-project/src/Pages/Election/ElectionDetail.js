@@ -110,7 +110,6 @@ const ElectionDetail = () => {
 
     return (
         <ElectionDetailContainer>
-            {isFinished && <p>끝났다!</p>}
             <UnvotedContainer>
                 {/* 현재 진행중이지만, 투표를 하지 않은 게시글을 보여줍니다. */}
                 <Title>선택을 기다리는 투표함이 있어요</Title>
