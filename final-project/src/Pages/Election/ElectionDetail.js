@@ -113,7 +113,7 @@ const ElectionDetail = () => {
             {isFinished && <p>끝났다!</p>}
             <UnvotedContainer>
                 {/* 현재 진행중이지만, 투표를 하지 않은 게시글을 보여줍니다. */}
-                <Title>미완료 투표함</Title>
+                <Title>선택을 기다리는 투표함이 있어요</Title>
                 <UnvotedBox list={unvotedElectionList} />
             </UnvotedContainer>
             <ElectionInfoContainer>
@@ -231,6 +231,7 @@ const ElectionDetailContainer = styled.div`
 
 const UnvotedContainer = styled.div`
     width: 100%;
+    margin-bottom: 80px;
 `;
 
 const Title = styled.h5`
@@ -242,7 +243,7 @@ const Title = styled.h5`
 `;
 
 const ElectionInfoContainer = styled.div`
-    margin-bottom: 70px;
+    margin-bottom: 80px;
 `;
 
 const ElectionTitle = styled.div`
@@ -265,7 +266,7 @@ const TitleControls = styled.div`
 `;
 
 const CountdownContainer = styled.div`
-    margin-bottom: 70px;
+    margin-bottom: 80px;
 `;
 
 const ElectionDate = styled.div`
@@ -289,7 +290,7 @@ const TimeBox = styled.div`
 `;
 
 const CandidatesContainer = styled.div`
-    margin-bottom: 70px;
+    margin-bottom: 80px;
 `;
 
 const VoteContainer = styled.div`

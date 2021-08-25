@@ -7,13 +7,14 @@ import CongratulationMessageBox from "./CongratulationMessageBox";
 
 const ElectedCard = ({ electionPostId, candidates }) => {
     const dispatch = useDispatch();
-    const result = useSelector(state => state.election.resultList);
+    const result = useSelector(state => state.election.resultList); //result안에는 투표에 대한 정보가 들어있고, 투표를 한 사람이 없으면 result는 빈 배열입니다.
 
     //electedPerson은 당선자의 ID와 최대득표수에 대한 정보입니다.
     const electedPerson =
         result &&
+        result.length > 0 &&
         result.reduce(
-            (acc, cur, idx) => {
+            (acc, cur) => {
                 if (acc && acc.count < cur.count) {
                     acc.count = cur.count;
                     acc.candidateId = cur.candidate_id;
@@ -23,17 +24,22 @@ const ElectedCard = ({ electionPostId, candidates }) => {
             { count: 0 },
         );
 
-    //notElected가 true면 당선자가 없습니다.
-    const notElected = electedPerson === undefined ? true : false;
-
     // 당선자의 정보가 들어있습니다.
-    const electedInfo =
+    let electedInfo =
         electedPerson &&
         candidates &&
         candidates.reduce((acc, cur, idx) => {
-            if (cur.candidate_id === electedPerson.candidateId)
-                return { ...cur, idx }; //여기서 idx를 넣는 이유는 당선자의 기호번호를 알기위함입니다.
+            //여기서 idx를 넣는 이유는 당선자의 기호번호를 알기위함입니다.
+            const election_num = idx + 1;
+            return { ...cur, election_num };
         });
+
+    //출마한 후보자가 1명이고, 투표를 한 사람이없으면 무투표당선입니다.
+    if (result && result.length === 0 && candidates.length === 1)
+        electedInfo = { ...candidates[0], election_num: 1 };
+
+    //notElected가 true면 당선자가 없습니다.
+    const notElected = !electedInfo ? true : false;
 
     useEffect(() => {
         if (!electionPostId) return;
@@ -60,7 +66,8 @@ const ElectedCard = ({ electionPostId, candidates }) => {
                     </ElectedImage>
                     <ElectedInfo>
                         <ElectedName>
-                            기호 {electedInfo.idx}번 {electedInfo?.name}
+                            기호 {electedInfo.election_num}번{" "}
+                            {electedInfo?.name}
                         </ElectedName>
                         <ElectedMajor>{electedInfo?.major}</ElectedMajor>
 

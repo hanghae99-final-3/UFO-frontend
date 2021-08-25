@@ -38,7 +38,7 @@ const Container = styled.div`
     ${mixin.outline("4px solid", "blue2")}
     border-radius: 200px;
     padding: 70px 0;
-    margin: 40px 0 80px 0;
+    margin-top: 40px;
 `;
 
 const CandidateImage = styled.div`
