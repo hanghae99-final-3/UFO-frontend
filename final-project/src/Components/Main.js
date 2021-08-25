@@ -19,6 +19,11 @@ const MainContainer = styled.main`
     max-width: 1050px;
     margin: 35px auto 0 auto;
     padding-bottom: 60px;
+
+    @media ${({ theme }) => theme.mobile} {
+        margin: 32px auto;
+        padding: 0 15px;
+    }
 `;
 
 export default Main;

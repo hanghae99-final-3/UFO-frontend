@@ -1,9 +1,9 @@
 import { css } from "styled-components";
 
 const deviceSizes = {
-    mobile: 360,
-    tablet: 768,
-    pc: 1080,
+    mobile: 390, //컨텐츠가 들어갈 사이즈는 360
+    tablet: 798, //컨텐츠가 들어갈 사이즈는 768
+    pc: 1080, //컨텐츠가 들어갈 사이즈는 1050
 };
 
 //참고 : https://wonit.tistory.com/367

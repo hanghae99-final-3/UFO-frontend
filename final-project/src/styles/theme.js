@@ -11,6 +11,15 @@ const fontSize = {
     40: calRem(40),
 };
 
+const mobileFontSize = {
+    11: calRem(11),
+    12: calRem(12),
+    14: calRem(14),
+    16: calRem(16),
+    22: calRem(22),
+    28: calRem(28),
+};
+
 const fontWeight = {
     extraBold: 800,
     semiBold: 600,
@@ -37,6 +46,7 @@ const color = {
 
 const theme = {
     fontSize,
+    mobileFontSize,
     fontWeight,
     color,
 };
