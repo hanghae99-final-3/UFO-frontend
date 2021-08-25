@@ -288,7 +288,9 @@ const IconContainer = styled.div`
 const ContentHeaderContainer = styled.div`
     ${mixin.outline("1.5px solid", "gray4", "bottom")}
 `;
-const ContentBody = styled.div``;
+const ContentBody = styled.div`
+    padding: 30px 0;
+`;
 const ContentBodyContainer = styled.div`
     min-height: 100px;
     ${mixin.flexBox(null, "center")}

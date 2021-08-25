@@ -65,6 +65,11 @@ function App() {
                             exact
                             component={MainSearchResultPage}
                         />
+                        <Route
+                            path="/util/search"
+                            exact
+                            component={MainSearchResultPage}
+                        />
 
                         <Route
                             path="/freeboard/write"
@@ -96,6 +101,7 @@ function App() {
                             exact
                             component={SearchResult}
                         />
+
                         <Route
                             path="/univboard/search/:param"
                             exact

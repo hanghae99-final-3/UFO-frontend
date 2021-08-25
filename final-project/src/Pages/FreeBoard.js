@@ -11,6 +11,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { freeBoardApi } from "../api";
 import { makeStyles, MuiThemeProvider } from "@material-ui/core";
 import { MuiTheme } from "../styles/MuiTheme";
+import DefaultButton from "../Elements/Buttons/DefaultButton";
+import mixin from "../styles/Mixin";
 
 /**
  * @author kwonjiyeong & heesung
@@ -26,6 +28,7 @@ const useStyles = makeStyles(theme => ({
             backgroundColor: "none",
         },
         "& > *": {
+            color: "#292B2D",
             marginTop: theme.spacing(2),
         },
         "& .MuiPaginationItem-icon": {
@@ -37,6 +40,10 @@ const useStyles = makeStyles(theme => ({
             border: "3px solid #bcffe2",
             borderRadius: "20px",
             backgroundColor: "white",
+            color: "#292B2D",
+        },
+        "& .MuiButtonBase-root ": {
+            color: "#292B2D",
         },
     },
 }));
@@ -91,24 +98,21 @@ const FreeBoard = () => {
                 boardName="freeboard"
             />
             <PaginationContainer>
-                <MuiThemeProvider theme={MuiTheme}>
-                    <div className={classes.root}>
-                        <Pagination
-                            count={freeBoardTotalPage && freeBoardTotalPage}
-                            page={page}
-                            onChange={handlePage}
-                        />
-                    </div>
-                </MuiThemeProvider>
+                <div className={classes.root}>
+                    <Pagination
+                        count={freeBoardTotalPage && freeBoardTotalPage}
+                        page={page}
+                        onChange={handlePage}
+                    />
+                </div>
+                <DefaultButton>글쓰기</DefaultButton>
             </PaginationContainer>
         </>
     );
 };
 
 const PaginationContainer = styled.div`
-    display: flex;
-    justify-content: center;
-    margin-top: 10px;
+    ${mixin.flexBox()};
 `;
 
 export default FreeBoard;

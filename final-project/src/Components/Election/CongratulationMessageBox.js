@@ -143,5 +143,6 @@ const UserImage = styled.img``;
 const Content = styled.div``;
 const EditInput = styled.input``;
 const CommentContent = styled.p``;
+const Controls = styled.button``;
 
 export default CongratulationMessageBox;

@@ -57,7 +57,7 @@ const Header = () => {
                     <SelectCountry />
                 </LeftColumn>
                 <RightColumn>
-                    <Sparkles>
+                    <Sparkles color="#83ffca">
                         <UserName>
                             {/* 유저가 로그인을 하면 유저네임이 나옵니다! */}
                             {userName ? `${userName}님` : "로그인이 필요해요!"}
@@ -112,6 +112,7 @@ const Header = () => {
                                     투표함
                                 </Link>
                             </Control>
+
                             {isLoggedIn ? (
                                 <>
                                     <Control>
@@ -129,6 +130,22 @@ const Header = () => {
                                             마이 페이지
                                         </Link>
                                     </Control>
+                                    <Control>
+                                        <Link
+                                            to={{
+                                                pathname: "/util/search",
+                                                state: {
+                                                    isMatchPathname:
+                                                        pathname.includes(
+                                                            "/util/search",
+                                                        ),
+                                                },
+                                            }}
+                                        >
+                                            검색
+                                        </Link>
+                                    </Control>
+
                                     <Control>
                                         <Link
                                             to=""
@@ -151,6 +168,21 @@ const Header = () => {
                                     <Control>
                                         <Link
                                             to={{
+                                                pathname: "/util/search",
+                                                state: {
+                                                    isMatchPathname:
+                                                        pathname.includes(
+                                                            "/util/search",
+                                                        ),
+                                                },
+                                            }}
+                                        >
+                                            검색
+                                        </Link>
+                                    </Control>
+                                    <Control>
+                                        <Link
+                                            to={{
                                                 pathname: "/login",
                                                 state: {
                                                     isMatchPathname:
@@ -160,22 +192,7 @@ const Header = () => {
                                                 },
                                             }}
                                         >
-                                            로그인
-                                        </Link>
-                                    </Control>
-                                    <Control>
-                                        <Link
-                                            to={{
-                                                pathname: "/signup",
-                                                state: {
-                                                    isMatchPathname:
-                                                        pathname.includes(
-                                                            "/signup",
-                                                        ),
-                                                },
-                                            }}
-                                        >
-                                            회원가입
+                                            로그인 / 회원가입
                                         </Link>
                                     </Control>
                                 </>

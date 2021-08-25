@@ -9,9 +9,9 @@ import axios from "axios";
 const SocialLogin = ({ toggleLoginMode }) => {
     return (
         <React.Fragment>
-            <EmailButtonBox variant="outlined" onClick={toggleLoginMode}>
+            <ButtonBox variant="outlined" onClick={toggleLoginMode}>
                 이메일로 로그인
-            </EmailButtonBox>
+            </ButtonBox>
             <GoogleButtonBox variant="outlined">구글 로그인</GoogleButtonBox>
             <FBButtonBox variant="outlined">페이스북 로그인</FBButtonBox>
             <KakaoButtonBox variant="outlined">
@@ -31,11 +31,11 @@ const SocialLogin = ({ toggleLoginMode }) => {
     );
 };
 
-const EmailButtonBox = styled.button`
+const ButtonBox = styled.button`
     margin-top: 33px;
     width: 344px;
     height: 46px;
-    border-radius: 23px;
+    border-radius: 50px;
     ${mixin.textProps(20, "extraBold", "white")}
     background-color : ${({ theme }) => theme.color.mainBlue};
     box-shadow: 0px 1px 1px 1px #ececec;
@@ -44,7 +44,7 @@ const KakaoButtonBox = styled.button`
     margin-top: 15px;
     width: 344px;
     height: 46px;
-    border-radius: 23px;
+    border-radius: 50px;
     ${mixin.textProps(20, "extraBold")}
     background-color : #FEE500;
     box-shadow: 0px 1px 1px 1px #ececec;
@@ -53,7 +53,7 @@ const FBButtonBox = styled.button`
     margin-top: 15px;
     width: 344px;
     height: 46px;
-    border-radius: 23px;
+    border-radius: 50px;
     ${mixin.textProps(20, "extraBold", "white")};
     background-color: #3b5998;
     box-shadow: 0px 1px 1px 1px #ececec;
@@ -62,7 +62,7 @@ const GoogleButtonBox = styled.button`
     margin-top: 15px;
     width: 344px;
     height: 46px;
-    border-radius: 23px;
+    border-radius: 50px;
     ${mixin.textProps(20, "extraBold")};
     background-color: ${({ theme }) => theme.color.white};
     box-shadow: 0px 1px 1px 1px #ececec;
@@ -76,7 +76,7 @@ const DoYouHaveID = styled.p`
 `;
 const GoSignUp = styled.button`
     background-color: ${({ theme }) => theme.color.white};
-    ${mixin.textProps(20, "extraBold", "mainBlue")}
+    ${mixin.textProps(20, "semiBold", "mainBlue")}
 `;
 
 export default SocialLogin;

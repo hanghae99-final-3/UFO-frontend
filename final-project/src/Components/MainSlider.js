@@ -40,7 +40,7 @@ const MainSlider = ({ postList }) => {
     const settings = {
         infinite: true,
         lazyLoad: true,
-        speed: 300,
+        speed: 230,
         slidesToShow: 3,
         centerMode: true,
         centerPadding: 0,
