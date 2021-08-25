@@ -43,7 +43,6 @@ const color = {
 
 const theme = {
     fontSize,
-    mobileFontSize,
     fontWeight,
     color,
     calRem,
