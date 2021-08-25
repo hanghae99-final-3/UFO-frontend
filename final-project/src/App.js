@@ -3,6 +3,7 @@ import { Redirect, Route, Switch } from "react-router-dom";
 import { ConnectedRouter } from "connected-react-router";
 import { history } from "./redux/configureStore";
 import { useDispatch, useSelector } from "react-redux";
+import ReactGA from "react-ga";
 
 //컴포넌트
 import ProtectedRoute from "./ProtectedRoute";
@@ -46,6 +47,12 @@ function App() {
             dispatch(checkAdminDB());
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
+
+        ReactGA.initialize("G-VJ5Q646DKW", { debug: true });
+        history.listen((location: any) => {
+            ReactGA.set({ page: location.pathname }); // Update the user's current page
+            ReactGA.pageview(location.pathname); // Record a pageview for the given page
+        });
     }, [dispatch, isLoggedIn]);
 
     return (
