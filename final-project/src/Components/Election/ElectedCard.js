@@ -63,6 +63,8 @@ const ElectedCard = ({ electionPostId, candidates }) => {
                             기호 {electedInfo.idx}번 {electedInfo?.name}
                         </ElectedName>
                         <ElectedMajor>{electedInfo?.major}</ElectedMajor>
+
+                        {/* 당선축하메세지 박스 */}
                         <CongratulationMessageBox
                             electionPostId={electionPostId}
                         />

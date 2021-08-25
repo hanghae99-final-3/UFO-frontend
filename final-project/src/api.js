@@ -335,21 +335,21 @@ export const imageApi = {
     uploadImages: ({ img }) => instance.post("util/bulk-image", { img }),
 };
 
-export const CongratulationMessageApi = {
+export const CongratulationApi = {
     //당선축하메세지 불러오기
-    getMessage: ({ election_id }) =>
+    getCongratulation: ({ election_id }) =>
         instance.get(`election/comment/${election_id}`),
 
     //당선축하메세지 추가하기
-    addMessage: ({ election_id, content }) =>
+    addCongratulation: ({ election_id, content }) =>
         instance.post("election/comment", { election_id, content }),
 
     //당선축하메세지 수정하기
-    editMessage: ({ comment_id, content }) =>
+    editCongratulation: ({ comment_id, content }) =>
         instance.put(`election/comment/${comment_id}`, { content }),
 
     //당선축하메세지 삭제하기
-    deleteMessage: ({ comment_id }) =>
+    deleteCongratulation: ({ comment_id }) =>
         instance.delete(`election/comment/${comment_id}`),
 };
 

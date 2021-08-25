@@ -326,10 +326,10 @@ const CommentInput = styled.input`
 `;
 
 const EditInput = styled.input`
+    transition: border-bottom 0.5s ease;
     all: unset;
-    ${mixin.outline("1px solid", "gray4", "bottom")}
     width: 40%;
-    transition: border-bottom 0.3s ease;
+    ${mixin.outline("1px solid", "gray4", "bottom")}
     :focus {
         ${mixin.outline("1px solid", "black", "bottom")}
     }

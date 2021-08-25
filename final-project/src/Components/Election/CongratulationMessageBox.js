@@ -1,14 +1,30 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import mixin from "../../styles/Mixin";
-import DefaultButton from "../../Elements/Buttons/DefaultButton";
-import { CongratulationMessageApi } from "../../api";
+import confirm from "../../confirm";
 import Swal from "sweetalert2";
+
+//작성일자 (e.g 방금 전, 1시간전) 계산 라이브러리
 import TimeCounting from "time-counting";
 import moment from "moment";
+//
+
+//통신
+import { CongratulationApi } from "../../api";
+import { useSelector, useDispatch } from "react-redux";
+import {
+    getCongratulationDB,
+    addCongratulationDB,
+    editCongratulationDB,
+    deleteCongratulationDB,
+} from "../../redux/async/election";
+
+//컴포넌트
+import DefaultButton from "../../Elements/Buttons/DefaultButton";
 
 const CongratulationMessageBox = ({ electionPostId }) => {
-    const [messageList, setMessageList] = useState([]);
+    const dispatch = useDispatch();
+    const commentList = useSelector(state => state.election.congratulationList);
     const [content, setContent] = useState("");
     useEffect(() => {
         if (electionPostId) {
@@ -16,25 +32,19 @@ const CongratulationMessageBox = ({ electionPostId }) => {
             const req = {
                 election_id: electionPostId,
             };
-            CongratulationMessageApi.getMessage(req).then(res => {
-                if (res.data.ok) setMessageList(res.data.result);
-            });
+            dispatch(getCongratulationDB(req));
         }
     }, []);
 
-    const addMessage = () => {
-        const addMessageDB = async () => {
-            //필요한 정보들을 정리하고, 당선축하메세지를 불러오는 api를 연결합니다.
-            const req = {
-                election_id: electionPostId,
-                content: content,
-            };
-            const res = await CongratulationMessageApi.addMessage(req);
-            if (res.data.ok)
-                setMessageList({ ...messageList, ...res.data.result });
-            else Swal.fire("에러", "메세지를 추가할 수 없어요!", "error");
+    const addComment = () => {
+        //필요한 정보들을 정리하고, 당선축하메세지를 불러오는 api를 연결합니다.
+        const req = {
+            election_id: electionPostId,
+            content: content,
         };
-        addMessageDB();
+        confirm.addConfirm(() => dispatch(addCongratulationDB(req)));
+
+        setContent("");
     };
 
     return (
@@ -44,17 +54,18 @@ const CongratulationMessageBox = ({ electionPostId }) => {
                 <input
                     placeholder="당선자에게 축하와 응원 메시지를 남겨주세요"
                     type="text"
+                    value={content}
                     onChange={e => setContent(e.target.value)}
                 />
-                <DefaultButton onClick={() => addMessage()}>등록</DefaultButton>
+                <DefaultButton onClick={addComment}>등록</DefaultButton>
             </InputCongratulation>
             <CommentBox>
-                {messageList &&
-                    messageList.map(massage => (
+                {commentList &&
+                    commentList.map(comment => (
                         // 각 댓글의 데이터들이 들어가는 공간입니다.
                         <Comment
-                            key={massage.comment_id}
-                            comment={massage}
+                            key={comment.comment_id}
+                            comment={comment}
                             electionPostId={electionPostId}
                         />
                     ))}
@@ -70,6 +81,7 @@ const Title = styled.h5`
 `;
 
 const InputCongratulation = styled.div`
+    margin-bottom: 20px;
     padding-bottom: 5px;
     ${mixin.flexBox("space-between")}
     ${mixin.outline("1px solid", "blue3", "bottom")}
@@ -82,25 +94,47 @@ const InputCongratulation = styled.div`
         }
     }
 `;
-
-const CommentBox = styled.div``;
+const CommentBox = styled.div`
+    overflow-y: scroll;
+    width: 100%;
+    height: 250px;
+    ::-webkit-scrollbar {
+        width: 5px;
+    }
+    ::-webkit-scrollbar-thumb {
+        height: 17%;
+        background-color: ${({ theme }) => theme.color.mainMint};
+        border-radius: 10px;
+    }
+    ::-webkit-scrollbar-track {
+        background-color: ${({ theme }) => theme.color.blue1};
+    }
+`;
 
 const Comment = ({ comment }) => {
-    const [content, setContent] = useState(
-        comment.content ? comment.content : "",
-    );
-    const [isAuthor, setIsAuthor] = useState(false);
+    const dispatch = useDispatch();
+    const [content, setContent] = useState(comment.content); //댓글 입력값을 저장할 곳입니다.
+    const user = useSelector(state => state.user.user); //유저정보
+    const isAuthor = user.user_id === comment.user_id ? true : false; //댓글의 작성자 인지 아닌지 판별해주는 값
     const [isEdit, setIsEdit] = useState(false);
+
+    const clickEditBtn = () => {
+        //isEdit가 false가 되면 text가 나타나고, true면 input이 나타나게 하는 스위치작동함수
+        setIsEdit(!isEdit);
+    };
+
+    const cancelEdit = () => {
+        //수정을 하다가 취소버튼을 누를 때, 사용하는 기능
+        setContent(comment.content);
+        setIsEdit(false);
+    };
 
     const editComment = () => {
         const req = {
             comment_id: comment.comment_id,
             content: content,
         };
-        CongratulationMessageApi.editMessage(req).then(res => {
-            if (res.data.ok) console.log(res);
-        });
-        setContent(content);
+        dispatch(editCongratulationDB(req));
         setIsEdit(false);
     };
 
@@ -108,9 +142,7 @@ const Comment = ({ comment }) => {
         const req = {
             comment_id: comment.comment_id,
         };
-        CongratulationMessageApi.deleteMessage(req).then(res => {
-            if (res.data.ok) console.log(res);
-        });
+        confirm.deleteConfirm(() => dispatch(deleteCongratulationDB(req)));
         setIsEdit(false);
     };
 
@@ -131,24 +163,26 @@ const Comment = ({ comment }) => {
                     src={require("../../assets/pngegg2.webp").default}
                     alt="user"
                 />
-                <UserName>{comment.user.nickname}</UserName>
-                <Time>
-                    {/* {TimeCounting(comment.createdAt, timeOption)} */}
-                </Time>
+                <UserName>{comment.user?.nickname}</UserName>
+                <Time>{TimeCounting(comment.createdAt, timeOption)}</Time>
                 <Controls>
-                    {isEdit ? (
+                    {isAuthor && (
                         <>
-                            <button onClick={() => setIsEdit(false)}>
-                                취소
-                            </button>
-                            <button onClick={editComment}>저장</button>
-                        </>
-                    ) : (
-                        <>
-                            <button onClick={() => setIsEdit(true)}>
-                                수정
-                            </button>
-                            <button onClick={deleteComment}>삭제</button>
+                            {isEdit ? (
+                                <>
+                                    <button onClick={cancelEdit}>취소</button>
+                                    <button onClick={editComment}>저장</button>
+                                </>
+                            ) : (
+                                <>
+                                    <button onClick={() => setIsEdit(true)}>
+                                        수정
+                                    </button>
+                                    <button onClick={deleteComment}>
+                                        삭제
+                                    </button>
+                                </>
+                            )}
                         </>
                     )}
                 </Controls>
@@ -169,30 +203,55 @@ const Comment = ({ comment }) => {
         </CommentContainer>
     );
 };
-const CommentContainer = styled.div``;
+const CommentContainer = styled.div`
+    :not(:last-child) {
+        margin-bottom: 20px;
+    }
+`;
 
 const Header = styled.div`
     ${mixin.flexBox(null, "center")}
-    > * {
-        height: 100%;
-    }
     > :not(:last-child) {
         margin-right: 10px;
     }
+    margin-bottom: 2px;
 `;
 const Time = styled.span`
-    ${mixin.textProps(14, "semiBod", "gray2")}
+    ${mixin.textProps(14, "semiBod", "blue2")}
 `;
 const UserName = styled.span`
-    ${mixin.textProps(14, "semiBod", "gray2")}
+    ${mixin.textProps(14, "semiBod", "blue2")}
 `;
 
 const UserImage = styled.img`
     height: 25px;
     width: 25px;
 `;
-const Content = styled.div``;
-const EditInput = styled.input``;
+const Content = styled.div`
+    ${mixin.textProps(20, "regular", "white")}
+`;
+const EditInput = styled.input`
+    transition: border-bottom 0.5s ease;
+    width: 40%;
+    all: unset;
+    ${mixin.outline("1px solid", "blue3", "bottom")}
+    :focus {
+        ${mixin.outline("1px solid", "white", "bottom")}
+    }
+    ::placeholder {
+        ${mixin.textProps(20, "regular", "gray4")}
+    }
+`;
 const CommentContent = styled.p``;
-const Controls = styled.div``;
+const Controls = styled.div`
+    line-height: 1;
+    button {
+        ${mixin.textProps(14, "semiBod", "blue2")}
+        border-radius: 10px;
+        background: transparent;
+    }
+    button:not(:last-child) {
+        margin-right: 10px;
+    }
+`;
 export default CongratulationMessageBox;

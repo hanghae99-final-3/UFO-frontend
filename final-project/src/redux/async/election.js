@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { history } from "../configureStore";
-import { electionApi, voteApi } from "../../api";
+import { electionApi, voteApi, CongratulationApi } from "../../api";
 
 //통신결과에 따른 후처리를 위한 alert 라이브러리
 import Swal from "sweetalert2";
@@ -157,6 +157,82 @@ export const getElectionResultDB = createAsyncThunk(
         try {
             const response = await voteApi.getResult(data);
             if (response.data.ok) return response.data.result;
+        } catch (err) {
+            return thunkAPI.rejectWithValue(err.response.message);
+        }
+    },
+);
+
+/**
+ * @author kwonjiyeong
+ * @param data = election_id
+ * @returns 서버연결 성공시, 특정 선거게시글 당선축하메세지목록 / 서버연결 실패시, 에러메세지
+ * @역할 특정 선거게시글 당선축하메세지목록 불러오기
+ * @필수값 없음
+ */
+export const getCongratulationDB = createAsyncThunk(
+    "election/getCongratulation",
+    async (data, thunkAPI) => {
+        try {
+            const response = await CongratulationApi.getCongratulation(data);
+            if (response.data.ok) return response.data.result;
+        } catch (err) {
+            return thunkAPI.rejectWithValue(err.response.message);
+        }
+    },
+);
+
+/**
+ * @author kwonjiyeong
+ * @param data = election_id
+ * @returns 서버연결 성공시, 특정 선거게시글 당선축하메세지 추가 / 서버연결 실패시, 에러메세지
+ * @역할 특정 선거게시글 당선축하메세지목록 추가하기
+ * @필수값 없음
+ */
+export const addCongratulationDB = createAsyncThunk(
+    "election/addCongratulation",
+    async (data, thunkAPI) => {
+        try {
+            const response = await CongratulationApi.addCongratulation(data);
+            const user = thunkAPI.getState().user;
+            if (response.data.ok) return { ...response.data.result, ...user };
+        } catch (err) {
+            return thunkAPI.rejectWithValue(err.response.message);
+        }
+    },
+);
+
+/**
+ * @author kwonjiyeong
+ * @param data = election_id
+ * @returns 서버연결 성공시, 특정 선거게시글 당선축하메세지 수정 / 서버연결 실패시, 에러메세지
+ * @역할 특정 선거게시글 당선축하메세지목록 수정하기
+ * @필수값 없음
+ */
+export const editCongratulationDB = createAsyncThunk(
+    "election/editCongratulation",
+    async (data, thunkAPI) => {
+        try {
+            const response = await CongratulationApi.editCongratulation(data);
+            if (response.data.ok) return response.data.result;
+        } catch (err) {
+            return thunkAPI.rejectWithValue(err.response.message);
+        }
+    },
+);
+/**
+ * @author kwonjiyeong
+ * @param data = election_id
+ * @returns 서버연결 성공시, 특정 선거게시글 당선축하메세지삭제하기 / 서버연결 실패시, 에러메세지
+ * @역할 특정 선거게시글 당선축하메세지 삭제하기
+ * @필수값 없음
+ */
+export const deleteCongratulationDB = createAsyncThunk(
+    "election/deleteCongratulation",
+    async (data, thunkAPI) => {
+        try {
+            const response = await CongratulationApi.deleteCongratulation(data);
+            if (response.data.ok) return data.comment_id;
         } catch (err) {
             return thunkAPI.rejectWithValue(err.response.message);
         }

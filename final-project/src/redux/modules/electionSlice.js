@@ -7,6 +7,10 @@ import {
     deleteElectionDB,
     addVoteDB,
     getElectionResultDB,
+    getCongratulationDB,
+    addCongratulationDB,
+    editCongratulationDB,
+    deleteCongratulationDB,
 } from "../async/election";
 
 /**
@@ -18,6 +22,7 @@ const initialState = {
     list: [],
     post: null,
     resultList: [],
+    congratulationList: [],
     isFetching: false,
     errorMessage: null,
 };
@@ -62,6 +67,8 @@ const electionSlice = createSlice({
 
         //----특정 선거 게시물을 추가하는 리듀서
         [addElectionDB.fulfilled]: (state, { payload }) => {
+            console.log(payload);
+            return;
             state.list.pop(payload);
             state.isFetching = false;
             state.errorMessage = null;
@@ -127,6 +134,75 @@ const electionSlice = createSlice({
             state.isFetching = true;
         },
         [getElectionResultDB.rejected]: (state, { payload: errorMessage }) => {
+            state.isFetching = false;
+            state.errorMessage = errorMessage;
+        },
+        //----
+
+        //----특정 선거 게시물 당선축하메세지를 불러오는 리듀서
+        [getCongratulationDB.fulfilled]: (state, { payload }) => {
+            state.congratulationList = payload;
+            state.isFetching = false;
+            state.errorMessage = null;
+        },
+        [getCongratulationDB.pending]: (state, { payload }) => {
+            state.isFetching = true;
+        },
+        [getCongratulationDB.rejected]: (state, { payload: errorMessage }) => {
+            state.isFetching = false;
+            state.errorMessage = errorMessage;
+        },
+        //----
+
+        //----특정 선거 게시물 당선축하메세지를 추가하는 리듀서
+        [addCongratulationDB.fulfilled]: (state, { payload }) => {
+            state.congratulationList.unshift(payload);
+            state.isFetching = false;
+            state.errorMessage = null;
+        },
+        [addCongratulationDB.pending]: (state, { payload }) => {
+            state.isFetching = true;
+        },
+        [addCongratulationDB.rejected]: (state, { payload: errorMessage }) => {
+            state.isFetching = false;
+            state.errorMessage = errorMessage;
+        },
+        //----
+
+        //----특정 선거 게시물 당선축하메세지를 수정하는 리듀서
+        [editCongratulationDB.fulfilled]: (state, { payload }) => {
+            let idx = state.congratulationList.findIndex(
+                comment => comment.comment_id === payload.comment_id,
+            );
+            state.congratulationList[idx].content = payload.content;
+            state.isFetching = false;
+            state.errorMessage = null;
+        },
+        [editCongratulationDB.pending]: (state, { payload }) => {
+            state.isFetching = true;
+        },
+        [editCongratulationDB.rejected]: (state, { payload: errorMessage }) => {
+            state.isFetching = false;
+            state.errorMessage = errorMessage;
+        },
+        //----
+
+        //----특정 선거 게시물 당선축하메세지를 삭제하는 리듀서
+        [deleteCongratulationDB.fulfilled]: (state, { payload }) => {
+            const congratulationList = state.congratulationList.filter(
+                comment => comment.comment_id !== payload,
+            );
+            state.congratulationList = congratulationList;
+            state.isFetching = false;
+            state.errorMessage = null;
+        },
+        [deleteCongratulationDB.pending]: (state, { payload }) => {
+            state.isFetching = true;
+        },
+        [deleteCongratulationDB.rejected]: (
+            state,
+            { payload: errorMessage },
+        ) => {
             state.isFetching = false;
             state.errorMessage = errorMessage;
         },
