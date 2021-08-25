@@ -22,11 +22,16 @@ const Tag = styled.span`
     ${props => props.leftGap && `margin-left:${props.leftGap};`};
     border-radius: 16px;
     box-shadow: 0 5px 5px -4px #cdcdcd;
-    background-color: ${props =>
-        props.announcement ? props.theme.color.mint : "white"};
+    background-color: ${props => (props.announcement ? "mint" : "white")};
     ${mixin.textProps(18, "semiBold", "gray1")};
     ${props =>
         mixin.outline("2px solid", props.announcement ? "mint" : "blue1")};
+
+    @media ${({ theme }) => theme.mobile} {
+        min-width: ${({ theme }) => theme.calRem(62)};
+        height: ${({ theme }) => theme.calRem(24)};
+        ${mixin.textProps(11, "semiBold", "gray1")};
+    }
 `;
 
 export default DefaultTag;

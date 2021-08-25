@@ -33,6 +33,12 @@ const Button = styled.button`
         `:first-child{
         margin:0;
     }`}
+
+    @media ${({ theme }) => theme.mobile} {
+        min-width: ${({ theme }) => theme.calRem(56)};
+        height: ${({ theme }) => theme.calRem(24)};
+        ${mixin.textProps(11, "semiBold", "white")};
+    }
 `;
 
 export default DefaultButton;
