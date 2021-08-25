@@ -111,28 +111,88 @@ const LoginPresenter = ({
     );
 };
 
+// 메인  최상위 컨테이너
 const MainContainer = styled.div`
     /* margin-top: ${({ theme }) => theme.calRem(197)}; */
     height: 80vh;
     ${mixin.flexBox("center", "center", "column", null)};
+
+    @media ${({ theme }) => theme.mobile} {
+        height: 70vh;
+    }
 `;
 
-const LoginText = styled.div`
+// 폼 && 컨텐츠 컨테이너
+const Form = styled.form`
+    margin-top: ${({ theme }) => theme.calRem(50)};
+    width: 344px;
+    Input {
+        :nth-child(2) {
+            margin-top: ${({ theme }) => theme.calRem(32)};
+        }
+    }
+    svg {
+        color: ${props => props.theme.color.blue3};
+    }
+    .Mui-checked {
+        svg {
+            color: ${props => props.theme.color.mint};
+        }
+    }
+    .MuiTypography-root {
+        ${mixin.textProps(18, "semiBold", "black")}
+    }
+
+    // 모바일 사이즈
+    @media ${({ theme }) => theme.mobile} {
+        margin-top: ${({ theme }) => theme.calRem(35)};
+        width: ${({ theme }) => theme.calRem(264)};
+        .MuiTypography-root {
+            ${mixin.textProps(14, "semiBold", "black")}
+        }
+        .MuiButtonBase-root {
+            padding: 2px 3px;
+            margin-left: 8px;
+        }
+    }
+`;
+
+// 로그인 타이틀
+const LoginText = styled.span`
     width: ${({ theme }) => theme.calRem(120)};
     ${mixin.textProps(40, "extraBold", "black")}
+
+    @media ${({ theme }) => theme.mobile} {
+        ${mixin.textProps(22, "extraBold", "black")}
+    }
 `;
 const AutoLogin = styled.div`
     width: 100%;
     margin-top: ${({ theme }) => theme.calRem(5)};
+    //모바일 사이즈
+    @media ${({ theme }) => theme.mobile} {
+        margin-top: ${({ theme }) => theme.calRem(2)};
+    }
+`;
+const Check = styled(Checkbox)`
+    .MuiCheckbox-colorSecondary.Mui-checked {
+        color: ${props => props.theme.color.mint};
+    }
 `;
 
 const LoginBtn = styled.button`
     margin-top: ${({ theme }) => theme.calRem(20)};
-    width: ${({ theme }) => theme.calRem(334)};
-    height: ${({ theme }) => theme.calRem(46)};
-    ${mixin.textProps(20, "extraBold", "white")}
-    background-color : ${({ theme }) => theme.color.blue1};
+    width: 344px;
+    height: 46px;
+    ${mixin.textProps(20, "extraBold", "white")};
+    background-color: ${({ theme }) => theme.color.blue1};
     border-radius: 23px;
+
+    @media ${({ theme }) => theme.mobile} {
+        width: ${({ theme }) => theme.calRem(264)};
+        height: ${({ theme }) => theme.calRem(40)};
+        ${mixin.textProps(16, "extraBold", "white")};
+    }
 `;
 
 const Input = styled.input`
@@ -148,45 +208,47 @@ const Input = styled.input`
     :focus {
         ${props => mixin.outline("1px solid", "gray1", "bottom")};
     }
-`;
 
-const Form = styled.form`
-    margin-top: ${({ theme }) => theme.calRem(50)};
-    width: ${({ theme }) => theme.calRem(320)};
-
-    Input {
-        :nth-child(2) {
-            margin-top: ${({ theme }) => theme.calRem(32)};
+    @media ${({ theme }) => theme.mobile} {
+        ::placeholder {
+            ${mixin.textProps(14, "semiBold", "gray4")}
         }
-    }
-    svg {
-        color: ${props => props.theme.color.blue3};
-    }
-    .Mui-checked {
-        svg {
-            color: ${props => props.theme.color.mint};
-        }
+        ${mixin.textProps(14, "semiBold", "gray3")}
     }
 `;
 
-const Check = styled(Checkbox)`
-    .MuiCheckbox-colorSecondary.Mui-checked {
-        color: ${props => props.theme.color.mint};
-    }
-`;
-
+// 체크박스
 const MemberCheckBox = styled.div`
     margin-top: ${({ theme }) => theme.calRem(27)};
     ${mixin.flexBox("center", null, null, null)}
+
+    //모바일 사이즈
+    @media ${({ theme }) => theme.mobile} {
+        margin-top: ${({ theme }) => theme.calRem(22)};
+        ${mixin.textProps(16, "semiBold", "gray3")}
+    }
 `;
+
+// 회원가입 문구
 const DoYouHaveID = styled.p`
     ${mixin.textProps(20, "semiBold", "gray3")}
+    //모바일 사이즈
+    @media ${({ theme }) => theme.mobile} {
+        ${mixin.textProps(16, "semiBold", "gray3")}
+    }
 `;
+
+// 회원가입 하러가기 버튼
 const GoSignUp = styled.button`
     background-color: ${({ theme }) => theme.color.white};
     ${mixin.textProps(20, "semiBold", "mainBlue")}
+    //모바일 사이즈
+    @media ${({ theme }) => theme.mobile} {
+        ${mixin.textProps(16, "semiBold", "mainBlue")}
+    }
 `;
 
+// 에러 메세지 박스
 const ErrorBox = styled.div`
     margin-top: ${({ theme }) => theme.calRem(2)};
     ${mixin.textProps(12, "semiBold", "danger")}
