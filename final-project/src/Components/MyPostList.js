@@ -9,10 +9,12 @@ const MyPostList = () => {
     const [isLoading, setIsLoading] = useState(false); // loading 상태 값
     const [nextPage, setNextPage] = useState(2); // 다음 페이지가 있는지 확인, 만약 total page보다 작다면 무한스크롤 해제
 
+    // const seenPage = localStorage.getItem("seenPage"); // 무한 스크롤 뒤로가기 구현 예정
+
     // 게시물 요청시 옵션 정보 (페이수 per 게시물, 현재 페이지 )
     const req = {
         pageNum: currentPage,
-        pageSize: 10,
+        pageSize: 12,
     };
     // 게시글 api 요청 콜
     const requestCall = async ({ pageNum, pageSize }) => {
@@ -37,10 +39,23 @@ const MyPostList = () => {
     };
     // 무한스크롤 다음 페이지 요청 핸들러
     const nextCall = () => {
+        // 무한 스크롤 뒤로가기 구현
+        // localStorage.setItem("seenPage", currentPage);
         requestCall(req);
     };
 
     useEffect(() => {
+        //무한 스크롤 뒤로가기 구현
+        // if (seenPage > 1) {
+        //     const req = {
+        //         pageNum: 1,
+        //         pageSize: seenPage * 10,
+        //     };
+        //     setCurrentPage(parseInt(seenPage));
+        //     requestCall(req);
+        //     localStorage.removeItem("seenPage");
+        //     return;
+        // }
         requestCall(req);
     }, []);
 

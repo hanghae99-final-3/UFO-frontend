@@ -33,14 +33,6 @@ import DefaultSelector from "../Elements/Buttons/DefaultSelector";
  */
 
 const useStyles = makeStyles(theme => ({
-    selectRoot: {
-        //...other styles
-        width: "32px",
-        fontWeight: 600,
-        "&:focus": {
-            backgroundColor: "white",
-        },
-    },
     MuiOutlinedInput: {
         fontSize: 18,
         fontWeight: 600,
@@ -109,21 +101,18 @@ const SearchBox = ({ searchTag, deactivateSearch, page, pushButton }) => {
     //작성하기 페이지 바로기
     const onClick = () => history.push(`/${page}/write`);
 
+    const handleGoToList = board => history.push(`/${board}`);
+
     return (
         <React.Fragment>
             <SearchBoxContainer>
                 {page && (
                     <TitleContainer>
-                        <TitleSpan>
+                        <TitleSpan onClick={() => handleGoToList(page)}>
                             {page === "freeboard"
                                 ? "자유 게시판"
                                 : `대학 게시판 (${univName})`}
                         </TitleSpan>
-                        {pushButton && (
-                            <PushButton onClick={onClick}>
-                                {/* 작성하기 페이지로 이동! */}
-                            </PushButton>
-                        )}
                     </TitleContainer>
                 )}
                 <TagContainer>
@@ -162,12 +151,13 @@ const SearchBox = ({ searchTag, deactivateSearch, page, pushButton }) => {
                     <InputContainer>
                         <SearchForm onSubmit={handleSearch}>
                             <MuiThemeProvider theme={MuiTheme}>
-                                <Input
-                                    placeholder="키워드 태그를 설정 후 검색해보세요!"
+                                <InputBox
+                                    placeholder="UFO에게 무엇이든 물어보세요!"
                                     fullWidth
                                     value={searchTerm}
                                     onChange={onSearchTermChange}
-                                    classes={{ root: classes.MuiOutlinedInput }}
+                                    // classes={{ root: classes.MuiOutlinedInput }}
+                                    MenuProps={{ disablePortal: true }}
                                     startAdornment={
                                         <Select
                                             MenuProps={{
@@ -218,7 +208,8 @@ const TitleContainer = styled.div`
     ${mixin.outline("1.5px solid", "gray4", "bottom")}
 `;
 const TitleSpan = styled.span`
-    ${mixin.textProps(30, "extraBold", "black")}
+    cursor: pointer;
+    ${mixin.textProps(30, "extraBold", "black")};
 `;
 const TagContainer = styled.div`
     margin-bottom: 15px;
@@ -242,7 +233,16 @@ const CancelButton = styled.button`
     background-color: ${props => (props.selected ? "#707071" : "#ffffff")};
 `;
 
+const InputBox = styled(Input)`
+    .MuiInput-input {
+        ${mixin.textProps(18, "semiBold", "gray3")};
+    }
+`;
+
 const Select = styled(MuiSelect)`
+    option {
+        cursor: pointer;
+    }
     .MuiPaper-root {
         color: ${props => props.theme.color.white};
         background-color: ${props => props.theme.color.mainBlue};

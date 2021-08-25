@@ -17,8 +17,7 @@ const Login = () => {
             .required("비밀번호를 입력하세요."),
     });
 
-    const [socialLoginMode, setSocialLoginMode] = useState(false);
-
+    const [socialLoginMode, setSocialLoginMode] = useState(true);
     const [isRememberEmailChecked, setIsRememberEmailChecked] =
         React.useState(false);
 

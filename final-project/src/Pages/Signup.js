@@ -28,7 +28,8 @@ const Signup = props => {
 
     const validate = Yup.object({
         nickname: Yup.string()
-            .max(15, "닉네임은 15자리 이하로 작성하세요.")
+            .max(15, "닉네임은 15자리 이하로 작성해주세요")
+            .min(3, "닉네임은 3자리 이상으로 작성해주세요")
             .required("닉네임을 입력하세요."),
         email: Yup.string()
             .email("이메일 형식을 확인하세요.")

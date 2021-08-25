@@ -113,9 +113,9 @@ const CommentWrite = styled.div`
     padding-bottom: 10px;
     transition: border-bottom 0.3s ease;
     ${mixin.flexBox("space-between")}
-    ${mixin.outline("2px solid", "gray4", "bottom")}
+    ${mixin.outline("2px solid", "mainGray", "bottom")}
     :hover {
-        ${mixin.outline("2px solid", "black", "bottom")}
+        ${mixin.outline("2px solid", "gray1", "bottom")}
     }
     button {
         background: white;
@@ -329,9 +329,9 @@ const EditInput = styled.input`
     transition: border-bottom 0.5s ease;
     all: unset;
     width: 40%;
-    ${mixin.outline("1px solid", "gray4", "bottom")}
-    :focus {
-        ${mixin.outline("1px solid", "black", "bottom")}
+    ${mixin.outline("2px solid", "mainGray", "bottom")}
+    :hover {
+        ${mixin.outline("2px solid", "gray1", "bottom")}
     }
     ::placeholder {
         ${mixin.textProps(20, "regular", "gray4")}

@@ -12,15 +12,6 @@ import Boop from "./Boop";
 //-----
 
 export default function SlideCard({ post, rank, active }) {
-    // TimeCounting 옵션 설정
-    const timeOption = {
-        lang: "ko",
-        // objectTime: "2020-08-10 06:00:00",
-        objectTime: moment().format(`YYYY-MM-DD HH:mm:ss`),
-        calculate: {
-            justNow: 61,
-        },
-    };
     // 디테일 페이지 바로가기 버튼 이벤트 헨들러
     const onDetailButtonClick = () => {
         history.push(`/freeboard/detail/${post.post_id}`);
@@ -77,7 +68,7 @@ const PreviewTitle = styled.div`
     ${props =>
         props.active
             ? mixin.textProps(20, "extraBold", "white")
-            : mixin.textProps(20, "extraBold", "black")}
+            : mixin.textProps(20, "extraBold", "gray2")}
 `;
 
 const Preview = styled.div`
@@ -98,5 +89,5 @@ const PreviewContent = styled.p`
     ${props =>
         props.active
             ? mixin.textProps(20, "regular", "blue3")
-            : mixin.textProps(20, "regular", "gray2")}
+            : mixin.textProps(20, "regular", "gray3")}
 `;

@@ -33,6 +33,6 @@ const HeadingWrapper = styled.div`
     ${mixin.outline("1px solid", "mainGray", "bottom")}
 `;
 const Heading = styled.span`
-    ${mixin.textProps(30, "regular", "black")}
+    ${mixin.textProps(30, "extraBold", "black")}
 `;
 export default RecommendList;

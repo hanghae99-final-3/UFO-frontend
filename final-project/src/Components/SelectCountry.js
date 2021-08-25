@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux"; // 리덕스
 import { useCookies } from "react-cookie"; // 쿠키 훅스
 import styled from "styled-components"; // 스타일 컴포넌트 라이브러리
@@ -57,15 +57,22 @@ export default function SelectCountry() {
     };
     // 국가 선택 select 클린 이벤트 핸들러
     const handleClick = e => {
-        console.log(e.target);
         setIsSelectOpen(!isSelectOpen);
     };
-
+    const selectRef = useRef();
+    const onClick = () => {
+        selectRef.current.focus();
+    };
     return (
         <StyleWrapper>
-            {isSelectOpen ? <ArrowUp /> : <ArrowDown />}
+            {isSelectOpen ? (
+                <ArrowUp onClick={onClick} />
+            ) : (
+                <ArrowDown onClick={onClick} />
+            )}
             <FormControl>
                 <Select
+                    ref={selectRef}
                     onClick={handleClick}
                     id="demo-customized-select"
                     value={country}
@@ -97,7 +104,7 @@ const MenuItem = styled(MuiMenuItem)``;
 const Select = styled(MuiSelect)`
     .MuiPopover-paper {
         width: 128px;
-        height: 200px;
+        height: 225px;
         border-radius: 0 18px 18px 18px;
         background-color: ${props => props.theme.color.mainBlue};
         color: ${props => props.theme.color.white};
@@ -115,7 +122,7 @@ const Select = styled(MuiSelect)`
         }
     }
     .MuiListItem-root.Mui-selected {
-        color: ${props => props.theme.color.mint};
+        color: ${props => props.theme.color.mainMint};
     }
     #demo-customized-select {
         padding: 0;

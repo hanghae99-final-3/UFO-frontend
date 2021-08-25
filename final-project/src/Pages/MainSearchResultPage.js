@@ -5,7 +5,7 @@ import instance from "../api";
 import { history } from "../redux/configureStore"; // 히스토리 객체
 import MainSearch from "../Elements/MainSearch"; // 검색창 컴포넌트
 import SearchBoardBox from "../Components/SearchBoardBox"; //메인검색창 전용 검색결과 리스트
-import InfinityScroll from "../InfinityScroll";
+import InfinityScroll from "../InfinityScroll"; // 인피니트 스크롤 컴포넌트
 
 import styled from "styled-components"; // 스타일 컴포넌트 라이브러리
 

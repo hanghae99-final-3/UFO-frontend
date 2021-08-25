@@ -575,7 +575,7 @@ const TitleWrapper = styled.div`
 // 계정관리 타이틀
 const Title = styled.span`
     display: block;
-    ${mixin.textProps(30, "extraBold", "gray2")}
+    ${mixin.textProps(30, "extraBold", "black")}
 `;
 // 학교 인증 닉네임 설정 등, 계정관리 버튼 감싸는 div
 const ControlContainer = styled.div`
@@ -679,9 +679,7 @@ const FirstButtonContainer = styled.div`
     ${mixin.flexBox(null, "flex-end")}
 `;
 
-const LastButtonContainer = styled.div`
-    ${mixin.flexBox(null, "flex-end")}
-`;
+const LastButtonContainer = styled.div``;
 // 에러 메세지 div
 const ErrorBox = styled.div`
     margin-top: 4px;

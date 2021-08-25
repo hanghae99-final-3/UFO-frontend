@@ -8,6 +8,7 @@ import VisibilityIcon from "@material-ui/icons/Visibility";
 import moment from "moment";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import FavoriteBorder from "@material-ui/icons/FavoriteBorder";
+import DefaultTag from "../Elements/Tag/DefaultTag";
 
 const IssueBoardBox = ({ issueList, boardName }) => {
     // 게시물 클릭시 이벤틀 헨들러
@@ -29,7 +30,7 @@ const IssueBoardBox = ({ issueList, boardName }) => {
                         }}
                     >
                         <Title>
-                            <SmallTag>
+                            <DefaultTag rightGap="20px">
                                 #
                                 {boardName === "freeboard" &&
                                     categories.freeCategory[
@@ -38,7 +39,7 @@ const IssueBoardBox = ({ issueList, boardName }) => {
                                 {boardName === "univboard" &&
                                     categories.univCategory[post.category]
                                         ?.categoryName}
-                            </SmallTag>
+                            </DefaultTag>
                             <PostTitle>{post.free_board.title}</PostTitle>
                         </Title>
 
@@ -81,6 +82,7 @@ const PostContainer = styled.div`
     display: flex;
     margin-bottom: 12px;
     justify-content: space-between;
+    cursor: pointer;
 `;
 
 const Title = styled.div`

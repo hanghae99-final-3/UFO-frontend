@@ -8,6 +8,7 @@ import { history } from "../../redux/configureStore";
 
 import Trend from "react-trend";
 import mixin from "../../styles/Mixin";
+import DefaultButton from "../../Elements/Buttons/DefaultButton";
 
 const MypageHeader = props => {
     const dispatch = useDispatch();
