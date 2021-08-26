@@ -12,7 +12,7 @@ const SocialLogin = ({ toggleLoginMode }) => {
             <GoogleButtonBox variant="outlined">구글 로그인</GoogleButtonBox>
             <FBButtonBox variant="outlined">페이스북 로그인</FBButtonBox>
             <KakaoButtonBox variant="outlined">
-                <a href="http://3.36.90.60/auth/kakao">카카오 로그인</a>
+                <a href="https://yzkim9501.site/auth/kakao">카카오 로그인</a>
             </KakaoButtonBox>
             <MemberCheckBox>
                 <DoYouHaveID>UFO와 함께하실래요?</DoYouHaveID>

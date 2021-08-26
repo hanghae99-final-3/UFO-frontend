@@ -84,11 +84,7 @@ const UnivBoard = () => {
             <Helmet>
                 <title>UFO - 대학 게시판</title>
             </Helmet>
-            <SearchBox
-                searchTag={categories.univBoardTags}
-                page="univboard"
-                pushButton={true}
-            />
+            <SearchBox searchTag={categories.univBoardTags} page="univboard" />
             <BoardContentContainer>
                 {announcement && announcement.length > 0 && (
                     <BoardBox

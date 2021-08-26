@@ -142,7 +142,7 @@ const BoardWrite = ({ boardName }) => {
         //서버에 필요한 정보를 정리하고, 포스트를 추가하는 미들웨어 함수로 보낸다.
 
         //----본문에서 imgSrc들을 가져옵니다.
-        const apiUrl = "http://3.36.90.60/";
+        const apiUrl = "https://yzkim9501.site";
         let imgList = [];
         const getImgList = () => {
             let result = [];

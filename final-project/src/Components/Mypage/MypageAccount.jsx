@@ -107,6 +107,7 @@ const MypageAccount = props => {
                     setAuthCode(res.data.authCode);
                     setInputEmail(email);
                     setEmailAuthMsg("인증번호가 전송되었습니다.");
+                    console.log(res.data.authCode);
                     actions.resetForm(authCodeFormik.initialValues);
                 })
                 .catch(error => {

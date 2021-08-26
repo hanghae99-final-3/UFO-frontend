@@ -9,7 +9,7 @@ const CandidateIntroBox = ({ candidates, idx }) => {
                 <img
                     src={
                         candidates[idx]?.photo
-                            ? `http://3.36.90.60/${candidates[idx].photo}`
+                            ? `https://yzkim9501.site/${candidates[idx].photo}`
                             : "https://cdn.pixabay.com/photo/2016/04/01/12/07/alien-1300540__340.png"
                     }
                     alt={candidates[idx]?.name}

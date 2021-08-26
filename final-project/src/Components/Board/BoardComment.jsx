@@ -78,9 +78,9 @@ const BoardComment = ({ boardName }) => {
                     onChange={e => setContent(e.target.value)}
                     onKeyPress={e => e.key === "Enter" && addComment()} //엔터키를 눌렀을 때, 코멘트가 추가되도록 설정!
                     value={content} //나중에 댓글을 추가하고 value 값을 지울 때, state를 활용하여 지우기 위해 value props를 설정!
-                    placeholder="댓글을 적어주세요"
+                    placeholder="여러분의 의견을 남겨주세요:)"
                 />
-                <button onClick={addComment}>등록</button>
+                <AddButton onClick={addComment}>등록</AddButton>
             </CommentWrite>
             {/* 자유게시판일 때 렌더링 */}
             {commentList && (
@@ -113,23 +113,28 @@ const CommentWrite = styled.div`
     margin: 20px 0;
     padding-bottom: 10px;
     transition: border-bottom 0.3s ease;
-    ${mixin.flexBox("space-between")}
-    ${mixin.outline("2px solid", "mainGray", "bottom")}
+    ${mixin.flexBox("space-between")};
+    ${mixin.outline("2px solid", "mainGray", "bottom")};
     :hover {
-        ${mixin.outline("2px solid", "gray1", "bottom")}
+        ${mixin.outline("2px solid", "gray1", "bottom")};
     }
-    button {
-        background: white;
-        padding: 0 10px;
-        border-radius: 10px;
+
+    @media ${({ theme }) => theme.mobile} {
+        margin-top: 33px;
+        margin-bottom: 30px;
+        padding-bottom: 8px;
     }
 `;
 
 const CommentBox = styled.div``;
 
 const CommentCnt = styled.div`
-    ${mixin.textProps(16, "semiBold", "gray2")}
+    ${mixin.textProps(14, "semiBold", "gray2")}
     margin-bottom: 20px;
+
+    @media ${({ theme }) => theme.mobile} {
+        margin-bottom: 16px;
+    }
 `;
 
 /**
@@ -267,7 +272,7 @@ const Comment = ({ comment, boardName, postId }) => {
                         <EditInput
                             type="text"
                             value={content}
-                            placeholder="댓글을 적어주세요"
+                            placeholder="여러분의 의견을 남겨주세요:)"
                             onChange={e => setContent(e.target.value)}
                         />
                     ) : (
@@ -281,6 +286,10 @@ const Comment = ({ comment, boardName, postId }) => {
 
 const CommentContainer = styled.div`
     padding-bottom: 20px;
+
+    @media ${({ theme }) => theme.mobile} {
+        padding-bottom: 0;
+    }
 `;
 
 const Header = styled.div`
@@ -308,22 +317,54 @@ const Controls = styled.div`
     button:not(:last-child) {
         margin-right: 10px;
     }
+
+    @media ${({ theme }) => theme.mobile} {
+        button {
+            ${mixin.textProps(12, "semiBold", "gray1")}
+            border-radius: 8px;
+            background: white;
+        }
+        button:not(:last-child) {
+            margin-right: 6px;
+        }
+    }
 `;
 const Content = styled.div`
     ${mixin.textProps(20, "regular", "black")}
     margin-top: 3px;
+
+    @media ${({ theme }) => theme.mobile} {
+        margin-top: 12px;
+        ${mixin.textProps(16, "regular", "black")};
+    }
 `;
 
 const UserName = styled.span`
-    ${mixin.textProps(14, "semiBod", "gray2")}
+    ${mixin.textProps(14, "semiBold", "gray2")}
+
+    @media ${({ theme }) => theme.mobile} {
+        ${mixin.textProps(12, "semiBold", "gray2")}
+    }
 `;
 const Time = styled.span`
-    ${mixin.textProps(14, "semiBod", "gray2")}
+    ${mixin.textProps(14, "semiBod", "gray2")};
+
+    @media ${({ theme }) => theme.mobile} {
+        margin-left: 10px;
+        ${mixin.textProps(12, "semiBod", "gray2")};
+    }
 `;
 
 const CommentInput = styled.input`
     all: unset;
     width: 95%;
+
+    @media ${({ theme }) => theme.mobile} {
+        ${mixin.textProps(14, "semiBold", "gray1")};
+        ::placeholder {
+            ${mixin.textProps(14, "semiBold", "gray3")}
+        }
+    }
 `;
 
 const EditInput = styled.input`
@@ -337,10 +378,29 @@ const EditInput = styled.input`
     ::placeholder {
         ${mixin.textProps(20, "regular", "gray4")}
     }
+
+    @media ${({ theme }) => theme.mobile} {
+        width: 100%;
+        padding-bottom: 8px;
+    }
 `;
 
 const CommentContent = styled.span`
-    ${mixin.textProps(20, "regular", "black")}
+    ${mixin.textProps(20, "regular", "black")};
+
+    @media ${({ theme }) => theme.mobile} {
+        ${mixin.textProps(16, "regular", "black")};
+    }
+`;
+
+const AddButton = styled.button`
+    background: white;
+    padding: 0 10px;
+    @media ${({ theme }) => theme.mobile} {
+        width: ${({ theme }) => theme.calRem(30)};
+        ${mixin.textProps(14, "gray1", "gray3")}
+        padding: 0 0
+    }
 `;
 
 export default BoardComment;

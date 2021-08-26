@@ -28,7 +28,7 @@ export default function SlideCard({ post, rank, active }) {
             </Preview>
             {!imageNone && (
                 <PreviewImage
-                    src={`http://3.36.90.60/${post.img_list[0]}`}
+                    src={`https://yzkim9501.site/${post.img_list[0]}`}
                     alt={post.title}
                 />
             )}
