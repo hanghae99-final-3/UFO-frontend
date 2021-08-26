@@ -17,6 +17,9 @@ import {
 //애니메이션
 import Boop from "../../Elements/Animations/Boop";
 
+//alert
+import Swal from "sweetalert2";
+
 //컴포넌트
 import Editor from "./Editor";
 import DefaultButton from "../../Elements/Buttons/DefaultButton";
@@ -79,13 +82,15 @@ const BoardWrite = ({ boardName }) => {
 
     const editfreePost = () => {
         //서버에 필요한 정보를 정리하고, 포스트를 수정하는 미들웨어 함수로 보낸다.
-        if (!user.user_id) return alert("로그인을 해주세요!");
+        if (!user.user_id)
+            return Swal.fire("에러", "로그인을 해주세요!", "error");
         if (user.user_id && user.user_id !== post.user_id)
-            return alert("일치하는 사용자가 아니예요!");
-        if (user.user_id && !post.title) return alert("제목을 적어주세요!");
+            return Swal.fire("에러", "일치하는 사용자가 아니예요!", "error");
+        if (user.user_id && !post.title)
+            return Swal.fire("에러", "제목을 적어주세요!", "error");
         if (user.user_id && typeof post.content === "object")
             //CKEditor 특성상 입력값 없음은 객체다.
-            return alert("내용을 적어주세요!");
+            return Swal.fire("에러", "내용을 적어주세요!", "error");
 
         if (boardName === "freeboard") {
             const req = {
@@ -158,17 +163,20 @@ const BoardWrite = ({ boardName }) => {
         if (post.content.includes(apiUrl)) imgList = getImgList();
         //----
 
-        if (!user.user_id) return alert("로그인을 해주세요!");
+        if (!user.user_id)
+            return Swal.fire("에러", "로그인을 해주세요!", "error");
 
         if (user.user_id && !post.category)
-            return alert("카테고리를 설정해주세요!");
+            return Swal.fire("에러", "카테고리를 설정해주세요!", "error");
 
-        if (user.user_id && !post.title) return alert("제목을 적어주세요!");
-        if (user.user_id && !post.content) return alert("내용을 적어주세요!");
+        if (user.user_id && !post.title)
+            return Swal.fire("에러", "제목을 적어주세요!", "error");
+        if (user.user_id && !post.content)
+            return Swal.fire("에러", "내용을 적어주세요!", "error");
 
         if (boardName === "freeboard") {
             if (user.user_id && !post.country_id)
-                return alert("국가를 설정해주세요!");
+                return Swal.fire("에러", "국가를 설정해주세요!", "error");
 
             const req = {
                 title: post.title,

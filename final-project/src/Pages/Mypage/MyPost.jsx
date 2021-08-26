@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 //컴포넌트
 import MyCommentedList from "../../Components/Mypage/MyCommentedList";
 import MyPostList from "../../Components/Mypage/MyPostList";
+import Swal from "sweetalert2";
 
 const MyPost = props => {
     const { path } = useParams();
@@ -54,7 +55,7 @@ const MyPost = props => {
                 <Button
                     name="alarmButton"
                     selectedButton={selectedButton}
-                    onClick={() => window.alert("서비스 준비중입니다.")}
+                    onClick={() => Swal.fire("서비스 준비중입니다!")}
                 >
                     최근 알림
                 </Button>

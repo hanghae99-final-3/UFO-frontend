@@ -84,12 +84,15 @@ const Header = () => {
                         {menuOn ? <ClearIcon /> : <MenuIcon />}
                     </MenuBtn>
                     <Menu menuOn={menuOn}>
+                        {!isDesktop && (
+                            <>
+                                <SelectCountryTitle>
+                                    국가 범위 설정
+                                </SelectCountryTitle>
+                                <SelectCountry />
+                            </>
+                        )}
                         <Controls>
-                            {!isDesktop && (
-                                <Control>
-                                    <SelectCountry />
-                                </Control>
-                            )}
                             <Control>
                                 <Link
                                     to={{
@@ -226,8 +229,11 @@ const Header = () => {
 };
 
 const HeaderContainer = styled.header`
+    position: fixed;
     width: 100%;
     box-shadow: 0px 4px 7px 0px #e4ddff;
+    background: ${({ theme }) => theme.color.white};
+    z-index: 99;
 `;
 
 const Inner = styled.div`
@@ -250,6 +256,8 @@ const LeftColumn = styled.div`
 
 const Logo = styled.div`
     cursor: pointer;
+    margin-right: ${({ theme }) => theme.calRem(50)};
+
     @media ${({ theme }) => theme.mobile} {
         width: ${({ theme }) => theme.calRem(80)};
         height: ${({ theme }) => theme.calRem(25)};
@@ -297,11 +305,11 @@ const Menu = styled.div`
         props.menuOn
             ? mixin.flexBox("space-between", null, "column")
             : "display:none;"};
-    height: calc(100vh - 86px);
+    height: calc(100vh - 80px);
     width: 500px;
     padding-left: 60px;
     background: ${({ theme }) => theme.color.mainBlue};
-    ${mixin.floatBox("absolute", "86px", "0", null, null, 99)}
+    ${mixin.floatBox("absolute", "80px", "0", null, null, 99)}
 
     @media ${({ theme }) => theme.mobile} {
         width: ${({ theme }) => theme.calRem(313)};
@@ -311,6 +319,13 @@ const Menu = styled.div`
             ${({ theme }) => theme.calRem(40)};
         ${props => (props.menuOn ? `display:block` : "display:none;")};
     }
+`;
+
+const SelectCountryTitle = styled.span`
+    //모바일에서만 작동하는 요소입니다.
+    ${mixin.textProps(28, "extraBold", "blue3")};
+    display: inline-block;
+    margin-bottom: ${({ theme }) => theme.calRem(8)};
 `;
 
 const Controls = styled.ul`

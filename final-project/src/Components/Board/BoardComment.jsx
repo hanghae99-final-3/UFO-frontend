@@ -63,7 +63,11 @@ const BoardComment = ({ boardName }) => {
         if (boardName === "univboard") {
             //대학게시판과 연결되는 미들웨어함수로 보내줍니다.
             if (!user.univ_id)
-                return alert("마이페이지에서 대학 인증을 해주세요!");
+                return Swal.fire(
+                    "에러",
+                    "마이페이지에서 대학 인증을 해주세요!",
+                    "error",
+                );
             dispatch(addUnivBoardCommentDB(req));
         }
 
@@ -189,7 +193,11 @@ const Comment = ({ comment, boardName, postId }) => {
         if (boardName === "univboard") {
             //대학게시판과 연결되는 미들웨어함수로 보내줍니다.
             if (!user.univ_id)
-                return alert("마이페이지에서 대학 인증을 해주세요!");
+                return Swal.fire(
+                    "에러",
+                    "마이페이지에서 대학 인증을 해주세요!",
+                    "error",
+                );
             dispatch(editUnivBoardCommentDB(req));
         }
 
@@ -212,7 +220,11 @@ const Comment = ({ comment, boardName, postId }) => {
         if (boardName === "univboard") {
             //대학게시판과 연결되는 미들웨어함수로 보내줍니다.
             if (!user.univ_id)
-                return alert("마이페이지에서 대학 인증을 해주세요!");
+                return Swal.fire(
+                    "에러",
+                    "마이페이지에서 대학 인증을 해주세요!",
+                    "error",
+                );
             dispatch(deleteUnivBoardCommentDB(req));
         }
 
@@ -237,8 +249,7 @@ const Comment = ({ comment, boardName, postId }) => {
 
                     <Controls>
                         {/* 댓글의 작성자가 아니면 답글버튼이 나타납니다. */}
-                        {!isAuthor && <button onClick={() => {}}>답글</button>}
-
+                        {/* {!isAuthor && <button onClick={() => {}}>답글</button>} */}
                         {/* 댓글의 작성자가 맞으면 아래의 버튼들이 나타납니다. */}
                         {isAuthor && (
                             <>

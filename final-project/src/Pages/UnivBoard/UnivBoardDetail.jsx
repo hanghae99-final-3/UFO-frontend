@@ -10,11 +10,11 @@ import RecommendList from "../../Components/UnivBoard/RecommendList";
 const UnivBoardDetail = () => {
     return (
         <>
-            <SearchBox
-                deactivateSearch={true}
+            {/* <SearchBox
+                // deactivateSearch={true}
                 searchTag={categories.univBoardTags}
                 page="univboard"
-            />
+            /> */}
             <BoardDetail page="univboard" />
             <BoardComment boardName="univboard" />
             <RecommendList />

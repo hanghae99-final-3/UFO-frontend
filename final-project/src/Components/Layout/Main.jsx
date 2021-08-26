@@ -17,12 +17,12 @@ const Main = ({ children }) => {
 const MainContainer = styled.main`
     ${mixin.floatBox("relative")}
     max-width: 1050px;
-    margin: 35px auto 0 auto;
-    padding: 0 0 60px 0;
+    margin: 0 auto;
+    padding: 115px 0 60px 0;
 
     @media ${({ theme }) => theme.mobile} {
         margin: 0;
-        padding: ${({ theme }) => theme.calRem(32)} 15px
+        padding: ${({ theme }) => theme.calRem(80)} 15px
             ${({ theme }) => theme.calRem(32)} 15px;
     }
 `;

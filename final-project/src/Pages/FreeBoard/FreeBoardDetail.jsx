@@ -18,11 +18,11 @@ import RecommendList from "../../Components/UnivBoard/RecommendList";
 const FreeBoardDetail = () => {
     return (
         <>
-            <SearchBox
+            {/* <SearchBox
                 searchTag={categories.freeBoardTags}
-                deactivateSearch={true}
+                // deactivateSearch={true}
                 page="freeboard"
-            />
+            /> */}
             <BoardDetail page="freeboard" />
             <BoardComment boardName="freeboard" />
             <RecommendList />

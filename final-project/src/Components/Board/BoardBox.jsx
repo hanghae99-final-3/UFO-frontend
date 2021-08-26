@@ -23,6 +23,9 @@ const useStyles = makeStyles({
 });
 
 const BoardBox = ({ postList, fixedList, boardName, announcement }) => {
+    const isDesktop =
+        document.documentElement.clientWidth >= 1080 ? true : false;
+    const isMobile = document.documentElement.clientWidth < 798 ? true : false;
     // material ui css class
     const classes = useStyles();
     // 게시물 디테일 페지이 이동
@@ -46,7 +49,9 @@ const BoardBox = ({ postList, fixedList, boardName, announcement }) => {
                                 _onClick(post.post_id, post?.category);
                             }}
                         >
-                            <AnnounceTag rightGap="20px">공지</AnnounceTag>
+                            <AnnounceTag rightGap={isDesktop ? "20px" : "8px"}>
+                                공지
+                            </AnnounceTag>
                             <AnnounceTitle>{post.title}</AnnounceTitle>
                             <IconContainer>
                                 <>
@@ -78,59 +83,102 @@ const BoardBox = ({ postList, fixedList, boardName, announcement }) => {
                     ))}
                 {postList &&
                     postList.map((post, idx) => (
-                        <PostContainer
-                            key={idx}
-                            onClick={() => {
-                                _onClick(post.post_id, post?.category);
-                            }}
-                        >
-                            <DefaultTag
-                                announcement={announcement}
-                                rightGap="20px"
+                        <>
+                            <PostContainer
+                                key={idx}
+                                onClick={() => {
+                                    _onClick(post.post_id, post?.category);
+                                }}
                             >
-                                {!announcement && "#"}
-                                {boardName === "freeboard" &&
-                                    !announcement &&
-                                    categories.freeCategory[post.category]
-                                        ?.categoryName}
-                                {boardName === "univboard" &&
-                                    !announcement &&
-                                    categories.univCategory[post.category]
-                                        ?.categoryName}
-                                {boardName === "univboard" &&
-                                    boardName &&
-                                    announcement &&
-                                    "공지"}
-                            </DefaultTag>
-                            <PostTitle>{post.title}</PostTitle>
+                                <DefaultTag
+                                    announcement={announcement}
+                                    rightGap={isDesktop ? "20px" : "8px"}
+                                >
+                                    {!announcement && "#"}
+                                    {boardName === "freeboard" &&
+                                        !announcement &&
+                                        categories.freeCategory[post.category]
+                                            ?.categoryName}
+                                    {boardName === "univboard" &&
+                                        !announcement &&
+                                        categories.univCategory[post.category]
+                                            ?.categoryName}
+                                    {boardName === "univboard" &&
+                                        boardName &&
+                                        announcement &&
+                                        "공지"}
+                                </DefaultTag>
+                                <PostTitle>{post.title}</PostTitle>
+                                {/* 데스크탑 */}
+                                {isDesktop ? (
+                                    <IconContainer>
+                                        <>
+                                            <Icon>
+                                                {post?.like?.is_like ===
+                                                false ? (
+                                                    <FavoriteBorder />
+                                                ) : (
+                                                    <FavoriteIcon
+                                                        className={
+                                                            classes.heart
+                                                        }
+                                                    />
+                                                )}
+                                                <IconSpan>
+                                                    {post.like &&
+                                                        post.like.all_like}
+                                                </IconSpan>
+                                            </Icon>
+                                            <Icon>
+                                                <MdComment />
+                                                <IconSpan>
+                                                    {post.comment_count}
+                                                </IconSpan>
+                                            </Icon>
+                                        </>
+                                        <Icon>
+                                            <VisibilityIcon />
+                                            <IconSpan>
+                                                {post.view_count}
+                                            </IconSpan>
+                                        </Icon>
+                                    </IconContainer>
+                                ) : null}
+                            </PostContainer>
+                            {isMobile && (
+                                <IconContainer>
+                                    <Username>유저네임</Username>
+                                    <IconWrapper>
+                                        <Icon>
+                                            {post?.like?.is_like === false ? (
+                                                <FavoriteBorder />
+                                            ) : (
+                                                <FavoriteIcon
+                                                    className={classes.heart}
+                                                />
+                                            )}
+                                            <IconSpan>
+                                                {post.like &&
+                                                    post.like.all_like}
+                                            </IconSpan>
+                                        </Icon>
+                                        <Icon>
+                                            <MdComment />
+                                            <IconSpan>
+                                                {post.comment_count}
+                                            </IconSpan>
+                                        </Icon>
 
-                            <IconContainer>
-                                <>
-                                    <Icon>
-                                        {post?.like?.is_like === false ? (
-                                            <FavoriteBorder />
-                                        ) : (
-                                            <FavoriteIcon
-                                                className={classes.heart}
-                                            />
-                                        )}
-                                        <IconSpan>
-                                            {post.like && post.like.all_like}
-                                        </IconSpan>
-                                    </Icon>
-                                    <Icon>
-                                        <MdComment />
-                                        <IconSpan>
-                                            {post.comment_count}
-                                        </IconSpan>
-                                    </Icon>
-                                </>
-                                <Icon>
-                                    <VisibilityIcon />
-                                    <IconSpan>{post.view_count}</IconSpan>
-                                </Icon>
-                            </IconContainer>
-                        </PostContainer>
+                                        <Icon>
+                                            <VisibilityIcon />
+                                            <IconSpan>
+                                                {post.view_count}
+                                            </IconSpan>
+                                        </Icon>
+                                    </IconWrapper>
+                                </IconContainer>
+                            )}
+                        </>
                     ))}
             </Content>
         </BoardContainer>
@@ -141,8 +189,13 @@ const BoardBox = ({ postList, fixedList, boardName, announcement }) => {
 const BoardContainer = styled.div`
     width: 100%;
 `;
-const PostTitle = styled.p`
+const PostTitle = styled.span`
     ${mixin.textProps(20, "semiBold", "gray2")};
+
+    @media ${({ theme }) => theme.mobile} {
+        line-height: 1;
+        ${mixin.textProps(16, "semiBold", "gray2")};
+    }
 `;
 const AnnounceTitle = styled.p`
     ${mixin.textProps(20, "semiBold", "gray2")};
@@ -156,11 +209,32 @@ const PostContainer = styled.div`
     margin-bottom: 12px;
     cursor: pointer;
     align-items: center;
+    @media ${({ theme }) => theme.mobile} {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+    }
 `;
 
+const IconWrapper = styled.div`
+    display: flex;
+    div {
+        :nth-child(2) {
+            margin: 0 ${({ theme }) => theme.calRem(15)};
+        }
+    }
+`;
 const IconContainer = styled.div`
     display: grid;
     grid-template-columns: repeat(3, 40px);
+
+    @media ${({ theme }) => theme.mobile} {
+        display: flex;
+        justify-content: space-between;
+        ${mixin.outline("1px solid", "mainGray", "bottom")};
+        padding-bottom: 16px;
+        margin-bottom: 16px;
+    }
 `;
 
 const Icon = styled.div`
@@ -174,9 +248,19 @@ const Icon = styled.div`
         margin-right: 2px;
         font-size: 20px;
     }
+
+    @media ${({ theme }) => theme.mobile} {
+        svg {
+            font-size: 16px;
+        }
+    }
 `;
 
 const IconSpan = styled.span`
+    ${mixin.textProps(12, "semiBold", "gray3")}
+`;
+
+const Username = styled.span`
     ${mixin.textProps(12, "semiBold", "gray3")}
 `;
 

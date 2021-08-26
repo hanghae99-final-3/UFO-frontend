@@ -49,6 +49,7 @@ const Login = () => {
             socialLoginMode={socialLoginMode}
             isRememberEmailChecked={isRememberEmailChecked}
             handleCheckBox={handleCheckBox}
+            setIsRememberEmailChecked={setIsRememberEmailChecked}
         />
     );
 };

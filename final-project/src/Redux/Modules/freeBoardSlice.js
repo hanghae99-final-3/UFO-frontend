@@ -11,6 +11,7 @@ import {
     deleteFreeCommentDB,
     getIssuePostListDB,
     postLikeToggleDB,
+    getSearchResult,
 } from "../Async/freeBoard";
 
 /**
@@ -83,6 +84,13 @@ const freeBoardSlice = createSlice({
             state.errorMessage = errorMessage;
         },
         //----
+
+        [getSearchResult.fulfilled]: (state, { payload }) => {
+            state.list = payload?.rows;
+            state.pageCount = payload.countPage;
+            state.isFetching = false;
+            state.errorMessage = null;
+        },
 
         //----자유게시판 특정 게시물 불러오는 리듀서
         [getFreePostDB.fulfilled]: (state, { payload }) => {
@@ -167,7 +175,7 @@ const freeBoardSlice = createSlice({
         //----자유게시판 특정댓글 추가하는 리듀서
         [addFreeCommentDB.fulfilled]: (state, { payload }) => {
             //payload에는 추가된 댓글정보가 들어있습니다.
-            state.commentList.push(payload);
+            state.commentList.unshift(payload);
             state.isFetching = false;
             state.errorMessage = null;
         },
