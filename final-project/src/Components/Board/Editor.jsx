@@ -73,7 +73,7 @@ class MyUploadAdapter {
                         } catch (err) {
                             Swal.fire(
                                 "에러",
-                                "이미지를 등록할 수 없습니다.",
+                                "이미지를 등록할 수 없습니다. 다시 시도해주세요!",
                                 "error",
                             );
                         }

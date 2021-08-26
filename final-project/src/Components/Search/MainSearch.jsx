@@ -21,7 +21,7 @@ const MainSearch = props => {
     const handleSearch = e => {
         e.preventDefault();
         if (searchTerm === "") {
-            return window.alert("검색어를 입력해 주세요.");
+            return Swal.fire("에러", "검색어를 입력해 주세요", "error");
         }
         history.push(`/util/search/${searchTerm}`);
         setSearchTerm("");
