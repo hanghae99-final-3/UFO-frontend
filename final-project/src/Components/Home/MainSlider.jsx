@@ -110,11 +110,11 @@ const MainSlider = ({ postList }) => {
 //---------스타일 컴포넌트---------
 
 const SlideContainer = styled.div`
-    margin: 70px 0;
+    margin: ${({ theme }) => theme.calRem(70)} 0;
     @media ${({ theme }) => theme.mobile} {
         margin: ${({ theme }) => theme.calRem(40)} 0;
         .slick-slide {
-            margin-top: ${({ theme }) => theme.calRem(15)};
+            margin-top: ${({ theme }) => theme.calRem(16)};
             width: 10rem;
         }
     }

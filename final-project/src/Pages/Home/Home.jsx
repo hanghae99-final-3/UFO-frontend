@@ -192,17 +192,16 @@ const HomeContainer = styled.div``;
 const BoardContainer = styled.div`
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 70px 50px;
-
+    gap: ${({ theme }) => `${theme.calRem(70)} ${theme.calRem(50)}`};
     @media ${({ theme }) => theme.mobile} {
         grid-template-columns: 1fr;
-        gap: ${({ theme }) => theme.calRem(45)};
+        gap: ${({ theme }) => theme.calRem(48)};
     }
 `;
 
 const Header = styled.div`
-    margin-bottom: 10px;
-    padding-bottom: 8px;
+    margin-bottom: ${({ theme }) => theme.calRem(10)};
+    padding-bottom: ${({ theme }) => theme.calRem(8)};
     ${mixin.outline("1.5px solid", "gray4", "bottom")}
     ${mixin.flexBox("space-between", "flex-end", null, null)}
 `;

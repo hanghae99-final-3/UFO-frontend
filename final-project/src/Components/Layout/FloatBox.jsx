@@ -67,6 +67,9 @@ const Button = styled.button`
     transition: all 0.3s ease;
     :hover {
         ${mixin.textProps(40, "regular", "gray2")}
+        @media ${({ theme }) => theme.mobile} {
+            ${mixin.textProps(28, "regular", "gray2")}
+        }
     }
     svg {
         vertical-align: middle;
