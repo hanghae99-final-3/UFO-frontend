@@ -243,7 +243,7 @@ const ElectionDetail = () => {
                             rightGap={theme.calRem(8)}
                             onClick={addVote}
                         >
-                            투표하기
+                            제출하기
                         </DefaultButton>
                     </Controls>
                 </>
