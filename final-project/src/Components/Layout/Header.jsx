@@ -300,11 +300,11 @@ const Menu = styled.div`
         props.menuOn
             ? mixin.flexBox("space-between", null, "column")
             : "display:none;"};
-    height: calc(100vh - 86px);
+    height: calc(100vh - 80px);
     width: 500px;
     padding-left: 60px;
     background: ${({ theme }) => theme.color.mainBlue};
-    ${mixin.floatBox("absolute", "86px", "0", null, null, 99)}
+    ${mixin.floatBox("absolute", "80px", "0", null, null, 99)}
 
     @media ${({ theme }) => theme.mobile} {
         width: ${({ theme }) => theme.calRem(313)};
