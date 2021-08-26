@@ -29,7 +29,8 @@ import {
 import moment from "moment"; // moment 날짜 라이브러리
 import TimeCounting from "time-counting"; // 작성일 표시 라이브러리
 
-//토스티파이
+//alert
+import confirm from "../../Shared/confirm";
 import { ToastContainer, toast } from "react-toastify"; // 토스티 파이 라이브러리
 import "react-toastify/dist/ReactToastify.css"; // 토스티파이 css
 
@@ -77,10 +78,12 @@ const BoardDetail = ({ page }) => {
         const req = {
             post_id: post.post_id,
         };
-        dispatch(
-            page === "freeboard"
-                ? deleteFreePostDB(req)
-                : deleteUnivBoardPostDB(req),
+        confirm.deleteConfirm(() =>
+            dispatch(
+                page === "freeboard"
+                    ? deleteFreePostDB(req)
+                    : deleteUnivBoardPostDB(req),
+            ),
         );
     };
     // 게시물 링크 공유 버튼 핸들러
@@ -109,7 +112,21 @@ const BoardDetail = ({ page }) => {
     const handleGoToList = () => history.push(`/${page}`);
 
     useEffect(() => {
+        //첫 렌더링시에 스크롤이 내려와있으면 올려준다.
+        const scrollToTop = () => {
+            //스크롤을 위로 올리는 함수
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth",
+            });
+        };
+        if (window.pageYOffset > 0) scrollToTop();
+        console.log(window.pageYOffset);
+    }, []);
+
+    useEffect(() => {
         // 상세보기 페이지 url을 확인후 자유 게시판 or 대학 게시판 게시물 판별
+
         dispatch(
             page === "freeboard"
                 ? getFreePostDB(postId)
