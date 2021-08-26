@@ -3,6 +3,7 @@ import styled from "styled-components";
 import mixin from "../../Styles/Mixin";
 import { useDispatch } from "react-redux";
 import { history } from "../../Redux/configureStore";
+import Swal from "sweetalert2";
 
 const MainSearch = props => {
     const [focused, setFocused] = useState(false);

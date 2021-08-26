@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 import TimeCounting from "time-counting";
 import moment from "moment";
+import Swal from "sweetalert2";
 
 //통신
 import {

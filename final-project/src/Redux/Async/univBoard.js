@@ -2,6 +2,8 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { searchApi, univBoardApi } from "../../Shared/api";
 import { history } from "../configureStore";
 import { increaseLike, decreaseLike } from "../Modules/univBoardSlice";
+import Swal from "sweetalert2";
+
 /**
  * @author heesung & junghoo
  * @param none

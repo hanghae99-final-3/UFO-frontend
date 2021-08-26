@@ -3,6 +3,8 @@ import { history } from "../configureStore";
 import { freeBoardApi, freeCommentApi, searchApi } from "../../Shared/api";
 import moment from "moment";
 import { increaseLike, decreaseLike } from "../Modules/freeBoardSlice";
+import Swal from "sweetalert2";
+
 /**
  * @author kwonjiyeong
  * @param 없음

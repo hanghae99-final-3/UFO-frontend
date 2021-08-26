@@ -1,5 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { searchApi } from "../../Shared/api";
+import Swal from "sweetalert2";
 
 /**
  * @author heesung
