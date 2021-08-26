@@ -39,18 +39,25 @@ const UnvotedBox = ({ list }) => {
 };
 
 const Container = styled.div`
-    padding: 15px 0;
     text-align: center;
 `;
 
 const CompleteMessage = styled.p`
     ${mixin.textProps(20, "extraBold", "danger")};
+    @media ${({ theme }) => theme.mobile} {
+        ${mixin.textProps(16, "extraBold", "danger")};
+    }
 `;
 
 const GridContainer = styled.div`
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    gap: 18px;
+    gap: ${({ theme }) => theme.calRem(25)};
+    @media ${({ theme }) => theme.mobile} {
+        ${mixin.textProps(16, "extraBold", "danger")};
+        grid-template-columns: repeat(2, 1fr);
+        gap: ${({ theme }) => theme.calRem(16)};
+    }
 `;
 
 const UnvotedCard = styled.div`
@@ -60,11 +67,12 @@ const UnvotedCard = styled.div`
             ? mixin.outline("3px solid", "mainMint")
             : mixin.outline("3px solid", "mainGray")}
     border-radius: 35px;
-    padding: 30px;
+    padding: ${({ theme }) => theme.calRem(30)};
     cursor: pointer;
     background-color: ${({ theme }) => theme.color.mainGray};
     span {
         ${mixin.textboxOverflow(1)}
+        ${mixin.textProps(16, "extraBold", "gray1")};
     }
 `;
 
