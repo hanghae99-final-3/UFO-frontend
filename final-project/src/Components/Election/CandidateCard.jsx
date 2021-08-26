@@ -33,7 +33,7 @@ const CandidateCard = ({
         >
             <CandidateImage
                 isVoteCard={isVoteCard}
-                src={`http://3.36.90.60/${candidate.photo}`}
+                src={`https://yzkim9501.site/${candidate.photo}`}
                 alt={candidate.name}
             />
             <CandidateName isVoteCard={isVoteCard}>

@@ -61,7 +61,7 @@ const ElectedCard = ({ electionPostId, candidates }) => {
                     <ElectedImage>
                         {electedInfo.photo ? (
                             <img
-                                src={`http://3.36.90.60/${electedInfo?.photo}`}
+                                src={`https://yzkim9501.site/${electedInfo?.photo}`}
                                 alt={electedInfo?.name}
                             />
                         ) : (

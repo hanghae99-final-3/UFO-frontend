@@ -252,6 +252,10 @@ const GoSignUp = styled.button`
 const ErrorBox = styled.div`
     margin-top: ${({ theme }) => theme.calRem(2)};
     ${mixin.textProps(12, "semiBold", "danger")}
+    @media ${({ theme }) => theme.mobile} {
+        margin-top: 7px;
+        ${mixin.textProps(11, "semiBold", "danger")}
+    }
 `;
 
 export default LoginPresenter;
