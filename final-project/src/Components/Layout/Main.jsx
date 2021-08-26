@@ -22,7 +22,7 @@ const MainContainer = styled.main`
 
     @media ${({ theme }) => theme.mobile} {
         margin: ${({ theme }) => theme.calRem(32)} auto;
-        padding: 0 ${({ theme }) => theme.calRem(15)};
+        padding: 0 15px;
     }
 `;
 
