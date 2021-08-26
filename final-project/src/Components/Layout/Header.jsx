@@ -36,13 +36,12 @@ import SelectCountry from "../Shared/SelectCountry";
  */
 
 const Header = () => {
-    const [menu] = useSound(clicked);
-    const [playLogo] = useSound(logoSound);
     const dispatch = useDispatch();
     const isLoggedIn = useSelector(state => state.user.isLoggedIn);
     const userName = useSelector(state => state.user.user.nickname);
     const [menuOn, setMenuOn] = useState(false);
     const { pathname } = useLocation();
+
     const isDesktop =
         document.documentElement.clientWidth >= 1080 ? true : false;
 

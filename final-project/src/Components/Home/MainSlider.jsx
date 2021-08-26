@@ -15,6 +15,17 @@ import { FaArrowRight, FaArrowLeft } from "react-icons/fa";
 import SlideCard from "./SlideCard";
 
 const MainSlider = ({ postList }) => {
+    const isMobile = document.documentElement.clientWidth < 798 ? true : false;
+
+    const isTablet =
+        document.documentElement.clientWidth >= 798 &&
+        document.documentElement.clientWidth < 1080
+            ? true
+            : false;
+
+    const isDesktop =
+        document.documentElement.clientWidth >= 1080 ? true : false;
+
     //슬라이더 우측 방향으로 이동
     const NextArrow = ({ onClick }) => {
         return (
@@ -41,7 +52,7 @@ const MainSlider = ({ postList }) => {
     const [imageIndex, setImageIndex] = useState(0);
 
     //  슬라이더 작동 환경 설정
-    const settings = {
+    let settings = {
         infinite: true,
         lazyLoad: true,
         speed: 230,
@@ -52,6 +63,30 @@ const MainSlider = ({ postList }) => {
         prevArrow: <PrevArrow />,
         beforeChange: (current, next) => setImageIndex(next),
     };
+
+    //모바일
+    if (isMobile) {
+        settings = {
+            infinite: true,
+            lazyLoad: true,
+            speed: 230,
+            slidesToShow: 1,
+            centerMode: true,
+            beforeChange: (current, next) => setImageIndex(next),
+        };
+    }
+
+    //태블릿
+    if (isTablet) {
+        settings = {
+            infinite: true,
+            lazyLoad: true,
+            speed: 230,
+            slidesToShow: 3,
+            centerMode: true,
+            beforeChange: (current, next) => setImageIndex(next),
+        };
+    }
 
     return (
         <SlideContainer>
@@ -73,13 +108,24 @@ const MainSlider = ({ postList }) => {
 };
 
 //---------스타일 컴포넌트---------
-const PageTitle = styled.span`
-    margin-bottom: 20px;
-    ${mixin.textProps(30, "extraBold", "black")}
-`;
 
 const SlideContainer = styled.div`
     margin: 70px 0;
+    @media ${({ theme }) => theme.mobile} {
+        margin: ${({ theme }) => theme.calRem(40)} 0;
+        .slick-slide {
+            margin-top: ${({ theme }) => theme.calRem(15)};
+            width: 10rem;
+        }
+    }
+`;
+
+const PageTitle = styled.span`
+    ${mixin.textProps(30, "extraBold", "black")}
+
+    @media ${({ theme }) => theme.mobile} {
+        ${mixin.textProps(22, "extraBold", "black")}
+    }
 `;
 
 // 슬라이더 카드 컨테이너
@@ -90,11 +136,15 @@ const CardContainer = styled.div`
             ? `opacity: 1`
             : `    opacity: 0.5;
     `};
-
     transition: ${props => !props.active && "transform 300ms"};
     img {
         width: ${props => !props.active && "width:20rem"};
         margin: ${props => !props.active && "margin: 0 auto"};
+    }
+
+    @media ${({ theme }) => theme.mobile} {
+        transform: none;
+        padding: 0 1em;
     }
 `;
 
@@ -116,6 +166,10 @@ const ArrowContainer = styled.div`
     ${props =>
         props.direction === "prev" &&
         mixin.floatBox("absolute", "50%", null, null, "0")};
+
+    @media ${({ theme }) => theme.mobile} {
+        display: none;
+    }
 `;
 
 export default MainSlider;
