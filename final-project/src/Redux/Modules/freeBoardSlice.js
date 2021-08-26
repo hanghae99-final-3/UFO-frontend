@@ -167,7 +167,7 @@ const freeBoardSlice = createSlice({
         //----자유게시판 특정댓글 추가하는 리듀서
         [addFreeCommentDB.fulfilled]: (state, { payload }) => {
             //payload에는 추가된 댓글정보가 들어있습니다.
-            state.commentList.push(payload);
+            state.commentList.unshift(payload);
             state.isFetching = false;
             state.errorMessage = null;
         },
