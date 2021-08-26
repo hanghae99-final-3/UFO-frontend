@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Helmet } from "react-helmet";
 import categories from "../../Shared/categories";
 import { withRouter } from "react-router-dom";
+import { history } from "../../Redux/configureStore";
 
 //통신
 import { getUnivBoardDB } from "../../Redux/Async/univBoard";
@@ -112,7 +113,11 @@ const UnivBoard = () => {
                             onChange={handlePage}
                         />
                     </div>
-                    <DefaultButton>글쓰기</DefaultButton>
+                    <DefaultButton
+                        onClick={() => history.push("univboard/write")}
+                    >
+                        글쓰기
+                    </DefaultButton>
                 </PaginationContainer>
             </MuiThemeProvider>
         </>

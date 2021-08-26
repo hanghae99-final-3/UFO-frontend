@@ -4,6 +4,7 @@ import mixin from "../../Styles/Mixin";
 import categories from "../../Shared/categories";
 import { Helmet } from "react-helmet";
 import { useDispatch, useSelector } from "react-redux";
+import { history } from "../../Redux/configureStore";
 
 //통신
 import { freeBoardApi } from "../../Shared/api";
@@ -109,7 +110,9 @@ const FreeBoard = () => {
                         onChange={handlePage}
                     />
                 </div>
-                <DefaultButton>글쓰기</DefaultButton>
+                <DefaultButton onClick={() => history.push("freeboard/write")}>
+                    글쓰기
+                </DefaultButton>
             </PaginationContainer>
         </>
     );
