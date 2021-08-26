@@ -36,6 +36,13 @@ const ButtonBox = styled.button`
     ${mixin.textProps(20, "extraBold", "white")}
     background-color : ${({ theme }) => theme.color.mainBlue};
     box-shadow: 0px 1px 1px 1px #ececec;
+
+    @media ${({ theme }) => theme.mobile} {
+        ${mixin.textProps(16, "extraBold", "white")}
+        margin-top: 24px;
+        width: 264px;
+        height: 40px;
+    }
 `;
 const KakaoButtonBox = styled.button`
     margin-top: 15px;
@@ -45,6 +52,11 @@ const KakaoButtonBox = styled.button`
     ${mixin.textProps(20, "extraBold")}
     background-color : #FEE500;
     box-shadow: 0px 1px 1px 1px #ececec;
+    @media ${({ theme }) => theme.mobile} {
+        ${mixin.textProps(16, "extraBold")}
+        width: 264px;
+        height: 40px;
+    }
 `;
 const FBButtonBox = styled.button`
     margin-top: 15px;
@@ -54,6 +66,11 @@ const FBButtonBox = styled.button`
     ${mixin.textProps(20, "extraBold", "white")};
     background-color: #3b5998;
     box-shadow: 0px 1px 1px 1px #ececec;
+    @media ${({ theme }) => theme.mobile} {
+        ${mixin.textProps(16, "extraBold", "white")};
+        width: 264px;
+        height: 40px;
+    }
 `;
 const GoogleButtonBox = styled.button`
     margin-top: 15px;
@@ -63,17 +80,32 @@ const GoogleButtonBox = styled.button`
     ${mixin.textProps(20, "extraBold")};
     background-color: ${({ theme }) => theme.color.white};
     box-shadow: 0px 1px 1px 1px #ececec;
+    @media ${({ theme }) => theme.mobile} {
+        ${mixin.textProps(16, "extraBold")};
+        width: 264px;
+        height: 40px;
+    }
 `;
 const MemberCheckBox = styled.div`
     margin-top: 27px;
     display: flex;
+    @media ${({ theme }) => theme.mobile} {
+        margin-top: ${({ theme }) => theme.calRem(22)};
+    }
 `;
 const DoYouHaveID = styled.p`
     ${mixin.textProps(20, "semiBold", "gray3")}
+    @media ${({ theme }) => theme.mobile} {
+        ${mixin.textProps(16, "semiBold", "gray3")}
+    }
 `;
 const GoSignUp = styled.button`
     background-color: ${({ theme }) => theme.color.white};
     ${mixin.textProps(20, "semiBold", "mainBlue")}
+    //모바일 사이즈
+     @media ${({ theme }) => theme.mobile} {
+        ${mixin.textProps(16, "semiBold", "mainBlue")}
+    }
 `;
 
 export default SocialLogin;

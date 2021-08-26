@@ -200,6 +200,7 @@ const Input = styled.input`
     padding-bottom: ${({ theme }) => theme.calRem(5)};
     width: 100%;
     border: none;
+    border-radius: 0px;
     ::placeholder {
         ${mixin.textProps(18, "semiBold", "gray4")}
     }
@@ -225,7 +226,6 @@ const MemberCheckBox = styled.div`
     //모바일 사이즈
     @media ${({ theme }) => theme.mobile} {
         margin-top: ${({ theme }) => theme.calRem(22)};
-        ${mixin.textProps(16, "semiBold", "gray3")}
     }
 `;
 
