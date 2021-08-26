@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { univBoardApi } from "../../Shared/api";
+import { searchApi, univBoardApi } from "../../Shared/api";
 import { history } from "../configureStore";
 import { increaseLike, decreaseLike } from "../Modules/univBoardSlice";
 /**
@@ -249,6 +249,20 @@ export const univLikeToggleDB = createAsyncThunk(
             }
         } catch (err) {
             return thunkAPI.rejectWithValue(err.response.message);
+        }
+    },
+);
+
+export const getUnivSearchResult = createAsyncThunk(
+    "univBoard/getUnivSearchResult",
+    async (data, thunkAPI) => {
+        try {
+            const response = await searchApi.searchUnivBySearchTerm(data);
+            if (response.data.ok) {
+                return response.data.result;
+            }
+        } catch (error) {
+            thunkAPI.rejectWithValue(error.response.data.errorMessage);
         }
     },
 );

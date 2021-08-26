@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import mixin from "../../Styles/Mixin";
 import { history } from "../../Redux/configureStore";
+import Swal from "sweetalert2";
 
 const SocialLogin = ({ toggleLoginMode }) => {
     return (
@@ -9,10 +10,13 @@ const SocialLogin = ({ toggleLoginMode }) => {
             <ButtonBox variant="outlined" onClick={toggleLoginMode}>
                 이메일로 로그인
             </ButtonBox>
-            <GoogleButtonBox variant="outlined">구글 로그인</GoogleButtonBox>
-            <FBButtonBox variant="outlined">페이스북 로그인</FBButtonBox>
-            <KakaoButtonBox variant="outlined">
-                <a href="https://yzkim9501.site/auth/kakao">카카오 로그인</a>
+            <KakaoButtonBox
+                variant="outlined"
+                onClick={() => Swal.fire("서비스 준비중입니다!")}
+            >
+                <span href="https://yzkim9501.site/auth/kakao">
+                    카카오 로그인
+                </span>
             </KakaoButtonBox>
             <MemberCheckBox>
                 <DoYouHaveID>UFO와 함께하실래요?</DoYouHaveID>
@@ -49,11 +53,12 @@ const KakaoButtonBox = styled.button`
     width: 344px;
     height: 46px;
     border-radius: 50px;
-    ${mixin.textProps(20, "extraBold")}
-    background-color : #FEE500;
+
+    ${mixin.textProps(20, "extraBold", "white")}
+    background-color: #fee500;
     box-shadow: 0px 1px 1px 1px #ececec;
     @media ${({ theme }) => theme.mobile} {
-        ${mixin.textProps(16, "extraBold")}
+        ${mixin.textProps(16, "extraBold", "white")}
         width: 264px;
         height: 40px;
     }

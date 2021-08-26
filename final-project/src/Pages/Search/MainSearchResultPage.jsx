@@ -28,6 +28,7 @@ const MainSearchResultPage = () => {
 
     ///Main Search api 연결
     const MainSearchApi = async ({ keyword, pageSize, pageNum }) => {
+        console.log(keyword, pageSize, pageNum);
         setIsLoading(true);
         await instance
             .get("util/search", {
@@ -41,6 +42,7 @@ const MainSearchResultPage = () => {
                 if (res.data.ok) {
                     console.log("main search response", res.data);
                     setSearchResult(prev => [...prev, ...res.data.result]);
+                    setSearchResult(res.data.result);
                     setTotalPage(res.data.totalPage);
                     setNextPage(currentPage + 1);
                     setCurrentPage(prev => prev + 1);
@@ -51,8 +53,28 @@ const MainSearchResultPage = () => {
     const nextCall = () => {
         MainSearchApi(MainSearchQueryDB);
     };
+    const initialCall = async ({ keyword, pageSize, pageNum }) => {
+        console.log(keyword, pageSize, pageNum);
+        setIsLoading(true);
+        await instance
+            .get("util/search", {
+                params: {
+                    keyword,
+                    pageSize,
+                    pageNum,
+                },
+            })
+            .then(res => {
+                if (res.data.ok) {
+                    console.log("main search response", res.data);
+                    setSearchResult(res.data.result);
+                    setTotalPage(res.data.totalPage);
+                }
+            });
+        setIsLoading(false);
+    };
     useEffect(() => {
-        MainSearchApi(MainSearchQueryDB);
+        initialCall(MainSearchQueryDB);
     }, [Keyword]);
     return (
         <React.Fragment>
@@ -74,6 +96,11 @@ const MainSearchResultPage = () => {
 const SearchKeyword = styled.div`
     margin-top: 76px;
     ${mixin.textProps(30, "extraBold", "black")}
+
+    @media ${({ theme }) => theme.mobile} {
+        margin-top: 40px;
+        ${mixin.textProps(22, "extraBold", "black")};
+    }
 `;
 
 const DivideLine = styled.hr`

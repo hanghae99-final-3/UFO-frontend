@@ -11,6 +11,7 @@ import {
     deleteFreeCommentDB,
     getIssuePostListDB,
     postLikeToggleDB,
+    getSearchResult,
 } from "../Async/freeBoard";
 
 /**
@@ -83,6 +84,13 @@ const freeBoardSlice = createSlice({
             state.errorMessage = errorMessage;
         },
         //----
+
+        [getSearchResult.fulfilled]: (state, { payload }) => {
+            state.list = payload?.rows;
+            state.pageCount = payload.countPage;
+            state.isFetching = false;
+            state.errorMessage = null;
+        },
 
         //----자유게시판 특정 게시물 불러오는 리듀서
         [getFreePostDB.fulfilled]: (state, { payload }) => {
