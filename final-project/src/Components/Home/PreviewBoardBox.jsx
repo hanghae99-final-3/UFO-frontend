@@ -195,9 +195,14 @@ const IconSpan = styled.span`
 `;
 const Header = styled.div`
     margin-bottom: ${({ theme }) => theme.calRem(10)};
-    padding-bottom: ${({ theme }) => theme.calRem(8)};
+    padding-bottom: ${({ theme }) => theme.calRem(10)};
     ${mixin.outline("1.5px solid", "gray4", "bottom")}
     ${mixin.flexBox("space-between", "flex-end", null, null)}
+
+    @media ${({ theme }) => theme.mobile} {
+        margin-bottom: ${({ theme }) => theme.calRem(8)};
+        padding-bottom: ${({ theme }) => theme.calRem(8)};
+    }
 `;
 
 const LargeTag = styled.span`
@@ -261,11 +266,17 @@ const Icon = styled.div`
     align-items: center;
     span {
         line-height: 1;
-        font-size: ${({ theme }) => theme.fontSize["11"]};
+        font-size: ${({ theme }) => theme.fontSize["12"]};
+        @media ${({ theme }) => theme.mobile} {
+            font-size: ${({ theme }) => theme.fontSize["11"]};
+        }
     }
     svg {
-        margin-right: 2px;
-        font-size: 17px;
+        margin-right: ${({ theme }) => theme.calRem(2)};
+        font-size: ${({ theme }) => theme.fontSize["16"]};
+        @media ${({ theme }) => theme.mobile} {
+            font-size: ${({ theme }) => theme.fontSize["14"]};
+        }
     }
 `;
 

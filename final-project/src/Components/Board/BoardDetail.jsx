@@ -29,7 +29,8 @@ import {
 import moment from "moment"; // moment 날짜 라이브러리
 import TimeCounting from "time-counting"; // 작성일 표시 라이브러리
 
-//토스티파이
+//alert
+import confirm from "../../Shared/confirm";
 import { ToastContainer, toast } from "react-toastify"; // 토스티 파이 라이브러리
 import "react-toastify/dist/ReactToastify.css"; // 토스티파이 css
 
@@ -77,10 +78,12 @@ const BoardDetail = ({ page }) => {
         const req = {
             post_id: post.post_id,
         };
-        dispatch(
-            page === "freeboard"
-                ? deleteFreePostDB(req)
-                : deleteUnivBoardPostDB(req),
+        confirm.deleteConfirm(() =>
+            dispatch(
+                page === "freeboard"
+                    ? deleteFreePostDB(req)
+                    : deleteUnivBoardPostDB(req),
+            ),
         );
     };
     // 게시물 링크 공유 버튼 핸들러
@@ -109,7 +112,21 @@ const BoardDetail = ({ page }) => {
     const handleGoToList = () => history.push(`/${page}`);
 
     useEffect(() => {
+        //첫 렌더링시에 스크롤이 내려와있으면 올려준다.
+        const scrollToTop = () => {
+            //스크롤을 위로 올리는 함수
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth",
+            });
+        };
+        if (window.pageYOffset > 0) scrollToTop();
+        console.log(window.pageYOffset);
+    }, []);
+
+    useEffect(() => {
         // 상세보기 페이지 url을 확인후 자유 게시판 or 대학 게시판 게시물 판별
+
         dispatch(
             page === "freeboard"
                 ? getFreePostDB(postId)
@@ -182,15 +199,11 @@ const BoardDetail = ({ page }) => {
 
                     <IconContainer>
                         <ToastContainer limit={1} />
-                        <Mbutton
-                            disableElevation
-                            disableRipple
-                            onClick={handleCopyUrl}
-                        >
-                            <Icon>
-                                <LinkIcon />
-                            </Icon>
-                        </Mbutton>
+
+                        <Icon>
+                            <LinkIcon onClick={handleCopyUrl} />
+                        </Icon>
+
                         <Icon>
                             {isLike ? (
                                 <FavoriteIcon style={{ fill: "#FF5372" }} />
@@ -257,20 +270,44 @@ const Tag = styled.span`
     display: inline-block;
     border-radius: 15px;
     background-color: white;
-    ${mixin.outline("2px solid", "blue2")}
-    ${mixin.textProps(18, "semiBold", "gray1", "center")}
+    ${mixin.outline("2px solid", "blue2")};
+    ${mixin.textProps(18, "semiBold", "gray1", "center")};
+
+    @media ${({ theme }) => theme.mobile} {
+        height: ${({ theme }) => theme.calRem(24)};
+        min-width: ${({ theme }) => theme.calRem(62)};
+        ${mixin.textProps(11, "semiBold", "gray1", "center")};
+        line-height: 21px;
+    }
 `;
 const Title = styled.h3`
     display: block;
     margin: 20px 0 0 0;
-    ${mixin.textProps(30, "extraBlack", "black")}
+    ${mixin.textProps(30, "extraBlack", "black")};
+
+    //모바일 사이즈
+    @media ${({ theme }) => theme.mobile} {
+        margin-top: ${({ theme }) => theme.calRem(13)};
+        ${mixin.textProps(22, "extraBold", "black")};
+    }
 `;
 
 const CountSpan = styled.span`
     ${mixin.textProps(12, "semiBold", "gray3")}
+
+    //모바일 사이즈
+     @media ${({ theme }) => theme.mobile} {
+        ${mixin.textProps(11, "semiBold", "gray3")}
+    }
 `;
 const Nickname = styled.span`
     ${mixin.textProps(14, "semiBold", "gray2")}
+
+    //모바일 사이즈
+    @media ${({ theme }) => theme.mobile} {
+        margin-top: ${({ theme }) => theme.calRem(8)};
+        ${mixin.textProps(12, "semiBold", "gray2")}
+    }
 `;
 const NicknameIconContainer = styled.div`
     padding-bottom: 10px;
@@ -285,9 +322,18 @@ const Icon = styled.div`
         font-size: 20px;
         margin: 0 5px 0 10px;
     }
+    margin-top: 10px;
+
+    //모바일 사이즈
+    @media ${({ theme }) => theme.mobile} {
+        svg {
+            font-size: 20px;
+            margin: 0 4px 0 10px;
+        }
+    }
 `;
 const IconContainer = styled.div`
-    ${mixin.flexBox()}
+    ${mixin.flexBox()};
 `;
 
 const ContentHeaderContainer = styled.div`
@@ -295,6 +341,11 @@ const ContentHeaderContainer = styled.div`
 `;
 const ContentBody = styled.div`
     padding: 30px 0;
+
+    //모바일 사이즈
+    @media ${({ theme }) => theme.mobile} {
+        padding: 24px 0;
+    }
 `;
 const ContentBodyContainer = styled.div`
     min-height: 100px;
@@ -305,6 +356,11 @@ const ContentBodyContainer = styled.div`
 const ButtonContainer = styled.div`
     margin-top: 15px;
     ${mixin.flexBox("space-between")}
+
+    //모바일 사이즈
+    @media ${({ theme }) => theme.mobile} {
+        margin-top: 8px;
+    }
 `;
 
 const ButtonWrapper = styled.div``;
@@ -315,6 +371,13 @@ const Button = styled.button`
     border-radius: 16px;
     ${mixin.textProps(18, "semiBold", "white", "center")}
     background-color: ${props => props.theme.color.blue1};
+
+    //모바일 사이즈
+    @media ${({ theme }) => theme.mobile} {
+        width: ${({ theme }) => theme.calRem(56)};
+        height: ${({ theme }) => theme.calRem(24)};
+        ${mixin.textProps(12, "semiBold", "white", "center")}
+    }
 `;
 
 export default BoardDetail;

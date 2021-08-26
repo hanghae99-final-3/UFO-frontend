@@ -41,7 +41,7 @@ const MyPostBoardBox = ({
     const timeOption = {
         lang: "ko",
         // objectTime: "2020-08-10 06:00:00",
-        objectTime: moment().format(`YYYY-MM-DD HH:mm:ss`),
+        objectTime: moment().format(`YYYY/MM/DD HH:mm:ss`),
         calculate: {
             justNow: 61,
         },
@@ -123,7 +123,10 @@ const MyPostBoardBox = ({
                                             <Icon>
                                                 <IconSpan>
                                                     {TimeCounting(
-                                                        post.createdAt,
+                                                        post.createdAt.replace(
+                                                            /\-/g,
+                                                            "/",
+                                                        ),
                                                         timeOption,
                                                     )}
                                                 </IconSpan>

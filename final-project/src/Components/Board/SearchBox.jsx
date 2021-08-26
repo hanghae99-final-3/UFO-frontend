@@ -56,6 +56,8 @@ const SearchBox = ({ searchTag, deactivateSearch, page, pushButton }) => {
     // 작성일 or  관련순 초기 상태
     const [order, setOrder] = React.useState("date");
 
+    const reduxSelectedTag = useSelector(state => state.freeBoard?.selectedTag);
+
     useEffect(() => {
         // selectedTag 상태를 리덕스 스토어의 상태와 동기화
         dispatch(setTagReducer(selectedTag));
@@ -79,15 +81,16 @@ const SearchBox = ({ searchTag, deactivateSearch, page, pushButton }) => {
 
     //검색창 form onSubmit 이벤트 핸들링
     const handleSearch = e => {
-        e.preventDefault();
-        if (searchTerm === "") {
-            return window.alert("검색어를 입력해 주세요.");
-        }
-        if (history.location.pathname.split("/")[1] === "freeboard") {
-            history.push(`/freeboard/search/${searchTerm}`);
-        } else if (history.location.pathname.split("/")[1] === "univboard") {
-            history.push(`/univboard/search/${searchTerm}`);
-        }
+        console.log(e);
+        history.push(`/util/search/${searchTerm}`);
+        // if (searchTerm === "") {
+        //     return window.alert("검색어를 입력해 주세요.");
+        // }
+        // if (history.location.pathname.split("/")[1] === "freeboard") {
+        //     history.push(`/freeboard/search/${searchTerm}`);
+        // } else if (history.location.pathname.split("/")[1] === "univboard") {
+        //     history.push(`/univboard/search/${searchTerm}`);
+        // }
     };
     // 작성일 or  관련순 정렬  이벤트 핸들링
     const handleOrderChange = event => {
@@ -116,75 +119,73 @@ const SearchBox = ({ searchTag, deactivateSearch, page, pushButton }) => {
                         </TitleSpan>
                     </TitleContainer>
                 )}
-                <TagContainer>
-                    <TagSelectText>태그 설정</TagSelectText>
-                    {searchTag.map((tag, idx) => {
-                        // map 함수로 props로 전달된 태그 배열의 태그들 마다 TagButton 컴포넌트 랜더링
-                        return (
-                            <Boop
-                                rotation={0}
-                                timing={200}
-                                x={0}
-                                y={-7}
-                                key={idx}
-                            >
-                                <DefaultSelector
-                                    // 선택 여부로 styled component에서 조건부 css 적용(아래 TagButton styled component 참고)
-                                    isSelected={selectedTag === idx}
-                                    value={idx}
-                                    onClick={handleTagSelect}
-                                    key={idx}
-                                    rightGap="8px"
-                                    lastNoGap={searchTag.length - 1 === idx}
-                                >
-                                    #{tag}
-                                </DefaultSelector>
-                            </Boop>
-                        );
-                    })}
-                    <CancelButton>
-                        <Boop rotation={25}>
-                            <CloseIcon onClick={handleReset} />
-                        </Boop>
-                    </CancelButton>
-                </TagContainer>
-                {!deactivateSearch && (
-                    <InputContainer>
+
+                <InputContainer>
+                    <MuiThemeProvider theme={MuiTheme}>
                         <SearchForm onSubmit={handleSearch}>
-                            <MuiThemeProvider theme={MuiTheme}>
-                                <InputBox
-                                    placeholder="UFO에게 무엇이든 물어보세요!"
-                                    fullWidth
-                                    value={searchTerm}
-                                    onChange={onSearchTermChange}
-                                    // classes={{ root: classes.MuiOutlinedInput }}
-                                    MenuProps={{ disablePortal: true }}
-                                    startAdornment={
-                                        <Select
-                                            MenuProps={{
-                                                disablePortal: true,
-                                                getContentAnchorEl: null,
-                                                anchorOrigin: {
-                                                    vertical: "bottom",
-                                                },
-                                            }}
-                                            disableUnderline
-                                            value={order}
-                                            outlined="false"
-                                            onChange={handleOrderChange}
-                                        >
-                                            <option value={"date"}>
-                                                작성일
-                                            </option>
-                                            <option value={"rel"}>
-                                                관련순
-                                            </option>
-                                        </Select>
-                                    }
-                                />
-                            </MuiThemeProvider>
+                            <InputBox
+                                placeholder="검색어를 입력해보세요!"
+                                fullWidth
+                                value={searchTerm}
+                                onChange={onSearchTermChange}
+                                // classes={{ root: classes.MuiOutlinedInput }}
+                                MenuProps={{ disablePortal: true }}
+                                startAdornment={
+                                    <Select
+                                        MenuProps={{
+                                            disablePortal: true,
+                                            getContentAnchorEl: null,
+                                            anchorOrigin: {
+                                                vertical: "bottom",
+                                            },
+                                        }}
+                                        disableUnderline
+                                        value={order}
+                                        outlined="false"
+                                        onChange={handleOrderChange}
+                                    >
+                                        <option value={"date"}>작성일</option>
+                                        <option value={"rel"}>관련순</option>
+                                    </Select>
+                                }
+                            />
                         </SearchForm>
-                    </InputContainer>
+                    </MuiThemeProvider>
+                </InputContainer>
+
+                {!deactivateSearch && (
+                    <TagContainer>
+                        <TagSelectText>게시글 필터</TagSelectText>
+                        {searchTag.map((tag, idx) => {
+                            // map 함수로 props로 전달된 태그 배열의 태그들 마다 TagButton 컴포넌트 랜더링
+                            return (
+                                <Boop
+                                    rotation={0}
+                                    timing={200}
+                                    x={0}
+                                    y={-7}
+                                    key={idx}
+                                >
+                                    <DefaultSelector
+                                        // 선택 여부로 styled component에서 조건부 css 적용(아래 TagButton styled component 참고)
+                                        isSelected={selectedTag === idx}
+                                        value={idx}
+                                        onClick={handleTagSelect}
+                                        key={idx}
+                                        rightGap="8px"
+                                        lastNoGap={searchTag.length - 1 === idx}
+                                    >
+                                        #{tag}
+                                    </DefaultSelector>
+                                </Boop>
+                            );
+                        })}
+                        <CancelButton>
+                            <Boop rotation={25}>
+                                <CloseIcon onClick={handleReset} />
+                            </Boop>
+                        </CancelButton>
+                    </TagContainer>
                 )}
             </SearchBoxContainer>
         </React.Fragment>
@@ -203,22 +204,38 @@ const SearchBoxContainer = styled.div`
 `;
 
 const TitleContainer = styled.div`
-    margin-bottom: 10px;
+    /* margin-bottom: 10px; */
     padding-bottom: 10px;
     ${mixin.flexBox("space-between", "flex-end")}
-    ${mixin.outline("1.5px solid", "gray4", "bottom")}
+    /* ${mixin.outline("1.5px solid", "gray4", "bottom")} */
+
+    //모바일 사이즈
+    @media ${({ theme }) => theme.mobile} {
+        padding-bottom: ${({ theme }) => theme.calRem(8)};
+    }
 `;
 const TitleSpan = styled.span`
     cursor: pointer;
     ${mixin.textProps(30, "extraBold", "black")};
+
+    //모바일 사이즈
+    @media ${({ theme }) => theme.mobile} {
+        ${mixin.textProps(22, "extraBold", "black")};
+    }
 `;
 const TagContainer = styled.div`
-    margin-bottom: 15px;
+    margin-bottom: 18px;
+    margin-top: 15px;
+
     ${mixin.flexBox(null, "center", null)}
 `;
 const TagSelectText = styled.span`
     ${mixin.textProps(14, "semiBold", "gray3")};
     margin-right: 15px;
+    //모바일 사이즈
+    @media ${({ theme }) => theme.mobile} {
+        ${mixin.textProps(12, "semiBold", "gray3")};
+    }
 `;
 
 const CancelButton = styled.button`
@@ -234,8 +251,20 @@ const CancelButton = styled.button`
     background-color: ${props => (props.selected ? "#707071" : "#ffffff")};
 `;
 
-const InputBox = styled(Input)`
-    .MuiInput-input {
+const InputBox = styled.input`
+    width: 100%;
+    border: none;
+    border-radius: 0px;
+    padding-bottom: 5px;
+    ${mixin.textProps(18, "semiBold", "gray3")};
+
+    ${props => mixin.outline("2px solid", "gray4", "bottom")};
+    :focus {
+        ${props => mixin.outline("2px solid", "mainMint", "bottom")};
+    }
+    transition: border-color 1s ease;
+    ${mixin.textProps(18, "semiBold", "gray1")};
+    ::placeholder {
         ${mixin.textProps(18, "semiBold", "gray3")};
     }
 `;

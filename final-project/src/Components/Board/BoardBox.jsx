@@ -3,6 +3,7 @@ import mixin from "../../Styles/Mixin"; // 믹스인 css 객체
 import styled from "styled-components"; // 스타일 컴포넌트 라이브러리
 import categories from "../../Shared/categories"; // 게시물 태그 카테고리 객체
 import { history } from "../../Redux/configureStore"; // 히스토리 객체
+import { useDispatch } from "react-redux";
 
 import { MdComment } from "react-icons/md"; // 댓글 아이콘
 import VisibilityIcon from "@material-ui/icons/Visibility"; // 조회수 아이콘
@@ -13,6 +14,7 @@ import { makeStyles } from "@material-ui/core"; // material ui 스타일링 훅�
 //컴포넌트
 import AnnounceTag from "../../Elements/Tag/AnnounceTag";
 import DefaultTag from "../../Elements/Tag/DefaultTag";
+import { setTagReducer } from "../../Redux/Modules/freeBoardSlice";
 
 const useStyles = makeStyles({
     heart: {
@@ -24,8 +26,9 @@ const BoardBox = ({ postList, fixedList, boardName, announcement }) => {
     // material ui css class
     const classes = useStyles();
     // 게시물 디테일 페지이 이동
-    const _onClick = postId => {
+    const _onClick = (postId, category) => {
         //자유게시판일때,
+        // dispatch(setTagReducer(category));
         if (boardName === "freeboard")
             return history.push(`/freeboard/detail/${postId}`);
         //학교게시판일때,
@@ -40,7 +43,7 @@ const BoardBox = ({ postList, fixedList, boardName, announcement }) => {
                         <PostContainer
                             key={idx}
                             onClick={() => {
-                                _onClick(post.post_id);
+                                _onClick(post.post_id, post?.category);
                             }}
                         >
                             <AnnounceTag rightGap="20px">공지</AnnounceTag>
@@ -78,7 +81,7 @@ const BoardBox = ({ postList, fixedList, boardName, announcement }) => {
                         <PostContainer
                             key={idx}
                             onClick={() => {
-                                _onClick(post.post_id);
+                                _onClick(post.post_id, post?.category);
                             }}
                         >
                             <DefaultTag

@@ -64,7 +64,7 @@ const Election = () => {
                 <Selecter>
                     <DefaultSelector
                         isSelected={isOngoing}
-                        rightGap="10px"
+                        rightGap={theme.calRem(8)}
                         onClick={() => setIsOngoing(true)}
                     >
                         진행중선거
@@ -142,6 +142,8 @@ const Title = styled.div`
     ${mixin.textProps(30, "extraBold", "black")};
     @media ${({ theme }) => theme.mobile} {
         ${mixin.textProps(22, "extraBold", "black")};
+        padding-bottom: ${({ theme }) => theme.calRem(8)};
+        margin-bottom: ${({ theme }) => theme.calRem(8)};
     }
 `;
 
@@ -149,19 +151,22 @@ const Controls = styled.div`
     ${mixin.flexBox("space-between", "flex-end")};
     padding-bottom: ${({ theme }) => theme.calRem(10)};
     ${mixin.outline("1px solid", "gray4", "bottom")};
+    @media ${({ theme }) => theme.mobile} {
+        padding-bottom: ${({ theme }) => theme.calRem(8)};
+    }
 `;
 
 const Selecter = styled.div``;
 
 const GridContainer = styled.div`
-    padding: ${({ theme }) => theme.calRem(15)} 0;
+    padding: ${({ theme }) => theme.calRem(16)} 0;
     width: 100%;
     display: grid;
     grid-template-columns: repeat(6, 1fr);
     gap: ${({ theme }) => theme.calRem(30)} ${({ theme }) => theme.calRem(25)};
     @media ${({ theme }) => theme.mobile} {
         grid-template-columns: repeat(2, 1fr);
-        gap: ${({ theme }) => theme.calRem(15)};
+        gap: ${({ theme }) => theme.calRem(16)};
     }
 `;
 

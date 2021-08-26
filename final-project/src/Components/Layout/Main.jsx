@@ -21,8 +21,9 @@ const MainContainer = styled.main`
     padding: 0 0 60px 0;
 
     @media ${({ theme }) => theme.mobile} {
-        margin: ${({ theme }) => theme.calRem(32)} auto;
-        padding: 0 ${({ theme }) => theme.calRem(15)};
+        margin: 0;
+        padding: ${({ theme }) => theme.calRem(32)} 15px
+            ${({ theme }) => theme.calRem(32)} 15px;
     }
 `;
 

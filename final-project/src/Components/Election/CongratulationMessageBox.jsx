@@ -42,7 +42,7 @@ const CongratulationMessageBox = ({ electionPostId }) => {
             election_id: electionPostId,
             content: content,
         };
-        confirm.addConfirm(() => dispatch(addCongratulationDB(req)));
+        confirm.addEditConfirm(() => dispatch(addCongratulationDB(req)));
 
         setContent("");
     };
