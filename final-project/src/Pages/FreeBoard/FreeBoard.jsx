@@ -110,7 +110,7 @@ const FreeBoard = () => {
                         onChange={handlePage}
                     />
                 </div>
-                <DefaultButton onClick={() => history.push("freeboard/write")}>
+                <DefaultButton onClick={() => history.push("/freeboard/write")}>
                     글쓰기
                 </DefaultButton>
             </PaginationContainer>
