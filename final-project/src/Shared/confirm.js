@@ -61,6 +61,7 @@ const mobileEditConfirm = (editProcess, deleteProcess) => {
         showCancelButton: true,
         confirmButtonText: "수정",
         cancelButtonText: "삭제",
+        showCloseButton: true,
     }).then(result => {
         if (result.isConfirmed) {
             editProcess();
