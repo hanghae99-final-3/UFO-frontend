@@ -233,6 +233,7 @@ const ElectionDetail = () => {
                                             candidate.candidate_id
                                         }
                                         cursor
+                                        isVoteCard
                                     />
                                 ))}
                         </VoteBox>
@@ -364,6 +365,9 @@ const CandidatesContainer = styled.div`
 
 const VoteContainer = styled.div`
     margin-bottom: ${({ theme }) => theme.calRem(30)};
+    @media ${({ theme }) => theme.mobile} {
+        margin-bottom: ${({ theme }) => theme.calRem(24)};
+    }
 `;
 
 const VoteTitle = styled.div`
@@ -371,13 +375,23 @@ const VoteTitle = styled.div`
     ${mixin.flexBox("space-between", "flex-end")};
     padding-bottom: ${({ theme }) => theme.calRem(10)};
     margin-bottom: ${({ theme }) => theme.calRem(15)};
+    @media ${({ theme }) => theme.mobile} {
+        padding-bottom: ${({ theme }) => theme.calRem(8)};
+        margin-bottom: ${({ theme }) => theme.calRem(16)};
+    }
 
     h5 {
         ${mixin.textProps(30, "extraBold", "black")};
         line-height: 1;
+        @media ${({ theme }) => theme.mobile} {
+            ${mixin.textProps(22, "extraBold", "black")};
+        }
     }
     p {
         ${mixin.textProps(14, "semiBold", "danger")}
+        @media ${({ theme }) => theme.mobile} {
+            ${mixin.textProps(11, "semiBold", "danger")}
+        }
     }
 `;
 
@@ -385,7 +399,11 @@ const VoteBox = styled.div`
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     flex-wrap: wrap;
-    gap: ${({ theme }) => theme.calRem(10)};
+    gap: ${({ theme }) => theme.calRem(12)};
+
+    @media ${({ theme }) => theme.mobile} {
+        display: flex;
+    }
 `;
 
 const Controls = styled.div`
