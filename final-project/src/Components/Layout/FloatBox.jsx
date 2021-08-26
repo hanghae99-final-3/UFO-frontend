@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import mixin from "../../Styles/Mixin";
+import theme from "../../Styles/theme";
 
 import { BiArrowToTop } from "react-icons/bi";
 
@@ -42,13 +43,23 @@ const FloatBox = () => {
 };
 
 const Container = styled.div`
-    ${mixin.floatBox("fixed", null, "200px", "100px")}
+    ${mixin.floatBox(
+        "fixed",
+        null,
+        `${theme.calRem(100)}`,
+        `${theme.calRem(100)}`,
+    )}
+
+    @media ${({ theme }) => theme.mobile} {
+        right: ${theme.calRem(15)};
+        bottom: ${theme.calRem(40)};
+    }
 `;
 
 const Button = styled.button`
     background: ${({ theme }) => theme.color.white};
-    width: 60px;
-    height: 60px;
+    width: ${({ theme }) => theme.calRem(60)};
+    height: ${({ theme }) => theme.calRem(60)};
     ${mixin.outline("1px solid", "gray3")}
     ${mixin.textProps(40, "regular", "gray3")}
     border-radius: 50%;
@@ -59,6 +70,12 @@ const Button = styled.button`
     }
     svg {
         vertical-align: middle;
+    }
+
+    @media ${({ theme }) => theme.mobile} {
+        width: ${({ theme }) => theme.calRem(48)};
+        height: ${({ theme }) => theme.calRem(48)};
+        ${mixin.textProps(28, "regular", "gray3")}
     }
 `;
 

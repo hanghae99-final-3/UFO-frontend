@@ -18,7 +18,7 @@ const MainContainer = styled.main`
     ${mixin.floatBox("relative")}
     max-width: 1050px;
     margin: 35px auto 0 auto;
-    padding-bottom: 60px;
+    padding: 0 0 60px 0;
 
     @media ${({ theme }) => theme.mobile} {
         margin: ${({ theme }) => theme.calRem(32)} auto;
