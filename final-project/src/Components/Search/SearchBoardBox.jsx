@@ -9,6 +9,7 @@ import VisibilityIcon from "@material-ui/icons/Visibility"; // 조회수 아이�
 import FavoriteIcon from "@material-ui/icons/Favorite"; // 좋아요 아이콘
 import FavoriteBorder from "@material-ui/icons/FavoriteBorder"; // 좋아요 아이콘
 import { makeStyles } from "@material-ui/core"; // material ui 스타일링 훅스
+import DefaultTag from "../../Elements/Tag/DefaultTag";
 
 const useStyles = makeStyles({
     heart: {
@@ -28,6 +29,9 @@ const SearchBoardBox = ({ postList, fixedList, boardName, announcement }) => {
         return history.push(`/univboard/detail/${postId}`);
     };
 
+    const isDesktop =
+        document.documentElement.clientWidth >= 1080 ? true : false;
+
     return (
         <BoardContainer>
             <Content>
@@ -39,7 +43,10 @@ const SearchBoardBox = ({ postList, fixedList, boardName, announcement }) => {
                                 _onClick(post.post_id, post.board);
                             }}
                         >
-                            <SmallTag announcement={announcement}>
+                            <DefaultTag
+                                rightGap={isDesktop ? "20px" : "8px"}
+                                announcement={announcement}
+                            >
                                 #
                                 {post.board === "free" &&
                                     categories.freeCategory[post.category]
@@ -47,7 +54,7 @@ const SearchBoardBox = ({ postList, fixedList, boardName, announcement }) => {
                                 {post.board === "univ" &&
                                     categories.univCategory[post.category]
                                         ?.categoryName}
-                            </SmallTag>
+                            </DefaultTag>
                             <PostTitle>{post.title}</PostTitle>
                             <IconContainer>
                                 <>
@@ -86,8 +93,13 @@ const SearchBoardBox = ({ postList, fixedList, boardName, announcement }) => {
 const BoardContainer = styled.div`
     width: 100%;
 `;
-const PostTitle = styled.p`
+const PostTitle = styled.span`
     ${mixin.textProps(20, "semiBold", "gray2")};
+
+    @media ${({ theme }) => theme.mobile} {
+        ${mixin.textProps(12, "semiBold", "gray2")};
+        padding-right: 30px;
+    }
 `;
 const SmallTag = styled.span`
     height: 32px;
@@ -107,6 +119,11 @@ const PostContainer = styled.div`
     cursor: pointer;
     margin-bottom: 12px;
     grid-template-columns: max-content 1fr max-content;
+    @media ${({ theme }) => theme.mobile} {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
 `;
 
 const IconContainer = styled.div`
@@ -124,6 +141,13 @@ const Icon = styled.div`
     svg {
         margin-right: 2px;
         font-size: 20px;
+    }
+
+    @media ${({ theme }) => theme.mobile} {
+        svg {
+            margin-right: 2px;
+            font-size: 16px;
+        }
     }
 `;
 

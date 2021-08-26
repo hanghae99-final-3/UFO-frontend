@@ -24,6 +24,8 @@ import { MuiTheme } from "../../Styles/MuiTheme";
 import { makeStyles, MuiThemeProvider } from "@material-ui/core";
 import { Select as MuiSelect } from "@material-ui/core";
 import DefaultSelector from "../../Elements/Buttons/DefaultSelector";
+import { getFreeListDB, getSearchResult } from "../../Redux/Async/freeBoard";
+import { getUnivSearchResult } from "../../Redux/Async/univBoard";
 
 /**
  * @author heesung
@@ -58,6 +60,15 @@ const SearchBox = ({ searchTag, deactivateSearch, page, pushButton }) => {
 
     const reduxSelectedTag = useSelector(state => state.freeBoard?.selectedTag);
 
+    const ReduxselectedTag = useSelector(state => state.freeBoard?.selectedTag);
+    const selectedCountry = useSelector(
+        state => state.freeBoard.selectedCountry,
+    );
+    const selectedSearchOrder = useSelector(
+        state => state.freeBoard?.selectedSearchOrder,
+    );
+    const searchResultList = useSelector(state => state.search.searchResult);
+
     useEffect(() => {
         // selectedTag 상태를 리덕스 스토어의 상태와 동기화
         dispatch(setTagReducer(selectedTag));
@@ -72,6 +83,13 @@ const SearchBox = ({ searchTag, deactivateSearch, page, pushButton }) => {
     const handleReset = e => {
         setSelectedTag(null);
         dispatch(resetTagReducer());
+        const postListQueryData = {
+            pageSize: 10,
+            pageNum: 1,
+            category: selectedTag === null ? undefined : selectedTag,
+            country_id: selectedCountry === 0 ? undefined : selectedCountry,
+        };
+        dispatch(getFreeListDB(postListQueryData));
     };
 
     //검색어 입력창 onChange 이벤트 핸들링
@@ -81,16 +99,36 @@ const SearchBox = ({ searchTag, deactivateSearch, page, pushButton }) => {
 
     //검색창 form onSubmit 이벤트 핸들링
     const handleSearch = e => {
-        console.log(e);
-        history.push(`/util/search/${searchTerm}`);
-        // if (searchTerm === "") {
-        //     return window.alert("검색어를 입력해 주세요.");
-        // }
-        // if (history.location.pathname.split("/")[1] === "freeboard") {
-        //     history.push(`/freeboard/search/${searchTerm}`);
-        // } else if (history.location.pathname.split("/")[1] === "univboard") {
-        //     history.push(`/univboard/search/${searchTerm}`);
-        // }
+        e.preventDefault();
+
+        // history.push(`/util/search/${searchTerm}`);
+        if (searchTerm === "") {
+            return window.alert("검색어를 입력해 주세요.");
+        }
+
+        if (history.location.pathname.split("/")[1] === "freeboard") {
+            const SearchQueryData = {
+                pageSize: 10,
+                pageNum: 1,
+                keyword: searchTerm,
+                category: selectedTag,
+                country_id: selectedCountry === 0 ? undefined : selectedCountry,
+                sort: selectedSearchOrder ? selectedSearchOrder : null,
+            };
+            dispatch(getSearchResult(SearchQueryData));
+            // history.push(`/freeboard/search/${searchTerm}`);
+        } else if (history.location.pathname.split("/")[1] === "univboard") {
+            const SearchQueryData = {
+                pageSize: 10,
+                pageNum: 1,
+                keyword: searchTerm,
+                category: selectedTag,
+                country_id: selectedCountry === 0 ? undefined : selectedCountry,
+                sort: selectedSearchOrder ? selectedSearchOrder : null,
+            };
+            dispatch(getUnivSearchResult(SearchQueryData));
+        }
+        setSearchTerm("");
     };
     // 작성일 or  관련순 정렬  이벤트 핸들링
     const handleOrderChange = event => {
@@ -101,9 +139,6 @@ const SearchBox = ({ searchTag, deactivateSearch, page, pushButton }) => {
             dispatch(resetSearchOrder());
         }
     };
-
-    //작성하기 페이지 바로기
-    const onClick = () => history.push(`/${page}/write`);
 
     const handleGoToList = board => history.push(`/${board}`);
 
@@ -120,72 +155,75 @@ const SearchBox = ({ searchTag, deactivateSearch, page, pushButton }) => {
                     </TitleContainer>
                 )}
 
-                <InputContainer>
-                    <MuiThemeProvider theme={MuiTheme}>
-                        <SearchForm onSubmit={handleSearch}>
-                            <InputBox
-                                placeholder="검색어를 입력해보세요!"
-                                fullWidth
-                                value={searchTerm}
-                                onChange={onSearchTermChange}
-                                // classes={{ root: classes.MuiOutlinedInput }}
-                                MenuProps={{ disablePortal: true }}
-                                startAdornment={
-                                    <Select
-                                        MenuProps={{
-                                            disablePortal: true,
-                                            getContentAnchorEl: null,
-                                            anchorOrigin: {
-                                                vertical: "bottom",
-                                            },
-                                        }}
-                                        disableUnderline
-                                        value={order}
-                                        outlined="false"
-                                        onChange={handleOrderChange}
-                                    >
-                                        <option value={"date"}>작성일</option>
-                                        <option value={"rel"}>관련순</option>
-                                    </Select>
-                                }
-                            />
-                        </SearchForm>
-                    </MuiThemeProvider>
-                </InputContainer>
-
-                {!deactivateSearch && (
-                    <TagContainer>
-                        <TagSelectText>게시글 필터</TagSelectText>
-                        {searchTag.map((tag, idx) => {
-                            // map 함수로 props로 전달된 태그 배열의 태그들 마다 TagButton 컴포넌트 랜더링
-                            return (
-                                <Boop
-                                    rotation={0}
-                                    timing={200}
-                                    x={0}
-                                    y={-7}
+                <TagContainer>
+                    <TagSelectText>게시글 필터</TagSelectText>
+                    {searchTag.map((tag, idx) => {
+                        // map 함수로 props로 전달된 태그 배열의 태그들 마다 TagButton 컴포넌트 랜더링
+                        return (
+                            <Boop
+                                rotation={0}
+                                timing={200}
+                                x={0}
+                                y={-7}
+                                key={idx}
+                            >
+                                <DefaultSelector
+                                    // 선택 여부로 styled component에서 조건부 css 적용(아래 TagButton styled component 참고)
+                                    isSelected={selectedTag === idx}
+                                    value={idx}
+                                    onClick={handleTagSelect}
                                     key={idx}
+                                    rightGap="8px"
+                                    lastNoGap={searchTag.length - 1 === idx}
                                 >
-                                    <DefaultSelector
-                                        // 선택 여부로 styled component에서 조건부 css 적용(아래 TagButton styled component 참고)
-                                        isSelected={selectedTag === idx}
-                                        value={idx}
-                                        onClick={handleTagSelect}
-                                        key={idx}
-                                        rightGap="8px"
-                                        lastNoGap={searchTag.length - 1 === idx}
-                                    >
-                                        #{tag}
-                                    </DefaultSelector>
-                                </Boop>
-                            );
-                        })}
-                        <CancelButton>
-                            <Boop rotation={25}>
-                                <CloseIcon onClick={handleReset} />
+                                    #{tag}
+                                </DefaultSelector>
                             </Boop>
-                        </CancelButton>
-                    </TagContainer>
+                        );
+                    })}
+                    <CancelButton>
+                        <Boop rotation={25}>
+                            <CloseIcon onClick={handleReset} />
+                        </Boop>
+                    </CancelButton>
+                </TagContainer>
+                {!deactivateSearch && (
+                    <InputContainer>
+                        <SearchForm onSubmit={handleSearch}>
+                            <MuiThemeProvider theme={MuiTheme}>
+                                <InputBox
+                                    placeholder="검색어를 입력해주세요!"
+                                    fullWidth
+                                    value={searchTerm}
+                                    onChange={onSearchTermChange}
+                                    // classes={{ root: classes.MuiOutlinedInput }}
+                                    MenuProps={{ disablePortal: true }}
+                                    startAdornment={
+                                        <Select
+                                            MenuProps={{
+                                                disablePortal: true,
+                                                getContentAnchorEl: null,
+                                                anchorOrigin: {
+                                                    vertical: "bottom",
+                                                },
+                                            }}
+                                            disableUnderline
+                                            value={order}
+                                            outlined="false"
+                                            onChange={handleOrderChange}
+                                        >
+                                            <option value={"date"}>
+                                                작성일
+                                            </option>
+                                            <option value={"rel"}>
+                                                관련순
+                                            </option>
+                                        </Select>
+                                    }
+                                />
+                            </MuiThemeProvider>
+                        </SearchForm>
+                    </InputContainer>
                 )}
             </SearchBoxContainer>
         </React.Fragment>
@@ -266,6 +304,13 @@ const InputBox = styled.input`
     ${mixin.textProps(18, "semiBold", "gray1")};
     ::placeholder {
         ${mixin.textProps(18, "semiBold", "gray3")};
+    }
+
+    @media ${({ theme }) => theme.mobile} {
+        ${mixin.textProps(14, "semiBold", "gray1")};
+        ::placeholder {
+            ${mixin.textProps(14, "semiBold", "gray3")};
+        }
     }
 `;
 

@@ -10,6 +10,7 @@ import {
     editUnivBoardCommentDB,
     deleteUnivBoardCommentDB,
     univLikeToggleDB,
+    getUnivSearchResult,
 } from "../Async/univBoard";
 
 const initialState = {
@@ -68,6 +69,13 @@ const univBoardSlice = createSlice({
             state.getUnivBoardErrorMessage = errorMessage;
         },
         //------------------------------------------------------------------
+
+        [getUnivSearchResult.fulfilled]: (state, { payload }) => {
+            state.list = payload.rows;
+            state.pageCount = payload.countPage;
+            state.isFetching = false;
+            state.getUnivBoardErrorMessage = "";
+        },
 
         //┏----------대학교 게시판 게시글 상세정보 불러오기 reducer-----------┓
         [detailUnivBoardPostDB.pending]: (state, action) => {

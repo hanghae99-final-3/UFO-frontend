@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { history } from "../configureStore";
-import { freeBoardApi, freeCommentApi } from "../../Shared/api";
+import { freeBoardApi, freeCommentApi, searchApi } from "../../Shared/api";
 import moment from "moment";
 import { increaseLike, decreaseLike } from "../Modules/freeBoardSlice";
 /**
@@ -288,6 +288,21 @@ export const getIssuePostListDB = createAsyncThunk(
                 "error",
             );
             return thunkAPI.rejectWithValue(err.response.message);
+        }
+    },
+);
+
+export const getSearchResult = createAsyncThunk(
+    "freeBoard/getSearchResult",
+    async (data, thunkAPI) => {
+        try {
+            const response = await searchApi.searchBySearchTerm(data);
+            if (response.data.ok) {
+                console.log(response.data.result);
+                return response.data.result;
+            }
+        } catch (error) {
+            thunkAPI.rejectWithValue(error.response.data.errorMessage);
         }
     },
 );

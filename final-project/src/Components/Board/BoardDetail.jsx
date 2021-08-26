@@ -41,12 +41,13 @@ import VisibilityIcon from "@material-ui/icons/Visibility"; // 조회수 아이�
 import AccessTimeIcon from "@material-ui/icons/AccessTime"; // 작성일 아이콘
 import FavoriteIcon from "@material-ui/icons/Favorite"; // 좋아요 아이콘 (색상 있음)
 import FavoriteBorder from "@material-ui/icons/FavoriteBorder"; //좋아요 아이콘 (색상 없음)
+import Swal from "sweetalert2";
 
 const BoardDetail = ({ page }) => {
     const dispatch = useDispatch();
     const { id: postId } = useParams(); // 게시물 아이디
     const userId = useSelector(state => state.user.user.user_id); // 유저 아이디
-    const isLoggedInt = useSelector(state => state.user.isLoggedIn); // 로그인 상태
+    const isLoggedIn = useSelector(state => state.user.isLoggedIn); // 로그인 상태
 
     let now = new Date(); // 게시물 조회 최초 시간
     let after20m = new Date(); // 최초 조회후 20분이후 시간
@@ -98,10 +99,12 @@ const BoardDetail = ({ page }) => {
     };
     // 좋아요 핸들러
     const handleLikeButton = () => {
-        if (isLoggedInt) {
+        if (isLoggedIn) {
             page === "freeboard"
                 ? dispatch(postLikeToggleDB(postId))
                 : dispatch(univLikeToggleDB(postId));
+        } else {
+            Swal.fire("로그인이 필요합니다.");
         }
     };
     // 게시물 작성 버튼 (글쓰기) 핸들러
@@ -178,6 +181,7 @@ const BoardDetail = ({ page }) => {
 
     return (
         <MainContentContainer>
+            <Page>{page === "freeboard" ? "자유 게시판" : "대학 게시판"}</Page>
             <ContentHeaderContainer>
                 {page === "freeboard" ? (
                     <Tag>
@@ -201,7 +205,7 @@ const BoardDetail = ({ page }) => {
                         <ToastContainer limit={1} />
 
                         <Icon>
-                            <LinkIcon onClick={handleCopyUrl} />
+                            <LinkIcon id="link" onClick={handleCopyUrl} />
                         </Icon>
 
                         <Icon>
@@ -262,6 +266,10 @@ const BoardDetail = ({ page }) => {
 
 const MainContentContainer = styled.div`
     margin-top: 30px;
+
+    @media ${({ theme }) => theme.mobile} {
+        margin-top: 10px;
+    }
 `;
 const Tag = styled.span`
     height: 32px;
@@ -324,6 +332,10 @@ const Icon = styled.div`
     }
     margin-top: 10px;
 
+    #link {
+        cursor: pointer;
+    }
+
     //모바일 사이즈
     @media ${({ theme }) => theme.mobile} {
         svg {
@@ -377,6 +389,16 @@ const Button = styled.button`
         width: ${({ theme }) => theme.calRem(56)};
         height: ${({ theme }) => theme.calRem(24)};
         ${mixin.textProps(12, "semiBold", "white", "center")}
+    }
+`;
+
+const Page = styled.span`
+    display: inline-block;
+    margin-bottom: 20px;
+    ${mixin.textProps(40, "extraBold", "back", "center")}
+    @media ${({ theme }) => theme.mobile} {
+        /* margin-bottom: 10px; */
+        ${mixin.textProps(22, "extraBold", "back", "center")}
     }
 `;
 

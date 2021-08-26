@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { useCookies } from "react-cookie";
 
 import { useDispatch } from "react-redux";
 import { loginUserDB } from "../../Redux/Async/user";
@@ -20,8 +21,18 @@ const LoginPresenter = ({
     socialLoginMode,
     isRememberEmailChecked,
     handleCheckBox,
+    setIsRememberEmailChecked,
 }) => {
     const dispatch = useDispatch();
+    const [cookies, setCookie, removeCookie] = useCookies(["rememberEmail"]);
+
+    const [email, setEmail] = useState("");
+
+    useEffect(() => {
+        if (cookies.rememberEmail !== undefined) {
+            setEmail(cookies.rememberEmail);
+        }
+    }, []);
     const loginFormik = useFormik({
         initialValues: {
             email: "",
@@ -34,6 +45,11 @@ const LoginPresenter = ({
             password: Yup.string().required("비밀번호를 입력해주세요."),
         }),
         onSubmit: async ({ email, password }, actions) => {
+            if (isRememberEmailChecked) {
+                setCookie("rememberEmail", email, { maxAge: 2000 });
+            } else {
+                removeCookie("rememberEmail");
+            }
             const data = {
                 email,
                 password,
@@ -67,6 +83,7 @@ const LoginPresenter = ({
                         id="password"
                         name="password"
                         type="password"
+                        checked={email}
                         {...loginFormik.getFieldProps("password")}
                     />
                     {loginFormik.touched.password &&
@@ -74,7 +91,7 @@ const LoginPresenter = ({
                         <ErrorBox>{loginFormik.errors.password}</ErrorBox>
                     ) : null}
                     <AutoLogin>
-                        <FormControlLabel
+                        {/* <FormControlLabel
                             control={
                                 <Check
                                     checked={isRememberEmailChecked}
@@ -86,11 +103,7 @@ const LoginPresenter = ({
                                 />
                             }
                             label="아이디 저장"
-                        />
-                        <FormControlLabel
-                            control={<Check name="autoLogin" color="primary" />}
-                            label="자동 로그인"
-                        />
+                        /> */}
                     </AutoLogin>
                     <LoginBtn type="submit" variant="outlined">
                         로그인
