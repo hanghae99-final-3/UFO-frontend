@@ -237,8 +237,7 @@ const Comment = ({ comment, boardName, postId }) => {
 
                     <Controls>
                         {/* 댓글의 작성자가 아니면 답글버튼이 나타납니다. */}
-                        {!isAuthor && <button onClick={() => {}}>답글</button>}
-
+                        {/* {!isAuthor && <button onClick={() => {}}>답글</button>} */}
                         {/* 댓글의 작성자가 맞으면 아래의 버튼들이 나타납니다. */}
                         {isAuthor && (
                             <>
