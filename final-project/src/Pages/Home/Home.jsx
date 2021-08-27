@@ -186,7 +186,7 @@ const Home = () => {
             </BoardContainer>
 
             {/* 지원대학목록리스트 */}
-            <SupportUniv />
+            {/* <SupportUniv /> */}
         </HomeContainer>
     );
 };
