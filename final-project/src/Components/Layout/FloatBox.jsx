@@ -51,8 +51,8 @@ const Container = styled.div`
     )}
 
     @media ${({ theme }) => theme.mobile} {
-        right: ${theme.calRem(15)};
-        bottom: ${theme.calRem(40)};
+        right: ${theme.calRem(20)};
+        bottom: ${theme.calRem(100)};
     }
 `;
 

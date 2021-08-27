@@ -31,6 +31,7 @@ import CandidateBox from "../../Components/Election/CandidateBox";
 import CandidateCard from "../../Components/Election/CandidateCard";
 import UnvotedBox from "../../Components/Election/UnvotedBox";
 import ElectedCard from "../../Components/Election/ElectedCard";
+import CustomSlider from "../../Components/Election/CustomSlider";
 
 const ElectionDetail = () => {
     const dispatch = useDispatch();

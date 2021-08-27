@@ -13,6 +13,7 @@ import { getFreeListDB, getIssuePostListDB } from "../../Redux/Async/freeBoard";
 import MainSlider from "../../Components/Home/MainSlider"; // 메인 페이지 슬라이더 컴포넌트
 import MainSearch from "../../Components/Search/MainSearch"; // 메인 페이지 통합 검색 컴포넌트
 import PreviewBoardBox from "../../Components/Home/PreviewBoardBox"; // 게시물 presenter 컴포넌트
+import SupportUniv from "../../Components/Home/SupportUniv";
 
 const Home = () => {
     const dispatch = useDispatch();
@@ -183,6 +184,9 @@ const Home = () => {
                 {/* 카테고리가 홀수이면 div를 스페어로 넣는다. */}
                 {/* {categories.freeCategory.length % 2 !== 0 && } */}
             </BoardContainer>
+
+            {/* 지원대학목록리스트 */}
+            <SupportUniv />
         </HomeContainer>
     );
 };
@@ -210,6 +214,9 @@ const Content = styled.div``;
 
 const TitleHeading = styled.span`
     ${mixin.textProps(30, "extraBold", "black")}
+    @media ${({ theme }) => theme.mobile} {
+        ${mixin.textProps(22, "extraBold", "black")}
+    }
 `;
 
 const UnivBoardMessageContainer = styled.div`

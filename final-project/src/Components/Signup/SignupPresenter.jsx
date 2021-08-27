@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components"; // 스타일 컴포넌트 라이브러기
 
-import logo from "../../Assets/logo.svg"; // ufo 로고
+import desktopLogo from "../../Assets/desktop_logo.svg"; // ufo 로고
 import mixin from "../../Styles/Mixin"; // 믹스인 객체
 import { history } from "../../Redux/configureStore"; // 히스토리 객체
 import { useFormik } from "formik"; // formik 훅스
@@ -25,7 +25,7 @@ const SignupPresenter = ({ validate, onSignupSubmit }) => {
         <MainContainer>
             <LogoContainer>
                 <Slogan>U학생들의 FREE한 O늘!</Slogan>
-                <LogoImg src={logo} />
+                <LogoImg src={desktopLogo} />
             </LogoContainer>
             <Form onSubmit={signupFormik.handleSubmit}>
                 <InputWrapper>

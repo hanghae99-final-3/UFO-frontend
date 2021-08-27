@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import mixin from "../../Styles/Mixin";
+import theme from "../../Styles/theme";
 
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-editor-classic/src/classiceditor";
@@ -208,18 +209,19 @@ const Editor = ({ getContentFromEditor, originContent }) => {
 };
 
 const StyledEditor = styled.div`
-    min-height: 100px;
-
     /* 툴바 스타일링 */
     .ck.ck-toolbar.ck-toolbar_grouping {
-        padding: 10px;
+        padding: ${theme.calRem(10)};
         border: none;
         background-color: ${({ theme }) => theme.color.white};
 
         /* 툴바 버튼스타일 */
         .ck-button {
-            ${mixin.textProps(18, "regular", "gray1")}
+            ${mixin.textProps(14, "regular", "gray1")}
             cursor: pointer;
+            @media ${({ theme }) => theme.mobile} {
+                ${mixin.textProps(11, "regular", "gray1")}
+            }
         }
 
         /* 툴바 폰트조절 셀렉터 스타일링 */
@@ -240,18 +242,22 @@ const StyledEditor = styled.div`
             transition: all 0.5s ease;
 
             .ck-list {
-                padding: 20px 0;
+                padding: ${theme.calRem(20)} 0;
                 border-radius: 0 20px 20px 20px;
                 background: ${({ theme }) => theme.color.mainBlue};
+                @media ${({ theme }) => theme.mobile} {
+                    padding: ${theme.calRem(16)} 0;
+                }
+
                 .ck-list__item {
                     :not(:last-child) {
-                        padding-bottom: 10px;
+                        padding-bottom: ${theme.calRem(10)};
                         height: max-content;
                     }
                     .ck-button {
                         background: transparent;
                         .ck-button__label {
-                            color: ${({ theme }) => theme.color.mainGray};
+                            color: ${({ theme }) => theme.color.blue3};
                             line-height: 1;
                         }
                         &.ck-on {
@@ -261,13 +267,22 @@ const StyledEditor = styled.div`
                         }
                     }
                     .ck-heading_paragraph {
-                        ${mixin.textProps(20, "regular", "gray1")}
+                        ${mixin.textProps(20, "regular", "blue3")}
+                        @media ${({ theme }) => theme.mobile} {
+                            ${mixin.textProps(16, "regular", "blue3")}
+                        }
                     }
                     .ck-heading_heading1 {
-                        ${mixin.textProps(40, "semiBold", "gray1")}
+                        ${mixin.textProps(40, "semiBold", "blue3")}
+                        @media ${({ theme }) => theme.mobile} {
+                            ${mixin.textProps(28, "semiBold", "blue3")}
+                        }
                     }
                     .ck-heading_heading2 {
-                        ${mixin.textProps(30, "semiBold", "gray1")}
+                        ${mixin.textProps(30, "semiBold", "blue3")}
+                        @media ${({ theme }) => theme.mobile} {
+                            ${mixin.textProps(22, "semiBold", "blue3")}
+                        }
                     }
                 }
             }
@@ -278,11 +293,15 @@ const StyledEditor = styled.div`
 
     /* 콘텐츠 안쪽영역 스타일링 */
     .ck-content {
-        min-height: 530px;
-        padding: 30px 0;
+        min-height: ${theme.calRem(530)};
+        padding: ${theme.calRem(30)} ${theme.calRem(10)};
         border: none;
         ${mixin.outline("1px solid", "gray3", "bottom")};
         transition: all 0.7s ease;
+        @media ${({ theme }) => theme.mobile} {
+            min-height: ${theme.calRem(414)};
+            padding: ${theme.calRem(24)} ${theme.calRem(10)};
+        }
     }
 
     /* 콘텐츠 바깥영역 스타일링 */
