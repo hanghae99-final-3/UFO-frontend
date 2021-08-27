@@ -23,9 +23,6 @@ const MainSlider = ({ postList }) => {
             ? true
             : false;
 
-    const isDesktop =
-        document.documentElement.clientWidth >= 1080 ? true : false;
-
     //슬라이더 우측 방향으로 이동
     const NextArrow = ({ onClick }) => {
         return (

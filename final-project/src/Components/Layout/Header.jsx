@@ -244,8 +244,7 @@ const Inner = styled.div`
     ${mixin.flexBox("space-between", "center", null, "80px")};
 
     @media ${({ theme }) => theme.mobile} {
-        padding: ${({ theme }) => theme.calRem(10)}
-            ${({ theme }) => theme.calRem(15)};
+        padding: ${({ theme }) => `${theme.calRem(10)} ${theme.calRem(15)}`};
         height: 48px;
     }
 `;
@@ -323,7 +322,7 @@ const Menu = styled.div`
 
 const SelectCountryTitle = styled.span`
     //모바일에서만 작동하는 요소입니다.
-    ${mixin.textProps(28, "extraBold", "blue3")};
+    ${mixin.textProps(28, "extraBold", "blue3")}
     display: inline-block;
     margin-bottom: ${({ theme }) => theme.calRem(8)};
 `;

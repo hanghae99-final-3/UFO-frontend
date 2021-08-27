@@ -4,7 +4,6 @@ import mixin from "../../Styles/Mixin";
 
 //컴포넌트
 import CandidateCard from "./CandidateCard";
-import CandidateSlide from "./CandidateSlide";
 
 //슬라이더
 import Slider from "react-slick";
@@ -97,47 +96,6 @@ const ArrowContainer = styled.div`
 
 const Slide = styled.div`
     width: 100%;
-`;
-
-const CandidateDetailBox = styled.div`
-    ${mixin.flexBox("center", "center", null, "400px")};
-    ${mixin.outline("4px solid", "blue2")}
-    border-radius: 200px;
-    padding: 70px 0;
-    margin: 40px 0 80px 0;
-`;
-
-const CandidateImage = styled.div`
-    height: 100%;
-    margin-right: 30px;
-    img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        border-radius: 20px;
-    }
-`;
-
-const CandidateInfo = styled.div`
-    height: 100%;
-    width: 550px;
-`;
-
-const CandidateName = styled.div`
-    margin-bottom: 30px;
-    strong {
-        ${mixin.textProps(30, "extraBold", "black")}
-    }
-`;
-const CandidateIntro = styled.div`
-    display: grid;
-    grid-template-columns: 50px 1fr;
-    gap: 10px;
-    ${mixin.textProps(20, "regular", "gray1")}
-
-    span {
-        font-weight: ${({ theme }) => theme.fontWeight.semiBold};
-    }
 `;
 
 export default CandidateSlider;

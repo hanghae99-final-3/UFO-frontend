@@ -174,6 +174,7 @@ const OngoingPost = styled.div`
     overflow: hidden;
     border-radius: 50px;
     cursor: pointer;
+    ${mixin.boxShadow()}
     padding: ${({ theme }) => `${theme.calRem(20)} ${theme.calRem(25)}`};
     ${mixin.outline("3px solid", "blue2")}
     ${mixin.flexBox("center", "center", null, `${theme.calRem(100)}`)};
@@ -202,6 +203,7 @@ const FinishedPost = styled.div`
     overflow: hidden;
     border-radius: 50px;
     cursor: pointer;
+    ${mixin.boxShadow()}
     padding: ${({ theme }) => `${theme.calRem(20)} ${theme.calRem(25)}`};
     background: ${({ theme }) => theme.color.mainGray};
     ${mixin.outline("3px solid", "gray3")}

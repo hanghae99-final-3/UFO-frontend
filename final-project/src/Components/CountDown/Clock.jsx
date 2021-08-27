@@ -19,10 +19,15 @@ class Clock extends Component {
             1000,
         );
     }
-    return;
+
     leading0(num) {
         return num < 10 ? "0" + num : num;
     }
+
+    componentWillUnmount() {
+        clearInterval(this.timer);
+    }
+
     getTimeUntil(deadline) {
         const time = Date.parse(deadline) - Date.parse(new Date());
         if (time < 0) {

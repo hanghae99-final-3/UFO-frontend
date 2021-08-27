@@ -13,7 +13,7 @@ const Tag = styled.span`
     line-height: 28px;
     margin-right: 20px;
     border-radius: 16px;
-    box-shadow: 0 5px 5px -4px #cdcdcd;
+    ${mixin.boxShadow()}
     background-color: ${props => props.theme.color.mint};
     ${mixin.outline("2px solid", "mint")};
     ${mixin.textProps(18, "semiBold", "gray1", "center")};

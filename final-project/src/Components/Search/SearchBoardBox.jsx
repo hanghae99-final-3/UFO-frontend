@@ -58,24 +58,29 @@ const SearchBoardBox = ({ postList, fixedList, boardName, announcement }) => {
                             <PostTitle>{post.title}</PostTitle>
                             <IconContainer>
                                 <>
-                                    <Icon>
-                                        {post?.like?.is_like === false ? (
-                                            <FavoriteBorder />
-                                        ) : (
-                                            <FavoriteIcon
-                                                className={classes.heart}
-                                            />
-                                        )}
-                                        <IconSpan>
-                                            {post.like && post.like.all_like}
-                                        </IconSpan>
-                                    </Icon>
-                                    <Icon>
-                                        <MdComment />
-                                        <IconSpan>
-                                            {post.comment_count}
-                                        </IconSpan>
-                                    </Icon>
+                                    {isDesktop ? (
+                                        <Icon>
+                                            {post?.like?.is_like === false ? (
+                                                <FavoriteBorder />
+                                            ) : (
+                                                <FavoriteIcon
+                                                    className={classes.heart}
+                                                />
+                                            )}
+                                            <IconSpan>
+                                                {post.like &&
+                                                    post.like.all_like}
+                                            </IconSpan>
+                                        </Icon>
+                                    ) : null}
+                                    {isDesktop ? (
+                                        <Icon>
+                                            <MdComment />
+                                            <IconSpan>
+                                                {post.comment_count}
+                                            </IconSpan>
+                                        </Icon>
+                                    ) : null}
                                 </>
                                 <Icon>
                                     <VisibilityIcon />
@@ -97,8 +102,9 @@ const PostTitle = styled.span`
     ${mixin.textProps(20, "semiBold", "gray2")};
 
     @media ${({ theme }) => theme.mobile} {
+        display: inline-flex;
+        line-height: 2;
         ${mixin.textProps(12, "semiBold", "gray2")};
-        padding-right: 30px;
     }
 `;
 const SmallTag = styled.span`
@@ -119,16 +125,24 @@ const PostContainer = styled.div`
     cursor: pointer;
     margin-bottom: 12px;
     grid-template-columns: max-content 1fr max-content;
+
     @media ${({ theme }) => theme.mobile} {
-        display: flex;
+        /* display: flex;
         align-items: center;
-        justify-content: space-between;
+        justify-content: space-between; */
     }
 `;
 
 const IconContainer = styled.div`
     display: grid;
     grid-template-columns: repeat(3, 40px);
+    @media ${({ theme }) => theme.mobile} {
+        grid-template-columns: repeat(1, 40px);
+
+        /* display: flex;
+        align-items: center;
+        justify-content: flex-end; */
+    }
 `;
 
 const Icon = styled.div`

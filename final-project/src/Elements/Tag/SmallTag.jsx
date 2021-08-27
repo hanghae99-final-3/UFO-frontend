@@ -17,7 +17,7 @@ const Tag = styled.span`
     height: 22px;
     min-width: 74px;
     border-radius: 16px;
-    box-shadow: 0 5px 5px -4px #cdcdcd;
+    ${mixin.boxShadow()}
     background-color: ${props =>
         props.announcement ? props.theme.color.mint : "white"};
     ${props =>
