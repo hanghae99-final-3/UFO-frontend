@@ -27,6 +27,7 @@ import useSound from "use-sound";
 //컴포넌트
 import SelectCountry from "../Shared/SelectCountry";
 
+
 /**
  * @author jiyeong, heesung
  * @param
@@ -52,12 +53,20 @@ const Header = () => {
         return document.removeEventListener("scroll", () => {});
     }, [pathname]);
     //----
+    //로고 클릭스 위로 스크롤 및 새로고침
+    const LogoClick = ()=>{
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth",
+        });
+        window.location.replace('/')
+    }
 
     return (
         <HeaderContainer>
             <Inner>
                 <LeftColumn>
-                    <Logo onClick={() => history.push("/")}>
+                    <Logo onClick={LogoClick} >
                         {isDesktop ? (
                             <Boop rotation={20} timing={200} x={0} y={0}>
                                 <img src={logo} alt="logo" />
