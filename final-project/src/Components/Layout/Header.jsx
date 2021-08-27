@@ -305,11 +305,23 @@ const MenuBtn = styled.button`
 
 const MenuContainer = styled.div`
     width: 100%;
+    position: relative;
     height: calc(100vh - 80px);
     ${mixin.floatBox("absolute", "80px", "0", null, null, 99)}
-    background: rgba(0,0,0,.5);
-    ${props => (props.menuOn ? `display:block` : "display:none;")};
+    ${props =>
+        props.menuOn
+            ? `display:flex; justify-content:flex-end;`
+            : `display:none;`};
 
+    //헤더의 그림자를 가리지 않으면서 컨텐츠흐림처리를 하기위해 before을 사용하였습니다.
+    ::before {
+        content: "";
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.7);
+        box-shadow: inset -13px 3px 7px 0px #e4ddff;
+    }
     @media ${({ theme }) => theme.mobile} {
         height: calc(100vh - 48px);
         top: 48px;
@@ -317,23 +329,19 @@ const MenuContainer = styled.div`
 `;
 
 const Menu = styled.div`
+    z-index: 10;
     padding: 80px 0;
     padding-left: 60px;
     ${props =>
         props.menuOn ? mixin.flexBox("space-between", null, "column") : ""};
     width: 500px;
     background: ${({ theme }) => theme.color.mainBlue};
-    position: relative;
-    top: 0;
-    right: 0;
-
+    ${props => (props.menuOn ? `display:flex;` : `display:none;`)};
     @media ${({ theme }) => theme.mobile} {
         width: ${({ theme }) => theme.calRem(313)};
         height: calc(100vh - 48px);
-        top: 48px;
         padding: ${({ theme }) => theme.calRem(35)} 0 0
             ${({ theme }) => theme.calRem(40)};
-        ${props => (props.menuOn ? `display:block` : "display:none;")};
     }
 `;
 
