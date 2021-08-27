@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import styled from "styled-components"; // 스타일 컴포넌트
 import mixin from "../../Styles/Mixin";
+import theme from "../../Styles/theme";
 import { history } from "../../Redux/configureStore"; //  히스토리 객체
 import { useSelector, useDispatch } from "react-redux";
 import Cookies from "js-cookie";
@@ -36,13 +37,16 @@ import "react-toastify/dist/ReactToastify.css"; // 토스티파이 css
 
 //아이콘
 import LinkIcon from "@material-ui/icons/Link"; // 링크 공유 아이콘
-import { Button as Mbutton } from "@material-ui/core"; // 버튼 아이콘
 import VisibilityIcon from "@material-ui/icons/Visibility"; // 조회수 아이콘
 import AccessTimeIcon from "@material-ui/icons/AccessTime"; // 작성일 아이콘
 import FavoriteIcon from "@material-ui/icons/Favorite"; // 좋아요 아이콘 (색상 있음)
 import FavoriteBorder from "@material-ui/icons/FavoriteBorder"; //좋아요 아이콘 (색상 없음)
 import Swal from "sweetalert2";
 import PushButton from "../../Elements/Buttons/PushButton";
+
+//컴포넌트
+import DefaultTag from "../../Elements/Tag/DefaultTag";
+import DefaultButton from "../../Elements/Buttons/DefaultButton";
 
 const BoardDetail = ({ page }) => {
     // const [play] = useSound(boopSfx);
@@ -198,13 +202,13 @@ const BoardDetail = ({ page }) => {
             </Page>
             <ContentHeaderContainer>
                 {page === "freeboard" ? (
-                    <Tag>
+                    <DefaultTag>
                         #{post && categories.freeBoardTags[post.category]}
-                    </Tag>
+                    </DefaultTag>
                 ) : (
-                    <Tag>
+                    <DefaultTag>
                         #{post && categories.univBoardTags[post.category]}
-                    </Tag>
+                    </DefaultTag>
                 )}
 
                 <Title>{post && post.title}</Title>
@@ -263,21 +267,40 @@ const BoardDetail = ({ page }) => {
                             좋아요
                         </PushButton>
                     )}
-                    <Button onClick={handleLikeButton}>좋아요</Button>
+                    <DefaultButton onClick={handleLikeButton}>
+                        좋아요
+                    </DefaultButton>
                     {isDesktop && (
-                        <Button onClick={handleLikeButton}>좋아요</Button>
+                        <DefaultButton onClick={handleLikeButton}>
+                            좋아요
+                        </DefaultButton>
                     )}
                 </ButtonWrapper>
                 <ButtonWrapper>
-                    <Button onClick={handleGoToList}>목록</Button>
-                    <Button onClick={handlePostWrite}>글쓰기</Button>
+                    <DefaultButton onClick={handleGoToList}>목록</DefaultButton>
+                    <DefaultButton
+                        leftGap={theme.calRem(7)}
+                        onClick={handlePostWrite}
+                    >
+                        글쓰기
+                    </DefaultButton>
                     {userId &&
                         post &&
                         post.user &&
                         userId === post.user.user_id && (
                             <>
-                                <Button onClick={handlePostEdit}>수정</Button>
-                                <Button onClick={handleDeletePost}>삭제</Button>
+                                <DefaultButton
+                                    leftGap={theme.calRem(7)}
+                                    onClick={handlePostEdit}
+                                >
+                                    수정
+                                </DefaultButton>
+                                <DefaultButton
+                                    leftGap={theme.calRem(7)}
+                                    onClick={handleDeletePost}
+                                >
+                                    삭제
+                                </DefaultButton>
                             </>
                         )}
                 </ButtonWrapper>
@@ -293,23 +316,7 @@ const MainContentContainer = styled.div`
         margin-top: 10px;
     }
 `;
-const Tag = styled.span`
-    height: 32px;
-    min-width: 80px;
-    line-height: 28px;
-    display: inline-block;
-    border-radius: 15px;
-    background-color: white;
-    ${mixin.outline("2px solid", "blue2")};
-    ${mixin.textProps(18, "semiBold", "gray1", "center")};
 
-    @media ${({ theme }) => theme.mobile} {
-        height: ${({ theme }) => theme.calRem(24)};
-        min-width: ${({ theme }) => theme.calRem(62)};
-        ${mixin.textProps(11, "semiBold", "gray1", "center")};
-        line-height: 21px;
-    }
-`;
 const Title = styled.h3`
     display: block;
     margin: 20px 0 0 0;
@@ -398,21 +405,6 @@ const ButtonContainer = styled.div`
 `;
 
 const ButtonWrapper = styled.div``;
-const Button = styled.button`
-    width: 94px;
-    height: 32px;
-    margin-right: 7px;
-    border-radius: 16px;
-    ${mixin.textProps(18, "semiBold", "white", "center")}
-    background-color: ${props => props.theme.color.blue1};
-
-    //모바일 사이즈
-    @media ${({ theme }) => theme.mobile} {
-        width: ${({ theme }) => theme.calRem(56)};
-        height: ${({ theme }) => theme.calRem(24)};
-        ${mixin.textProps(12, "semiBold", "white", "center")}
-    }
-`;
 
 const Page = styled.span`
     display: inline-block;
