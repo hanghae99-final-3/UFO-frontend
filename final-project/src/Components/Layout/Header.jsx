@@ -53,12 +53,16 @@ const Header = () => {
         return document.removeEventListener("scroll", () => {});
     }, [pathname]);
     //----
+    //로고 클릭스 위로 스크롤 및 새로고침
+    const LogoClick = () => {
+        window.location.replace("/");
+    };
 
     return (
         <HeaderContainer>
             <Inner>
                 <LeftColumn>
-                    <Logo onClick={() => history.push("/")}>
+                    <Logo onClick={LogoClick}>
                         {isDesktop ? (
                             <Boop rotation={20} timing={200} x={0} y={0}>
                                 <img src={desktopLogo} alt="logo" />
