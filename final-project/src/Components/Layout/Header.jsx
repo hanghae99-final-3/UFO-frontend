@@ -334,14 +334,16 @@ const Menu = styled.div`
     padding-left: 60px;
     ${props =>
         props.menuOn ? mixin.flexBox("space-between", null, "column") : ""};
+    ${props => (props.menuOn ? `display:flex;` : `display:none;`)};
+
     width: 500px;
     background: ${({ theme }) => theme.color.mainBlue};
-    ${props => (props.menuOn ? `display:flex;` : `display:none;`)};
     @media ${({ theme }) => theme.mobile} {
         width: ${({ theme }) => theme.calRem(313)};
         height: calc(100vh - 48px);
         padding: ${({ theme }) => theme.calRem(35)} 0 0
             ${({ theme }) => theme.calRem(40)};
+        ${props => (props.menuOn ? `display:block;` : `display:none;`)};
     }
 `;
 
