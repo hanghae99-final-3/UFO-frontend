@@ -3,7 +3,6 @@ import { Redirect, Route, Switch } from "react-router-dom";
 import { ConnectedRouter } from "connected-react-router";
 import { history } from "./Redux/configureStore";
 import { useDispatch, useSelector } from "react-redux";
-import ReactGA from "react-ga";
 
 //컴포넌트
 import ProtectedRoute from "./Shared/ProtectedRoute";
@@ -39,20 +38,6 @@ function App() {
     const is_token = localStorage.getItem("token") ? true : false;
     // 유저 대학교 이메일 인증 여부 확인
     const isLoggedIn = useSelector(state => state.user.isLoggedIn);
-
-    useEffect(() => {
-        if (is_token) {
-            dispatch(checkLoggedInUser());
-            dispatch(checkAdminDB());
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-
-        ReactGA.initialize("G-VJ5Q646DKW", { debug: true });
-        history.listen(location => {
-            ReactGA.set({ page: location.pathname }); // Update the user's current page
-            ReactGA.pageview(location.pathname); // Record a pageview for the given page
-        });
-    }, [dispatch, isLoggedIn]);
 
     return (
         <>

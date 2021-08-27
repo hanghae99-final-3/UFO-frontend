@@ -301,6 +301,9 @@ const TagSelectorBox = styled.div`
         overflow: auto;
         padding-left: ${({ theme }) => theme.calRem(70)};
         ${mixin.flexBox(null, "center", null, theme.calRem(42))}
+        ::-webkit-scrollbar {
+            display: none;
+        }
     }
 `;
 
