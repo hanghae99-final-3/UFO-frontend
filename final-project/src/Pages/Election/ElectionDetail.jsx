@@ -6,7 +6,6 @@ import { useSelector, useDispatch } from "react-redux";
 import moment from "moment";
 import mixin from "../../Styles/Mixin";
 import theme from "../../Styles/theme";
-import { GrEdit } from "react-icons/gr";
 
 //통신
 import {
@@ -15,6 +14,9 @@ import {
     deleteElectionDB,
     addVoteDB,
 } from "../../Redux/Async/election";
+
+//아이콘
+import { GrEdit } from "react-icons/gr";
 
 //alert
 import confirm from "../../Shared/confirm";
