@@ -3,6 +3,7 @@ import styled from "styled-components";
 import mixin from "../../Styles/Mixin";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
+import theme from "../../Styles/theme";
 
 //통신
 import {
@@ -156,31 +157,35 @@ const SearchBox = ({ searchTag, deactivateSearch, page, pushButton }) => {
                 )}
 
                 <TagContainer>
-                    <TagSelectText>게시글 필터</TagSelectText>
-                    {searchTag.map((tag, idx) => {
-                        // map 함수로 props로 전달된 태그 배열의 태그들 마다 TagButton 컴포넌트 랜더링
-                        return (
-                            <Boop
-                                rotation={0}
-                                timing={200}
-                                x={0}
-                                y={-7}
-                                key={idx}
-                            >
-                                <DefaultSelector
-                                    // 선택 여부로 styled component에서 조건부 css 적용(아래 TagButton styled component 참고)
-                                    isSelected={selectedTag === idx}
-                                    value={idx}
-                                    onClick={handleTagSelect}
+                    <TagSelectTextBox>
+                        <TagSelectText>게시글 필터</TagSelectText>
+                    </TagSelectTextBox>
+                    <TagSelectorBox>
+                        {searchTag.map((tag, idx) => {
+                            // map 함수로 props로 전달된 태그 배열의 태그들 마다 TagButton 컴포넌트 랜더링
+                            return (
+                                <Boop
+                                    rotation={0}
+                                    timing={200}
+                                    x={0}
+                                    y={-7}
                                     key={idx}
-                                    rightGap="8px"
-                                    lastNoGap={searchTag.length - 1 === idx}
                                 >
-                                    #{tag}
-                                </DefaultSelector>
-                            </Boop>
-                        );
-                    })}
+                                    <DefaultSelector
+                                        // 선택 여부로 styled component에서 조건부 css 적용(아래 TagButton styled component 참고)
+                                        isSelected={selectedTag === idx}
+                                        value={idx}
+                                        onClick={handleTagSelect}
+                                        key={idx}
+                                        rightGap="8px"
+                                        lastNoGap={searchTag.length - 1 === idx}
+                                    >
+                                        #{tag}
+                                    </DefaultSelector>
+                                </Boop>
+                            );
+                        })}
+                    </TagSelectorBox>
                     <CancelButton>
                         <Boop rotation={25}>
                             <CloseIcon onClick={handleReset} />
@@ -245,7 +250,7 @@ const TitleContainer = styled.div`
     /* margin-bottom: 10px; */
     padding-bottom: 10px;
     ${mixin.flexBox("space-between", "flex-end")}
-    /* ${mixin.outline("1.5px solid", "gray4", "bottom")} */
+    ${mixin.outline("1.5px solid", "gray4", "bottom")}
 
     //모바일 사이즈
     @media ${({ theme }) => theme.mobile} {
@@ -264,15 +269,38 @@ const TitleSpan = styled.span`
 const TagContainer = styled.div`
     margin-bottom: 18px;
     margin-top: 15px;
-
+    @media ${({ theme }) => theme.mobile} {
+        margin-bottom: ${({ theme }) => theme.calRem(10)};
+        margin-top: 0;
+    }
     ${mixin.flexBox(null, "center", null)}
 `;
+
+const TagSelectTextBox = styled.div`
+    @media ${({ theme }) => theme.mobile} {
+        position: fixed;
+        z-index: 10;
+        background: white;
+        height: 42px;
+        line-height: 42px;
+    }
+`;
+
 const TagSelectText = styled.span`
     ${mixin.textProps(14, "semiBold", "gray3")};
     margin-right: 15px;
     //모바일 사이즈
     @media ${({ theme }) => theme.mobile} {
         ${mixin.textProps(12, "semiBold", "gray3")};
+    }
+`;
+const TagSelectorBox = styled.div`
+    @media ${({ theme }) => theme.mobile} {
+        width: 100%;
+        white-space: nowrap;
+        overflow: auto;
+        padding-left: ${({ theme }) => theme.calRem(70)};
+        ${mixin.flexBox(null, "center", null, theme.calRem(42))}
     }
 `;
 
