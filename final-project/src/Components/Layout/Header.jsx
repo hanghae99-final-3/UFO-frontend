@@ -85,7 +85,7 @@ const Header = () => {
                             rightGap="10px"
                             onClick={() => history.push("/login")}
                         >
-                            로그인 하러가기
+                            로그인하러가기
                         </DefaultButton>
                     )}
 
