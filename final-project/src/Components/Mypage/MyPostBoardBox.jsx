@@ -193,7 +193,7 @@ const PostContainer = styled.div`
 `;
 const IconContainer = styled.div`
     display: grid;
-    grid-template-columns: repeat(3, 40px);
+    grid-template-columns: repeat(3, 50px);
     @media ${({ theme }) => theme.mobile} {
         padding-bottom: ${({ theme }) => theme.calRem(16)};
         ${mixin.outline("1px solid", "mainGray", "bottom")};
@@ -219,6 +219,9 @@ const Icon = styled.div`
     @media ${({ theme }) => theme.mobile} {
         span {
             margin-left: ${({ theme }) => theme.calRem(4)};
+        }
+        svg {
+            font-size: 16px;
         }
     } ;
 `;

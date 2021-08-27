@@ -42,8 +42,14 @@ import AccessTimeIcon from "@material-ui/icons/AccessTime"; // 작성일 아이�
 import FavoriteIcon from "@material-ui/icons/Favorite"; // 좋아요 아이콘 (색상 있음)
 import FavoriteBorder from "@material-ui/icons/FavoriteBorder"; //좋아요 아이콘 (색상 없음)
 import Swal from "sweetalert2";
+import PushButton from "../../Elements/Buttons/PushButton";
 
 const BoardDetail = ({ page }) => {
+    // const [play] = useSound(boopSfx);
+    const isMobile = document.documentElement.clientWidth < 798 ? true : false;
+    const isDesktop =
+        document.documentElement.clientWidth >= 1080 ? true : false;
+
     const dispatch = useDispatch();
     const { id: postId } = useParams(); // 게시물 아이디
     const userId = useSelector(state => state.user.user.user_id); // 유저 아이디
@@ -68,7 +74,7 @@ const BoardDetail = ({ page }) => {
     const timeOption = {
         lang: "ko",
         // objectTime: "2020-08-10 06:00:00",
-        objectTime: moment().format(`YYYY-MM-DD HH:mm:ss`),
+        objectTime: moment().format(`YYYY/MM/DD HH:mm:ss`),
         calculate: {
             justNow: 61,
         },
@@ -95,7 +101,13 @@ const BoardDetail = ({ page }) => {
         el.select();
         document.execCommand("copy");
         document.body.removeChild(el);
-        toast("게시물 링크가 클립보드에 복사되었습니다!");
+        Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "게시물 링크가 클립보드에 복사되었습니다!",
+            showConfirmButton: false,
+            timer: 1500,
+        });
     };
     // 좋아요 핸들러
     const handleLikeButton = () => {
@@ -181,7 +193,9 @@ const BoardDetail = ({ page }) => {
 
     return (
         <MainContentContainer>
-            <Page>{page === "freeboard" ? "자유 게시판" : "대학 게시판"}</Page>
+            <Page onClick={handleGoToList}>
+                {page === "freeboard" ? "자유 게시판" : "대학 게시판"}
+            </Page>
             <ContentHeaderContainer>
                 {page === "freeboard" ? (
                     <Tag>
@@ -225,7 +239,7 @@ const BoardDetail = ({ page }) => {
                             <AccessTimeIcon />
                             <CountSpan>
                                 {TimeCounting(
-                                    post && post.createdAt,
+                                    post && post.createdAt.replace(/\-/g, "/"),
                                     timeOption,
                                 )}
                             </CountSpan>
@@ -244,7 +258,15 @@ const BoardDetail = ({ page }) => {
 
             <ButtonContainer>
                 <ButtonWrapper>
+                    {isMobile && (
+                        <PushButton onClick={handleLikeButton}>
+                            좋아요
+                        </PushButton>
+                    )}
                     <Button onClick={handleLikeButton}>좋아요</Button>
+                    {isDesktop && (
+                        <Button onClick={handleLikeButton}>좋아요</Button>
+                    )}
                 </ButtonWrapper>
                 <ButtonWrapper>
                     <Button onClick={handleGoToList}>목록</Button>
@@ -339,7 +361,7 @@ const Icon = styled.div`
     //모바일 사이즈
     @media ${({ theme }) => theme.mobile} {
         svg {
-            font-size: 20px;
+            font-size: 16px;
             margin: 0 4px 0 10px;
         }
     }
