@@ -263,7 +263,7 @@ const BoardDetail = ({ page }) => {
                             좋아요
                         </PushButton>
                     )}
-                    <Button onClick={handleLikeButton}>좋아요</Button>
+
                     {isDesktop && (
                         <Button onClick={handleLikeButton}>좋아요</Button>
                     )}
