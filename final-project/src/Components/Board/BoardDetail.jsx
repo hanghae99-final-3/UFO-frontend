@@ -46,6 +46,9 @@ import PushButton from "../../Elements/Buttons/PushButton";
 
 const BoardDetail = ({ page }) => {
     // const [play] = useSound(boopSfx);
+    const isMobile = document.documentElement.clientWidth < 798 ? true : false;
+    const isDesktop =
+        document.documentElement.clientWidth >= 1080 ? true : false;
 
     const dispatch = useDispatch();
     const { id: postId } = useParams(); // 게시물 아이디
@@ -255,8 +258,15 @@ const BoardDetail = ({ page }) => {
 
             <ButtonContainer>
                 <ButtonWrapper>
-                    {/* <Button onClick={handleLikeButton}>좋아요</Button> */}
-                    <PushButton onClick={handleLikeButton}>좋아요</PushButton>
+                    {isMobile && (
+                        <PushButton onClick={handleLikeButton}>
+                            좋아요
+                        </PushButton>
+                    )}
+                    <Button onClick={handleLikeButton}>좋아요</Button>
+                    {isDesktop && (
+                        <Button onClick={handleLikeButton}>좋아요</Button>
+                    )}
                 </ButtonWrapper>
                 <ButtonWrapper>
                     <Button onClick={handleGoToList}>목록</Button>
