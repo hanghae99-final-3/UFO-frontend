@@ -21,7 +21,7 @@ const Tag = styled.span`
     ${props => props.rightGap && `margin-right:${props.rightGap};`};
     ${props => props.leftGap && `margin-left:${props.leftGap};`};
     border-radius: 16px;
-    box-shadow: 0 5px 5px -4px #cdcdcd;
+    ${mixin.boxShadow()}
     background-color: ${props => (props.announcement ? "mint" : "white")};
     ${mixin.textProps(18, "semiBold", "gray1")};
     ${props =>

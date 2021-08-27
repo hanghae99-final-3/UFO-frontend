@@ -118,6 +118,8 @@ const UnvotedCard = styled.div`
     padding: ${({ theme }) => theme.calRem(30)};
     cursor: pointer;
     background-color: ${({ theme }) => theme.color.mainGray};
+    ${mixin.boxShadow()}
+
     span {
         ${mixin.textboxOverflow(1)}
         ${mixin.textProps(16, "extraBold", "gray1")};
@@ -135,6 +137,7 @@ const More = styled.button`
     border-radius: 20px;
     ${mixin.textProps(18, "semiBold", "white")};
     margin-top: ${({ theme }) => theme.calRem(30)};
+    ${mixin.boxShadow()}
     background: ${props =>
         props.isSelected
             ? props.theme.color.mainBlue

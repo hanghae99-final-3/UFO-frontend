@@ -17,7 +17,6 @@ import moment from "moment";
 
 //alert
 import confirm from "../../Shared/confirm";
-import Swal from "sweetalert2";
 
 //컴포넌트
 import DefaultButton from "../../Elements/Buttons/DefaultButton";
@@ -34,7 +33,7 @@ const CongratulationMessageBox = ({ electionPostId }) => {
             };
             dispatch(getCongratulationDB(req));
         }
-    }, []);
+    }, [dispatch]);
 
     const addComment = () => {
         //필요한 정보들을 정리하고, 당선축하메세지를 불러오는 api를 연결합니다.
@@ -175,9 +174,7 @@ const Comment = ({ comment }) => {
                                 </>
                             ) : (
                                 <>
-                                    <button onClick={() => setIsEdit(true)}>
-                                        수정
-                                    </button>
+                                    <button onClick={clickEditBtn}>수정</button>
                                     <button onClick={deleteComment}>
                                         삭제
                                     </button>
