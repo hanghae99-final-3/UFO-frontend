@@ -121,6 +121,18 @@ const FreeBoard = () => {
 const PaginationContainer = styled.div`
     .MuiPagination-ul {
         justify-content: center;
+
+        li:first-child button,
+        li:last-child button {
+            background: ${({ theme }) => theme.color.blue2};
+            color: ${({ theme }) => theme.color.white};
+        }
+        li button {
+            border: 2px solid ${({ theme }) => theme.color.blue2};
+            &.Mui-selected {
+                border: 2px solid #bcffe2;
+            }
+        }
     }
     ${mixin.floatBox("relative")};
     > button {

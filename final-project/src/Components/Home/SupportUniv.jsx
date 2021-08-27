@@ -78,7 +78,7 @@ const CuntryTitle = styled.span`
 `;
 const UnivList = styled.ul``;
 const UnivTitle = styled.li`
-    ${mixin.textProps(18, "semiBold", "gray2")};
+    ${mixin.textProps(14, "semiBold", "gray2")};
     :not(:last-child) {
         margin-bottom: ${theme.calRem(10)};
     }
