@@ -304,30 +304,46 @@ const ElectionWriteContainer = styled.div``;
 const Title = styled.h5`
     ${mixin.textProps(30, "extraBold", "black")};
     ${mixin.outline("1px solid", "gray4", "bottom")}
-    padding-bottom: 10px;
+    padding-bottom: ${({ theme }) => theme.calRem(10)};
+
+    @media ${({ theme }) => theme.mobile} {
+        ${mixin.textProps(22, "extraBold", "black")};
+        padding-bottom: ${({ theme }) => theme.calRem(8)};
+    }
 `;
 
 const WriteElectionInfoBox = styled.div`
     ${mixin.flexBox(null, null, "column")};
-    margin-bottom: 70px;
+    margin-bottom: ${({ theme }) => theme.calRem(70)};
+    @media ${({ theme }) => theme.mobile} {
+        margin-bottom: ${({ theme }) => theme.calRem(48)};
+    }
 `;
 
 const InputTitle = styled.input`
     border: none;
-    padding: 15px 0;
+    padding: ${({ theme }) => theme.calRem(20)} 0;
     transition: border-bottom 1s ease;
     ${mixin.outline("1px solid", "gray4", "bottom")}
     ${mixin.textProps(40, "extraBold", "gray2")};
     ::placeholder {
         ${mixin.textProps(40, "extraBold", "gray4")};
+        @media ${({ theme }) => theme.mobile} {
+            ${mixin.textProps(22, "extraBold", "gray4")};
+        }
     }
     :focus {
         ${mixin.outline("1px solid", "black", "bottom")};
     }
+
+    @media ${({ theme }) => theme.mobile} {
+        padding: ${({ theme }) => theme.calRem(16)} 0;
+        ${mixin.textProps(22, "extraBold", "gray2")};
+    }
 `;
 const InputContent = styled.textarea`
     border: none;
-    padding: 30px 0;
+    padding: ${({ theme }) => theme.calRem(30)} 0;
     transition: border-bottom 1s ease;
     ${mixin.outline("1px solid", "gray4", "bottom")}
     ${mixin.textProps(20, "regular", "gray2")};
@@ -337,6 +353,9 @@ const InputContent = styled.textarea`
     :focus {
         ${mixin.outline("1px solid", "black", "bottom")};
     }
+    @media ${({ theme }) => theme.mobile} {
+        padding: ${({ theme }) => theme.calRem(24)} 0;
+    }
 `;
 
 const WriteElectionDurationBox = styled.div``;
@@ -344,7 +363,7 @@ const WriteElectionDurationBox = styled.div``;
 const WriteCandidateBox = styled.div``;
 
 const Controls = styled.div`
-    margin-top: 30px;
+    margin-top: ${({ theme }) => theme.calRem(30)};
     text-align: center;
 `;
 
