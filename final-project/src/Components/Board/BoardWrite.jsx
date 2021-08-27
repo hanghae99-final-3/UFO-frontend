@@ -5,6 +5,7 @@ import categories from "../../Shared/categories";
 import { useSelector, useDispatch } from "react-redux";
 import { history } from "../../Redux/configureStore";
 import { useParams } from "react-router";
+import theme from "../../Styles/theme";
 
 //통신
 import { freeBoardApi, univBoardApi } from "../../Shared/api";
@@ -248,42 +249,62 @@ const BoardWrite = ({ boardName }) => {
                 {boardName === "freeboard" && (
                     <CountrySelect>
                         {/* 자유게시판이면 국가선택란이 나타난다. */}
-                        <SelectTitle>국가 설정</SelectTitle>
-                        {categories.country.map(ele => (
-                            <DefaultSelector
-                                isSelected={post?.country_id === ele.countryId}
-                                key={ele.countryId}
-                                rightGap="10px"
-                                lastNoGap
-                                onClick={() =>
-                                    setCategory("country_id", ele.countryId)
-                                }
-                            >
-                                {ele.countryName}
-                            </DefaultSelector>
-                        ))}
+                        <TagSelectTextBox>
+                            <SelectTitle>국가 설정</SelectTitle>
+                        </TagSelectTextBox>
+                        <TagSelectorBox>
+                            {categories.country.map(ele => (
+                                <DefaultSelector
+                                    isSelected={
+                                        post?.country_id === ele.countryId
+                                    }
+                                    key={ele.countryId}
+                                    rightGap="10px"
+                                    lastNoGap
+                                    onClick={() =>
+                                        setCategory("country_id", ele.countryId)
+                                    }
+                                >
+                                    {ele.countryName}
+                                </DefaultSelector>
+                            ))}
+                        </TagSelectorBox>
                     </CountrySelect>
                 )}
                 <TagSelect>
                     {/* 카테고리 중  선택하기 */}
-                    <SelectTitle>태그 설정</SelectTitle>
-                    {categoryList.map((ele, idx) => (
-                        <Boop rotation={0} timing={200} x={0} y={-7} key={idx}>
-                            <DefaultSelector
-                                isSelected={
-                                    Number(post?.category) === ele.categoryId
-                                }
-                                key={ele.categoryId}
-                                rightGap="8px"
-                                lastNoGap={categoryList.length - 1 === idx}
-                                onClick={() =>
-                                    setCategory("category", `${ele.categoryId}`)
-                                }
+                    <TagSelectTextBox>
+                        <SelectTitle>태그 설정</SelectTitle>
+                    </TagSelectTextBox>
+                    <TagSelectorBox>
+                        {categoryList.map((ele, idx) => (
+                            <Boop
+                                rotation={0}
+                                timing={200}
+                                x={0}
+                                y={-7}
+                                key={idx}
                             >
-                                #{ele.categoryName}
-                            </DefaultSelector>
-                        </Boop>
-                    ))}
+                                <DefaultSelector
+                                    isSelected={
+                                        Number(post?.category) ===
+                                        ele.categoryId
+                                    }
+                                    key={ele.categoryId}
+                                    rightGap="8px"
+                                    lastNoGap={categoryList.length - 1 === idx}
+                                    onClick={() =>
+                                        setCategory(
+                                            "category",
+                                            `${ele.categoryId}`,
+                                        )
+                                    }
+                                >
+                                    #{ele.categoryName}
+                                </DefaultSelector>
+                            </Boop>
+                        ))}
+                    </TagSelectorBox>
                 </TagSelect>
                 {boardName === "univboard" && isAdmin && (
                     <TagSelect>
@@ -325,25 +346,53 @@ const BoardTitle = styled.div`
     ${mixin.outline("1px solid", "gray4", "bottom")}
     h3 {
         ${mixin.textProps(30, "extraBold", "black")}
-        margin-bottom: 10px;
+        margin-bottom: ${theme.calRem(10)};
+        @media ${({ theme }) => theme.mobile} {
+            ${mixin.textProps(12, "extraBold", "black")};
+            margin-bottom: ${theme.calRem(8)};
+        }
     }
 `;
 
 const SelectBox = styled.div``;
 
-const CountrySelect = styled.div`
-    padding: 10px 0;
-    ${mixin.outline("1px solid", "gray4", "bottom")}
-`;
-
-const TagSelect = styled.div`
-    padding: 10px 0;
-    ${mixin.outline("1px solid", "gray4", "bottom")}
+const TagSelectTextBox = styled.div`
+    @media ${({ theme }) => theme.mobile} {
+        position: absolute;
+        z-index: 10;
+        background: white;
+        height: ${theme.calRem(42)};
+        line-height: 42px;
+    }
 `;
 
 const SelectTitle = styled.span`
     ${mixin.textProps(14, "semiBold", "gray3")}
     margin-right: 15px;
+    @media ${({ theme }) => theme.mobile} {
+        ${mixin.textProps(11, "semiBold", "gray3")};
+    }
+`;
+
+const TagSelectorBox = styled.div`
+    @media ${({ theme }) => theme.mobile} {
+        width: 100%;
+        white-space: nowrap;
+        overflow: auto;
+        padding-left: ${({ theme }) => theme.calRem(70)};
+        ${mixin.flexBox(null, "center", null, theme.calRem(42))}
+        ::-webkit-scrollbar {
+            display: none;
+        }
+    }
+`;
+
+const CountrySelect = styled.div`
+    ${mixin.outline("1px solid", "gray4", "bottom")}
+`;
+
+const TagSelect = styled.div`
+    ${mixin.outline("1px solid", "gray4", "bottom")}
 `;
 
 const InputTitle = styled.input`
@@ -351,7 +400,7 @@ const InputTitle = styled.input`
     ${mixin.outline("1px solid", "gray4", "bottom")};
     ${mixin.textProps(30, "extraBold", "black")};
     transition: border-bottom 1s ease;
-    padding: 20px 0;
+    padding: ${theme.calRem(20)} 0;
     width: 100%;
     transition: border-bottom 1s ease;
     :focus {
@@ -359,13 +408,24 @@ const InputTitle = styled.input`
     }
     ::placeholder {
         ${mixin.textProps(30, "extraBold", "mainGray")};
+        @media ${({ theme }) => theme.mobile} {
+            ${mixin.textProps(22, "extraBold", "mainGray")};
+        }
+    }
+
+    @media ${({ theme }) => theme.mobile} {
+        padding: ${theme.calRem(16)} 0;
+        ${mixin.textProps(22, "extraBold", "black")};
     }
 `;
 
 const Controls = styled.div`
-    margin-top: 30px;
+    margin-top: ${theme.calRem(30)};
     display: flex;
     justify-content: center;
+    @media ${({ theme }) => theme.mobile} {
+        margin-top: ${theme.calRem(24)};
+    }
 `;
 
 export default BoardWrite;
