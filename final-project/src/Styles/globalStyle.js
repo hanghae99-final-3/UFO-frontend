@@ -40,12 +40,21 @@ body{
     *{
         font-size: ${({ theme }) => theme.fontSize["20"]};
         color:${({ theme }) => theme.color.gray1};
+        @media ${({ theme }) => theme.mobile} {
+            font-size: ${({ theme }) => theme.fontSize["16"]};
+        }
     }
     h1{
         font-size: ${({ theme }) => theme.fontSize["40"]};
+        @media ${({ theme }) => theme.mobile} {
+            font-size: ${({ theme }) => theme.fontSize["28"]};
+        }
     }
     h2{
         font-size: ${({ theme }) => theme.fontSize["30"]};
+        @media ${({ theme }) => theme.mobile} {
+            font-size: ${({ theme }) => theme.fontSize["22"]};
+        }
     }
     a{
         color:${({ theme }) => theme.color.mainBlue};

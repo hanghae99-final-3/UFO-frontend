@@ -348,7 +348,7 @@ const BoardTitle = styled.div`
         ${mixin.textProps(30, "extraBold", "black")}
         margin-bottom: ${theme.calRem(10)};
         @media ${({ theme }) => theme.mobile} {
-            ${mixin.textProps(12, "extraBold", "black")};
+            ${mixin.textProps(22, "extraBold", "black")};
             margin-bottom: ${theme.calRem(8)};
         }
     }
@@ -389,10 +389,20 @@ const TagSelectorBox = styled.div`
 
 const CountrySelect = styled.div`
     ${mixin.outline("1px solid", "gray4", "bottom")}
+    ${mixin.flexBox(null, "center")}
+    padding:${({ theme }) => theme.calRem(15)} 0;
+    @media ${({ theme }) => theme.mobile} {
+        padding: 0;
+    }
 `;
 
 const TagSelect = styled.div`
     ${mixin.outline("1px solid", "gray4", "bottom")}
+    ${mixin.flexBox(null, "center")}
+    padding:${({ theme }) => theme.calRem(15)} 0;
+    @media ${({ theme }) => theme.mobile} {
+        padding: 0;
+    }
 `;
 
 const InputTitle = styled.input`
