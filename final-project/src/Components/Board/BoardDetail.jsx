@@ -50,7 +50,6 @@ import DefaultButton from "../../Elements/Buttons/DefaultButton";
 
 const BoardDetail = ({ page }) => {
     // const [play] = useSound(boopSfx);
-    const isMobile = document.documentElement.clientWidth < 798 ? true : false;
     const isDesktop =
         document.documentElement.clientWidth >= 1080 ? true : false;
 
@@ -262,14 +261,11 @@ const BoardDetail = ({ page }) => {
 
             <ButtonContainer>
                 <ButtonWrapper>
-                    {isMobile && (
+                    {!isDesktop && (
                         <PushButton onClick={handleLikeButton}>
                             좋아요
                         </PushButton>
                     )}
-                    <DefaultButton onClick={handleLikeButton}>
-                        좋아요
-                    </DefaultButton>
                     {isDesktop && (
                         <DefaultButton onClick={handleLikeButton}>
                             좋아요
