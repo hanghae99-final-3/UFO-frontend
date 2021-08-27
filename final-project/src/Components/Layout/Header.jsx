@@ -13,7 +13,8 @@ import { logoutUser } from "../../Redux/Modules/userSlice";
 //아이콘
 import MenuIcon from "@material-ui/icons/Menu";
 import ClearIcon from "@material-ui/icons/Clear";
-import logo from "../../Assets/logo.svg";
+import desktopLogo from "../../Assets/desktop_logo.svg";
+import mobileLogo from "../../Assets/mobile_logo.svg";
 
 //사운드
 import clicked from "../../Assets/Sound/click2.wav";
@@ -60,10 +61,10 @@ const Header = () => {
                     <Logo onClick={() => history.push("/")}>
                         {isDesktop ? (
                             <Boop rotation={20} timing={200} x={0} y={0}>
-                                <img src={logo} alt="logo" />
+                                <img src={desktopLogo} alt="logo" />
                             </Boop>
                         ) : (
-                            <img src={logo} alt="logo" />
+                            <img src={mobileLogo} alt="logo" />
                         )}
                     </Logo>
                     {isDesktop && <SelectCountry />}
@@ -272,7 +273,7 @@ const Logo = styled.div`
         height: 45px;
 
         @media ${({ theme }) => theme.mobile} {
-            width: ${({ theme }) => theme.calRem(80)};
+            width: auto;
             height: ${({ theme }) => theme.calRem(25)};
         }
     }
