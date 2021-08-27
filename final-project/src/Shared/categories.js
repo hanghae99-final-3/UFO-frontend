@@ -48,6 +48,65 @@ const freeBoardTags = [
 ];
 const univBoardTags = ["수업", "맛집", "스터디", "알바", "익명", "기타"];
 
+const supportList = [
+    {
+        countryName: "미국",
+        list: [
+            "New York University",
+            "University Of Illinois at Urbana Champaign",
+            "University of California, Berkeley",
+            "University of Southern California",
+            "Columbia University in the City of New York",
+            "University of California, Los Angeles",
+            "Cornell University",
+            "Carnegie Mellon University",
+            "University of Pennsylvania",
+            "University of Michigan",
+            "Duke University",
+        ],
+    },
+    {
+        countryName: "호주",
+        list: [
+            "University of Sydney",
+            "University of New South Wales",
+            "University of Melbourne",
+            "University of Queensland",
+            "Queensland University of Technology",
+        ],
+    },
+    {
+        countryName: "영국",
+        list: [
+            "University College London",
+            "University of London",
+            "University of the Arts London",
+            "University of Leeds",
+            "King's College London KCL",
+        ],
+    },
+    {
+        countryName: "베트남",
+        list: [
+            "Vietnam National University - Hanoi",
+            "Ton Duc Thang University",
+            "University of Social Sciences and Humanities Vietnam National University Ho Chi Minh City",
+            "Ho Chi Minh City University of Education",
+            "RMIT University Vietnam",
+        ],
+    },
+    {
+        countryName: "캐나다",
+        list: [
+            "Waterloo University",
+            "University of Toronto",
+            "Mcgill University",
+            "British Columbia University",
+            "University of Alberta",
+        ],
+    },
+];
+
 //카테고리를 작성하시고, 아래의 중괄호 안에 넣어주어야 사용할 수 있어요!
 const categories = {
     country,
@@ -55,6 +114,7 @@ const categories = {
     freeBoardTags,
     univBoardTags,
     univCategory,
+    supportList,
 };
 
 export default categories;
