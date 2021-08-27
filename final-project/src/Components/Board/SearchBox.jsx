@@ -278,7 +278,7 @@ const TagContainer = styled.div`
 
 const TagSelectTextBox = styled.div`
     @media ${({ theme }) => theme.mobile} {
-        position: fixed;
+        position: absolute;
         z-index: 10;
         background: white;
         height: 42px;
