@@ -62,13 +62,8 @@ export const loginUserDB = createAsyncThunk(
                 const getUserResponse = await userApi.getUser(userId);
                 if (getUserResponse.data.ok) {
                     const user = getUserResponse.data.result;
-                    Swal.fire({
-                        icon: "success",
-                        title: "로그인 성공",
-                        contents: "로그인 성공했습니다.",
-                        showConfirmButton: false,
-                        timer: 1500,
-                    });
+                    Swal.fire("성공", "로그인 성공", "success");
+
                     history.replace("/");
                     return user;
                 }

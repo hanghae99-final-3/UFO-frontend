@@ -161,7 +161,7 @@ const Comment = ({ comment, boardName, postId }) => {
     const timeOption = {
         lang: "ko",
         // objectTime: "2020-08-10 06:00:00",
-        objectTime: moment().format(`YYYY-MM-DD HH:mm:ss`),
+        objectTime: moment().format(`YYYY/MM/DD HH:mm:ss`),
         calculate: {
             justNow: 61,
         },
@@ -246,7 +246,12 @@ const Comment = ({ comment, boardName, postId }) => {
                     <UserName>{comment.user.nickname}</UserName>
 
                     {/* 현재시간과 댓글생성시간과 비교한 시간 (지금은 댓글생성시간으로 표기됨) */}
-                    <Time>{TimeCounting(comment.createdAt, timeOption)}</Time>
+                    <Time>
+                        {TimeCounting(
+                            comment.createdAt.replace(/\-/g, "/"),
+                            timeOption,
+                        )}
+                    </Time>
 
                     <Controls>
                         {/* 댓글의 작성자가 아니면 답글버튼이 나타납니다. */}
@@ -346,7 +351,8 @@ const Content = styled.div`
     margin-top: 3px;
 
     @media ${({ theme }) => theme.mobile} {
-        margin-top: 12px;
+        margin: 8px 0;
+
         ${mixin.textProps(16, "regular", "black")};
     }
 `;
