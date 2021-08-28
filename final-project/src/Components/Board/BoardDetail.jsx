@@ -408,7 +408,6 @@ const Page = styled.span`
     cursor: pointer;
     ${mixin.textProps(40, "extraBold", "back", "center")}
     @media ${({ theme }) => theme.mobile} {
-        /* margin-bottom: 10px; */
         ${mixin.textProps(22, "extraBold", "back", "center")}
     }
 `;
