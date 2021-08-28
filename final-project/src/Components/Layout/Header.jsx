@@ -27,6 +27,7 @@ import useSound from "use-sound";
 
 //컴포넌트
 import SelectCountry from "../Shared/SelectCountry";
+import DefaultButton from "../../Elements/Buttons/DefaultButton";
 
 /**
  * @author jiyeong, heesung
@@ -74,12 +75,20 @@ const Header = () => {
                     {isDesktop && <SelectCountry />}
                 </LeftColumn>
                 <RightColumn>
-                    <Sparkles color="#83ffca">
-                        <UserName>
-                            {/* 유저가 로그인을 하면 유저네임이 나옵니다! */}
-                            {userName ? `${userName}님` : "로그인이 필요해요!"}
-                        </UserName>
-                    </Sparkles>
+                    {/* 유저가 로그인을 하면 유저네임이 나옵니다! */}
+                    {userName ? (
+                        <Sparkles color="#83ffca">
+                            <UserName>{userName}님</UserName>
+                        </Sparkles>
+                    ) : (
+                        <DefaultButton
+                            rightGap="10px"
+                            onClick={() => history.push("/login")}
+                        >
+                            로그인하러가기
+                        </DefaultButton>
+                    )}
+
                     <MenuBtn
                         onClick={() => {
                             setMenuOn(!menuOn);
@@ -296,6 +305,8 @@ const UserName = styled.span`
         ${mixin.textProps(20, "extraBold", "gray1")}
     }
 `;
+
+const GoLogin = styled.button``;
 
 const MenuBtn = styled.button`
     background: inherit;

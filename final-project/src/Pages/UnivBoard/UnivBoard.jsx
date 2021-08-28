@@ -128,6 +128,7 @@ const PaginationContainer = styled.div`
     .MuiPagination-ul {
         justify-content: center;
     }
+
     ${mixin.floatBox("relative")};
     > button {
         ${mixin.floatBox("absolute", "0", "0")}

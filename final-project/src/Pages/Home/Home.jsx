@@ -1,9 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import styled from "styled-components"; // 스타일 컴포넌트 라이브러리
 import mixin from "../../Styles/Mixin";
+import theme from "../../Styles/theme";
 import { Helmet } from "react-helmet";
 import { useDispatch, useSelector } from "react-redux"; // 리액트 리덕스 라이브러리
 import categories from "../../Shared/categories"; // 태그 카테고리 객체
+import { history } from "../../Redux/configureStore";
 
 //통신
 import { getUnivBoardDB } from "../../Redux/Async/univBoard"; // 대학 게시물 조회 thunk
@@ -14,8 +16,10 @@ import MainSlider from "../../Components/Home/MainSlider"; // 메인 페이지 �
 import MainSearch from "../../Components/Search/MainSearch"; // 메인 페이지 통합 검색 컴포넌트
 import PreviewBoardBox from "../../Components/Home/PreviewBoardBox"; // 게시물 presenter 컴포넌트
 import SupportUniv from "../../Components/Home/SupportUniv";
+import DefaultButton from "../../Elements/Buttons/DefaultButton";
 
 const Home = () => {
+    const supportUnivRef = useRef(null);
     const dispatch = useDispatch();
     // 자유 게시판 게시물 리덕스 스토어 구독
     const freeBoardPostList = useSelector(state => state.freeBoard.list);
@@ -37,6 +41,14 @@ const Home = () => {
         state => state.freeBoard.selectedCountry,
     );
     const isAuthenticated = useSelector(state => state.user?.user.school_auth);
+
+    const goToSupportUniv = () => {
+        const location = supportUnivRef.current.offsetTop;
+        window.scrollTo({
+            top: location - 100,
+            behavior: "smooth",
+        });
+    };
 
     //자유 게시판 요청 쿼리 데이터
     const postListQueryData = {
@@ -96,6 +108,16 @@ const Home = () => {
                             <UnivBoardMessage>
                                 학교 인증 후, 학교 게시판을 이용하실 수 있습니다
                             </UnivBoardMessage>
+                            <UnivBoardMessageControls>
+                                <DefaultButton
+                                    onClick={() => history.push("/login")}
+                                >
+                                    로그인하러가기
+                                </DefaultButton>
+                                <DefaultButton onClick={goToSupportUniv}>
+                                    지원학교목록보기
+                                </DefaultButton>
+                            </UnivBoardMessageControls>
                         </UnivBoardMessageContainer>
                     </Content>
                 )}
@@ -108,6 +130,17 @@ const Home = () => {
                             <UnivBoardMessage>
                                 학교 게시판은 로그인 후 이용하실 수 있습니다
                             </UnivBoardMessage>
+                            <UnivBoardMessageControls>
+                                <DefaultButton
+                                    rightGap={theme.calRem(8)}
+                                    onClick={() => history.push("/login")}
+                                >
+                                    로그인하러가기
+                                </DefaultButton>
+                                <DefaultButton onClick={goToSupportUniv}>
+                                    지원학교목록보기
+                                </DefaultButton>
+                            </UnivBoardMessageControls>
                         </UnivBoardMessageContainer>
                     </Content>
                 )}
@@ -186,7 +219,7 @@ const Home = () => {
             </BoardContainer>
 
             {/* 지원대학목록리스트 */}
-            {/* <SupportUniv /> */}
+            <SupportUniv ref={supportUnivRef} />
         </HomeContainer>
     );
 };
@@ -220,12 +253,17 @@ const TitleHeading = styled.span`
 `;
 
 const UnivBoardMessageContainer = styled.div`
-    height: ${({ theme }) => theme.calRem(100)};
-    ${mixin.flexBox("center", "center", null, null)};
+    min-height: ${({ theme }) => theme.calRem(100)};
+    height: 100%;
+    ${mixin.flexBox("center", "center", "column", null)};
 `;
 
 const UnivBoardMessage = styled.span`
-    ${mixin.textProps(18, "semiBold", "gray2")}
+    ${mixin.textProps(18, "semiBold", "gray2")};
+`;
+
+const UnivBoardMessageControls = styled.div`
+    margin-top: ${({ theme }) => theme.calRem(16)};
 `;
 
 export default Home;
