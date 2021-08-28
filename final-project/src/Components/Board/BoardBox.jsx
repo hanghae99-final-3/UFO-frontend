@@ -150,7 +150,9 @@ const BoardBox = ({ postList, fixedList, boardName, announcement }) => {
                                 </GridContainer>
                                 {isMobile && (
                                     <IconContainer>
-                                        <Username>유저네임</Username>
+                                        <Username>
+                                            {post["user.nickname"]}
+                                        </Username>
                                         <IconWrapper>
                                             <Icon>
                                                 {post?.like?.is_like ===
@@ -241,7 +243,7 @@ const IconContainer = styled.div`
     @media ${({ theme }) => theme.mobile} {
         display: flex;
         justify-content: space-between;
-        ${mixin.outline("1px solid", "mainGray", "bottom")};
+        ${mixin.outline("1px solid", "gray4", "bottom")};
         padding-bottom: 16px;
         margin-bottom: 16px;
     }
