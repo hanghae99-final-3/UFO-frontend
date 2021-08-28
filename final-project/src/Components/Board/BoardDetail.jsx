@@ -196,7 +196,7 @@ const BoardDetail = ({ page }) => {
 
     return (
         <MainContentContainer>
-            <Page onClick={handleGoToList}>
+            <Page onClick={handleGoToList} >
                 {page === "freeboard" ? "자유 게시판" : "대학 게시판"}
             </Page>
             <ContentHeaderContainer>
@@ -405,6 +405,7 @@ const ButtonWrapper = styled.div``;
 const Page = styled.span`
     display: inline-block;
     margin-bottom: 20px;
+    cursor : pointer;
     ${mixin.textProps(40, "extraBold", "back", "center")}
     @media ${({ theme }) => theme.mobile} {
         /* margin-bottom: 10px; */
