@@ -73,7 +73,7 @@ const FreeBoard = () => {
 
     // 현재 선택된 국가 코드
     const selectedCountry = useSelector(
-        state => state.freeBoard.selectedCountry,
+        state => state.freeBoard.selectedCountryId,
     );
 
     const postListQueryData = {

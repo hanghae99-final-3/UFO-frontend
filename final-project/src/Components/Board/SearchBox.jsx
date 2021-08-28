@@ -70,7 +70,7 @@ const SearchBox = ({
     const ReduxSelectedTag = useSelector(state => state.freeBoard?.selectedTag);
 
     const selectedCountry = useSelector(
-        state => state.freeBoard.selectedCountry,
+        state => state.freeBoard.selectedCountryId,
     );
     const selectedSearchOrder = useSelector(
         state => state.freeBoard?.selectedSearchOrder,

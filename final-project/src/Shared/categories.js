@@ -10,6 +10,15 @@ const country = [
     { countryId: 5, countryName: "영국" },
 ];
 
+const countrySelectorList = [
+    { id: 0, name: "전체", icon: "🌍" },
+    { id: 3, name: "미국", icon: "🍔" },
+    { id: 5, name: "영국", icon: "🍟" },
+    { id: 2, name: "호주", icon: "🍕" },
+    { id: 1, name: "베트남", icon: "🌭" },
+    { id: 4, name: "캐나다", icon: "🌮" },
+];
+
 const freeCategory = [
     { categoryId: 0, categoryName: "질문" },
     { categoryId: 1, categoryName: "정보" },
@@ -115,6 +124,7 @@ const categories = {
     univBoardTags,
     univCategory,
     supportList,
+    countrySelectorList,
 };
 
 export default categories;

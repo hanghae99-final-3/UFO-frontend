@@ -38,7 +38,7 @@ const Home = () => {
     const isLoggedIn = useSelector(state => state.user.isLoggedIn);
     // 유저가 선택한 국가 페이지
     const selectedCountry = useSelector(
-        state => state.freeBoard.selectedCountry,
+        state => state.freeBoard.selectedCountryId,
     );
     const isAuthenticated = useSelector(state => state.user?.user.school_auth);
 
