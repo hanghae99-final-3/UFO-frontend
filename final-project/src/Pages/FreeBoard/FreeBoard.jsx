@@ -74,6 +74,10 @@ const FreeBoard = () => {
         dispatch(getFreeListDB(postListQueryData));
     }, [dispatch, page, selectedTag, selectedCountry]);
 
+    //데스크탑 사이즈인지 아닌지에 대한 판별값입니다.
+    const isDesktop =
+        document.documentElement.clientWidth >= 1080 ? true : false;
+
     // pagination 상태 값 업데이트
     const handlePage = async (e, value) => {
         const postListQueryData = {
@@ -110,9 +114,13 @@ const FreeBoard = () => {
                         onChange={handlePage}
                     />
                 </div>
-                <DefaultButton onClick={() => history.push("/freeboard/write")}>
-                    글쓰기
-                </DefaultButton>
+                {isDesktop && (
+                    <DefaultButton
+                        onClick={() => history.push("/freeboard/write")}
+                    >
+                        글쓰기
+                    </DefaultButton>
+                )}
             </PaginationContainer>
         </>
     );
