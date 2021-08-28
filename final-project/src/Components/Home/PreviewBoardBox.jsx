@@ -67,7 +67,11 @@ const PreviewBoardBox = ({
         <BoardContainer>
             <Header>
                 {tag && <LargeTag>#{tag.categoryName}</LargeTag>}
-                {title && <TitleHeading>{title}</TitleHeading>}
+                {title && (
+                    <TitleHeading onClick={onToMoreClicked}>
+                        {title}
+                    </TitleHeading>
+                )}
                 {myPostTitle && <TitleHeading>{myPostTitle}</TitleHeading>}
                 <Boop rotation={15} timing={200}>
                     <More onClick={onToMoreClicked}>더보기</More>
@@ -212,6 +216,7 @@ const LargeTag = styled.span`
     }
 `;
 const TitleHeading = styled.span`
+    cursor: pointer;
     ${mixin.textProps(30, "extraBold", "black")}
     @media ${({ theme }) => theme.mobile} {
         ${mixin.textProps(22, "extraBold", "black")}

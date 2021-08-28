@@ -12,6 +12,7 @@ import {
     getIssuePostListDB,
     postLikeToggleDB,
     getSearchResult,
+    getFreeListDBInfinity,
 } from "../Async/freeBoard";
 
 /**
@@ -65,6 +66,9 @@ const freeBoardSlice = createSlice({
             state.post.all_like -= 1;
             state.post.is_like = false;
         },
+        infinityPostCall: (state, { payload }) => {
+            state.list = [...state.list, ...payload];
+        },
     },
 
     //extraReducers 외부 작업을 참조(e.g 비동기 처리)
@@ -80,6 +84,22 @@ const freeBoardSlice = createSlice({
             state.isFetching = true;
         },
         [getFreeListDB.rejected]: (state, { payload: errorMessage }) => {
+            state.isFetching = false;
+            state.errorMessage = errorMessage;
+        },
+        [getFreeListDBInfinity.fulfilled]: (state, { payload }) => {
+            state.list = [...state.list, ...payload?.result.rows];
+            state.pageCount = payload.result.countPage;
+            state.isFetching = false;
+            state.errorMessage = null;
+        },
+        [getFreeListDBInfinity.pending]: (state, { payload }) => {
+            state.isFetching = true;
+        },
+        [getFreeListDBInfinity.rejected]: (
+            state,
+            { payload: errorMessage },
+        ) => {
             state.isFetching = false;
             state.errorMessage = errorMessage;
         },
@@ -262,6 +282,7 @@ export const {
     decreaseLike,
     setSearchOrder,
     resetSearchOrder,
+    infinityPostCall,
 } = freeBoardSlice.actions;
 
 export default freeBoardSlice;

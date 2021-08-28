@@ -405,6 +405,7 @@ const ButtonWrapper = styled.div``;
 const Page = styled.span`
     display: inline-block;
     margin-bottom: 20px;
+    cursor: pointer;
     ${mixin.textProps(40, "extraBold", "back", "center")}
     @media ${({ theme }) => theme.mobile} {
         /* margin-bottom: 10px; */

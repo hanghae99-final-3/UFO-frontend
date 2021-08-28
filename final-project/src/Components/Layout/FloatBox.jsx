@@ -17,6 +17,7 @@ const FloatBox = () => {
     const isDesktop =
         document.documentElement.clientWidth >= 1080 ? true : false;
 
+    const [selectedCountry, setSelectedCountry] = useState("");
     const goToWrite = () => {
         //pathname이 freeboard면 자유게시판작성페이지로, 아니면 대학게시판작성페이지로 보낸다.
         if (pathname === "/freeboard") return history.push("/freeboard/write");
@@ -25,6 +26,10 @@ const FloatBox = () => {
 
     const openCountrySelecter = () => {
         setIsOpenCountrySeletor(!isOpenCountrySeletor);
+    };
+
+    const handleCountryChange = e => {
+        console.log(e);
     };
 
     const scrollToTop = () => {
@@ -71,11 +76,14 @@ const FloatBox = () => {
             )}
 
             {isOpenCountrySeletor && (
-                <CountrySelector isBtnOn={isOpenCountrySeletor}>
-                    <Option>전체</Option>
-                    <Option>미국</Option>
-                    <Option>영국</Option>
-                    <Option>호주</Option>
+                <CountrySelector
+                    isBtnOn={isOpenCountrySeletor}
+                    onChange={handleCountryChange}
+                >
+                    <Option value="전체">전체</Option>
+                    <Option value="미국">미국</Option>
+                    <Option value="영국">영국</Option>
+                    <Option value="호주">호주</Option>
                 </CountrySelector>
             )}
             {!isDesktop && isWriteBntOn && (
