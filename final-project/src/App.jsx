@@ -39,6 +39,14 @@ function App() {
     // 유저 대학교 이메일 인증 여부 확인
     const isLoggedIn = useSelector(state => state.user.isLoggedIn);
 
+    useEffect(() => {
+        if (is_token) {
+            dispatch(checkLoggedInUser());
+            dispatch(checkAdminDB());
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [dispatch, isLoggedIn]);
+
     return (
         <>
             <ConnectedRouter history={history}>
