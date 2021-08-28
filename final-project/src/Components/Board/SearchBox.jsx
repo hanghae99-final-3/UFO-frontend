@@ -44,7 +44,15 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const SearchBox = ({ searchTag, deactivateSearch, page, pushButton }) => {
+const SearchBox = ({
+    searchTag,
+    deactivateSearch,
+    page,
+    setTotalPage,
+    setNextPage,
+    setInfinityPage,
+    setIsLoading,
+}) => {
     const classes = useStyles();
     const dispatch = useDispatch();
     // 현재 선택되어있는 태그의 index값을 selectedTag 배열에 저장한다.
@@ -59,21 +67,20 @@ const SearchBox = ({ searchTag, deactivateSearch, page, pushButton }) => {
     // 작성일 or  관련순 초기 상태
     const [order, setOrder] = React.useState("date");
 
-    const reduxSelectedTag = useSelector(state => state.freeBoard?.selectedTag);
+    const ReduxSelectedTag = useSelector(state => state.freeBoard?.selectedTag);
 
-    const ReduxselectedTag = useSelector(state => state.freeBoard?.selectedTag);
     const selectedCountry = useSelector(
         state => state.freeBoard.selectedCountry,
     );
     const selectedSearchOrder = useSelector(
         state => state.freeBoard?.selectedSearchOrder,
     );
-    const searchResultList = useSelector(state => state.search.searchResult);
 
     useEffect(() => {
         // selectedTag 상태를 리덕스 스토어의 상태와 동기화
         dispatch(setTagReducer(selectedTag));
-    }, [dispatch, selectedTag, id]);
+        dispatch(setSearchOrder(order));
+    }, [dispatch, selectedTag, id, order]);
 
     //태그 클릭 이벤트 핸들링
     const handleTagSelect = e => {
@@ -82,6 +89,10 @@ const SearchBox = ({ searchTag, deactivateSearch, page, pushButton }) => {
 
     //태그 리셋 버튼 이벤트 핸들링
     const handleReset = e => {
+        setTotalPage(2);
+        setNextPage(1);
+        setInfinityPage(2);
+        setIsLoading(false);
         setSelectedTag(null);
         dispatch(resetTagReducer());
         const postListQueryData = {
@@ -145,6 +156,7 @@ const SearchBox = ({ searchTag, deactivateSearch, page, pushButton }) => {
 
     return (
         <React.Fragment>
+            {console.log(ReduxSelectedTag)}
             <SearchBoxContainer>
                 {page && (
                     <TitleContainer>
@@ -194,37 +206,28 @@ const SearchBox = ({ searchTag, deactivateSearch, page, pushButton }) => {
                 </TagContainer>
                 {!deactivateSearch && (
                     <InputContainer>
+                        <Select
+                            MenuProps={{
+                                disablePortal: true,
+                                getContentAnchorEl: null,
+                                anchorOrigin: {
+                                    vertical: "bottom",
+                                },
+                            }}
+                            disableUnderline
+                            value={order}
+                            outlined="false"
+                            onChange={handleOrderChange}
+                        >
+                            <option value={"date"}>작성일</option>
+                            <option value={"relative"}>관련순</option>
+                        </Select>
                         <SearchForm onSubmit={handleSearch}>
                             <MuiThemeProvider theme={MuiTheme}>
                                 <InputBox
                                     placeholder="검색어를 입력해주세요!"
-                                    fullWidth
                                     value={searchTerm}
                                     onChange={onSearchTermChange}
-                                    // classes={{ root: classes.MuiOutlinedInput }}
-                                    MenuProps={{ disablePortal: true }}
-                                    startAdornment={
-                                        <Select
-                                            MenuProps={{
-                                                disablePortal: true,
-                                                getContentAnchorEl: null,
-                                                anchorOrigin: {
-                                                    vertical: "bottom",
-                                                },
-                                            }}
-                                            disableUnderline
-                                            value={order}
-                                            outlined="false"
-                                            onChange={handleOrderChange}
-                                        >
-                                            <option value={"date"}>
-                                                작성일
-                                            </option>
-                                            <option value={"rel"}>
-                                                관련순
-                                            </option>
-                                        </Select>
-                                    }
                                 />
                             </MuiThemeProvider>
                         </SearchForm>
@@ -238,8 +241,11 @@ const SearchBox = ({ searchTag, deactivateSearch, page, pushButton }) => {
 export default SearchBox;
 
 //-------스타일 컴포넌트--------
-const SearchForm = styled.form``;
+const SearchForm = styled.form`
+    width: 100%;
+`;
 const InputContainer = styled.div`
+    display: flex;
     width: 100%;
 `;
 const SearchBoxContainer = styled.div`
@@ -352,9 +358,12 @@ const Select = styled(MuiSelect)`
     .MuiPaper-root {
         color: ${props => props.theme.color.white};
         background-color: ${props => props.theme.color.mainBlue};
-        ${mixin.flexBox("center", null, null, null)}
+        ${mixin.flexBox("center", null, null, null)};
         ${mixin.textProps(14, "semiBold", "blue3")};
         border-radius: 0 15px 15px 15px;
+        /* @media ${({ theme }) => theme.mobile} {
+            ${mixin.textProps(11, "semiBold", "blue3")};
+        } */
     }
     .MuiSelect-root {
         padding: 0;

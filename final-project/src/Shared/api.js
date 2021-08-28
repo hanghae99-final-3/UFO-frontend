@@ -254,7 +254,7 @@ export const searchApi = {
             params: {
                 pageSize: data.pageSize,
                 pageNum: data.pageNum,
-                category: data?.category,
+                category: data.category,
                 country_id: data?.country_id,
                 keyword: data?.keyword,
                 sort: data?.sort,

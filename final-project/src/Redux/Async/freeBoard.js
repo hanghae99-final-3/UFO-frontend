@@ -31,6 +31,25 @@ export const getFreeListDB = createAsyncThunk(
     },
 );
 
+export const getFreeListDBInfinity = createAsyncThunk(
+    "freeBoard/getList/infinity",
+    async (data, thunkAPI) => {
+        try {
+            const response = await freeBoardApi.getList(data);
+            if (response.data.ok) {
+                return response.data;
+            }
+        } catch (err) {
+            Swal.fire(
+                "에러",
+                "네트워크 오류가 발생했습니다. 다시 시도해주세요!",
+                "error",
+            );
+            return thunkAPI.rejectWithValue(err.response.message);
+        }
+    },
+);
+
 /**
  * @author kwonjiyeong
  * @param 없음
