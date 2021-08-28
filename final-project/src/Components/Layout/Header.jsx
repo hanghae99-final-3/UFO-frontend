@@ -47,6 +47,12 @@ const Header = () => {
     const isDesktop =
         document.documentElement.clientWidth >= 1080 ? true : false;
 
+    const onClickUserName = () => {
+        //유저네임이 있으면(로그인을 했으면) 클릭 시 마이페이지로 보내고, 아니면 login창으로 보낸다.
+        if (userName) return history.push("/mypage");
+        history.push("/login");
+    };
+
     //----pathname이 변화하면 메뉴를 닫을 수 있도록 합니다
     useEffect(() => {
         document.addEventListener("scroll", () => setMenuOn(false));
@@ -76,18 +82,11 @@ const Header = () => {
                 </LeftColumn>
                 <RightColumn>
                     {/* 유저가 로그인을 하면 유저네임이 나옵니다! */}
-                    {userName ? (
-                        <Sparkles color="#83ffca">
-                            <UserName>{userName}님</UserName>
-                        </Sparkles>
-                    ) : (
-                        <DefaultButton
-                            rightGap="10px"
-                            onClick={() => history.push("/login")}
-                        >
-                            로그인하러가기
-                        </DefaultButton>
-                    )}
+                    <Sparkles color="#83ffca">
+                        <UserName userName={userName} onClick={onClickUserName}>
+                            {userName ? `${userName}님` : "로그인하러가기"}
+                        </UserName>
+                    </Sparkles>
 
                     <MenuBtn
                         onClick={() => {
@@ -300,7 +299,7 @@ const RightColumn = styled.div`
 const UserName = styled.span`
     margin-right: ${({ theme }) => theme.calRem(20)};
     ${mixin.textProps(30, "extraBold", "gray1")}
-
+    cursor:pointer;
     @media ${({ theme }) => theme.mobile} {
         ${mixin.textProps(20, "extraBold", "gray1")}
     }
