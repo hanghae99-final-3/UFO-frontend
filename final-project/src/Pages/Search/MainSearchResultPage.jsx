@@ -79,8 +79,8 @@ const MainSearchResultPage = () => {
     return (
         <React.Fragment>
             <MainSearch handleSearch />
-            <SearchKeyword>"{Keyword}" 검색 결과</SearchKeyword>
-            <DivideLine />
+            {Keyword?<SearchKeyword>"{Keyword}" 검색 결과</SearchKeyword>:''}
+            {Keyword?<DivideLine />:''}
             <InfinityScroll
                 nextCall={nextCall}
                 is_next={nextPage <= totalPage ? true : false}
