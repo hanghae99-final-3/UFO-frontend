@@ -11,6 +11,11 @@ import { history } from "../../Redux/configureStore";
 import { getUnivBoardDB } from "../../Redux/Async/univBoard"; // 대학 게시물 조회 thunk
 import { getFreeListDB, getIssuePostListDB } from "../../Redux/Async/freeBoard"; // 자유 게시판 thunks
 
+
+//배너
+import bnr1_mobile from "../../Assets/event1_mobile.png"
+import bnr1_pc from "../../Assets/event1_pc.png"
+
 //컴포넌트
 import MainSlider from "../../Components/Home/MainSlider"; // 메인 페이지 슬라이더 컴포넌트
 import MainSearch from "../../Components/Search/MainSearch"; // 메인 페이지 통합 검색 컴포넌트
@@ -43,6 +48,12 @@ const Home = () => {
     const isAuthenticated = useSelector(state => state.user?.user.school_auth);
 
     const [modalVisible, setModalVisible] = useState(false); //모달창을 보여줄지 말지에 대한 판별값입니다.
+
+//데스크탑 사이즈인지 아닌지에 대한 판별값입니다.
+const isDesktop =
+        document.documentElement.clientWidth >= 1080
+            ? true
+            : false
 
     const openModal = () => {
         //모달을 여는 함수입니다.
@@ -92,6 +103,8 @@ const Home = () => {
             </Helmet>
             {/* 메인 검색창 */}
             <MainSearch />
+            {/* 배너 */}
+            <Banner href="https://docs.google.com/forms/d/19dYEzERALVHU02A1f_E5WHBttXIpROdtf1HVQcwkqkw/viewform?ts=6125ed6e&edit_requested=true" target="_blank">{isDesktop? <img src={bnr1_pc} alt="banner" />:<img src={bnr1_mobile} alt="banner" />}</Banner>
             {/* 인기 게시글 슬라이더 불러오기*/}
             <MainSlider
                 postList={
@@ -283,6 +296,20 @@ const TitleHeading = styled.span`
         ${mixin.textProps(22, "extraBold", "black")}
     }
 `;
+
+const Banner = styled.a`
+display:inline-block;
+    margin-top:${theme.calRem(70)};
+img{
+    width:100%;
+    border-radius:25px;
+    ${mixin.boxShadow()}
+
+}
+@media ${({ theme }) => theme.mobile} {
+    margin-top:${theme.calRem(48)};
+    }
+`
 
 const UnivBoardMessageContainer = styled.div`
     min-height: ${({ theme }) => theme.calRem(100)};
