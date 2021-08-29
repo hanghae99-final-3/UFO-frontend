@@ -23,11 +23,26 @@ export const getUnivBoardDB = createAsyncThunk(
                 return thunkAPI.rejectWithValue(response.data.message);
             }
         } catch (error) {
-            Swal.fire(
-                "에러",
-                "네트워크 오류가 발생했습니다. 다시 시도해주세요",
-                "error",
-            );
+            Swal.fire("에러", "네트워크 연결 상태를 확인해주세요.", "error");
+            history.push("/");
+            return thunkAPI.rejectWithValue(error.response.data.message);
+        }
+    },
+);
+
+export const getUnivBoardDBInfinity = createAsyncThunk(
+    "univBoard/getUnivList/infinity",
+    async (data, thunkAPI) => {
+        try {
+            // 게시물 조회 요청
+            const response = await univBoardApi.getList(data);
+            if (response.data.ok) {
+                return response.data;
+            } else if (!response.data.ok) {
+                return thunkAPI.rejectWithValue(response.data.message);
+            }
+        } catch (error) {
+            Swal.fire("에러", "네트워크 연결 상태를 확인해주세요.", "error");
             history.push("/");
             return thunkAPI.rejectWithValue(error.response.data.message);
         }
@@ -109,11 +124,7 @@ export const detailUnivBoardPostDB = createAsyncThunk(
                 return { ...response.data.like, ...response.data.result };
             }
         } catch (error) {
-            Swal.fire(
-                "에러",
-                "네트워크 오류가 발생했습니다. 다시 시도해주세요!",
-                "error",
-            );
+            Swal.fire("에러", "네트워크 연결 상태를 확인해주세요.!", "error");
             history.push("/univboard");
             return thunkAPI.rejectWithValue(error.response.data.message);
         }
@@ -171,11 +182,7 @@ export const getUnivBoardCommentDB = createAsyncThunk(
                 return response.data.result;
             }
         } catch (error) {
-            Swal.fire(
-                "에러",
-                "네트워크 오류가 발생했습니다. 다시 시도해주세요!",
-                "error",
-            );
+            Swal.fire("에러", "네트워크 연결 상태를 확인해주세요.!", "error");
             return thunkAPI.rejectWithValue(error.response.data.message);
         }
     },

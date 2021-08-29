@@ -66,7 +66,12 @@ const PreviewBoardBox = ({
     return (
         <BoardContainer>
             <Header>
-                {tag && <LargeTag>#{tag.categoryName}</LargeTag>}
+                {tag && (
+                    <LargeTag>
+                        {isDesktop ? "#" : "📌"}
+                        {tag.categoryName}
+                    </LargeTag>
+                )}
                 {title && (
                     <TitleHeading onClick={onToMoreClicked}>
                         {title}

@@ -63,34 +63,7 @@ const KakaoButtonBox = styled.button`
         height: 40px;
     }
 `;
-const FBButtonBox = styled.button`
-    margin-top: 15px;
-    width: 344px;
-    height: 46px;
-    border-radius: 50px;
-    ${mixin.textProps(20, "extraBold", "white")};
-    background-color: #3b5998;
-    box-shadow: 0px 1px 1px 1px #ececec;
-    @media ${({ theme }) => theme.mobile} {
-        ${mixin.textProps(16, "extraBold", "white")};
-        width: 264px;
-        height: 40px;
-    }
-`;
-const GoogleButtonBox = styled.button`
-    margin-top: 15px;
-    width: 344px;
-    height: 46px;
-    border-radius: 50px;
-    ${mixin.textProps(20, "extraBold")};
-    background-color: ${({ theme }) => theme.color.white};
-    box-shadow: 0px 1px 1px 1px #ececec;
-    @media ${({ theme }) => theme.mobile} {
-        ${mixin.textProps(16, "extraBold")};
-        width: 264px;
-        height: 40px;
-    }
-`;
+
 const MemberCheckBox = styled.div`
     margin-top: 27px;
     display: flex;

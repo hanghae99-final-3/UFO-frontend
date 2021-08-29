@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components"; // 스타일 컴포넌트 라이브러리
 import mixin from "../../Styles/Mixin";
 import theme from "../../Styles/theme";
@@ -11,15 +11,21 @@ import { history } from "../../Redux/configureStore";
 import { getUnivBoardDB } from "../../Redux/Async/univBoard"; // 대학 게시물 조회 thunk
 import { getFreeListDB, getIssuePostListDB } from "../../Redux/Async/freeBoard"; // 자유 게시판 thunks
 
+
+//배너
+import bnr1_mobile from "../../Assets/event1_mobile.png"
+import bnr1_pc from "../../Assets/event1_pc.png"
+
 //컴포넌트
 import MainSlider from "../../Components/Home/MainSlider"; // 메인 페이지 슬라이더 컴포넌트
 import MainSearch from "../../Components/Search/MainSearch"; // 메인 페이지 통합 검색 컴포넌트
 import PreviewBoardBox from "../../Components/Home/PreviewBoardBox"; // 게시물 presenter 컴포넌트
 import SupportUniv from "../../Components/Home/SupportUniv";
 import DefaultButton from "../../Elements/Buttons/DefaultButton";
+import Modal from "../../Components/Shared/Modal";
 
 const Home = () => {
-    const supportUnivRef = useRef(null);
+    const supportUnivRef = useRef(null); //지원대학 ref
     const dispatch = useDispatch();
     // 자유 게시판 게시물 리덕스 스토어 구독
     const freeBoardPostList = useSelector(state => state.freeBoard.list);
@@ -27,7 +33,6 @@ const Home = () => {
     const freeBoardIssuePostList = useSelector(
         state => state.freeBoard.issueList,
     );
-
     // 학교 게시판 게시물 리덕스 스토어 구독
     const univBoardPostList = useSelector(state => state.univBoard.list);
     // 공지 게시글
@@ -38,9 +43,27 @@ const Home = () => {
     const isLoggedIn = useSelector(state => state.user.isLoggedIn);
     // 유저가 선택한 국가 페이지
     const selectedCountry = useSelector(
-        state => state.freeBoard.selectedCountry,
+        state => state.freeBoard.selectedCountryId,
     );
     const isAuthenticated = useSelector(state => state.user?.user.school_auth);
+
+    const [modalVisible, setModalVisible] = useState(false); //모달창을 보여줄지 말지에 대한 판별값입니다.
+
+//데스크탑 사이즈인지 아닌지에 대한 판별값입니다.
+const isDesktop =
+        document.documentElement.clientWidth >= 1080
+            ? true
+            : false
+
+    const openModal = () => {
+        //모달을 여는 함수입니다.
+        setModalVisible(true);
+    };
+
+    const closeModal = () => {
+        //모달을 닫는 함수입니다.
+        setModalVisible(false);
+    };
 
     const goToSupportUniv = () => {
         const location = supportUnivRef.current.offsetTop;
@@ -80,6 +103,8 @@ const Home = () => {
             </Helmet>
             {/* 메인 검색창 */}
             <MainSearch />
+            {/* 배너 */}
+            {/* <Banner href="https://docs.google.com/forms/d/19dYEzERALVHU02A1f_E5WHBttXIpROdtf1HVQcwkqkw/viewform?ts=6125ed6e&edit_requested=true" target="_blank">{isDesktop? <img src={bnr1_pc} alt="banner" />:<img src={bnr1_mobile} alt="banner" />}</Banner> */}
             {/* 인기 게시글 슬라이더 불러오기*/}
             <MainSlider
                 postList={
@@ -91,7 +116,7 @@ const Home = () => {
                 {/* 학교 게시판 불러오기*/}
                 {isAuthenticated !== null && isLoggedIn && (
                     <PreviewBoardBox
-                        title="학교 게시판"
+                        title="🎓학교 게시판"
                         fixedList={announcement && announcement.slice(0, 2)}
                         postList={
                             univBoardPostList && univBoardPostList.slice(0, 6)
@@ -114,8 +139,18 @@ const Home = () => {
                                 >
                                     로그인하러가기
                                 </DefaultButton>
-                                <DefaultButton onClick={goToSupportUniv}>
+                                <DefaultButton onClick={openModal}>
                                     지원학교목록보기
+                                    {modalVisible && (
+                                        <Modal
+                                            visible={modalVisible}
+                                            closable={true}
+                                            maskClosable={true}
+                                            onClose={closeModal}
+                                        >
+                                            Hello
+                                        </Modal>
+                                    )}
                                 </DefaultButton>
                             </UnivBoardMessageControls>
                         </UnivBoardMessageContainer>
@@ -137,9 +172,22 @@ const Home = () => {
                                 >
                                     로그인하러가기
                                 </DefaultButton>
-                                <DefaultButton onClick={goToSupportUniv}>
+                                <DefaultButton onClick={openModal}>
                                     지원학교목록보기
                                 </DefaultButton>
+                                {modalVisible && (
+                                    <Modal
+                                        visible={modalVisible}
+                                        closable={true}
+                                        maskClosable={true}
+                                        onClose={closeModal}
+                                        extend
+                                        //버전2
+                                        // width="70vw"
+                                    >
+                                        <SupportUniv ref={supportUnivRef} />
+                                    </Modal>
+                                )}
                             </UnivBoardMessageControls>
                         </UnivBoardMessageContainer>
                     </Content>
@@ -150,9 +198,9 @@ const Home = () => {
                     /* country ==== 0 , 즉 전체 선택의 경우 
                     필터하지 않은 포스트를 props로 전달한다.*/
                     <PreviewBoardBox
-                        title="자유 게시판"
+                        title="🗽자유 게시판"
                         postList={
-                            freeBoardPostList && freeBoardPostList.slice(0, 8)
+                            freeBoardPostList && freeBoardPostList.slice(0, 6)
                         }
                         boardName="freeboard"
                     />
@@ -160,14 +208,14 @@ const Home = () => {
                     /*  유저가 특정 국가를 선택했을 경우, 자유 게시판을 
                     해당 국의 게시글로 필터링하여 props로 전달한다.*/
                     <PreviewBoardBox
-                        title="자유 게시판"
+                        title="🗽자유 게시판"
                         postList={
                             freeBoardPostList &&
                             freeBoardPostList
                                 .filter(
                                     post => post.country_id === selectedCountry,
                                 )
-                                .slice(0, 8)
+                                .slice(0, 6)
                         }
                         boardName="freeboard"
                     />
@@ -189,7 +237,7 @@ const Home = () => {
                                                 post.category ===
                                                 category.categoryId,
                                         )
-                                        .slice(0, 8)}
+                                        .slice(0, 6)}
                                     boardName="freeboard"
                                 />
                             );
@@ -209,7 +257,7 @@ const Home = () => {
                                                 post.country_id ===
                                                     selectedCountry,
                                         )
-                                        .slice(0, 8)}
+                                        .slice(0, 6)}
                                 />
                             );
                         }
@@ -217,9 +265,6 @@ const Home = () => {
                 {/* 카테고리가 홀수이면 div를 스페어로 넣는다. */}
                 {/* {categories.freeCategory.length % 2 !== 0 && } */}
             </BoardContainer>
-
-            {/* 지원대학목록리스트 */}
-            <SupportUniv ref={supportUnivRef} />
         </HomeContainer>
     );
 };
@@ -251,6 +296,20 @@ const TitleHeading = styled.span`
         ${mixin.textProps(22, "extraBold", "black")}
     }
 `;
+
+const Banner = styled.a`
+display:inline-block;
+    margin-top:${theme.calRem(70)};
+img{
+    width:100%;
+    border-radius:25px;
+    ${mixin.boxShadow()}
+
+}
+@media ${({ theme }) => theme.mobile} {
+    margin-top:${theme.calRem(48)};
+    }
+`
 
 const UnivBoardMessageContainer = styled.div`
     min-height: ${({ theme }) => theme.calRem(100)};

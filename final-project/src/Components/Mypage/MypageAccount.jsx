@@ -163,7 +163,7 @@ const MypageAccount = props => {
         },
         validationSchema: Yup.object({
             nickname: Yup.string()
-                .max(12, "닉네임은 12자리 미만으로 입력해주세요.")
+                .max(10, "닉네임은 10자리 미만으로 입력해주세요.")
                 .required("닉네임을 입력해주세요"),
 
             password: Yup.string().required("비밀번호를 입력하세요"),
@@ -604,6 +604,7 @@ const ControlButton = styled.button`
     width: fit-content;
     border-radius: 20px;
     background-color: white;
+    ${mixin.boxShadow()};
     ${props =>
         mixin.outline(
             "2px solid",

@@ -32,7 +32,6 @@ import TimeCounting from "time-counting"; // 작성일 표시 라이브러리
 
 //alert
 import confirm from "../../Shared/confirm";
-import { ToastContainer, toast } from "react-toastify"; // 토스티 파이 라이브러리
 import "react-toastify/dist/ReactToastify.css"; // 토스티파이 css
 
 //아이콘
@@ -42,7 +41,6 @@ import AccessTimeIcon from "@material-ui/icons/AccessTime"; // 작성일 아이�
 import FavoriteIcon from "@material-ui/icons/Favorite"; // 좋아요 아이콘 (색상 있음)
 import FavoriteBorder from "@material-ui/icons/FavoriteBorder"; //좋아요 아이콘 (색상 없음)
 import Swal from "sweetalert2";
-import PushButton from "../../Elements/Buttons/PushButton";
 
 //컴포넌트
 import DefaultTag from "../../Elements/Tag/DefaultTag";
@@ -50,8 +48,6 @@ import DefaultButton from "../../Elements/Buttons/DefaultButton";
 
 const BoardDetail = ({ page }) => {
     // const [play] = useSound(boopSfx);
-    const isDesktop =
-        document.documentElement.clientWidth >= 1080 ? true : false;
 
     const dispatch = useDispatch();
     const { id: postId } = useParams(); // 게시물 아이디
@@ -61,6 +57,7 @@ const BoardDetail = ({ page }) => {
     let now = new Date(); // 게시물 조회 최초 시간
     let after20m = new Date(); // 최초 조회후 20분이후 시간
     const viewCookie = page === "freeboard" ? `f${postId}` : `u${postId}`; // 조회 이력 쿠키 정보
+    // eslint-disable-next-line no-unused-vars
     const [_, setCookie, __] = useCookies([viewCookie]); // useCookie 훅스
 
     // 게시물 상세 정보
@@ -139,7 +136,6 @@ const BoardDetail = ({ page }) => {
             });
         };
         if (window.pageYOffset > 0) scrollToTop();
-        console.log(window.pageYOffset);
     }, []);
 
     useEffect(() => {
@@ -219,8 +215,6 @@ const BoardDetail = ({ page }) => {
                     </IconContainer>
 
                     <IconContainer>
-                        <ToastContainer limit={1} />
-
                         <Icon>
                             <LinkIcon id="link" onClick={handleCopyUrl} />
                         </Icon>
@@ -242,7 +236,7 @@ const BoardDetail = ({ page }) => {
                             <AccessTimeIcon />
                             <CountSpan>
                                 {TimeCounting(
-                                    post && post.createdAt.replace(/\-/g, "/"),
+                                    post && post.createdAt.replace(/-/g, "/"),
                                     timeOption,
                                 )}
                             </CountSpan>
@@ -261,16 +255,9 @@ const BoardDetail = ({ page }) => {
 
             <ButtonContainer>
                 <ButtonWrapper>
-                    {!isDesktop && (
-                        <PushButton onClick={handleLikeButton}>
-                            좋아요
-                        </PushButton>
-                    )}
-                    {isDesktop && (
-                        <DefaultButton onClick={handleLikeButton}>
-                            좋아요
-                        </DefaultButton>
-                    )}
+                    <DefaultButton onClick={handleLikeButton}>
+                        좋아요
+                    </DefaultButton>
                 </ButtonWrapper>
                 <ButtonWrapper>
                     <DefaultButton onClick={handleGoToList}>목록</DefaultButton>

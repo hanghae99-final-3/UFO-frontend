@@ -1,5 +1,4 @@
 import React from "react";
-import categories from "../../Shared/categories";
 
 //컴포넌트
 import SearchBox from "../../Components/Board/SearchBox";

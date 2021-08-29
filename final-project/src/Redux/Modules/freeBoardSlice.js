@@ -27,7 +27,8 @@ const initialState = {
     commentList: null,
     isFetching: false,
     errorMessage: null,
-    selectedCountry: 0,
+    selectedCountryId: 0,
+    selectedCountry: null,
     selectedTag: null,
     pageCount: null,
 };
@@ -37,8 +38,9 @@ const freeBoardSlice = createSlice({
     name: "freeBoard",
     initialState: initialState,
     reducers: {
-        setCountryReducer: (state, { payload: countryId }) => {
-            state.selectedCountry = countryId;
+        setCountryReducer: (state, { payload }) => {
+            state.selectedCountryId = payload.id;
+            state.selectedCountry = payload;
         },
         setTagReducer: (state, { payload }) => {
             state.selectedTag = payload;

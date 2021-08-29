@@ -26,7 +26,7 @@ import Sparkles from "../../Elements/Animations/Sparkles";
 import useSound from "use-sound";
 
 //컴포넌트
-import SelectCountry from "../Shared/SelectCountry";
+import MenuSelectCountry from "../Shared/MenuSelectCountry";
 import DefaultButton from "../../Elements/Buttons/DefaultButton";
 
 /**
@@ -78,7 +78,6 @@ const Header = () => {
                             <img src={mobileLogo} alt="logo" />
                         )}
                     </Logo>
-                    {isDesktop && <SelectCountry />}
                 </LeftColumn>
                 <RightColumn>
                     {/* 유저가 로그인을 하면 유저네임이 나옵니다! */}
@@ -98,15 +97,13 @@ const Header = () => {
                     </MenuBtn>
                     <MenuContainer menuOn={menuOn}>
                         <Menu menuOn={menuOn}>
-                            {!isDesktop && (
-                                <>
+                            <Controls>
+                                <SelecterBox>
                                     <SelectCountryTitle>
                                         국가 범위 설정
                                     </SelectCountryTitle>
-                                    <SelectCountry />
-                                </>
-                            )}
-                            <Controls>
+                                    <MenuSelectCountry />
+                                </SelecterBox>
                                 <Control>
                                     <Link
                                         to={{
@@ -236,9 +233,9 @@ const Header = () => {
                                     </>
                                 )}
                             </Controls>
-                            <AboutUs>
+                            {/* <AboutUs>
                                 <span>about us</span>
-                            </AboutUs>
+                            </AboutUs> */}
                         </Menu>
                     </MenuContainer>
                 </RightColumn>
@@ -249,7 +246,7 @@ const Header = () => {
 
 const HeaderContainer = styled.header`
     position: fixed;
-    width: 100%;
+    width: 100vw;
     box-shadow: 0px 4px 7px 0px #e4ddff;
     background: ${({ theme }) => theme.color.white};
     z-index: 99;
@@ -273,7 +270,6 @@ const LeftColumn = styled.div`
 
 const Logo = styled.div`
     cursor: pointer;
-    margin-right: ${({ theme }) => theme.calRem(50)};
 
     @media ${({ theme }) => theme.mobile} {
         width: ${({ theme }) => theme.calRem(80)};
@@ -304,8 +300,6 @@ const UserName = styled.span`
         ${mixin.textProps(20, "extraBold", "gray1")}
     }
 `;
-
-const GoLogin = styled.button``;
 
 const MenuBtn = styled.button`
     background: inherit;
@@ -362,11 +356,20 @@ const Menu = styled.div`
     }
 `;
 
+const SelecterBox = styled.div`
+    @media ${({ theme }) => theme.mobile} {
+        margin-bottom: ${({ theme }) => theme.calRem(20)};
+    }
+`;
+
 const SelectCountryTitle = styled.span`
-    //모바일에서만 작동하는 요소입니다.
-    ${mixin.textProps(28, "extraBold", "blue3")}
     display: inline-block;
+    ${mixin.textProps(40, "extraBold", "blue3")};
     margin-bottom: ${({ theme }) => theme.calRem(8)};
+    @media ${({ theme }) => theme.mobile} {
+        ${mixin.textProps(28, "extraBold", "blue3")}
+        margin-bottom: ${({ theme }) => theme.calRem(8)};
+    }
 `;
 
 const Controls = styled.ul`

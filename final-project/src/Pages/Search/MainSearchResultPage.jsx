@@ -28,7 +28,6 @@ const MainSearchResultPage = () => {
 
     ///Main Search api 연결
     const MainSearchApi = async ({ keyword, pageSize, pageNum }) => {
-        console.log(keyword, pageSize, pageNum);
         setIsLoading(true);
         await instance
             .get("util/search", {
@@ -40,7 +39,6 @@ const MainSearchResultPage = () => {
             })
             .then(res => {
                 if (res.data.ok) {
-                    console.log("main search response", res.data);
                     setSearchResult(prev => [...prev, ...res.data.result]);
                     setSearchResult(res.data.result);
                     setTotalPage(res.data.totalPage);
@@ -54,7 +52,6 @@ const MainSearchResultPage = () => {
         MainSearchApi(MainSearchQueryDB);
     };
     const initialCall = async ({ keyword, pageSize, pageNum }) => {
-        console.log(keyword, pageSize, pageNum);
         setIsLoading(true);
         await instance
             .get("util/search", {
@@ -66,7 +63,6 @@ const MainSearchResultPage = () => {
             })
             .then(res => {
                 if (res.data.ok) {
-                    console.log("main search response", res.data);
                     setSearchResult(res.data.result);
                     setTotalPage(res.data.totalPage);
                 }

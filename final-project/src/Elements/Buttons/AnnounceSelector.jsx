@@ -14,7 +14,6 @@ const AnnounceSelector = ({ isSelected, onClick, children, ...props }) => {
 const Button = styled.button`
     padding: 0 10px;
     min-width: 79px;
-    min-height: 32px;
     box-sizing: border-box;
     border-radius: 16px;
     transition: all 0.5s ease;

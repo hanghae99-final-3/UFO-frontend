@@ -136,7 +136,7 @@ const ElectionWrite = () => {
                 const {
                     data: { result: photo },
                 } = await axios.post(
-                    "https://yzkim9501.site",
+                    "https://yzkim9501.site/util/image",
                     formData,
                     config,
                 );

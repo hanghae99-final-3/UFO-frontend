@@ -16,7 +16,6 @@ import {
 //애니메이션
 import Boop from "../../Elements/Animations/Boop";
 import { history } from "../../Redux/configureStore";
-import PushButton from "../../Elements/Buttons/PushButton";
 
 //머테리얼 ui
 import Input from "@material-ui/core/Input";
@@ -26,7 +25,10 @@ import { makeStyles, MuiThemeProvider } from "@material-ui/core";
 import { Select as MuiSelect } from "@material-ui/core";
 import DefaultSelector from "../../Elements/Buttons/DefaultSelector";
 import { getFreeListDB, getSearchResult } from "../../Redux/Async/freeBoard";
-import { getUnivSearchResult } from "../../Redux/Async/univBoard";
+import {
+    getUnivBoardDB,
+    getUnivSearchResult,
+} from "../../Redux/Async/univBoard";
 
 /**
  * @author heesung
@@ -48,10 +50,8 @@ const SearchBox = ({
     searchTag,
     deactivateSearch,
     page,
-    setTotalPage,
-    setNextPage,
-    setInfinityPage,
-    setIsLoading,
+    handleResetInfinity,
+    queryData,
 }) => {
     const classes = useStyles();
     const dispatch = useDispatch();
@@ -70,14 +70,14 @@ const SearchBox = ({
     const ReduxSelectedTag = useSelector(state => state.freeBoard?.selectedTag);
 
     const selectedCountry = useSelector(
-        state => state.freeBoard.selectedCountry,
+        state => state.freeBoard.selectedCountryId,
     );
     const selectedSearchOrder = useSelector(
         state => state.freeBoard?.selectedSearchOrder,
     );
 
     useEffect(() => {
-        // selectedTag 상태를 리덕스 스토어의 상태와 동기화
+        // dispatch(resetUnivList());
         dispatch(setTagReducer(selectedTag));
         dispatch(setSearchOrder(order));
     }, [dispatch, selectedTag, id, order]);
@@ -89,19 +89,14 @@ const SearchBox = ({
 
     //태그 리셋 버튼 이벤트 핸들링
     const handleReset = e => {
-        setTotalPage(2);
-        setNextPage(1);
-        setInfinityPage(2);
-        setIsLoading(false);
+        handleResetInfinity();
         setSelectedTag(null);
         dispatch(resetTagReducer());
-        const postListQueryData = {
-            pageSize: 10,
-            pageNum: 1,
-            category: selectedTag === null ? undefined : selectedTag,
-            country_id: selectedCountry === 0 ? undefined : selectedCountry,
-        };
-        dispatch(getFreeListDB(postListQueryData));
+        if (page === "freeboard") {
+            dispatch(getFreeListDB(queryData));
+        } else {
+            dispatch(getUnivBoardDB(queryData));
+        }
     };
 
     //검색어 입력창 onChange 이벤트 핸들링
@@ -156,14 +151,14 @@ const SearchBox = ({
 
     return (
         <React.Fragment>
-            {console.log(ReduxSelectedTag)}
             <SearchBoxContainer>
                 {page && (
                     <TitleContainer>
+                        {page === "univboard"&&<UnivName>{univName}</UnivName>}
                         <TitleSpan onClick={() => handleGoToList(page)}>
                             {page === "freeboard"
                                 ? "자유 게시판"
-                                : `대학 게시판 (${univName})`}
+                                : "대학 게시판"}
                         </TitleSpan>
                     </TitleContainer>
                 )}
@@ -212,14 +207,18 @@ const SearchBox = ({
                                 getContentAnchorEl: null,
                                 anchorOrigin: {
                                     vertical: "bottom",
+                                    horizontal: "left",
                                 },
                             }}
+                            defaultValue="date"
                             disableUnderline
                             value={order}
                             outlined="false"
                             onChange={handleOrderChange}
                         >
-                            <option value={"date"}>작성일</option>
+                            <option defaultValue value={"date"}>
+                                작성일
+                            </option>
                             <option value={"relative"}>관련순</option>
                         </Select>
                         <SearchForm onSubmit={handleSearch}>
@@ -255,7 +254,6 @@ const SearchBoxContainer = styled.div`
 const TitleContainer = styled.div`
     /* margin-bottom: 10px; */
     padding-bottom: 10px;
-    ${mixin.flexBox("space-between", "flex-end")}
     ${mixin.outline("1.5px solid", "gray4", "bottom")}
 
     //모바일 사이즈
@@ -263,6 +261,17 @@ const TitleContainer = styled.div`
         padding-bottom: ${({ theme }) => theme.calRem(8)};
     }
 `;
+
+const UnivName = styled.span`
+display: inline-block;
+    margin-bottom: 10px;
+    width:100%;
+    ${mixin.textProps(20, "semiBold", "gray2")};
+    @media ${({ theme }) => theme.mobile} {
+        ${mixin.textProps(12, "semiBold", "gray2")};
+    }
+`
+
 const TitleSpan = styled.span`
     cursor: pointer;
     ${mixin.textProps(30, "extraBold", "black")};

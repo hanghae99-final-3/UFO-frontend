@@ -9,27 +9,20 @@ import { history } from "../../Redux/configureStore";
 import { GrEdit } from "react-icons/gr";
 import { BiArrowToTop } from "react-icons/bi";
 
-const FloatBox = () => {
+//컴포넌트
+import FloatSelectCountry from "../Shared/FloatSelectCountry";
+
+const Float = () => {
     const { pathname } = useLocation();
     const [isWriteBntOn, setIsWriteBntOn] = useState(false); //작성버튼을 보여줄지 말지에 대한 판별값, 자유게시판, 국가게시판이면 글쓰기버튼이 생긴다.
     const [isScrollTopBtnOn, setIsScrollTopBtnOn] = useState(false); //위로가기 버튼을 보여줄지 말지에 대한 판별값
-    const [isOpenCountrySeletor, setIsOpenCountrySeletor] = useState(false); //국가선택셀렉터를 열고 닫는 토글값
     const isDesktop =
         document.documentElement.clientWidth >= 1080 ? true : false;
 
-    const [selectedCountry, setSelectedCountry] = useState("");
     const goToWrite = () => {
         //pathname이 freeboard면 자유게시판작성페이지로, 아니면 대학게시판작성페이지로 보낸다.
         if (pathname === "/freeboard") return history.push("/freeboard/write");
         history.push("/univboard/write");
-    };
-
-    const openCountrySelecter = () => {
-        setIsOpenCountrySeletor(!isOpenCountrySeletor);
-    };
-
-    const handleCountryChange = e => {
-        console.log(e);
     };
 
     const scrollToTop = () => {
@@ -61,46 +54,30 @@ const FloatBox = () => {
     }, [pathname]);
 
     return (
-        <Container>
-            {isOpenCountrySeletor ? (
-                <ButtonText
-                    onClick={openCountrySelecter}
-                    isSelected={isOpenCountrySeletor}
-                >
-                    국가선택
-                </ButtonText>
-            ) : (
-                <Button onClick={openCountrySelecter}>
-                    <ButtonText>국가</ButtonText>
-                </Button>
-            )}
-
-            {isOpenCountrySeletor && (
-                <CountrySelector
-                    isBtnOn={isOpenCountrySeletor}
-                    onChange={handleCountryChange}
-                >
-                    <Option value="전체">전체</Option>
-                    <Option value="미국">미국</Option>
-                    <Option value="영국">영국</Option>
-                    <Option value="호주">호주</Option>
-                </CountrySelector>
-            )}
-            {!isDesktop && isWriteBntOn && (
-                <Button onClick={goToWrite}>
-                    <GrEdit />
-                </Button>
-            )}
-            {isScrollTopBtnOn && (
-                <Button onClick={scrollToTop}>
-                    <BiArrowToTop />
-                </Button>
-            )}
-        </Container>
+        <FloatContainer>
+            {/* 국가 선택 */}
+            <FloatBox>
+                <FloatSelectCountry />
+                {!isDesktop && isWriteBntOn && (
+                    <Button onClick={goToWrite}>
+                        <GrEdit />
+                    </Button>
+                )}
+                {isScrollTopBtnOn && (
+                    <Button onClick={scrollToTop}>
+                        <BiArrowToTop />
+                    </Button>
+                )}
+            </FloatBox>
+        </FloatContainer>
     );
 };
 
-const Container = styled.div`
+const FloatContainer = styled.div`
+    position: relative;
+`;
+
+const FloatBox = styled.div`
     ${mixin.floatBox(
         "fixed",
         null,
@@ -148,34 +125,4 @@ const Button = styled.button`
     }
 `;
 
-const ButtonText = styled.span`
-    ${mixin.textProps(12, "regular", "gray2")}
-    background: white;
-    text-align: center;
-    ${props => (props.isSelected ? mixin.outline("1px solid", "mainBlue") : "")}
-    border-radius: 10px 10px 0 0;
-    padding: 5px 0;
-    cursor: pointer;
-`;
-
-const CountrySelector = styled.div`
-    ${props => (props.isBtnOn ? `display:block;` : `display:none;`)};
-    border-radius: 0 0 18px 18px;
-    background-color: ${props => props.theme.color.mainBlue};
-    color: ${props => props.theme.color.white};
-    padding: ${({ theme }) => `${theme.calRem(10)}`};
-    text-align: center;
-    /* padding: ${({ theme }) => `${theme.calRem(12)} ${theme.calRem(33)}`}; */
-`;
-
-const Option = styled.div`
-    ${props =>
-        props.currentCountryId == props.id
-            ? mixin.textProps(18, "semiBold", "mainMint")
-            : mixin.textProps(18, "semiBold", "blue3")};
-    :not(:last-child) {
-        margin-bottom: ${({ theme }) => theme.calRem(7)};
-    }
-`;
-
-export default FloatBox;
+export default Float;

@@ -6,9 +6,7 @@ import { logoutUser } from "../../Redux/Modules/userSlice";
 import { onLogout } from "../../Redux/Modules/univBoardSlice";
 import { history } from "../../Redux/configureStore";
 
-import Trend from "react-trend";
 import mixin from "../../Styles/Mixin";
-import DefaultButton from "../../Elements/Buttons/DefaultButton";
 
 const MypageHeader = props => {
     const dispatch = useDispatch();
@@ -38,7 +36,10 @@ const MypageHeader = props => {
                 )}
 
                 <UnivNameBox>
-                    <Greeting>{user && user.nickname}님, 반갑습니다!!</Greeting>
+                    <Greeting>
+                        {user && user.nickname}님<br />
+                        반갑습니다👋
+                    </Greeting>
                     <LogoutButton onClick={handleLogout}>로그아웃</LogoutButton>
                 </UnivNameBox>
                 <MyActivityContainer>
@@ -94,6 +95,7 @@ const LogoutButton = styled.button`
     height: 32px;
     border-radius: 60px;
     background-color: ${props => props.theme.color.mainBlue};
+    ${mixin.boxShadow()};
     ${mixin.textProps(18, "semiBold", "white")};
 
     @media ${({ theme }) => theme.mobile} {
@@ -138,6 +140,7 @@ const ActivityButton = styled.button`
     width: 150px;
     border-radius: 76px;
     background: none;
+    ${mixin.boxShadow()};
     ${mixin.flexBox("center", "center", null, "40px")};
     ${mixin.outline("2px solid", "blue3")};
     ${mixin.textProps(18, "semiBold", "gray3")};

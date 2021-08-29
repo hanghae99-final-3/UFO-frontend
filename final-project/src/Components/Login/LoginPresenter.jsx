@@ -12,7 +12,7 @@ import SocialLogin from "./SocialLogin";
 import * as Yup from "yup";
 import { useFormik } from "formik";
 
-import { FormControlLabel, Checkbox } from "@material-ui/core";
+import { Checkbox } from "@material-ui/core";
 
 const LoginPresenter = ({
     validate,

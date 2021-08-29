@@ -6,7 +6,6 @@ const KakaoLogin = () => {
             const response = await instance.get("/auth/kakao/callback");
             return response;
         };
-        console.log("abc", abc());
     });
     return <div>kakao login box</div>;
 };
