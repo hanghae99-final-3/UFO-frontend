@@ -130,7 +130,7 @@ const BoardWrite = ({ boardName }) => {
             : categories.univCategory;
     //----
 
-    const goBackBoard = () => {
+    const goBoard = () => {
         //뒤로가기를 누르면 원래 게시판페이지로 돌아갑니다.
         if (boardName === "freeboard") history.push(`/freeboard`);
         if (boardName === "univboard") history.push(`/univboard`);
@@ -208,7 +208,7 @@ const BoardWrite = ({ boardName }) => {
             //게시글 수정모드
             <>
                 {/* 게시판제목 */}
-                <BoardTitle>
+                <BoardTitle onClick={goBoard}>
                     <h3>
                         {boardName === "freeboard"
                             ? "자유게시판"
@@ -238,7 +238,7 @@ const BoardWrite = ({ boardName }) => {
         // 게시글 작성모드
         <>
             {/* 게시판제목 */}
-            <BoardTitle>
+            <BoardTitle onClick={goBoard}>
                 <h3>
                     {boardName === "freeboard" ? "자유 게시판" : "대학 게시판"}
                 </h3>
@@ -333,7 +333,7 @@ const BoardWrite = ({ boardName }) => {
 
             {/* 컨트롤 버튼 */}
             <Controls>
-                <DefaultButton rightGap="15px" onClick={goBackBoard}>
+                <DefaultButton rightGap="15px" onClick={goBoard}>
                     취소
                 </DefaultButton>
                 <DefaultButton onClick={addPost}>등록</DefaultButton>
@@ -343,6 +343,7 @@ const BoardWrite = ({ boardName }) => {
 };
 
 const BoardTitle = styled.div`
+    cursor: pointer;
     ${mixin.outline("1px solid", "gray4", "bottom")}
     h3 {
         ${mixin.textProps(30, "extraBold", "black")}
