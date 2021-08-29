@@ -132,8 +132,11 @@ export default function SelectCountry() {
 const Container = styled.div`
     ${mixin.flexBox(null, null, "column", null)};
     ${mixin.floatBox("relative")}
-    width: ${({ theme }) => theme.calRem(60)};
     cursor: pointer;
+    width: ${({ theme }) => theme.calRem(60)};
+    @media ${({ theme }) => theme.mobile} {
+        width: ${({ theme }) => theme.calRem(48)};
+    }
 `;
 
 const Button = styled.button`
@@ -151,6 +154,11 @@ const Button = styled.button`
         @media ${({ theme }) => theme.mobile} {
             ${mixin.textProps(28, "regular", "gray2")}
         }
+    }
+    @media ${({ theme }) => theme.mobile} {
+        width: ${({ theme }) => theme.calRem(48)};
+        height: ${({ theme }) => theme.calRem(48)};
+        ${mixin.textProps(28, "regular", "gray3")}
     }
 `;
 
@@ -174,6 +182,9 @@ const Icon = styled.div`
 
 const SeletName = styled.span`
     ${mixin.textProps(18, "semiBold", "gray2")}
+    @media ${({ theme }) => theme.mobile} {
+        ${mixin.textProps(12, "semiBold", "gray2")}
+    }
 `;
 
 const CountrySelector = styled.div`
@@ -193,5 +204,11 @@ const Option = styled.div`
             : mixin.textProps(18, "semiBold", "blue3")};
     :not(:last-child) {
         margin-bottom: ${({ theme }) => theme.calRem(7)};
+    }
+    @media ${({ theme }) => theme.mobile} {
+        ${props =>
+            props.isSelected
+                ? mixin.textProps(12, "semiBold", "mainMint")
+                : mixin.textProps(12, "semiBold", "blue3")};
     }
 `;
