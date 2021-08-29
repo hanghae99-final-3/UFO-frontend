@@ -27,6 +27,7 @@
         "@ckeditor/ckeditor5-table": "^29.0.0",
         "@ckeditor/ckeditor5-theme-lark": "^29.0.0",
         "@ckeditor/ckeditor5-typing": "^29.0.0",
+        "@ckeditor/ckeditor5-ui": "^29.1.0",
         "@ckeditor/ckeditor5-upload": "^29.0.0",
         "@craco/craco": "^6.2.0",
         "@fortawesome/fontawesome-free": "^5.15.3",

@@ -160,10 +160,11 @@ const SearchBox = ({
             <SearchBoxContainer>
                 {page && (
                     <TitleContainer>
+                        {page === "univboard"&&<UnivName>{univName}</UnivName>}
                         <TitleSpan onClick={() => handleGoToList(page)}>
                             {page === "freeboard"
                                 ? "자유 게시판"
-                                : `대학 게시판 (${univName})`}
+                                : "대학 게시판"}
                         </TitleSpan>
                     </TitleContainer>
                 )}
@@ -255,7 +256,6 @@ const SearchBoxContainer = styled.div`
 const TitleContainer = styled.div`
     /* margin-bottom: 10px; */
     padding-bottom: 10px;
-    ${mixin.flexBox("space-between", "flex-end")}
     ${mixin.outline("1.5px solid", "gray4", "bottom")}
 
     //모바일 사이즈
@@ -263,6 +263,17 @@ const TitleContainer = styled.div`
         padding-bottom: ${({ theme }) => theme.calRem(8)};
     }
 `;
+
+const UnivName = styled.span`
+display: inline-block;
+    margin-bottom: 10px;
+    width:100%;
+    ${mixin.textProps(20, "semiBold", "gray2")};
+    @media ${({ theme }) => theme.mobile} {
+        ${mixin.textProps(12, "semiBold", "gray2")};
+    }
+`
+
 const TitleSpan = styled.span`
     cursor: pointer;
     ${mixin.textProps(30, "extraBold", "black")};
