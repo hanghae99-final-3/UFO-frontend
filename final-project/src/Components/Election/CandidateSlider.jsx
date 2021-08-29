@@ -13,7 +13,6 @@ import { FaArrowRight, FaArrowLeft } from "react-icons/fa";
 import Boop from "../../Elements/Animations/Boop";
 import CandidateIntroBox from "./CandidateIntroBox";
 import CustomSlider from "./CustomSlider";
-const isMobile = document.documentElement.clientWidth < 798 ? true : false;
 
 const CandidateSlider = ({ candidateList }) => {
     const NextArrow = ({ onClick }) => {

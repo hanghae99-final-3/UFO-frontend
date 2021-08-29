@@ -116,7 +116,7 @@ const isDesktop =
                 {/* 학교 게시판 불러오기*/}
                 {isAuthenticated !== null && isLoggedIn && (
                     <PreviewBoardBox
-                        title="학교 게시판"
+                        title="🎓학교 게시판"
                         fixedList={announcement && announcement.slice(0, 2)}
                         postList={
                             univBoardPostList && univBoardPostList.slice(0, 6)
@@ -198,9 +198,9 @@ const isDesktop =
                     /* country ==== 0 , 즉 전체 선택의 경우 
                     필터하지 않은 포스트를 props로 전달한다.*/
                     <PreviewBoardBox
-                        title="자유 게시판"
+                        title="🗽자유 게시판"
                         postList={
-                            freeBoardPostList && freeBoardPostList.slice(0, 8)
+                            freeBoardPostList && freeBoardPostList.slice(0, 6)
                         }
                         boardName="freeboard"
                     />
@@ -208,14 +208,14 @@ const isDesktop =
                     /*  유저가 특정 국가를 선택했을 경우, 자유 게시판을 
                     해당 국의 게시글로 필터링하여 props로 전달한다.*/
                     <PreviewBoardBox
-                        title="자유 게시판"
+                        title="🗽자유 게시판"
                         postList={
                             freeBoardPostList &&
                             freeBoardPostList
                                 .filter(
                                     post => post.country_id === selectedCountry,
                                 )
-                                .slice(0, 8)
+                                .slice(0, 6)
                         }
                         boardName="freeboard"
                     />
@@ -237,7 +237,7 @@ const isDesktop =
                                                 post.category ===
                                                 category.categoryId,
                                         )
-                                        .slice(0, 8)}
+                                        .slice(0, 6)}
                                     boardName="freeboard"
                                 />
                             );
@@ -257,7 +257,7 @@ const isDesktop =
                                                 post.country_id ===
                                                     selectedCountry,
                                         )
-                                        .slice(0, 8)}
+                                        .slice(0, 6)}
                                 />
                             );
                         }

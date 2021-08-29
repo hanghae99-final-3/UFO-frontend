@@ -74,7 +74,7 @@ const Float = () => {
 };
 
 const FloatContainer = styled.div`
-    position:relative;
+    position: relative;
 `;
 
 const FloatBox = styled.div`
@@ -91,7 +91,6 @@ const FloatBox = styled.div`
         bottom: ${theme.calRem(100)};
     }
 `;
-
 
 const Button = styled.button`
     background: ${({ theme }) => theme.color.white};

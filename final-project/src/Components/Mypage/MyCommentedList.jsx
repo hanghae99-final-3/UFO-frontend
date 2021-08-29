@@ -29,7 +29,6 @@ const MyCommentedList = () => {
             })
             .then(res => {
                 if (res.data.ok) {
-                    console.log(res.data);
                     setPostList(prev => [...prev, ...res.data.my_comments]);
                     setTotalPage(res.data.totalPage);
                     setNextPage(currentPage + 1);

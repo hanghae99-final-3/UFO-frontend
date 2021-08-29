@@ -3,11 +3,9 @@ import styled from "styled-components";
 import { history } from "../../Redux/configureStore";
 import mixin from "../../Styles/Mixin";
 import categories from "../../Shared/categories";
-import { MdComment } from "react-icons/md";
+
 import VisibilityIcon from "@material-ui/icons/Visibility";
-import moment from "moment";
-import FavoriteIcon from "@material-ui/icons/Favorite";
-import FavoriteBorder from "@material-ui/icons/FavoriteBorder";
+
 import DefaultTag from "../../Elements/Tag/DefaultTag";
 
 const IssueBoardBox = ({ issueList, boardName }) => {

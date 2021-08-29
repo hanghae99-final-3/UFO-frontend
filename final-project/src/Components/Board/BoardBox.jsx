@@ -3,7 +3,6 @@ import mixin from "../../Styles/Mixin"; // 믹스인 css 객체
 import styled from "styled-components"; // 스타일 컴포넌트 라이브러리
 import categories from "../../Shared/categories"; // 게시물 태그 카테고리 객체
 import { history } from "../../Redux/configureStore"; // 히스토리 객체
-import { useDispatch } from "react-redux";
 
 import { MdComment } from "react-icons/md"; // 댓글 아이콘
 import VisibilityIcon from "@material-ui/icons/Visibility"; // 조회수 아이콘
@@ -14,7 +13,6 @@ import { makeStyles } from "@material-ui/core"; // material ui 스타일링 훅�
 //컴포넌트
 import AnnounceTag from "../../Elements/Tag/AnnounceTag";
 import DefaultTag from "../../Elements/Tag/DefaultTag";
-import { setTagReducer } from "../../Redux/Modules/freeBoardSlice";
 
 const useStyles = makeStyles({
     heart: {
@@ -83,77 +81,36 @@ const BoardBox = ({ postList, fixedList, boardName, announcement }) => {
                     ))}
                 {postList &&
                     postList.map((post, idx) => (
-                        <>
-                            <PostContainer
-                                key={idx}
-                                onClick={() => {
-                                    _onClick(post.post_id, post?.category);
-                                }}
-                            >
-                                <GridContainer>
-                                    <DefaultTag
-                                        announcement={announcement}
-                                        rightGap={isDesktop ? "20px" : "8px"}
-                                    >
-                                        {!announcement && "#"}
-                                        {boardName === "freeboard" &&
-                                            !announcement &&
-                                            categories.freeCategory[
-                                                post.category
-                                            ]?.categoryName}
-                                        {boardName === "univboard" &&
-                                            !announcement &&
-                                            categories.univCategory[
-                                                post.category
-                                            ]?.categoryName}
-                                        {boardName === "univboard" &&
-                                            boardName &&
-                                            announcement &&
-                                            "공지"}
-                                    </DefaultTag>
-                                    <PostTitle>{post.title}</PostTitle>
-                                    {/* 데스크탑 */}
-                                    {isDesktop ? (
-                                        <IconContainer>
-                                            <>
-                                                <Icon>
-                                                    {post?.like?.is_like ===
-                                                    false ? (
-                                                        <FavoriteBorder />
-                                                    ) : (
-                                                        <FavoriteIcon
-                                                            className={
-                                                                classes.heart
-                                                            }
-                                                        />
-                                                    )}
-                                                    <IconSpan>
-                                                        {post.like &&
-                                                            post.like.all_like}
-                                                    </IconSpan>
-                                                </Icon>
-                                                <Icon>
-                                                    <MdComment />
-                                                    <IconSpan>
-                                                        {post.comment_count}
-                                                    </IconSpan>
-                                                </Icon>
-                                            </>
-                                            <Icon>
-                                                <VisibilityIcon />
-                                                <IconSpan>
-                                                    {post.view_count}
-                                                </IconSpan>
-                                            </Icon>
-                                        </IconContainer>
-                                    ) : null}
-                                </GridContainer>
-                                {isMobile && (
+                        <PostContainer
+                            key={idx}
+                            onClick={() => {
+                                _onClick(post.post_id, post?.category);
+                            }}
+                        >
+                            <GridContainer>
+                                <DefaultTag
+                                    announcement={announcement}
+                                    rightGap={isDesktop ? "20px" : "8px"}
+                                >
+                                    {!announcement && "#"}
+                                    {boardName === "freeboard" &&
+                                        !announcement &&
+                                        categories.freeCategory[post.category]
+                                            ?.categoryName}
+                                    {boardName === "univboard" &&
+                                        !announcement &&
+                                        categories.univCategory[post.category]
+                                            ?.categoryName}
+                                    {boardName === "univboard" &&
+                                        boardName &&
+                                        announcement &&
+                                        "공지"}
+                                </DefaultTag>
+                                <PostTitle>{post.title}</PostTitle>
+                                {/* 데스크탑 */}
+                                {isDesktop ? (
                                     <IconContainer>
-                                        <Username>
-                                            {post["user.nickname"]}
-                                        </Username>
-                                        <IconWrapper>
+                                        <>
                                             <Icon>
                                                 {post?.like?.is_like ===
                                                 false ? (
@@ -176,18 +133,50 @@ const BoardBox = ({ postList, fixedList, boardName, announcement }) => {
                                                     {post.comment_count}
                                                 </IconSpan>
                                             </Icon>
-
-                                            <Icon>
-                                                <VisibilityIcon />
-                                                <IconSpan>
-                                                    {post.view_count}
-                                                </IconSpan>
-                                            </Icon>
-                                        </IconWrapper>
+                                        </>
+                                        <Icon>
+                                            <VisibilityIcon />
+                                            <IconSpan>
+                                                {post.view_count}
+                                            </IconSpan>
+                                        </Icon>
                                     </IconContainer>
-                                )}
-                            </PostContainer>
-                        </>
+                                ) : null}
+                            </GridContainer>
+                            {isMobile && (
+                                <IconContainer>
+                                    <Username>{post["user.nickname"]}</Username>
+                                    <IconWrapper>
+                                        <Icon>
+                                            {post?.like?.is_like === false ? (
+                                                <FavoriteBorder />
+                                            ) : (
+                                                <FavoriteIcon
+                                                    className={classes.heart}
+                                                />
+                                            )}
+                                            <IconSpan>
+                                                {post.like &&
+                                                    post.like.all_like}
+                                            </IconSpan>
+                                        </Icon>
+                                        <Icon>
+                                            <MdComment />
+                                            <IconSpan>
+                                                {post.comment_count}
+                                            </IconSpan>
+                                        </Icon>
+
+                                        <Icon>
+                                            <VisibilityIcon />
+                                            <IconSpan>
+                                                {post.view_count}
+                                            </IconSpan>
+                                        </Icon>
+                                    </IconWrapper>
+                                </IconContainer>
+                            )}
+                        </PostContainer>
                     ))}
             </Content>
         </BoardContainer>

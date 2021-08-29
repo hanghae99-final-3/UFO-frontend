@@ -44,6 +44,7 @@ const BoardComment = ({ boardName }) => {
         if (boardName === "freeboard")
             return dispatch(getFreeCommentListDB(postId));
         dispatch(getUnivBoardCommentDB(postId));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const addComment = () => {
@@ -248,7 +249,7 @@ const Comment = ({ comment, boardName, postId }) => {
                     {/* 현재시간과 댓글생성시간과 비교한 시간 (지금은 댓글생성시간으로 표기됨) */}
                     <Time>
                         {TimeCounting(
-                            comment.createdAt.replace(/\-/g, "/"),
+                            comment.createdAt.replace(/-/g, "/"),
                             timeOption,
                         )}
                     </Time>
@@ -327,7 +328,7 @@ const UserImage = styled.img`
 const Controls = styled.div`
     line-height: 1;
     button {
-        ${mixin.textProps(14, "semiBod", "gray1")}
+        ${mixin.textProps(14, "semiBold", "gray1")}
         border-radius: 10px;
         background: white;
     }
@@ -365,11 +366,11 @@ const UserName = styled.span`
     }
 `;
 const Time = styled.span`
-    ${mixin.textProps(14, "semiBod", "gray2")};
+    ${mixin.textProps(14, "semiBold", "gray2")};
 
     @media ${({ theme }) => theme.mobile} {
         margin-left: 10px;
-        ${mixin.textProps(12, "semiBod", "gray2")};
+        ${mixin.textProps(12, "semiBold", "gray2")};
     }
 `;
 

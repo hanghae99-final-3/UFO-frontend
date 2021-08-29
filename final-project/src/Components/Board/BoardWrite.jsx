@@ -78,6 +78,7 @@ const BoardWrite = ({ boardName }) => {
                     .then(res => setPost(res.data.result));
             }
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     //----
 

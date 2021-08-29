@@ -33,6 +33,7 @@ const CongratulationMessageBox = ({ electionPostId }) => {
             };
             dispatch(getCongratulationDB(req));
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [dispatch]);
 
     const addComment = () => {
@@ -214,10 +215,10 @@ const Header = styled.div`
     margin-bottom: 2px;
 `;
 const Time = styled.span`
-    ${mixin.textProps(14, "semiBod", "blue2")}
+    ${mixin.textProps(14, "semiBold", "blue2")}
 `;
 const UserName = styled.span`
-    ${mixin.textProps(14, "semiBod", "blue2")}
+    ${mixin.textProps(14, "semiBold", "blue2")}
 `;
 
 const UserImage = styled.img`
@@ -243,7 +244,7 @@ const CommentContent = styled.p``;
 const Controls = styled.div`
     line-height: 1;
     button {
-        ${mixin.textProps(14, "semiBod", "blue2")}
+        ${mixin.textProps(14, "semiBold", "blue2")}
         border-radius: 10px;
         background: transparent;
     }

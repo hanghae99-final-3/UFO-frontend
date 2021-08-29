@@ -27,8 +27,8 @@ const SupportUniv = forwardRef((props, ref) => {
                         <CuntryBox key={idx}>
                             <CuntryTitle>{country?.countryName}</CuntryTitle>
                             <UnivList>
-                                {country.list.map(ele => (
-                                    <UnivTitle>{ele}</UnivTitle>
+                                {country.list.map((ele, idx) => (
+                                    <UnivTitle key={idx}>{ele}</UnivTitle>
                                 ))}
                             </UnivList>
                         </CuntryBox>

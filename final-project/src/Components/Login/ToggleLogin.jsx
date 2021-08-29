@@ -6,16 +6,9 @@ import { Formik, Form } from "formik";
 //머테리얼 ui
 import { makeStyles } from "@material-ui/styles";
 import { LoginTextField } from "./LoginTextField";
-import {
-    Grid,
-    Typography,
-    Button,
-    FormControlLabel,
-    Checkbox,
-} from "@material-ui/core";
+import { Grid, FormControlLabel, Checkbox } from "@material-ui/core";
 
 //컴포넌트
-import SocialLogin from "./SocialLogin";
 
 const useStyles = makeStyles({
     mainContainer: {
