@@ -27,7 +27,7 @@ const MyPostBoardBox = ({
     // 게시물 클릭시 이벤틀 헨들러
     const _onClick = (postId, board) => {
         //자유게시판일때,
-        console.log("clicked");
+
         if (board === "free")
             return history.push(`/freeboard/detail/${postId}`);
         //학교게시판일때,

@@ -1,6 +1,6 @@
-import { createMuiTheme } from "@material-ui/core";
+import { createTheme } from "@material-ui/core/styles";
 
-export const MuiTheme = createMuiTheme({
+export const MuiTheme = createTheme({
     overrides: {
         MuiInput: {
             underline: {

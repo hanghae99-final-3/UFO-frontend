@@ -1,6 +1,4 @@
 import React, { Component } from "react";
-import styled from "styled-components";
-import mixin from "../../Styles/Mixin";
 
 class Clock extends Component {
     constructor(props) {

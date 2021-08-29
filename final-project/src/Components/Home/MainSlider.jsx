@@ -87,7 +87,7 @@ const MainSlider = ({ postList }) => {
 
     return (
         <SlideContainer>
-            <PageTitle>인기 게시글</PageTitle>
+            <PageTitle>🔥인기 게시글</PageTitle>
             <Slider {...settings}>
                 {postList &&
                     postList.map((post, idx) => (

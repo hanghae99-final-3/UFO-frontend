@@ -29,7 +29,7 @@ const FloatBox = () => {
     };
 
     const handleCountryChange = e => {
-        console.log(e);
+        // console.log(e);
     };
 
     const scrollToTop = () => {
