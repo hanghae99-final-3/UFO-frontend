@@ -345,12 +345,12 @@ const StyledEditor = styled.div`
         }
 
         //에디터 글쓰는 란이 포커싱되면 위의 플러그인툴바가 스티키되기때문에, 콘텐츠 란의 padding을 조정한다!
-        &.ck-focused{
+        /* &.ck-focused{
  padding: ${theme.calRem(40)} ${theme.calRem(10)};
  @media ${({ theme }) => theme.mobile} {
             padding: ${theme.calRem(40)} ${theme.calRem(10)};
         }
-        }
+        } */
     }
 
     .ck-sticky-panel__content_sticky{
