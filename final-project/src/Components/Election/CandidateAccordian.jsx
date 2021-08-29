@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import mixin from "../../Styles/Mixin";
+import theme from "../../Styles/theme";
 
 //컴포넌트
 import DefaultButton from "../../Elements/Buttons/DefaultButton";
@@ -52,7 +53,10 @@ const CandidateAccordian = ({
                             id="panel1a-header"
                             onClick={() => setFocusList(`${idx}`)}
                         >
-                            <CandidateTitle>기호 {idx + 1}번</CandidateTitle>
+                            <CandidateTitle>
+                                <span>기호 {idx + 1}번</span>
+                                <span>{ele?.name}</span>
+                            </CandidateTitle>
                             <DefaultButton onClick={() => deleteCard(idx)}>
                                 삭제
                             </DefaultButton>
@@ -67,7 +71,7 @@ const CandidateAccordian = ({
                                         {/* 후보자의 이미지가 있으면 보여주고, 아니면 기본문자열을 보여줍니다. */}
                                         {ele.photo ? (
                                             <img
-                                                src={`http://3.36.90.60/${ele.photo}`}
+                                                src={`https://yzkim9501.site/${ele.photo}`}
                                                 alt={ele.name}
                                             />
                                         ) : (
@@ -150,21 +154,23 @@ const StyledAccordion = styled.div`
 
 const CandidateTitle = styled.span`
     ${mixin.textProps(30, "extraBold", "gray2")}
-    margin-right: 10px;
+    span:first-child {
+        margin-right: ${({ theme }) => theme.calRem(10)};
+    }
 `;
 
 const CandidateControls = styled.div`
-    margin: 10px 0;
+    margin: ${({ theme }) => theme.calRem(10)} 0;
     ${mixin.flexBox("space-between", "center")}
 `;
 
 const Freeview = styled.div`
     ${mixin.floatBox("relative")}
-    width: 210px;
+    width: ${({ theme }) => theme.calRem(210)};
     border-radius: 25px;
-    ${mixin.flexBox("center", "center", null, "250px")}
+    ${mixin.flexBox("center", "center", null, `${theme.calRem(250)}`)}
     ${mixin.boxShadow()};
-    margin-right: 80px;
+    margin-right: ${theme.calRem(80)};
     img {
         width: 100%;
         height: 100%;
@@ -178,7 +184,7 @@ const CandidateWriteBox = styled.div`
     display: flex;
     justify-content: space-between;
     width: 100%;
-    padding: 30px 70px;
+    padding: ${({ theme }) => `${theme.calRem(30)} ${theme.calRem(70)}`};
 `;
 const CandidateImage = styled.div``;
 
@@ -193,7 +199,7 @@ const Uploader = styled.input`
 const CandidateContent = styled.div`
     display: grid;
     grid-template-columns: 50px 1fr;
-    gap: 40px 10px;
+    gap: ${({ theme }) => `${theme.calRem(40)} ${theme.calRem(10)}`};
     width: 100%;
     align-items: flex-start;
     span {
@@ -203,7 +209,7 @@ const CandidateContent = styled.div`
     textarea {
         width: 100%;
         all: unset;
-        padding-bottom: 10px;
+        padding-bottom: ${({ theme }) => theme.calRem(10)};
         ${mixin.outline("1px solid", "gray4", "bottom")}
         ${mixin.textProps(20, "regular", "gray2")}
         transition: border-bottom 1s ease;
@@ -215,7 +221,7 @@ const CandidateContent = styled.div`
         }
     }
     textarea {
-        height: 100px;
+        height: ${({ theme }) => theme.calRem(100)};
     }
 `;
 

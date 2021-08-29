@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Helmet } from "react-helmet";
 import categories from "../../Shared/categories";
 import { withRouter } from "react-router-dom";
+import { history } from "../../Redux/configureStore";
 
 //통신
 import { getUnivBoardDB } from "../../Redux/Async/univBoard";
@@ -83,11 +84,7 @@ const UnivBoard = () => {
             <Helmet>
                 <title>UFO - 대학 게시판</title>
             </Helmet>
-            <SearchBox
-                searchTag={categories.univBoardTags}
-                page="univboard"
-                pushButton={true}
-            />
+            <SearchBox searchTag={categories.univBoardTags} page="univboard" />
             <BoardContentContainer>
                 {announcement && announcement.length > 0 && (
                     <BoardBox
@@ -112,7 +109,11 @@ const UnivBoard = () => {
                             onChange={handlePage}
                         />
                     </div>
-                    <DefaultButton>글쓰기</DefaultButton>
+                    <DefaultButton
+                        onClick={() => history.push("univboard/write")}
+                    >
+                        글쓰기
+                    </DefaultButton>
                 </PaginationContainer>
             </MuiThemeProvider>
         </>
@@ -127,6 +128,7 @@ const PaginationContainer = styled.div`
     .MuiPagination-ul {
         justify-content: center;
     }
+
     ${mixin.floatBox("relative")};
     > button {
         ${mixin.floatBox("absolute", "0", "0")}

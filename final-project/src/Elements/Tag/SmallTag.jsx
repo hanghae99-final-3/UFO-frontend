@@ -17,7 +17,7 @@ const Tag = styled.span`
     height: 22px;
     min-width: 74px;
     border-radius: 16px;
-    box-shadow: 0 5px 5px -4px #cdcdcd;
+    ${mixin.boxShadow()}
     background-color: ${props =>
         props.announcement ? props.theme.color.mint : "white"};
     ${props =>
@@ -26,6 +26,17 @@ const Tag = styled.span`
         mixin.outline("2px solid", props.announcement ? "mint" : "blue1")};
     ${props => props.rightGap && `margin-right:${props.rightGap};`};
     ${props => props.leftGap && `margin-left:${props.leftGap};`};
+
+    @media ${({ theme }) => theme.mobile} {
+        min-width: ${({ theme }) => theme.calRem(62)};
+        height: ${({ theme }) => theme.calRem(24)};
+        ${props =>
+            mixin.textProps(
+                11,
+                "semiBold",
+                props.announcement ? "black" : "gray1",
+            )}
+    }
 `;
 
 export default SmallTag;

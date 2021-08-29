@@ -13,12 +13,18 @@ const Tag = styled.span`
     line-height: 28px;
     margin-right: 20px;
     border-radius: 16px;
-    box-shadow: 0 5px 5px -4px #cdcdcd;
+    ${mixin.boxShadow()}
     background-color: ${props => props.theme.color.mint};
     ${mixin.outline("2px solid", "mint")};
     ${mixin.textProps(18, "semiBold", "gray1", "center")};
     ${props => props.rightGap && `margin-right:${props.rightGap};`};
     ${props => props.leftGap && `margin-left:${props.leftGap};`};
+
+    @media ${({ theme }) => theme.mobile} {
+        min-width: ${({ theme }) => theme.calRem(62)};
+        height: ${({ theme }) => theme.calRem(24)};
+        ${mixin.textProps(11, "semiBold", "gray1")};
+    }
 `;
 
 export default AnnounceTag;

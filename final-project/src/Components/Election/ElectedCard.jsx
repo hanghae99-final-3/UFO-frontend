@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import mixin from "../../Styles/Mixin";
 
@@ -51,7 +51,7 @@ const ElectedCard = ({ electionPostId, candidates }) => {
             election_id: electionPostId,
         };
         dispatch(getElectionResultDB(req));
-    }, []);
+    }, [dispatch]);
 
     return (
         <Container>
@@ -61,7 +61,7 @@ const ElectedCard = ({ electionPostId, candidates }) => {
                     <ElectedImage>
                         {electedInfo.photo ? (
                             <img
-                                src={`http://3.36.90.60/${electedInfo?.photo}`}
+                                src={`https://yzkim9501.site/${electedInfo?.photo}`}
                                 alt={electedInfo?.name}
                             />
                         ) : (

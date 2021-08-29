@@ -31,9 +31,10 @@ const ProgressBar = ({ start, end }) => {
 // 스타일 컴포넌트 작성 위치
 const Container = styled.div`
     width: 100%;
-    height: 10px;
+    height: ${({ theme }) => theme.calRem(10)};
     background-color: ${({ theme }) => theme.color.blue2};
     overflow: hidden;
+    margin: ${({ theme }) => theme.calRem(10)} 0;
 `;
 
 const Bar = styled.div`

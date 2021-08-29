@@ -37,16 +37,22 @@ const MessageContainer = styled.div`
     ${mixin.flexBox("center", "center", "column", null)};
     height: calc(100vh - ${props => props.top}px);
     width: 100%;
+    @media ${({ theme }) => theme.mobile} {
+        width: calc(100% - 30px);
+    }
     p {
-        ${mixin.textProps(40, "extraBold", "black")};
+        ${mixin.textProps(40, "extraBold", "black", "center")};
+        @media ${({ theme }) => theme.mobile} {
+            ${mixin.textProps(28, "extraBold", "black", "center")};
+        }
     }
 `;
 
 const Button = styled.button`
-    margin-top: 30px;
-    padding: 0 10px;
-    height: 46px;
-    min-width: 164px;
+    margin-top: ${({ theme }) => theme.calRem(30)};
+    padding: 0 ${({ theme }) => theme.calRem(10)};
+    height: ${({ theme }) => theme.calRem(46)};
+    min-width: ${({ theme }) => theme.calRem(164)};
     border-radius: 20px;
     background: ${({ theme }) => theme.color.mainGray};
     ${mixin.textProps(18, "semiBold", "white")};
@@ -54,6 +60,14 @@ const Button = styled.button`
     ${props => props.leftGap && `margin-left: ${props.leftGap};`};
     &:hover {
         background: ${({ theme }) => theme.color.danger};
+    }
+
+    @media ${({ theme }) => theme.mobile} {
+        ${mixin.textProps(16, "semiBold", "white")};
+        margin-top: ${({ theme }) => theme.calRem(25)};
+        height: ${({ theme }) => theme.calRem(32)};
+        min-width: ${({ theme }) => theme.calRem(118)};
+        padding: 0 ${({ theme }) => theme.calRem(5)};
     }
 `;
 

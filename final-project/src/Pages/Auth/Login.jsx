@@ -6,7 +6,9 @@ import * as Yup from "yup";
 import { loginUserDB } from "../../Redux/Async/user";
 
 //컴포넌트
-import LoginPresenter from "../../Components/Login/ToggleLogin";
+import LoginPresenter from "../../Components/Login/LoginPresenter";
+import styled from "styled-components";
+import mixin from "../../Styles/Mixin";
 
 const Login = () => {
     const dispatch = useDispatch();
@@ -47,6 +49,7 @@ const Login = () => {
             socialLoginMode={socialLoginMode}
             isRememberEmailChecked={isRememberEmailChecked}
             handleCheckBox={handleCheckBox}
+            setIsRememberEmailChecked={setIsRememberEmailChecked}
         />
     );
 };

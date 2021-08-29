@@ -5,6 +5,7 @@ import categories from "../../Shared/categories";
 import { useSelector, useDispatch } from "react-redux";
 import { history } from "../../Redux/configureStore";
 import { useParams } from "react-router";
+import theme from "../../Styles/theme";
 
 //통신
 import { freeBoardApi, univBoardApi } from "../../Shared/api";
@@ -16,6 +17,9 @@ import {
 
 //애니메이션
 import Boop from "../../Elements/Animations/Boop";
+
+//alert
+import Swal from "sweetalert2";
 
 //컴포넌트
 import Editor from "./Editor";
@@ -79,13 +83,18 @@ const BoardWrite = ({ boardName }) => {
 
     const editfreePost = () => {
         //서버에 필요한 정보를 정리하고, 포스트를 수정하는 미들웨어 함수로 보낸다.
-        if (!user.user_id) return alert("로그인을 해주세요!");
+        if (!user.user_id)
+            return Swal.fire("에러", "로그인을 해주세요!", "error");
         if (user.user_id && user.user_id !== post.user_id)
-            return alert("일치하는 사용자가 아니예요!");
-        if (user.user_id && !post.title) return alert("제목을 적어주세요!");
+            return Swal.fire("에러", "일치하는 사용자가 아니예요!", "error");
+        if (user.user_id && !post.title)
+            return Swal.fire("에러", "제목을 적어주세요!", "error");
         if (user.user_id && typeof post.content === "object")
             //CKEditor 특성상 입력값 없음은 객체다.
-            return alert("내용을 적어주세요!");
+            return Swal.fire("에러", "내용을 적어주세요!", "error");
+
+        //----본문에서 유저가 실제로 사용하는 이미지 url목록들을 솎아냅니다.
+const imgList = getImgList(post.content);
 
         if (boardName === "freeboard") {
             const req = {
@@ -94,11 +103,12 @@ const BoardWrite = ({ boardName }) => {
                 content: post.content,
                 country_id: post.country_id,
                 post_id: post.post_id,
-                img_list: post.img_list,
+                img_list: imgList,
             };
             history.push(`/freeboard/detail/${postId}`);
             dispatch(editFreePostDB(req));
         }
+
         if (boardName === "univboard") {
             const req = {
                 title: post.title,
@@ -107,7 +117,7 @@ const BoardWrite = ({ boardName }) => {
                 post_id: post.post_id,
                 is_fixed: post.is_fixed,
                 univ_id: user.univ_id,
-                img_list: post.img_list,
+                img_list: imgList,
             };
             dispatch(editUnivBoardPostDB(req));
             history.push(`/univboard/detail/${postId}`);
@@ -124,7 +134,7 @@ const BoardWrite = ({ boardName }) => {
             : categories.univCategory;
     //----
 
-    const goBackBoard = () => {
+    const goBoard = () => {
         //뒤로가기를 누르면 원래 게시판페이지로 돌아갑니다.
         if (boardName === "freeboard") history.push(`/freeboard`);
         if (boardName === "univboard") history.push(`/univboard`);
@@ -138,37 +148,38 @@ const BoardWrite = ({ boardName }) => {
         });
     };
 
-    const addPost = () => {
-        //서버에 필요한 정보를 정리하고, 포스트를 추가하는 미들웨어 함수로 보낸다.
-
-        //----본문에서 imgSrc들을 가져옵니다.
-        const apiUrl = "http://3.36.90.60/";
-        let imgList = [];
-        const getImgList = () => {
+    const getImgList = (content) => {
+        //에디터에서 받아온 컨텐츠 내용을 파싱하여 유저가 실제로 사용하는 이미지만을 솎아내는 함수입니다.
+        const apiUrl = "https://yzkim9501.site";
+        if (content.includes(apiUrl)){
             let result = [];
-            let _imgList = post.content.split(apiUrl).slice(1);
+            let _imgList = content.split(apiUrl).slice(1);
             for (let i = 0; i < _imgList.length; i++) {
                 const startIdx = _imgList[i][0];
                 const endIdx = _imgList[i].indexOf(">") - 1;
                 const imgSrc = _imgList[i].slice(startIdx, endIdx);
                 result.push(imgSrc);
             }
-            return result;
+            return result;}
         };
-        if (post.content.includes(apiUrl)) imgList = getImgList();
-        //----
 
-        if (!user.user_id) return alert("로그인을 해주세요!");
-
+    const addPost = () => {
+        //서버에 필요한 정보를 정리하고, 포스트를 추가하는 미들웨어 함수로 보낸다.
+        if (!user.user_id)
+            return Swal.fire("에러", "로그인을 해주세요!", "error");
         if (user.user_id && !post.category)
-            return alert("카테고리를 설정해주세요!");
+            return Swal.fire("에러", "카테고리를 설정해주세요!", "error");
+        if (user.user_id && !post.title)
+            return Swal.fire("에러", "제목을 적어주세요!", "error");
+        if (user.user_id && !post.content)
+            return Swal.fire("에러", "내용을 적어주세요!", "error");
 
-        if (user.user_id && !post.title) return alert("제목을 적어주세요!");
-        if (user.user_id && !post.content) return alert("내용을 적어주세요!");
+        //----본문에서 유저가 실제로 사용하는 이미지 url목록들을 솎아냅니다.
+        const imgList = getImgList(post.content);
 
         if (boardName === "freeboard") {
             if (user.user_id && !post.country_id)
-                return alert("국가를 설정해주세요!");
+                return Swal.fire("에러", "국가를 설정해주세요!", "error");
 
             const req = {
                 title: post.title,
@@ -199,7 +210,7 @@ const BoardWrite = ({ boardName }) => {
             //게시글 수정모드
             <>
                 {/* 게시판제목 */}
-                <BoardTitle>
+                <BoardTitle onClick={goBoard}>
                     <h3>
                         {boardName === "freeboard"
                             ? "자유게시판"
@@ -229,7 +240,7 @@ const BoardWrite = ({ boardName }) => {
         // 게시글 작성모드
         <>
             {/* 게시판제목 */}
-            <BoardTitle>
+            <BoardTitle onClick={goBoard}>
                 <h3>
                     {boardName === "freeboard" ? "자유 게시판" : "대학 게시판"}
                 </h3>
@@ -240,45 +251,65 @@ const BoardWrite = ({ boardName }) => {
                 {boardName === "freeboard" && (
                     <CountrySelect>
                         {/* 자유게시판이면 국가선택란이 나타난다. */}
-                        <SelectTitle>국가 설정</SelectTitle>
-                        {categories.country.map(ele => (
-                            <DefaultSelector
-                                isSelected={post?.country_id === ele.countryId}
-                                key={ele.countryId}
-                                rightGap="10px"
-                                lastNoGap
-                                onClick={() =>
-                                    setCategory("country_id", ele.countryId)
-                                }
-                            >
-                                {ele.countryName}
-                            </DefaultSelector>
-                        ))}
+                        <TagSelectTextBox>
+                            <SelectTitle>국가 설정</SelectTitle>
+                        </TagSelectTextBox>
+                        <TagSelectorBox>
+                            {categories.country.map(ele => (
+                                <DefaultSelector
+                                    isSelected={
+                                        post?.country_id === ele.countryId
+                                    }
+                                    key={ele.countryId}
+                                    rightGap="10px"
+                                    lastNoGap
+                                    onClick={() =>
+                                        setCategory("country_id", ele.countryId)
+                                    }
+                                >
+                                    {ele.countryName}
+                                </DefaultSelector>
+                            ))}
+                        </TagSelectorBox>
                     </CountrySelect>
                 )}
                 <TagSelect>
                     {/* 카테고리 중  선택하기 */}
-                    <SelectTitle>태그 설정</SelectTitle>
-                    {categoryList.map((ele, idx) => (
-                        <Boop rotation={0} timing={200} x={0} y={-7} key={idx}>
-                            <DefaultSelector
-                                isSelected={
-                                    Number(post?.category) === ele.categoryId
-                                }
-                                key={ele.categoryId}
-                                rightGap="8px"
-                                lastNoGap={categoryList.length - 1 === idx}
-                                onClick={() =>
-                                    setCategory("category", `${ele.categoryId}`)
-                                }
+                    <TagSelectTextBox>
+                        <SelectTitle>태그 설정</SelectTitle>
+                    </TagSelectTextBox>
+                    <TagSelectorBox>
+                        {categoryList.map((ele, idx) => (
+                            <Boop
+                                rotation={0}
+                                timing={200}
+                                x={0}
+                                y={-7}
+                                key={idx}
                             >
-                                #{ele.categoryName}
-                            </DefaultSelector>
-                        </Boop>
-                    ))}
+                                <DefaultSelector
+                                    isSelected={
+                                        Number(post?.category) ===
+                                        ele.categoryId
+                                    }
+                                    key={ele.categoryId}
+                                    rightGap="8px"
+                                    lastNoGap={categoryList.length - 1 === idx}
+                                    onClick={() =>
+                                        setCategory(
+                                            "category",
+                                            `${ele.categoryId}`,
+                                        )
+                                    }
+                                >
+                                    #{ele.categoryName}
+                                </DefaultSelector>
+                            </Boop>
+                        ))}
+                    </TagSelectorBox>
                 </TagSelect>
                 {boardName === "univboard" && isAdmin && (
-                    <TagSelect>
+                    <AnnounceSelect>
                         {/* 카테고리 중 카테고리 선택하기 */}
                         <SelectTitle>공지 설정</SelectTitle>
                         <AnnounceSelector
@@ -289,7 +320,7 @@ const BoardWrite = ({ boardName }) => {
                         >
                             공지글
                         </AnnounceSelector>
-                    </TagSelect>
+                    </AnnounceSelect>
                 )}
             </SelectBox>
 
@@ -304,7 +335,7 @@ const BoardWrite = ({ boardName }) => {
 
             {/* 컨트롤 버튼 */}
             <Controls>
-                <DefaultButton rightGap="15px" onClick={goBackBoard}>
+                <DefaultButton rightGap="15px" onClick={goBoard}>
                     취소
                 </DefaultButton>
                 <DefaultButton onClick={addPost}>등록</DefaultButton>
@@ -314,28 +345,76 @@ const BoardWrite = ({ boardName }) => {
 };
 
 const BoardTitle = styled.div`
+    cursor: pointer;
     ${mixin.outline("1px solid", "gray4", "bottom")}
     h3 {
         ${mixin.textProps(30, "extraBold", "black")}
-        margin-bottom: 10px;
+        margin-bottom: ${theme.calRem(10)};
+        @media ${({ theme }) => theme.mobile} {
+            ${mixin.textProps(22, "extraBold", "black")};
+            margin-bottom: ${theme.calRem(8)};
+        }
     }
 `;
 
 const SelectBox = styled.div``;
 
-const CountrySelect = styled.div`
-    padding: 10px 0;
-    ${mixin.outline("1px solid", "gray4", "bottom")}
-`;
-
-const TagSelect = styled.div`
-    padding: 10px 0;
-    ${mixin.outline("1px solid", "gray4", "bottom")}
+const TagSelectTextBox = styled.div`
+    @media ${({ theme }) => theme.mobile} {
+        position: absolute;
+        z-index: 10;
+        background: white;
+        height: ${theme.calRem(42)};
+        line-height: 42px;
+    }
 `;
 
 const SelectTitle = styled.span`
+    display: inline-block;
+    width: 60px;
     ${mixin.textProps(14, "semiBold", "gray3")}
-    margin-right: 15px;
+    @media ${({ theme }) => theme.mobile} {
+        ${mixin.textProps(11, "semiBold", "gray3")};
+    }
+`;
+
+const TagSelectorBox = styled.div`
+    @media ${({ theme }) => theme.mobile} {
+        width: 100%;
+        white-space: nowrap;
+        overflow: auto;
+        padding-left: ${({ theme }) => theme.calRem(60)};
+        ${mixin.flexBox(null, "center", null, theme.calRem(42))}
+        ::-webkit-scrollbar {
+            display: none;
+        }
+    }
+`;
+
+const CountrySelect = styled.div`
+    ${mixin.outline("1px solid", "gray4", "bottom")}
+    ${mixin.flexBox(null, "center")}
+    padding:${({ theme }) => theme.calRem(15)} 0;
+    @media ${({ theme }) => theme.mobile} {
+        padding: 0;
+    }
+`;
+
+const TagSelect = styled.div`
+    padding: ${({ theme }) => theme.calRem(15)} 0;
+    ${mixin.outline("1px solid", "gray4", "bottom")}
+    ${mixin.flexBox(null, "center")}
+        @media ${({ theme }) => theme.mobile} {
+        //TagSelect는 모바일로 갔을 때 오른쪽으로 스와이프하는 기능때문에 padding을 초기화시켜줘야한다.
+        padding: 0;
+    }
+`;
+
+const AnnounceSelect = styled.div`
+    padding: ${({ theme }) => theme.calRem(15)} 0;
+    @media ${({ theme }) => theme.mobile} {
+        padding: ${({ theme }) => theme.calRem(8)} 0;
+    }
 `;
 
 const InputTitle = styled.input`
@@ -343,7 +422,7 @@ const InputTitle = styled.input`
     ${mixin.outline("1px solid", "gray4", "bottom")};
     ${mixin.textProps(30, "extraBold", "black")};
     transition: border-bottom 1s ease;
-    padding: 20px 0;
+    padding: ${theme.calRem(20)} 0;
     width: 100%;
     transition: border-bottom 1s ease;
     :focus {
@@ -351,13 +430,24 @@ const InputTitle = styled.input`
     }
     ::placeholder {
         ${mixin.textProps(30, "extraBold", "mainGray")};
+        @media ${({ theme }) => theme.mobile} {
+            ${mixin.textProps(22, "extraBold", "mainGray")};
+        }
+    }
+
+    @media ${({ theme }) => theme.mobile} {
+        padding: ${theme.calRem(16)} 0;
+        ${mixin.textProps(22, "extraBold", "black")};
     }
 `;
 
 const Controls = styled.div`
-    margin-top: 30px;
+    margin-top: ${theme.calRem(30)};
     display: flex;
     justify-content: center;
+    @media ${({ theme }) => theme.mobile} {
+        margin-top: ${theme.calRem(24)};
+    }
 `;
 
 export default BoardWrite;

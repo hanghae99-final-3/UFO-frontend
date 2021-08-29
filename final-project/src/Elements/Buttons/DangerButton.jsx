@@ -17,6 +17,7 @@ const Button = styled.button`
     min-width: 80px;
     border-radius: 20px;
     background: ${({ theme }) => theme.color.gray3};
+    ${mixin.boxShadow()}
     ${mixin.textProps(18, "semiBold", "white")};
     ${props => props.rightGap && `margin-right: ${props.rightGap};`};
     ${props => props.leftGap && `margin-left: ${props.leftGap};`};
@@ -33,6 +34,12 @@ const Button = styled.button`
         `:first-child{
         margin:0;
     }`}
+
+    @media ${({ theme }) => theme.mobile} {
+        min-width: ${({ theme }) => theme.calRem(56)};
+        height: ${({ theme }) => theme.calRem(24)};
+        ${mixin.textProps(11, "semiBold", "white")};
+    }
 `;
 
 export default DangerButton;

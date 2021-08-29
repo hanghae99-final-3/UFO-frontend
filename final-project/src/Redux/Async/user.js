@@ -28,6 +28,11 @@ export const signupUserDB = createAsyncThunk(
                 return thunkAPI.rejectWithValue(error.response.data.message);
             } else {
                 // 서버 또는 api 통신중 발생하는 에러 메세지 반환
+                Swal.fire(
+                    "에러",
+                    "회원가입에 실패하였습니다. 다시 시도해주세요!",
+                    "error",
+                );
                 return thunkAPI.rejectWithValue(error.response.errorMessage);
             }
         }
@@ -57,13 +62,8 @@ export const loginUserDB = createAsyncThunk(
                 const getUserResponse = await userApi.getUser(userId);
                 if (getUserResponse.data.ok) {
                     const user = getUserResponse.data.result;
-                    Swal.fire({
-                        icon: "success",
-                        title: "로그인 성공",
-                        contents: "로그인 성공했습니다.",
-                        showConfirmButton: false,
-                        timer: 1500,
-                    });
+                    Swal.fire("성공", "로그인 성공", "success");
+
                     history.replace("/");
                     return user;
                 }

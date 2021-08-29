@@ -4,7 +4,6 @@ import mixin from "../../Styles/Mixin";
 
 //컴포넌트
 import CandidateCard from "./CandidateCard";
-import CandidateSlide from "./CandidateSlide";
 
 //슬라이더
 import Slider from "react-slick";
@@ -13,6 +12,8 @@ import { FaArrowRight, FaArrowLeft } from "react-icons/fa";
 //애니메이션
 import Boop from "../../Elements/Animations/Boop";
 import CandidateIntroBox from "./CandidateIntroBox";
+import CustomSlider from "./CustomSlider";
+const isMobile = document.documentElement.clientWidth < 798 ? true : false;
 
 const CandidateSlider = ({ candidateList }) => {
     const NextArrow = ({ onClick }) => {
@@ -35,8 +36,6 @@ const CandidateSlider = ({ candidateList }) => {
         );
     };
 
-    const [cardIndex, setCardIndex] = useState(0);
-
     const settings = {
         infinite: true,
         lazyLoad: true,
@@ -49,17 +48,40 @@ const CandidateSlider = ({ candidateList }) => {
         beforeChange: (current, next) => setCardIndex(next),
     };
 
+    const [cardIndex, setCardIndex] = useState(0);
+
+    //PC버전이 아닐때에는 커스텀슬라이드를 쓰기때문에, 때로 setCardIndex를 해주어야한다.
+    const getCurrentIdxSetIndex = idx => {
+        setCardIndex(idx);
+    };
+
+    //데스크탑 사이즈인지 아닌지에 대한 판별값입니다.
+    const isDesktop =
+        document.documentElement.clientWidth >= 1080 ? true : false;
+
     return (
         <SlideContainer>
             {/* 후보자 슬라이더 */}
-            <Slider {...settings}>
-                {candidateList &&
-                    candidateList.map((candidate, idx) => (
-                        <Slide key={idx} active={idx === cardIndex}>
-                            <CandidateCard candidate={candidate} />
-                        </Slide>
-                    ))}
-            </Slider>
+
+            {/* PC버전에서는 slick slider을 사용한다. */}
+            {isDesktop && (
+                <Slider {...settings}>
+                    {candidateList &&
+                        candidateList.map((candidate, idx) => (
+                            <Slide key={idx} active={idx === cardIndex}>
+                                <CandidateCard candidate={candidate} />
+                            </Slide>
+                        ))}
+                </Slider>
+            )}
+
+            {/* PC가 아니면 커스텀 slider을 사용한다. */}
+            {!isDesktop && (
+                <CustomSlider
+                    candidateList={candidateList}
+                    getCurrentIdx={getCurrentIdxSetIndex}
+                />
+            )}
             <CandidateIntroBox
                 candidates={candidateList}
                 idx={cardIndex && cardIndex}
@@ -97,47 +119,6 @@ const ArrowContainer = styled.div`
 
 const Slide = styled.div`
     width: 100%;
-`;
-
-const CandidateDetailBox = styled.div`
-    ${mixin.flexBox("center", "center", null, "400px")};
-    ${mixin.outline("4px solid", "blue2")}
-    border-radius: 200px;
-    padding: 70px 0;
-    margin: 40px 0 80px 0;
-`;
-
-const CandidateImage = styled.div`
-    height: 100%;
-    margin-right: 30px;
-    img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        border-radius: 20px;
-    }
-`;
-
-const CandidateInfo = styled.div`
-    height: 100%;
-    width: 550px;
-`;
-
-const CandidateName = styled.div`
-    margin-bottom: 30px;
-    strong {
-        ${mixin.textProps(30, "extraBold", "black")}
-    }
-`;
-const CandidateIntro = styled.div`
-    display: grid;
-    grid-template-columns: 50px 1fr;
-    gap: 10px;
-    ${mixin.textProps(20, "regular", "gray1")}
-
-    span {
-        font-weight: ${({ theme }) => theme.fontWeight.semiBold};
-    }
 `;
 
 export default CandidateSlider;

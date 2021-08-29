@@ -67,8 +67,6 @@ const electionSlice = createSlice({
 
         //----특정 선거 게시물을 추가하는 리듀서
         [addElectionDB.fulfilled]: (state, { payload }) => {
-            console.log(payload);
-            return;
             state.list.pop(payload);
             state.isFetching = false;
             state.errorMessage = null;

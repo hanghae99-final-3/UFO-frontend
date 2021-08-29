@@ -7,7 +7,7 @@ import Swal from "sweetalert2";
  * @역할 게시글 추가버튼을 눌렀을때, 나타나는 confirm 창 렌더링
  * @필수값 confirmProcess : 확인창을 눌렀을 때 후처리함수
  */
-const addConfirm = (confirmProcess, dismissProcess) => {
+const addEditConfirm = (confirmProcess, dismissProcess) => {
     Swal.fire({
         title: "정말 등록하시겠어요?",
         icon: "warning",
@@ -47,6 +47,30 @@ const deleteConfirm = (confirmProcess, dismissProcess) => {
     });
 };
 
-const confirm = { deleteConfirm, addConfirm };
+/**
+ * @author kwonjiyeong
+ * @param editProcess : 수정을 눌렀을 때 후처리함수
+ * @param deleteProcess: 삭제를 눌렀을 때 후처리함수,
+ * @역할 수정, 삭제버튼에 따라 유저가 원하는 작업을 하게 한다.
+ * @필수값 editProcess, deleteProcess
+ */
+//모바일에서 편집버튼을 누르면 유저가 수정/삭제를 선택할 수 있게끔하는 confirm모달입니다.
+const mobileEditConfirm = (editProcess, deleteProcess) => {
+    Swal.fire({
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "수정",
+        cancelButtonText: "삭제",
+        showCloseButton: true,
+    }).then(result => {
+        if (result.isConfirmed) {
+            editProcess();
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+            deleteProcess();
+        }
+    });
+};
+
+const confirm = { deleteConfirm, addEditConfirm, mobileEditConfirm };
 
 export default confirm;

@@ -34,6 +34,8 @@ const CandidateBox = ({ candidateList }) => {
 const CandidateBoxContainer = styled.div``;
 const CandidateCardBox = styled.div`
     ${mixin.flexBox("space-evenly")}
+    flex-wrap: wrap;
+    gap: ${({ theme }) => theme.calRem(16)};
 `;
 
 export default CandidateBox;
