@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components"; // 스타일 컴포넌트 라이브러리
 import mixin from "../../Styles/Mixin";
 import theme from "../../Styles/theme";
@@ -17,9 +17,10 @@ import MainSearch from "../../Components/Search/MainSearch"; // 메인 페이지
 import PreviewBoardBox from "../../Components/Home/PreviewBoardBox"; // 게시물 presenter 컴포넌트
 import SupportUniv from "../../Components/Home/SupportUniv";
 import DefaultButton from "../../Elements/Buttons/DefaultButton";
+import Modal from "../../Components/Shared/Modal";
 
 const Home = () => {
-    const supportUnivRef = useRef(null);
+    const supportUnivRef = useRef(null); //지원대학 ref
     const dispatch = useDispatch();
     // 자유 게시판 게시물 리덕스 스토어 구독
     const freeBoardPostList = useSelector(state => state.freeBoard.list);
@@ -27,7 +28,6 @@ const Home = () => {
     const freeBoardIssuePostList = useSelector(
         state => state.freeBoard.issueList,
     );
-
     // 학교 게시판 게시물 리덕스 스토어 구독
     const univBoardPostList = useSelector(state => state.univBoard.list);
     // 공지 게시글
@@ -41,6 +41,18 @@ const Home = () => {
         state => state.freeBoard.selectedCountryId,
     );
     const isAuthenticated = useSelector(state => state.user?.user.school_auth);
+
+    const [modalVisible, setModalVisible] = useState(false); //모달창을 보여줄지 말지에 대한 판별값입니다.
+
+    const openModal = () => {
+        //모달을 여는 함수입니다.
+        setModalVisible(true);
+    };
+
+    const closeModal = () => {
+        //모달을 닫는 함수입니다.
+        setModalVisible(false);
+    };
 
     const goToSupportUniv = () => {
         const location = supportUnivRef.current.offsetTop;
@@ -114,8 +126,18 @@ const Home = () => {
                                 >
                                     로그인하러가기
                                 </DefaultButton>
-                                <DefaultButton onClick={goToSupportUniv}>
+                                <DefaultButton onClick={openModal}>
                                     지원학교목록보기
+                                    {modalVisible && (
+                                        <Modal
+                                            visible={modalVisible}
+                                            closable={true}
+                                            maskClosable={true}
+                                            onClose={closeModal}
+                                        >
+                                            Hello
+                                        </Modal>
+                                    )}
                                 </DefaultButton>
                             </UnivBoardMessageControls>
                         </UnivBoardMessageContainer>
@@ -137,9 +159,22 @@ const Home = () => {
                                 >
                                     로그인하러가기
                                 </DefaultButton>
-                                <DefaultButton onClick={goToSupportUniv}>
+                                <DefaultButton onClick={openModal}>
                                     지원학교목록보기
                                 </DefaultButton>
+                                {modalVisible && (
+                                    <Modal
+                                        visible={modalVisible}
+                                        closable={true}
+                                        maskClosable={true}
+                                        onClose={closeModal}
+                                        extend
+                                        //버전2
+                                        // width="70vw"
+                                    >
+                                        <SupportUniv ref={supportUnivRef} />
+                                    </Modal>
+                                )}
                             </UnivBoardMessageControls>
                         </UnivBoardMessageContainer>
                     </Content>
@@ -217,9 +252,6 @@ const Home = () => {
                 {/* 카테고리가 홀수이면 div를 스페어로 넣는다. */}
                 {/* {categories.freeCategory.length % 2 !== 0 && } */}
             </BoardContainer>
-
-            {/* 지원대학목록리스트 */}
-            <SupportUniv ref={supportUnivRef} />
         </HomeContainer>
     );
 };

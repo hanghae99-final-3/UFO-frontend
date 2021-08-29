@@ -39,8 +39,9 @@ const SupportUniv = forwardRef((props, ref) => {
 });
 
 const Container = styled.div``;
+
 const Heading = styled.div`
-    margin-top: ${({ theme }) => theme.calRem(70)};
+    margin-top: ${({ theme }) => theme.calRem(10)};
     margin-bottom: ${({ theme }) => theme.calRem(10)};
     padding-bottom: ${({ theme }) => theme.calRem(8)};
     ${mixin.outline("1.5px solid", "gray4", "bottom")}
