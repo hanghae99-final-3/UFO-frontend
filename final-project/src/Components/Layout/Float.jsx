@@ -12,7 +12,7 @@ import { BiArrowToTop } from "react-icons/bi";
 //컴포넌트
 import FloatSelectCountry from "../Shared/FloatSelectCountry";
 
-const FloatBox = () => {
+const Float = () => {
     const { pathname } = useLocation();
     const [isWriteBntOn, setIsWriteBntOn] = useState(false); //작성버튼을 보여줄지 말지에 대한 판별값, 자유게시판, 국가게시판이면 글쓰기버튼이 생긴다.
     const [isScrollTopBtnOn, setIsScrollTopBtnOn] = useState(false); //위로가기 버튼을 보여줄지 말지에 대한 판별값
@@ -54,25 +54,30 @@ const FloatBox = () => {
     }, [pathname]);
 
     return (
-        <Container>
+        <FloatContainer>
             {/* 국가 선택 */}
-            <FloatSelectCountry />
-
-            {!isDesktop && isWriteBntOn && (
-                <Button onClick={goToWrite}>
-                    <GrEdit />
-                </Button>
-            )}
-            {isScrollTopBtnOn && (
-                <Button onClick={scrollToTop}>
-                    <BiArrowToTop />
-                </Button>
-            )}
-        </Container>
+            <FloatBox>
+                <FloatSelectCountry />
+                {!isDesktop && isWriteBntOn && (
+                    <Button onClick={goToWrite}>
+                        <GrEdit />
+                    </Button>
+                )}
+                {isScrollTopBtnOn && (
+                    <Button onClick={scrollToTop}>
+                        <BiArrowToTop />
+                    </Button>
+                )}
+            </FloatBox>
+        </FloatContainer>
     );
 };
 
-const Container = styled.div`
+const FloatContainer = styled.div`
+    position:relative;
+`;
+
+const FloatBox = styled.div`
     ${mixin.floatBox(
         "fixed",
         null,
@@ -86,6 +91,7 @@ const Container = styled.div`
         bottom: ${theme.calRem(100)};
     }
 `;
+
 
 const Button = styled.button`
     background: ${({ theme }) => theme.color.white};
@@ -120,4 +126,4 @@ const Button = styled.button`
     }
 `;
 
-export default FloatBox;
+export default Float;

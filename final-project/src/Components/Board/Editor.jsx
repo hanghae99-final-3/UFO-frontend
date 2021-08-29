@@ -209,20 +209,20 @@ const Editor = ({ getContentFromEditor, originContent }) => {
 };
 
 const StyledEditor = styled.div`
-width:100%;
+/* width:85vw; */
+/* margin: 0 auto; */
     /* 툴바 스타일링 */
     .ck.ck-toolbar.ck-toolbar_grouping {
-        padding: ${theme.calRem(10)} 0;
-        width: 90%;
+        /* padding: ${theme.calRem(10)} 0; */
         border: none;
         background-color: ${({ theme }) => theme.color.white};
 
         /* 툴바 버튼스타일 */
         .ck-button {
-            ${mixin.textProps(14, "regular", "gray1")}
+            /* ${mixin.textProps(14, "regular", "gray1")} */
             cursor: pointer;
             @media ${({ theme }) => theme.mobile} {
-                ${mixin.textProps(11, "regular", "gray1")}
+                /* ${mixin.textProps(11, "regular", "gray1")} */
             }
         }
 
@@ -244,17 +244,17 @@ width:100%;
             transition: all 0.5s ease;
 
             .ck-list {
-                padding: ${theme.calRem(20)} 0;
+                /* padding: ${theme.calRem(20)} 0; */
                 border-radius: 0 20px 20px 20px;
                 background: ${({ theme }) => theme.color.mainBlue};
                 @media ${({ theme }) => theme.mobile} {
-                    padding: ${theme.calRem(16)} 0;
+                    /* padding: ${theme.calRem(16)} 0; */
                 }
 
                 .ck-list__item {
                     :not(:last-child) {
-                        padding-bottom: ${theme.calRem(10)};
-                        height: max-content;
+                        /* padding-bottom: ${theme.calRem(10)}; */
+                        /* height: max-content; */
                     }
                     .ck-button {
                         background: transparent;

@@ -401,7 +401,7 @@ const CountrySelect = styled.div`
 const TagSelect = styled.div`
     padding: ${({ theme }) => theme.calRem(15)} 0;
     ${mixin.outline("1px solid", "gray4", "bottom")}
-    /* ${mixin.flexBox(null, "center")} */
+    ${mixin.flexBox(null, "center")}
         @media ${({ theme }) => theme.mobile} {
         //TagSelect는 모바일로 갔을 때 오른쪽으로 스와이프하는 기능때문에 padding을 초기화시켜줘야한다.
         padding: 0;
