@@ -209,9 +209,11 @@ const Editor = ({ getContentFromEditor, originContent }) => {
 };
 
 const StyledEditor = styled.div`
+width:100%;
     /* 툴바 스타일링 */
     .ck.ck-toolbar.ck-toolbar_grouping {
-        padding: ${theme.calRem(10)};
+        padding: ${theme.calRem(10)} 0;
+        width: 90%;
         border: none;
         background-color: ${({ theme }) => theme.color.white};
 
