@@ -1,6 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { searchApi } from "../../Shared/api";
-import Swal from "sweetalert2";
 
 /**
  * @author heesung
@@ -20,11 +19,6 @@ export const getSearchResult = createAsyncThunk(
             }
         } catch (error) {
             thunkAPI.rejectWithValue(error.response.data.errorMessage);
-            Swal.fire(
-                "에러",
-                "네트워크 오류가 발생했습니다. 다시 시도해주세요!",
-                "error",
-            );
         }
     },
 );
@@ -38,11 +32,6 @@ export const getUnivSearchResult = createAsyncThunk(
                 return response.data.result;
             }
         } catch (error) {
-            Swal.fire(
-                "에러",
-                "네트워크 오류가 발생했습니다. 다시 시도해주세요!",
-                "error",
-            );
             thunkAPI.rejectWithValue(error.response.data.errorMessage);
         }
     },

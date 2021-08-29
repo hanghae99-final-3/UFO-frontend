@@ -34,14 +34,10 @@ const MyPostBoardBox = ({
         return history.push(`/univboard/detail/${postId}`);
     };
 
-    // 데스크탑 사이즈인지 아닌지 판별하는 변수
-    const isMobile =
-        document.documentElement.clientWidth <= 1080 ? true : false;
-
     const timeOption = {
         lang: "ko",
         // objectTime: "2020-08-10 06:00:00",
-        objectTime: moment().format(`YYYY/MM/DD HH:mm:ss`),
+        objectTime: moment().format(`YYYY-MM-DD HH:mm:ss`),
         calculate: {
             justNow: 61,
         },
@@ -65,9 +61,7 @@ const MyPostBoardBox = ({
                                         _onClick(post.post_id, post.board);
                                     }}
                                 >
-                                    <DefaultTag
-                                        rightGap={isMobile ? "8px" : "20px"}
-                                    >
+                                    <DefaultTag rightGap="20px">
                                         #
                                         {post.board === "free"
                                             ? categories.freeBoardTags[
@@ -78,9 +72,18 @@ const MyPostBoardBox = ({
                                               ]}
                                     </DefaultTag>
                                     <PostTitle>{post.title}</PostTitle>
-                                    {Comment ? null : isMobile ? null : (
+
+                                    {Comment ? null : (
                                         <IconContainer>
                                             <>
+                                                <Icon>
+                                                    <IconSpan>
+                                                        {TimeCounting(
+                                                            post.createdAt,
+                                                            timeOption,
+                                                        )}
+                                                    </IconSpan>
+                                                </Icon>
                                                 <Icon>
                                                     <MdComment />
                                                     <IconSpan>
@@ -93,48 +96,10 @@ const MyPostBoardBox = ({
                                                         {post.view_count}
                                                     </IconSpan>
                                                 </Icon>
-                                                <Icon>
-                                                    <IconSpan>
-                                                        {TimeCounting(
-                                                            post.createdAt,
-                                                            timeOption,
-                                                        )}
-                                                    </IconSpan>
-                                                </Icon>
                                             </>
                                         </IconContainer>
                                     )}
                                 </PostContainer>
-                                {!Comment && isMobile && (
-                                    <IconContainer>
-                                        <>
-                                            <Icon>
-                                                <MdComment />
-                                                <IconSpan>
-                                                    {post.comment_count}
-                                                </IconSpan>
-                                            </Icon>
-                                            <Icon>
-                                                <VisibilityIcon />
-                                                <IconSpan>
-                                                    {post.view_count}
-                                                </IconSpan>
-                                            </Icon>
-                                            <Icon>
-                                                <IconSpan>
-                                                    {TimeCounting(
-                                                        post.createdAt.replace(
-                                                            /\-/g,
-                                                            "/",
-                                                        ),
-                                                        timeOption,
-                                                    )}
-                                                </IconSpan>
-                                            </Icon>
-                                        </>
-                                    </IconContainer>
-                                )}
-
                                 {Comment && (
                                     <CommentContent>
                                         <MyComment>
@@ -154,28 +119,16 @@ const MyPostBoardBox = ({
 const Content = styled.div``;
 const CommentContent = styled.div`
     margin-bottom: 20px;
-    @media ${({ theme }) => theme.mobile} {
-        padding-bottom: ${({ theme }) => theme.calRem(13)};
-        ${mixin.outline("1px solid", "mainGray", "bottom")};
-    }
 `;
 const IconSpan = styled.span`
-    ${mixin.textProps(12, "semiBold", "gray3")};
-    //모바일 사이즈
-    @media ${({ theme }) => theme.mobile} {
-        ${mixin.textProps(11, "semiBold", "gray3")}
-    }
+    ${mixin.textProps(12, "semiBold", "gray3")}
 `;
 const BoardContainer = styled.div`
     width: 100%;
 `;
-const PostTitle = styled.span`
-    ${mixin.flexBox(null, "center")};
-    ${mixin.textProps(20, "semiBold", "gray2")};
-    //모바일 사이즈
-    @media ${({ theme }) => theme.mobile} {
-        ${mixin.textProps(16, "semiBold", "gray2")};
-    }
+const PostTitle = styled.p`
+    ${mixin.flexBox(null, "center")}
+    ${mixin.textProps(20, "semiBold", "gray2")}
 `;
 
 const PostContainer = styled.div`
@@ -183,28 +136,10 @@ const PostContainer = styled.div`
     cursor: pointer;
     margin-bottom: 12px;
     grid-template-columns: max-content 1fr max-content;
-
-    //모바일 사이즈
-    @media ${({ theme }) => theme.mobile} {
-        display: flex;
-        align-items: center;
-        margin-bottom: 12px;
-    }
 `;
 const IconContainer = styled.div`
     display: grid;
-    grid-template-columns: repeat(3, 50px);
-    @media ${({ theme }) => theme.mobile} {
-        padding-bottom: ${({ theme }) => theme.calRem(16)};
-        ${mixin.outline("1px solid", "mainGray", "bottom")};
-        margin-bottom: ${({ theme }) => theme.calRem(16)};
-        display: flex;
-        div {
-            :nth-child(2) {
-                margin: 0 ${({ theme }) => theme.calRem(17)};
-            }
-        }
-    } ;
+    grid-template-columns: repeat(3, 40px);
 `;
 const Icon = styled.div`
     display: flex;
@@ -216,22 +151,10 @@ const Icon = styled.div`
     svg {
         font-size: ${props => (props.title || props.tag ? "17px" : "20px")};
     }
-    @media ${({ theme }) => theme.mobile} {
-        span {
-            margin-left: ${({ theme }) => theme.calRem(4)};
-        }
-        svg {
-            font-size: 16px;
-        }
-    } ;
 `;
 const MyComment = styled.span`
     margin-left: 11%;
-    ${mixin.textProps(20, "semiBold", "gray1")};
-    @media ${({ theme }) => theme.mobile} {
-        ${mixin.textProps(16, "semiBold", "gray1")};
-        margin-left: 0px;
-    }
+    ${mixin.textProps(20, "semiBold", "gray1")}
 `;
 
 export default MyPostBoardBox;

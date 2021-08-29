@@ -107,7 +107,6 @@ const MypageAccount = props => {
                     setAuthCode(res.data.authCode);
                     setInputEmail(email);
                     setEmailAuthMsg("인증번호가 전송되었습니다.");
-                    console.log(res.data.authCode);
                     actions.resetForm(authCodeFormik.initialValues);
                 })
                 .catch(error => {
@@ -572,27 +571,16 @@ const MypageAccount = props => {
 const TitleWrapper = styled.div`
     padding-bottom: 10px;
     margin-bottom: 10px;
-    ${mixin.outline("1.5px solid", "gray4", "bottom")};
+    ${mixin.outline("1.5px solid", "gray4", "bottom")}
 `;
 // 계정관리 타이틀
 const Title = styled.span`
     display: block;
-    ${mixin.textProps(30, "extraBold", "black")};
-
-    //모바일 사이즈
-    @media ${({ theme }) => theme.mobile} {
-        ${mixin.textProps(22, "extraBold", "black")};
-    }
+    ${mixin.textProps(30, "extraBold", "black")}
 `;
 // 학교 인증 닉네임 설정 등, 계정관리 버튼 감싸는 div
 const ControlContainer = styled.div`
-    margin-bottom: 52px;
-    ${mixin.flexBox("space-between", null, "column", "40%")};
-
-    //모바일 사이즈
-    @media ${({ theme }) => theme.mobile} {
-        margin-bottom: ${({ theme }) => theme.calRem(40)};
-    }
+    ${mixin.flexBox("space-between", null, "column", "40%")}
 `;
 // 버튼 감싸는 div
 const ButtonWrapper = styled.div``;
@@ -608,24 +596,13 @@ const ControlButton = styled.button`
         mixin.outline(
             "2px solid",
             props.selected === props.name ? "mainMint" : "blue3",
-        )};
+        )}
     ${props =>
         mixin.textProps(
             18,
             "semiBold",
             props.selected === props.name ? "black" : "gray3",
-        )};
-
-    @media ${({ theme }) => theme.mobile} {
-        margin-bottom: 10px;
-        height: ${({ theme }) => theme.calRem(24)};
-        ${props =>
-            mixin.textProps(
-                11,
-                "semiBold",
-                props.selected === props.name ? "black" : "gray3",
-            )};
-    }
+        )}
 `;
 // 인풋창 컨테이너
 const InputContainer = styled.div`
@@ -635,25 +612,19 @@ const InputContainer = styled.div`
 // 이메일 인증부분 인풋 form
 const FirstInputForm = styled.form`
     width: 100%;
-    ${mixin.flexBox(null, "flex-end")};
+    ${mixin.flexBox(null, "flex-end")}
 `;
 // 이메일 인증부분 제외 다른 계정관리 인풋 폼
 const InputForm = styled.form`
     width: 100%;
     margin-bottom: 21px;
-    ${mixin.flexBox(null, "flex-end")};
-
-    //모바일 사이즈
-    @media ${({ theme }) => theme.mobile} {
-        margin-bottom: 0px;
-    } ;
+    ${mixin.flexBox(null, "flex-end")}
 `;
 // 인풋 입력 창
 const Input = styled.input`
     height: 25px;
     width: 90%;
     border: none;
-    border-radius: 0px;
     ${props => mixin.outline("1px solid", "gray2", "bottom")};
     :focus {
         ${props => mixin.outline("1px solid", "mainBlue", "bottom")};
@@ -662,15 +633,6 @@ const Input = styled.input`
     ${mixin.textProps(18, "semiBold", "gray1")};
     ::placeholder {
         ${mixin.textProps(18, "semiBold", "gray3")};
-    }
-
-    //모바일 사이즈
-    @media ${({ theme }) => theme.mobile} {
-        width: 100%;
-        ${mixin.textProps(14, "semiBold", "gray1")};
-        ::placeholder {
-            ${mixin.textProps(14, "semiBold", "gray3")};
-        }
     }
 `;
 // 인풋 입력후 확인 / 설정 등 submit 버튼
@@ -681,13 +643,6 @@ const InputButton = styled.button`
     margin-left: 10px;
     ${mixin.textProps(18, "semiBold", "white")};
     background-color: ${props => props.theme.color.blue1};
-
-    //모바일 사이즈
-    @media ${({ theme }) => theme.mobile} {
-        ${mixin.textProps(11, "semiBold", "white")};
-        width: ${({ theme }) => theme.calRem(56)};
-        height: ${({ theme }) => theme.calRem(24)};
-    }
 `;
 // 이메일 인증부분 submit 버튼
 const FirstInputButton = styled.button`
@@ -697,13 +652,6 @@ const FirstInputButton = styled.button`
     margin-left: 10px;
     ${mixin.textProps(18, "semiBold", "white")};
     background-color: ${props => props.theme.color.blue1};
-
-    //모바일 사이즈
-    @media ${({ theme }) => theme.mobile} {
-        ${mixin.textProps(11, "semiBold", "white")};
-        width: ${({ theme }) => theme.calRem(56)};
-        height: ${({ theme }) => theme.calRem(24)};
-    }
 `;
 // 이메일 인증부분 인풋 컨테이너
 const FirstInputWrapper = styled.div`
@@ -725,26 +673,17 @@ const ButtonContainer = styled.div`
     Input {
         margin-top: 17px;
     }
-    ${mixin.flexBox(null, "flex-end")};
+    ${mixin.flexBox(null, "flex-end")}
 `;
 
 const FirstButtonContainer = styled.div`
-    ${mixin.flexBox(null, "flex-end")};
+    ${mixin.flexBox(null, "flex-end")}
 `;
 
-const LastButtonContainer = styled.div`
-    @media ${({ theme }) => theme.mobile} {
-        display: flex;
-    }
-`;
+const LastButtonContainer = styled.div``;
 // 에러 메세지 div
 const ErrorBox = styled.div`
     margin-top: 4px;
-    ${mixin.textProps(12, "semiBold", "danger")};
-
-    //모바일 사이즈
-    @media ${({ theme }) => theme.mobile} {
-        ${mixin.textProps(11, "semiBold", "danger")};
-    }
+    ${mixin.textProps(12, "semiBold", "danger")}
 `;
 export default MypageAccount;

@@ -3,7 +3,6 @@ import styled from "styled-components";
 import mixin from "../../Styles/Mixin";
 import { useDispatch } from "react-redux";
 import { history } from "../../Redux/configureStore";
-import Swal from "sweetalert2";
 
 const MainSearch = props => {
     const [focused, setFocused] = useState(false);
@@ -22,7 +21,7 @@ const MainSearch = props => {
     const handleSearch = e => {
         e.preventDefault();
         if (searchTerm === "") {
-            return Swal.fire("에러", "검색어를 입력해 주세요", "error");
+            return window.alert("검색어를 입력해 주세요.");
         }
         history.push(`/util/search/${searchTerm}`);
         setSearchTerm("");
@@ -35,7 +34,7 @@ const MainSearch = props => {
                     onChange={handleSearchTermChange}
                     onFocus={handleFocus}
                     onBlur={handleBlur}
-                    placeholder="UFO 게시글 찾아줘!"
+                    placeholder="UFO에게 무엇이든 물어보세요!"
                 />
             </SearchForm>
         </React.Fragment>
@@ -48,7 +47,7 @@ export default MainSearch;
 const SearchForm = styled.form`
     margin-top: 70px;
     width: 100%;
-    padding-bottom: ${({ theme }) => theme.calRem(5)};
+    padding-bottom: 5px;
     ${mixin.flexBox("center")}
     ${props =>
         mixin.outline(
@@ -57,9 +56,6 @@ const SearchForm = styled.form`
             "bottom",
         )};
     transition: border-color 1s ease;
-    @media ${({ theme }) => theme.mobile} {
-        margin-top: 0;
-    }
 `;
 const Input = styled.input`
     width: 75%;
@@ -69,12 +65,4 @@ const Input = styled.input`
         ${mixin.textProps(30, "extraBold", "gray3")};
     }
     ${mixin.outline("none")}
-    @media ${({ theme }) => theme.mobile} {
-        width: 100%;
-        text-align: start;
-        ${mixin.textProps(22, "extraBold", "gray2")};
-        ::placeholder {
-            ${mixin.textProps(22, "extraBold", "gray3")};
-        }
-    }
 `;

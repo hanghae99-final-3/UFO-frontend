@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import mixin from "../../Styles/Mixin";
-import theme from "../../Styles/theme";
 import { history } from "../../Redux/configureStore";
 import { Helmet } from "react-helmet";
 import moment from "moment";
@@ -64,7 +63,7 @@ const Election = () => {
                 <Selecter>
                     <DefaultSelector
                         isSelected={isOngoing}
-                        rightGap={theme.calRem(8)}
+                        rightGap="10px"
                         onClick={() => setIsOngoing(true)}
                     >
                         진행중선거
@@ -137,65 +136,42 @@ const ElectionContainer = styled.div``;
 
 const Title = styled.div`
     ${mixin.outline("1px solid", "gray4", "bottom")};
-    padding-bottom: ${({ theme }) => theme.calRem(10)};
-    margin-bottom: ${({ theme }) => theme.calRem(10)};
+    padding-bottom: 10px;
+    margin-bottom: 10px;
     ${mixin.textProps(30, "extraBold", "black")};
-    @media ${({ theme }) => theme.mobile} {
-        ${mixin.textProps(22, "extraBold", "black")};
-        padding-bottom: ${({ theme }) => theme.calRem(8)};
-        margin-bottom: ${({ theme }) => theme.calRem(8)};
-    }
 `;
 
 const Controls = styled.div`
     ${mixin.flexBox("space-between", "flex-end")};
-    padding-bottom: ${({ theme }) => theme.calRem(10)};
+    padding-bottom: 10px;
     ${mixin.outline("1px solid", "gray4", "bottom")};
-    @media ${({ theme }) => theme.mobile} {
-        padding-bottom: ${({ theme }) => theme.calRem(8)};
-    }
 `;
 
 const Selecter = styled.div``;
 
 const GridContainer = styled.div`
-    padding: ${({ theme }) => theme.calRem(16)} 0;
+    padding: 15px 0;
     width: 100%;
     display: grid;
     grid-template-columns: repeat(6, 1fr);
-    gap: ${({ theme }) => theme.calRem(30)} ${({ theme }) => theme.calRem(25)};
-    @media ${({ theme }) => theme.mobile} {
-        grid-template-columns: repeat(2, 1fr);
-        gap: ${({ theme }) => theme.calRem(16)};
-    }
+    gap: 30px 25px;
 `;
 
 const OngoingPost = styled.div`
     overflow: hidden;
     border-radius: 50px;
     cursor: pointer;
-    ${mixin.boxShadow()}
-    padding: ${({ theme }) => `${theme.calRem(20)} ${theme.calRem(25)}`};
+    padding: 20px 25px;
     ${mixin.outline("3px solid", "blue2")}
-    ${mixin.flexBox("center", "center", null, `${theme.calRem(100)}`)};
+    ${mixin.flexBox("center", "center", null, "100px")};
     ${mixin.floatBox("relative")}
     ${props =>
         props.isVoted
             ? mixin.outline("3px solid", "gray1")
             : mixin.outline("3px solid", "blue2")};
-
-    @media ${({ theme }) => theme.mobile} {
-        height: ${theme.calRem(60)};
-    }
-
     span {
         ${mixin.textProps(20, "regular", "gray1")}
         ${mixin.textboxOverflow(2)}
-
-        @media ${({ theme }) => theme.mobile} {
-            ${mixin.textProps(16, "regular", "gray1")}
-            ${mixin.textboxOverflow(1)}
-        }
     }
 `;
 
@@ -203,11 +179,10 @@ const FinishedPost = styled.div`
     overflow: hidden;
     border-radius: 50px;
     cursor: pointer;
-    ${mixin.boxShadow()}
-    padding: ${({ theme }) => `${theme.calRem(20)} ${theme.calRem(25)}`};
+    padding: 20px 25px;
     background: ${({ theme }) => theme.color.mainGray};
     ${mixin.outline("3px solid", "gray3")}
-    ${mixin.flexBox("center", "center", null, `${theme.calRem(100)}`)};
+    ${mixin.flexBox("center", "center", null, "100px")};
     ${mixin.floatBox("relative")}
     ${props => (props.isVoted ? mixin.outline("3px solid", "gray2") : "")}
 
@@ -217,17 +192,9 @@ const FinishedPost = styled.div`
             ${mixin.textProps(20, "regular", "gray1")}
         }
     }
-    @media ${({ theme }) => theme.mobile} {
-        height: ${theme.calRem(60)};
-    }
-
     span {
         ${mixin.textboxOverflow(2)}
         ${mixin.textProps(20, "regular", "gray2")}
-        @media ${({ theme }) => theme.mobile} {
-            ${mixin.textProps(16, "regular", "gray2")}
-            ${mixin.textboxOverflow(1)}
-        }
     }
 `;
 
@@ -239,10 +206,6 @@ const VotingComplete = styled.div`
     ${mixin.flexBox("center", "center")};
     :hover {
         opacity: 0;
-    }
-
-    @media ${({ theme }) => theme.mobile} {
-        ${mixin.textProps(16, "regular", "mainMint")}
     }
 `;
 

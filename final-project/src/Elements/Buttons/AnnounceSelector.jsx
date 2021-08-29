@@ -14,6 +14,7 @@ const AnnounceSelector = ({ isSelected, onClick, children, ...props }) => {
 const Button = styled.button`
     padding: 0 10px;
     min-width: 79px;
+    min-height: 32px;
     box-sizing: border-box;
     border-radius: 16px;
     transition: all 0.5s ease;
@@ -41,15 +42,6 @@ const Button = styled.button`
         `:first-child{
         margin:0;
     }`};
-
-    @media ${({ theme }) => theme.mobile} {
-        min-width: ${({ theme }) => theme.calRem(56)};
-        height: ${({ theme }) => theme.calRem(24)};
-        ${props =>
-            props.isSelected
-                ? mixin.textProps(11, "semiBold", "gray1")
-                : mixin.textProps(11, "semiBold", "gray3")}
-    }
 `;
 
 export default AnnounceSelector;

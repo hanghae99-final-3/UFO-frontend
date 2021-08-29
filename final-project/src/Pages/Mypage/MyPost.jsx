@@ -8,15 +8,11 @@ import { useSelector } from "react-redux";
 //컴포넌트
 import MyCommentedList from "../../Components/Mypage/MyCommentedList";
 import MyPostList from "../../Components/Mypage/MyPostList";
-import Swal from "sweetalert2";
 
 const MyPost = props => {
     const { path } = useParams();
     const username = useSelector(state => state.user.user.nickname); // 로그인 유저 닉네임
     const [selectedButton, setSelectedButton] = useState(""); // 선택된 버튼 값
-    // 데스크탑 사이즈인지 아닌지 판별하는 변수
-    const isMobile =
-        document.documentElement.clientWidth <= 1080 ? true : false;
 
     useEffect(() => {
         if (path) {
@@ -45,17 +41,13 @@ const MyPost = props => {
                 <title>UFO - 함께한 순간들</title>
             </Helmet>
             <MyPostHeaderContainer>
-                <MyPostHeader>
-                    {isMobile
-                        ? `UFO가 함께한 순간들`
-                        : `${username} 님과 UFO가 함께한 순간들`}
-                </MyPostHeader>
+                <MyPostHeader>{username} 님과 UFO가 함께한 순간들</MyPostHeader>
             </MyPostHeaderContainer>
             <ButtonContainer>
                 <Button
                     name="alarmButton"
                     selectedButton={selectedButton}
-                    onClick={() => Swal.fire("서비스 준비중입니다!")}
+                    onClick={() => window.alert("서비스 준비중입니다.")}
                 >
                     최근 알림
                 </Button>
@@ -84,28 +76,15 @@ export default MyPost;
 
 const MyPostHeaderContainer = styled.div`
     padding-bottom: 10px;
-    @media ${({ theme }) => theme.mobile} {
-        padding-bottom: 6px;
-    }
 `;
 const ButtonContainer = styled.div`
     padding: 9px 0;
     margin-bottom: 19px;
     ${mixin.outline("1.5px solid", "gray4", "top")}
     ${mixin.outline("1.5px solid", "gray4", "bottom")}
-     //모바일 사이즈
-     @media ${({ theme }) => theme.mobile} {
-        border-bottom: none;
-        margin-bottom: ${({ theme }) => theme.calRem(13)};
-    }
 `;
 const MyPostHeader = styled.span`
     ${mixin.textProps(30, "extraBold", "black")};
-
-    //모바일 사이즈
-    @media ${({ theme }) => theme.mobile} {
-        ${mixin.textProps(22, "extraBold", "black")};
-    }
 `;
 const Button = styled.button`
     height: 40px;
@@ -126,19 +105,4 @@ const Button = styled.button`
             "semiBold",
             props.name === props.selectedButton ? "black" : "gray3",
         )};
-
-    //모바일 사이즈
-    @media ${({ theme }) => theme.mobile} {
-        height: ${({ theme }) => theme.calRem(24)};
-        width: ${({ theme }) => theme.calRem(89)};
-        ${props =>
-            mixin.textProps(
-                11,
-                "semiBold",
-                props.name === props.selectedButton ? "black" : "gray3",
-            )};
-        :nth-child(2) {
-            margin: 0 ${({ theme }) => theme.calRem(10)};
-        }
-    }
 `;

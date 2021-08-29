@@ -9,7 +9,6 @@ import VisibilityIcon from "@material-ui/icons/Visibility"; // 조회수 아이�
 import FavoriteIcon from "@material-ui/icons/Favorite"; // 좋아요 아이콘
 import FavoriteBorder from "@material-ui/icons/FavoriteBorder"; // 좋아요 아이콘
 import { makeStyles } from "@material-ui/core"; // material ui 스타일링 훅스
-import DefaultTag from "../../Elements/Tag/DefaultTag";
 
 const useStyles = makeStyles({
     heart: {
@@ -29,9 +28,6 @@ const SearchBoardBox = ({ postList, fixedList, boardName, announcement }) => {
         return history.push(`/univboard/detail/${postId}`);
     };
 
-    const isDesktop =
-        document.documentElement.clientWidth >= 1080 ? true : false;
-
     return (
         <BoardContainer>
             <Content>
@@ -43,10 +39,7 @@ const SearchBoardBox = ({ postList, fixedList, boardName, announcement }) => {
                                 _onClick(post.post_id, post.board);
                             }}
                         >
-                            <DefaultTag
-                                rightGap={isDesktop ? "20px" : "8px"}
-                                announcement={announcement}
-                            >
+                            <SmallTag announcement={announcement}>
                                 #
                                 {post.board === "free" &&
                                     categories.freeCategory[post.category]
@@ -54,33 +47,28 @@ const SearchBoardBox = ({ postList, fixedList, boardName, announcement }) => {
                                 {post.board === "univ" &&
                                     categories.univCategory[post.category]
                                         ?.categoryName}
-                            </DefaultTag>
+                            </SmallTag>
                             <PostTitle>{post.title}</PostTitle>
                             <IconContainer>
                                 <>
-                                    {isDesktop ? (
-                                        <Icon>
-                                            {post?.like?.is_like === false ? (
-                                                <FavoriteBorder />
-                                            ) : (
-                                                <FavoriteIcon
-                                                    className={classes.heart}
-                                                />
-                                            )}
-                                            <IconSpan>
-                                                {post.like &&
-                                                    post.like.all_like}
-                                            </IconSpan>
-                                        </Icon>
-                                    ) : null}
-                                    {isDesktop ? (
-                                        <Icon>
-                                            <MdComment />
-                                            <IconSpan>
-                                                {post.comment_count}
-                                            </IconSpan>
-                                        </Icon>
-                                    ) : null}
+                                    <Icon>
+                                        {post?.like?.is_like === false ? (
+                                            <FavoriteBorder />
+                                        ) : (
+                                            <FavoriteIcon
+                                                className={classes.heart}
+                                            />
+                                        )}
+                                        <IconSpan>
+                                            {post.like && post.like.all_like}
+                                        </IconSpan>
+                                    </Icon>
+                                    <Icon>
+                                        <MdComment />
+                                        <IconSpan>
+                                            {post.comment_count}
+                                        </IconSpan>
+                                    </Icon>
                                 </>
                                 <Icon>
                                     <VisibilityIcon />
@@ -98,14 +86,8 @@ const SearchBoardBox = ({ postList, fixedList, boardName, announcement }) => {
 const BoardContainer = styled.div`
     width: 100%;
 `;
-const PostTitle = styled.span`
+const PostTitle = styled.p`
     ${mixin.textProps(20, "semiBold", "gray2")};
-
-    @media ${({ theme }) => theme.mobile} {
-        display: inline-flex;
-        line-height: 2;
-        ${mixin.textProps(12, "semiBold", "gray2")};
-    }
 `;
 const SmallTag = styled.span`
     height: 32px;
@@ -125,24 +107,11 @@ const PostContainer = styled.div`
     cursor: pointer;
     margin-bottom: 12px;
     grid-template-columns: max-content 1fr max-content;
-
-    @media ${({ theme }) => theme.mobile} {
-        /* display: flex;
-        align-items: center;
-        justify-content: space-between; */
-    }
 `;
 
 const IconContainer = styled.div`
     display: grid;
     grid-template-columns: repeat(3, 40px);
-    @media ${({ theme }) => theme.mobile} {
-        grid-template-columns: repeat(1, 40px);
-
-        /* display: flex;
-        align-items: center;
-        justify-content: flex-end; */
-    }
 `;
 
 const Icon = styled.div`
@@ -155,13 +124,6 @@ const Icon = styled.div`
     svg {
         margin-right: 2px;
         font-size: 20px;
-    }
-
-    @media ${({ theme }) => theme.mobile} {
-        svg {
-            margin-right: 2px;
-            font-size: 16px;
-        }
     }
 `;
 

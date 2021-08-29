@@ -44,11 +44,16 @@ const IssueBoardBox = ({ issueList, boardName }) => {
                         </Title>
 
                         <IconContainer>
+                            <>
+                                <Icon>
+                                    <MdComment />
+                                    <span>{post.free_board.coment_count}</span>
+                                </Icon>
+                            </>
+
                             <Icon>
                                 <VisibilityIcon />
-                                <ViewCount>
-                                    {post.free_board.view_count}
-                                </ViewCount>
+                                <span>{post.free_board.view_count}</span>
                             </Icon>
                         </IconContainer>
                     </PostContainer>
@@ -71,11 +76,6 @@ const SmallTag = styled.span`
 `;
 const PostTitle = styled.p`
     ${mixin.textProps(20, "semiBold", "gray2")}
-
-    //모바일 사이즈
-     @media ${({ theme }) => theme.mobile} {
-        ${mixin.textProps(12, "semiBold", "gray2")}
-    }
 `;
 
 const PostContainer = styled.div`
@@ -83,10 +83,6 @@ const PostContainer = styled.div`
     margin-bottom: 12px;
     justify-content: space-between;
     cursor: pointer;
-
-    @media ${({ theme }) => theme.mobile} {
-        margin-bottom: 8px;
-    }
 `;
 
 const Title = styled.div`
@@ -95,41 +91,21 @@ const Title = styled.div`
 `;
 
 const IconContainer = styled.div`
-    width: 45px;
+    width: 10%;
     display: flex;
-    justify-content: flex-start;
-    @media ${({ theme }) => theme.mobile} {
-        width: 40px;
-    }
+    justify-content: space-between;
 `;
 
 const Icon = styled.div`
     display: flex;
-    justify-content: flex-end;
+    justify-content: flex-start;
     align-items: center;
     span {
         line-height: 1;
     }
     svg {
         font-size: 20px;
-        margin-right: 10px;
-    }
-
-    //모바일 사이즈
-    @media ${({ theme }) => theme.mobile} {
-        svg {
-            font-size: 15px;
-            margin-right: 5px;
-        }
-    }
-`;
-
-const ViewCount = styled.span`
-    ${mixin.textProps(12, "semiBold", "gray2")}
-
-    //모바일 사이즈
- @media ${({ theme }) => theme.mobile} {
-        ${mixin.textProps(11, "semiBold", "gray2")}
+        margin: 0 5px 0 10px;
     }
 `;
 

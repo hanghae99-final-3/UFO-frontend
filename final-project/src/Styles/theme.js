@@ -9,9 +9,12 @@ const fontSize = {
     20: calRem(20),
     30: calRem(30),
     40: calRem(40),
+};
 
-    //모바일 폰트
+const mobileFontSize = {
     11: calRem(11),
+    12: calRem(12),
+    14: calRem(14),
     16: calRem(16),
     22: calRem(22),
     28: calRem(28),
@@ -43,9 +46,9 @@ const color = {
 
 const theme = {
     fontSize,
+    mobileFontSize,
     fontWeight,
     color,
-    calRem,
 };
 
 export default theme;

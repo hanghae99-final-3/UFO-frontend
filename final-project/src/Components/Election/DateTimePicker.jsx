@@ -2,7 +2,6 @@ import React from "react";
 import styled from "styled-components";
 import mixin from "../../Styles/Mixin";
 import moment from "moment";
-import theme from "../../Styles/theme";
 
 //머테리얼 ui
 import { makeStyles } from "@material-ui/core/styles";
@@ -72,22 +71,16 @@ const DateTimePicker = ({
 };
 
 const Container = styled.div`
-    ${mixin.flexBox("center", "center", "column")};
+    ${mixin.flexBox("center", "center", "column")}
 `;
 
 const DateBox = styled.div`
-    ${mixin.flexBox("center", "center")};
+    ${mixin.flexBox("center", "center")}
     width: max-content;
-    margin: ${theme.calRem(10)} 0 ${theme.calRem(40)} 0;
-    @media ${({ theme }) => theme.mobile} {
-        margin: ${theme.calRem(8)} 0;
-    }
+    margin: 10px 0 40px 0;
     span {
-        ${mixin.textProps(20, "extraBold", "gray1")};
-        margin-right: ${theme.calRem(10)};
-        @media ${({ theme }) => theme.mobile} {
-            ${mixin.textProps(16, "extraBold", "gray1")};
-        }
+        ${mixin.textProps(20, "extraBold", "gray1")}
+        margin-right: 10px;
     }
 
     /* Mui input에 cursor 주기 */
@@ -97,8 +90,8 @@ const DateBox = styled.div`
 
     /* Mui input 창에서 안쪽 여백주기 */
     input[type="datetime-local" i] {
-        padding-inline-start: ${theme.calRem(10)};
-        padding-inline-end: ${theme.calRem(10)};
+        padding-inline-start: 10px;
+        padding-inline-end: 10px;
     }
 
     /* 기존 Mui의 border 효과 제거 */

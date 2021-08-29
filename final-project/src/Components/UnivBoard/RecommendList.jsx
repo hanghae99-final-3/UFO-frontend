@@ -22,7 +22,7 @@ const RecommendList = () => {
                 <Heading>오늘의 추천글</Heading>
             </HeadingWrapper>
             <IssueBoardBox
-                issueList={issuePostList && issuePostList.slice(0, 6)}
+                issueList={issuePostList && issuePostList.slice(0, 5)}
                 preview={true}
                 boardName="freeboard"
             />
@@ -35,19 +35,8 @@ const HeadingWrapper = styled.div`
     margin-bottom: 10px;
     padding-bottom: 10px;
     ${mixin.outline("1px solid", "mainGray", "bottom")}
-
-    //모바일 사이즈
-     @media ${({ theme }) => theme.mobile} {
-        margin-top: 48px;
-        padding-bottom: 8px;
-    }
 `;
 const Heading = styled.span`
     ${mixin.textProps(30, "extraBold", "black")}
-
-    //모바일 사이즈
-    @media ${({ theme }) => theme.mobile} {
-        ${mixin.textProps(22, "extraBold", "black")}
-    }
 `;
 export default RecommendList;

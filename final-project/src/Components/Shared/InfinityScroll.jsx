@@ -3,7 +3,6 @@ import _ from "lodash";
 
 const InfinityScroll = props => {
     const { nextCall, children, is_loading, is_next, size } = props;
-    console.log(is_next);
     const throttle = _.throttle(() => {
         let scrollHeight = document.documentElement.scrollHeight;
         let innerHeight = window.innerHeight;

@@ -1,31 +1,20 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components"; // 스타일 컴포넌트 라이브러리
 import mixin from "../../Styles/Mixin";
-import theme from "../../Styles/theme";
 import { Helmet } from "react-helmet";
 import { useDispatch, useSelector } from "react-redux"; // 리액트 리덕스 라이브러리
 import categories from "../../Shared/categories"; // 태그 카테고리 객체
-import { history } from "../../Redux/configureStore";
 
 //통신
 import { getUnivBoardDB } from "../../Redux/Async/univBoard"; // 대학 게시물 조회 thunk
 import { getFreeListDB, getIssuePostListDB } from "../../Redux/Async/freeBoard"; // 자유 게시판 thunks
 
-
-//배너
-import bnr1_mobile from "../../Assets/event1_mobile.png"
-import bnr1_pc from "../../Assets/event1_pc.png"
-
 //컴포넌트
 import MainSlider from "../../Components/Home/MainSlider"; // 메인 페이지 슬라이더 컴포넌트
 import MainSearch from "../../Components/Search/MainSearch"; // 메인 페이지 통합 검색 컴포넌트
 import PreviewBoardBox from "../../Components/Home/PreviewBoardBox"; // 게시물 presenter 컴포넌트
-import SupportUniv from "../../Components/Home/SupportUniv";
-import DefaultButton from "../../Elements/Buttons/DefaultButton";
-import Modal from "../../Components/Shared/Modal";
 
 const Home = () => {
-    const supportUnivRef = useRef(null); //지원대학 ref
     const dispatch = useDispatch();
     // 자유 게시판 게시물 리덕스 스토어 구독
     const freeBoardPostList = useSelector(state => state.freeBoard.list);
@@ -33,6 +22,7 @@ const Home = () => {
     const freeBoardIssuePostList = useSelector(
         state => state.freeBoard.issueList,
     );
+
     // 학교 게시판 게시물 리덕스 스토어 구독
     const univBoardPostList = useSelector(state => state.univBoard.list);
     // 공지 게시글
@@ -43,35 +33,9 @@ const Home = () => {
     const isLoggedIn = useSelector(state => state.user.isLoggedIn);
     // 유저가 선택한 국가 페이지
     const selectedCountry = useSelector(
-        state => state.freeBoard.selectedCountryId,
+        state => state.freeBoard.selectedCountry,
     );
     const isAuthenticated = useSelector(state => state.user?.user.school_auth);
-
-    const [modalVisible, setModalVisible] = useState(false); //모달창을 보여줄지 말지에 대한 판별값입니다.
-
-//데스크탑 사이즈인지 아닌지에 대한 판별값입니다.
-const isDesktop =
-        document.documentElement.clientWidth >= 1080
-            ? true
-            : false
-
-    const openModal = () => {
-        //모달을 여는 함수입니다.
-        setModalVisible(true);
-    };
-
-    const closeModal = () => {
-        //모달을 닫는 함수입니다.
-        setModalVisible(false);
-    };
-
-    const goToSupportUniv = () => {
-        const location = supportUnivRef.current.offsetTop;
-        window.scrollTo({
-            top: location - 100,
-            behavior: "smooth",
-        });
-    };
 
     //자유 게시판 요청 쿼리 데이터
     const postListQueryData = {
@@ -103,8 +67,6 @@ const isDesktop =
             </Helmet>
             {/* 메인 검색창 */}
             <MainSearch />
-            {/* 배너 */}
-            {/* <Banner href="https://docs.google.com/forms/d/19dYEzERALVHU02A1f_E5WHBttXIpROdtf1HVQcwkqkw/viewform?ts=6125ed6e&edit_requested=true" target="_blank">{isDesktop? <img src={bnr1_pc} alt="banner" />:<img src={bnr1_mobile} alt="banner" />}</Banner> */}
             {/* 인기 게시글 슬라이더 불러오기*/}
             <MainSlider
                 postList={
@@ -133,26 +95,6 @@ const isDesktop =
                             <UnivBoardMessage>
                                 학교 인증 후, 학교 게시판을 이용하실 수 있습니다
                             </UnivBoardMessage>
-                            <UnivBoardMessageControls>
-                                <DefaultButton
-                                    onClick={() => history.push("/login")}
-                                >
-                                    로그인하러가기
-                                </DefaultButton>
-                                <DefaultButton onClick={openModal}>
-                                    지원학교목록보기
-                                    {modalVisible && (
-                                        <Modal
-                                            visible={modalVisible}
-                                            closable={true}
-                                            maskClosable={true}
-                                            onClose={closeModal}
-                                        >
-                                            Hello
-                                        </Modal>
-                                    )}
-                                </DefaultButton>
-                            </UnivBoardMessageControls>
                         </UnivBoardMessageContainer>
                     </Content>
                 )}
@@ -165,30 +107,6 @@ const isDesktop =
                             <UnivBoardMessage>
                                 학교 게시판은 로그인 후 이용하실 수 있습니다
                             </UnivBoardMessage>
-                            <UnivBoardMessageControls>
-                                <DefaultButton
-                                    rightGap={theme.calRem(8)}
-                                    onClick={() => history.push("/login")}
-                                >
-                                    로그인하러가기
-                                </DefaultButton>
-                                <DefaultButton onClick={openModal}>
-                                    지원학교목록보기
-                                </DefaultButton>
-                                {modalVisible && (
-                                    <Modal
-                                        visible={modalVisible}
-                                        closable={true}
-                                        maskClosable={true}
-                                        onClose={closeModal}
-                                        extend
-                                        //버전2
-                                        // width="70vw"
-                                    >
-                                        <SupportUniv ref={supportUnivRef} />
-                                    </Modal>
-                                )}
-                            </UnivBoardMessageControls>
                         </UnivBoardMessageContainer>
                     </Content>
                 )}
@@ -274,16 +192,12 @@ const HomeContainer = styled.div``;
 const BoardContainer = styled.div`
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: ${({ theme }) => `${theme.calRem(70)} ${theme.calRem(50)}`};
-    @media ${({ theme }) => theme.mobile} {
-        grid-template-columns: 1fr;
-        gap: ${({ theme }) => theme.calRem(48)};
-    }
+    gap: 70px 50px;
 `;
 
 const Header = styled.div`
-    margin-bottom: ${({ theme }) => theme.calRem(10)};
-    padding-bottom: ${({ theme }) => theme.calRem(8)};
+    margin-bottom: 10px;
+    padding-bottom: 8px;
     ${mixin.outline("1.5px solid", "gray4", "bottom")}
     ${mixin.flexBox("space-between", "flex-end", null, null)}
 `;
@@ -292,37 +206,15 @@ const Content = styled.div``;
 
 const TitleHeading = styled.span`
     ${mixin.textProps(30, "extraBold", "black")}
-    @media ${({ theme }) => theme.mobile} {
-        ${mixin.textProps(22, "extraBold", "black")}
-    }
 `;
 
-const Banner = styled.a`
-display:inline-block;
-    margin-top:${theme.calRem(70)};
-img{
-    width:100%;
-    border-radius:25px;
-    ${mixin.boxShadow()}
-
-}
-@media ${({ theme }) => theme.mobile} {
-    margin-top:${theme.calRem(48)};
-    }
-`
-
 const UnivBoardMessageContainer = styled.div`
-    min-height: ${({ theme }) => theme.calRem(100)};
-    height: 100%;
-    ${mixin.flexBox("center", "center", "column", null)};
+    height: 60%;
+    ${mixin.flexBox("center", "center", null, null)};
 `;
 
 const UnivBoardMessage = styled.span`
-    ${mixin.textProps(18, "semiBold", "gray2")};
-`;
-
-const UnivBoardMessageControls = styled.div`
-    margin-top: ${({ theme }) => theme.calRem(16)};
+    ${mixin.textProps(18, "semiBold", "gray2")}
 `;
 
 export default Home;

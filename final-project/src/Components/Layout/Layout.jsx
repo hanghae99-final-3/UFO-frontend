@@ -1,7 +1,7 @@
 import React from "react";
 import Header from "./Header";
 import Main from "./Main";
-import Float from "./Float";
+import FloatBox from "./FloatBox";
 
 /**
  * @author jiyeong
@@ -15,7 +15,7 @@ const Layout = ({ children }) => {
         <>
             <Header />
             <Main>{children}</Main>
-            <Float />
+            <FloatBox />
         </>
     );
 };

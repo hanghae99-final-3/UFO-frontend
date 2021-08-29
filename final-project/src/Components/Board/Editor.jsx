@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 import mixin from "../../Styles/Mixin";
-import theme from "../../Styles/theme";
 
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-editor-classic/src/classiceditor";
@@ -61,12 +60,12 @@ class MyUploadAdapter {
                         //서버에 파일 객체를 보내서 imgUrl을 얻어온다.
                         try {
                             const response = await axios.post(
-                                "https://yzkim9501.site/util/image",
+                                "http://3.36.90.60/util/image",
                                 formData,
                                 config,
                             );
                             if (response.data.ok) {
-                                const downloadURL = `https://yzkim9501.site/${response.data.result}`;
+                                const downloadURL = `http://3.36.90.60/${response.data.result}`;
                                 resolve({
                                     default: downloadURL,
                                 });
@@ -74,7 +73,7 @@ class MyUploadAdapter {
                         } catch (err) {
                             Swal.fire(
                                 "에러",
-                                "이미지를 등록할 수 없습니다. 다시 시도해주세요!",
+                                "이미지를 등록할 수 없습니다.",
                                 "error",
                             );
                         }
@@ -104,8 +103,8 @@ const editorConfiguration = {
         ImageUpload,
         ImageResize,
     ],
-    toolbar: {
-        items :[
+    extraPlgins: [],
+    toolbar: [
         "heading",
         "|",
         "fontColor",
@@ -121,7 +120,7 @@ const editorConfiguration = {
         "|",
         "undo",
         "redo",
-    ]},
+    ],
     heading: {
         options: [
             {
@@ -148,10 +147,11 @@ const editorConfiguration = {
         resizeUnit: "px",
         type: ["JPEG", "JPG", "GIF", "PNG"],
     },
+
+    placeholder: "글을 입력해보세요!",
 };
 
 const Editor = ({ getContentFromEditor, originContent }) => {
-
     //수정모드
     if (originContent)
         return (
@@ -179,14 +179,13 @@ const Editor = ({ getContentFromEditor, originContent }) => {
                             };
                         }
                     }}
-                    
                 />
             </StyledEditor>
         );
 
     return (
         //작성모드
-        <StyledEditor >
+        <StyledEditor>
             <CKEditor
                 editor={ClassicEditor}
                 config={editorConfiguration}
@@ -209,33 +208,22 @@ const Editor = ({ getContentFromEditor, originContent }) => {
 };
 
 const StyledEditor = styled.div`
-    ${mixin.outline("1px solid", "gray4", "bottom")};
-
-    /* 스티키툴바 스타일링 */
-    .ck-sticky-panel__content.ck-sticky-panel__content_sticky{
-        height:48px;
-        background:${({ theme }) => theme.color.mainBlue};
-    }
+    min-height: 100px;
 
     /* 툴바 스타일링 */
     .ck.ck-toolbar.ck-toolbar_grouping {
-        position:relative;  //툴바를 기준으로 드롭다운이 재정렬 되기 위해 설정하였습니다.
+        padding: 10px;
         border: none;
         background-color: ${({ theme }) => theme.color.white};
-        z-index:0 !important;
-        
-        
+
         /* 툴바 버튼스타일 */
         .ck-button {
-            color:${({theme})=>theme.color.gray1};
+            ${mixin.textProps(18, "regular", "gray1")}
             cursor: pointer;
-            
         }
 
-        /* 드롭다운툴바 버튼 스타일링 */
-        .ck-dropdown{
-            position:static;    //ck는 버튼을 기준으로 드롭다운이 되고있어서, 제거해주었음!
-            .ck-dropdown__button {
+        /* 툴바 폰트조절 셀렉터 스타일링 */
+        .ck-dropdown__button {
             background: white;
             .ck-dropdown__arrow {
                 transition: all 0.5s ease;
@@ -245,27 +233,25 @@ const StyledEditor = styled.div`
                     color: ${({ theme }) => theme.color.mainMint};
                 }
             }
-        }}
-        
-.ck-heading-dropdown{
+        }
+
+        .ck-dropdown__panel {
+            border-radius: 0 20px 20px 20px;
+            transition: all 0.5s ease;
+
             .ck-list {
-                //헤딩 드롭다운 스타일지정
-                /* padding: ${theme.calRem(20)} 0; */
+                padding: 20px 0;
                 border-radius: 0 20px 20px 20px;
                 background: ${({ theme }) => theme.color.mainBlue};
-                @media ${({ theme }) => theme.mobile} {
-                    /* padding: ${theme.calRem(16)} 0; */
-                }
-
                 .ck-list__item {
                     :not(:last-child) {
-                        /* padding-bottom: ${theme.calRem(10)}; */
-                        /* height: max-content; */
+                        padding-bottom: 10px;
+                        height: max-content;
                     }
                     .ck-button {
                         background: transparent;
                         .ck-button__label {
-                            color: ${({ theme }) => theme.color.blue3};
+                            color: ${({ theme }) => theme.color.mainGray};
                             line-height: 1;
                         }
                         &.ck-on {
@@ -274,92 +260,30 @@ const StyledEditor = styled.div`
                             }
                         }
                     }
-
-                    //헤딩 폰트사이즈 설정
                     .ck-heading_paragraph {
-                        ${mixin.textProps(20, "regular", "blue3")}
-                        @media ${({ theme }) => theme.mobile} {
-                            ${mixin.textProps(16, "regular", "blue3")}
-                        }
+                        ${mixin.textProps(20, "regular", "gray1")}
                     }
                     .ck-heading_heading1 {
-                        ${mixin.textProps(40, "semiBold", "blue3")}
-                        @media ${({ theme }) => theme.mobile} {
-                            ${mixin.textProps(28, "semiBold", "blue3")}
-                        }
+                        ${mixin.textProps(40, "semiBold", "gray1")}
                     }
                     .ck-heading_heading2 {
-                        ${mixin.textProps(30, "semiBold", "blue3")}
-                        @media ${({ theme }) => theme.mobile} {
-                            ${mixin.textProps(22, "semiBold", "blue3")}
-                        }
+                        ${mixin.textProps(30, "semiBold", "gray1")}
                     }
                 }
             }
         }
 
-
-        //드롭다운박스 설정
-        .ck-dropdown__panel {
-            border-radius: 0 20px 20px 20px;
-            transition: all 0.5s ease;
-            min-width: auto;
-            left:0;
-            transform: translateX(0);
-            //이클립스 툴바 설정
-            .ck-toolbar{
-                border-radius: 0 20px 20px 20px;
-                background: transparent;
-                .ck-toolbar__items{
-                    border-radius: 0 20px 20px 20px;
-                    background: transparent;
-                }
-            
-        }    
-            }
-
-            //컬러드롭다운박스 설정
-            .ck-color-grid{
-            display:flex;
-            flex-wrap: wrap;
-
-        
-        }
-        
-
-
-
-
+        ${mixin.outline("1px solid", "gray4", "bottom")};
     }
 
     /* 콘텐츠 안쪽영역 스타일링 */
     .ck-content {
-        min-height: ${theme.calRem(530)};
-        padding: ${theme.calRem(30)} ${theme.calRem(10)};
+        min-height: 530px;
+        padding: 30px 0;
         border: none;
         ${mixin.outline("1px solid", "gray3", "bottom")};
         transition: all 0.7s ease;
-        @media ${({ theme }) => theme.mobile} {
-            min-height: ${theme.calRem(414)};
-            padding: ${theme.calRem(24)} ${theme.calRem(10)};
-        }
-
-        //에디터 글쓰는 란이 포커싱되면 위의 플러그인툴바가 스티키되기때문에, 콘텐츠 란의 padding을 조정한다!
-        /* &.ck-focused{
- padding: ${theme.calRem(40)} ${theme.calRem(10)};
- @media ${({ theme }) => theme.mobile} {
-            padding: ${theme.calRem(40)} ${theme.calRem(10)};
-        }
-        } */
     }
-
-    .ck-sticky-panel__content_sticky{
-        .ck-content{
-
-        }
-    }
-
-
 
     /* 콘텐츠 바깥영역 스타일링 */
     .ck-content.ck-editor__editable.ck-rounded-corners.ck-editor__editable_inline.ck-focused {

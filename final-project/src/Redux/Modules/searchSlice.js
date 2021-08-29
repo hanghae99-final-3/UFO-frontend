@@ -1,9 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 import {
-    // getSearchResult,
+    getSearchResult,
     getUnivSearchResult,
-    // getMainSearchResult,
+    getMainSearchResult,
 } from "../Async/search";
 
 const initialState = {
@@ -17,18 +17,18 @@ const searchSlice = createSlice({
     initialState: initialState,
     reducers: {},
     extraReducers: {
-        // [getSearchResult.pending]: (state, action) => {
-        //     state.isFetching = true;
-        // },
-        // [getSearchResult.fulfilled]: (state, { payload: result }) => {
-        //     state.isFetching = false;
-        //     state.searchResult = result;
-        //     state.errorMessage = "";
-        // },
-        // [getSearchResult.rejected]: (state, { payload: message }) => {
-        //     state.isFetching = false;
-        //     state.errorMessage = message;
-        // },
+        [getSearchResult.pending]: (state, action) => {
+            state.isFetching = true;
+        },
+        [getSearchResult.fulfilled]: (state, { payload: result }) => {
+            state.isFetching = false;
+            state.searchResult = result;
+            state.errorMessage = "";
+        },
+        [getSearchResult.rejected]: (state, { payload: message }) => {
+            state.isFetching = false;
+            state.errorMessage = message;
+        },
         [getUnivSearchResult.pending]: (state, action) => {
             state.isFetching = true;
         },

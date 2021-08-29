@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components"; // 스타일 컴포넌트 라이브러리
 import mixin from "../../Styles/Mixin"; // 믹스인 css 객체
-import theme from "../../Styles/theme";
 import categories from "../../Shared/categories"; // 게시물 태그 객체
 import { history } from "../../Redux/configureStore"; // 히스토리 객체
 import { useSelector } from "react-redux";
@@ -59,19 +58,11 @@ const PreviewBoardBox = ({
         }
     };
 
-    //데스크탑 사이즈인지 아닌지 판별하는 값입니다.
-    const isDesktop =
-        document.documentElement.clientWidth >= 1080 ? true : false;
-
     return (
         <BoardContainer>
             <Header>
                 {tag && <LargeTag>#{tag.categoryName}</LargeTag>}
-                {title && (
-                    <TitleHeading onClick={onToMoreClicked}>
-                        {title}
-                    </TitleHeading>
-                )}
+                {title && <TitleHeading>{title}</TitleHeading>}
                 {myPostTitle && <TitleHeading>{myPostTitle}</TitleHeading>}
                 <Boop rotation={15} timing={200}>
                     <More onClick={onToMoreClicked}>더보기</More>
@@ -86,35 +77,31 @@ const PreviewBoardBox = ({
                                 handleOnClick(post.post_id);
                             }}
                         >
-                            <SmallAnnounceTag rightGap={theme.calRem(10)}>
+                            <SmallAnnounceTag rightGap="10px">
                                 공지
                             </SmallAnnounceTag>
                             <AnnounceTitle>{post.title}</AnnounceTitle>
                             <IconContainer>
-                                {/* 데스크탑일때만 좋아요와 댓글수가 보입니다. */}
-                                {isDesktop && (
-                                    <>
-                                        <Icon>
-                                            {post?.like?.is_like === false ? (
-                                                <FavoriteBorder />
-                                            ) : (
-                                                <FavoriteIcon
-                                                    className={classes.heart}
-                                                />
-                                            )}
-                                            <IconSpan>
-                                                {post.like &&
-                                                    post.like.all_like}
-                                            </IconSpan>
-                                        </Icon>
-                                        <Icon>
-                                            <MdComment />
-                                            <IconSpan>
-                                                {post.comment_count}
-                                            </IconSpan>
-                                        </Icon>
-                                    </>
-                                )}
+                                <>
+                                    <Icon>
+                                        {post?.like?.is_like === false ? (
+                                            <FavoriteBorder />
+                                        ) : (
+                                            <FavoriteIcon
+                                                className={classes.heart}
+                                            />
+                                        )}
+                                        <IconSpan>
+                                            {post.like && post.like.all_like}
+                                        </IconSpan>
+                                    </Icon>
+                                    <Icon>
+                                        <MdComment />
+                                        <IconSpan>
+                                            {post.comment_count}
+                                        </IconSpan>
+                                    </Icon>
+                                </>
                                 <Icon>
                                     <VisibilityIcon />
                                     <IconSpan>{post.view_count}</IconSpan>
@@ -132,7 +119,7 @@ const PreviewBoardBox = ({
                         >
                             <SmallTag
                                 announcement={announcement}
-                                rightGap={theme.calRem(10)}
+                                rightGap="10px"
                             >
                                 {!announcement && "#"}
                                 {boardName === "freeboard" &&
@@ -151,30 +138,22 @@ const PreviewBoardBox = ({
                             <PostTitle>{post.title}</PostTitle>
 
                             <IconContainer>
-                                {/* 데스크탑일때만 좋아요와 댓글수가 보입니다. */}
-                                {isDesktop && (
-                                    <>
-                                        <Icon>
-                                            {post?.like?.is_like === false ? (
-                                                <FavoriteBorder />
-                                            ) : (
-                                                <FavoriteIcon
-                                                    className={classes.heart}
-                                                />
-                                            )}
-                                            <IconSpan>
-                                                {post.like &&
-                                                    post.like.all_like}
-                                            </IconSpan>
-                                        </Icon>
-                                        <Icon title={title} tag={tag}>
-                                            <MdComment />
-                                            <IconSpan>
-                                                {post.comment_count}
-                                            </IconSpan>
-                                        </Icon>
-                                    </>
-                                )}
+                                <Icon>
+                                    {post?.like?.is_like === false ? (
+                                        <FavoriteBorder />
+                                    ) : (
+                                        <FavoriteIcon
+                                            className={classes.heart}
+                                        />
+                                    )}
+                                    <IconSpan>
+                                        {post.like && post.like.all_like}
+                                    </IconSpan>
+                                </Icon>
+                                <Icon title={title} tag={tag}>
+                                    <MdComment />
+                                    <IconSpan>{post.comment_count}</IconSpan>
+                                </Icon>
 
                                 <Icon title={title} tag={tag}>
                                     <VisibilityIcon />
@@ -198,51 +177,30 @@ const IconSpan = styled.span`
     ${mixin.textProps(12, "semiBold", "gray3")}
 `;
 const Header = styled.div`
-    margin-bottom: ${({ theme }) => theme.calRem(10)};
-    padding-bottom: ${({ theme }) => theme.calRem(10)};
+    margin-bottom: 10px;
+    padding-bottom: 8px;
     ${mixin.outline("1.5px solid", "gray4", "bottom")}
     ${mixin.flexBox("space-between", "flex-end", null, null)}
-
-    @media ${({ theme }) => theme.mobile} {
-        margin-bottom: ${({ theme }) => theme.calRem(8)};
-        padding-bottom: ${({ theme }) => theme.calRem(8)};
-    }
 `;
 
 const LargeTag = styled.span`
     ${mixin.textProps(30, "extraBold", "black")}
-    @media ${({ theme }) => theme.mobile} {
-        ${mixin.textProps(22, "extraBold", "black")}
-    }
 `;
 const TitleHeading = styled.span`
-    cursor: pointer;
     ${mixin.textProps(30, "extraBold", "black")}
-    @media ${({ theme }) => theme.mobile} {
-        ${mixin.textProps(22, "extraBold", "black")}
-    }
 `;
 const PostTitle = styled.p`
     ${mixin.textProps(14, "semiBold", "gray2")}
-    ${mixin.textOverflow()}
-    @media ${({ theme }) => theme.mobile} {
-        ${mixin.textProps(12, "semiBold", "gray2")}
-    }
 `;
 const AnnounceTitle = styled.p`
     ${mixin.textProps(14, "semiBold", "gray2")}
-    ${mixin.textOverflow()}
-    @media ${({ theme }) => theme.mobile} {
-        ${mixin.textProps(12, "semiBold", "gray2")}
-    }
 `;
 
 // 더보기 버튼
 const More = styled.span`
     ${mixin.textProps(14, "semiBold", "gray3")}
-    cursor: pointer;
-    @media ${({ theme }) => theme.mobile} {
-        ${mixin.textProps(12, "semiBold", "gray3")}
+    :hover {
+        cursor: pointer;
     }
 `;
 
@@ -251,19 +209,13 @@ const Content = styled.div``;
 const PostContainer = styled.div`
     display: grid;
     cursor: pointer;
-    margin-bottom: ${({ theme }) => theme.calRem(12)};
+    margin-bottom: 12px;
     grid-template-columns: max-content 1fr max-content;
-    align-items: center;
 `;
 
 const IconContainer = styled.div`
     display: grid;
     grid-template-columns: repeat(3, 40px);
-    align-items: center;
-    @media ${({ theme }) => theme.mobile} {
-        display: block;
-        width: 40px;
-    }
 `;
 
 const Icon = styled.div`
@@ -272,16 +224,10 @@ const Icon = styled.div`
     span {
         line-height: 1;
         font-size: ${({ theme }) => theme.fontSize["12"]};
-        @media ${({ theme }) => theme.mobile} {
-            font-size: ${({ theme }) => theme.fontSize["11"]};
-        }
     }
     svg {
-        margin-right: ${({ theme }) => theme.calRem(2)};
-        font-size: ${({ theme }) => theme.fontSize["16"]};
-        @media ${({ theme }) => theme.mobile} {
-            font-size: ${({ theme }) => theme.fontSize["14"]};
-        }
+        margin-right: 2px;
+        font-size: 17px;
     }
 `;
 

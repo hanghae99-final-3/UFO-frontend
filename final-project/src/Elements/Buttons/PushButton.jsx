@@ -1,13 +1,12 @@
 import React from "react";
 import styled from "styled-components";
-import mixin from "../../Styles/Mixin";
 
 const PushButton = ({ onClick }) => {
     return (
         <Button onClick={onClick}>
             <SpanShadow></SpanShadow>
             <EdgeSpan></EdgeSpan>
-            <FontSpan>좋아요</FontSpan>
+            <FontSpan>글쓰기 </FontSpan>
         </Button>
     );
 };
@@ -18,21 +17,21 @@ const SpanShadow = styled.span`
     position: absolute;
     top: 0;
     left: 0;
-    width: 56px;
-    height: 24px;
-    border-radius: 60px;
-    /* background: hsl(0deg 0% 0% / 0.25); */
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+    background: hsl(0deg 0% 0% / 0.25);
     will-change: transform;
-    transform: translateY(1px);
-    transition: transform 600ms cubic-bezier(0.5, 0.7, 0.5, 1);
+    transform: translateY(2px);
+    transition: transform 600ms cubic-bezier(0.3, 0.7, 0.4, 1);
 `;
 
 const FontSpan = styled.span`
     display: block;
     position: relative;
-    padding: 5px 15px;
-    border-radius: 50px;
-    ${mixin.textProps(11, "semiBold", "white")};
+    padding: 5px 30px;
+    border-radius: 12px;
+    font-size: 1.25rem;
     color: white;
     background: hsl(252deg 100% 58%);
     will-change: transform;
@@ -46,7 +45,7 @@ const EdgeSpan = styled.span`
     left: 0;
     width: 100%;
     height: 100%;
-    border-radius: 40px;
+    border-radius: 12px;
     background: linear-gradient(
         to left,
         hsl(252deg 100% 16%) 0%,
@@ -57,7 +56,6 @@ const EdgeSpan = styled.span`
 `;
 
 const Button = styled.button`
-    margin-top: 2px;
     position: relative;
     border: none;
     background: transparent;
