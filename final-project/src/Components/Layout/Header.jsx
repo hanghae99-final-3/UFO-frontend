@@ -246,7 +246,7 @@ const Header = () => {
 
 const HeaderContainer = styled.header`
     position: fixed;
-    width: 100%;
+    width: 100vw;
     box-shadow: 0px 4px 7px 0px #e4ddff;
     background: ${({ theme }) => theme.color.white};
     z-index: 99;

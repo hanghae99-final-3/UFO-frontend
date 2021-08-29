@@ -307,7 +307,7 @@ const BoardWrite = ({ boardName }) => {
                     </TagSelectorBox>
                 </TagSelect>
                 {boardName === "univboard" && isAdmin && (
-                    <TagSelect>
+                    <AnnounceSelect>
                         {/* 카테고리 중 카테고리 선택하기 */}
                         <SelectTitle>공지 설정</SelectTitle>
                         <AnnounceSelector
@@ -318,7 +318,7 @@ const BoardWrite = ({ boardName }) => {
                         >
                             공지글
                         </AnnounceSelector>
-                    </TagSelect>
+                    </AnnounceSelect>
                 )}
             </SelectBox>
 
@@ -368,8 +368,9 @@ const TagSelectTextBox = styled.div`
 `;
 
 const SelectTitle = styled.span`
+    display: inline-block;
+    width: 60px;
     ${mixin.textProps(14, "semiBold", "gray3")}
-    margin-right: 15px;
     @media ${({ theme }) => theme.mobile} {
         ${mixin.textProps(11, "semiBold", "gray3")};
     }
@@ -380,7 +381,7 @@ const TagSelectorBox = styled.div`
         width: 100%;
         white-space: nowrap;
         overflow: auto;
-        padding-left: ${({ theme }) => theme.calRem(70)};
+        padding-left: ${({ theme }) => theme.calRem(60)};
         ${mixin.flexBox(null, "center", null, theme.calRem(42))}
         ::-webkit-scrollbar {
             display: none;
@@ -398,11 +399,19 @@ const CountrySelect = styled.div`
 `;
 
 const TagSelect = styled.div`
+    padding: ${({ theme }) => theme.calRem(15)} 0;
     ${mixin.outline("1px solid", "gray4", "bottom")}
-    ${mixin.flexBox(null, "center")}
-    padding:${({ theme }) => theme.calRem(15)} 0;
-    @media ${({ theme }) => theme.mobile} {
+    /* ${mixin.flexBox(null, "center")} */
+        @media ${({ theme }) => theme.mobile} {
+        //TagSelect는 모바일로 갔을 때 오른쪽으로 스와이프하는 기능때문에 padding을 초기화시켜줘야한다.
         padding: 0;
+    }
+`;
+
+const AnnounceSelect = styled.div`
+    padding: ${({ theme }) => theme.calRem(15)} 0;
+    @media ${({ theme }) => theme.mobile} {
+        padding: ${({ theme }) => theme.calRem(8)} 0;
     }
 `;
 
