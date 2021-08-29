@@ -114,7 +114,6 @@ const UnivBoard = () => {
 
     return (
         <>
-            {console.log(infinityPage)}
             <Helmet>
                 <title>UFO - 대학 게시판</title>
             </Helmet>
