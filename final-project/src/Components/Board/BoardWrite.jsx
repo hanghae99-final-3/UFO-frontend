@@ -93,6 +93,9 @@ const BoardWrite = ({ boardName }) => {
             //CKEditor 특성상 입력값 없음은 객체다.
             return Swal.fire("에러", "내용을 적어주세요!", "error");
 
+        //----본문에서 유저가 실제로 사용하는 이미지 url목록들을 솎아냅니다.
+const imgList = getImgList(post.content);
+
         if (boardName === "freeboard") {
             const req = {
                 title: post.title,
@@ -100,11 +103,12 @@ const BoardWrite = ({ boardName }) => {
                 content: post.content,
                 country_id: post.country_id,
                 post_id: post.post_id,
-                img_list: post.img_list,
+                img_list: imgList,
             };
             history.push(`/freeboard/detail/${postId}`);
             dispatch(editFreePostDB(req));
         }
+
         if (boardName === "univboard") {
             const req = {
                 title: post.title,
@@ -113,7 +117,7 @@ const BoardWrite = ({ boardName }) => {
                 post_id: post.post_id,
                 is_fixed: post.is_fixed,
                 univ_id: user.univ_id,
-                img_list: post.img_list,
+                img_list: imgList,
             };
             dispatch(editUnivBoardPostDB(req));
             history.push(`/univboard/detail/${postId}`);
@@ -144,36 +148,34 @@ const BoardWrite = ({ boardName }) => {
         });
     };
 
-    const addPost = () => {
-        //서버에 필요한 정보를 정리하고, 포스트를 추가하는 미들웨어 함수로 보낸다.
-
-        //----본문에서 imgSrc들을 가져옵니다.
+    const getImgList = (content) => {
+        //에디터에서 받아온 컨텐츠 내용을 파싱하여 유저가 실제로 사용하는 이미지만을 솎아내는 함수입니다.
         const apiUrl = "https://yzkim9501.site";
-        let imgList = [];
-        const getImgList = () => {
+        if (content.includes(apiUrl)){
             let result = [];
-            let _imgList = post.content.split(apiUrl).slice(1);
+            let _imgList = content.split(apiUrl).slice(1);
             for (let i = 0; i < _imgList.length; i++) {
                 const startIdx = _imgList[i][0];
                 const endIdx = _imgList[i].indexOf(">") - 1;
                 const imgSrc = _imgList[i].slice(startIdx, endIdx);
                 result.push(imgSrc);
             }
-            return result;
+            return result;}
         };
-        if (post.content.includes(apiUrl)) imgList = getImgList();
-        //----
 
+    const addPost = () => {
+        //서버에 필요한 정보를 정리하고, 포스트를 추가하는 미들웨어 함수로 보낸다.
         if (!user.user_id)
             return Swal.fire("에러", "로그인을 해주세요!", "error");
-
         if (user.user_id && !post.category)
             return Swal.fire("에러", "카테고리를 설정해주세요!", "error");
-
         if (user.user_id && !post.title)
             return Swal.fire("에러", "제목을 적어주세요!", "error");
         if (user.user_id && !post.content)
             return Swal.fire("에러", "내용을 적어주세요!", "error");
+
+        //----본문에서 유저가 실제로 사용하는 이미지 url목록들을 솎아냅니다.
+        const imgList = getImgList(post.content);
 
         if (boardName === "freeboard") {
             if (user.user_id && !post.country_id)

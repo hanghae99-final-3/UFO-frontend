@@ -139,7 +139,6 @@ const BoardDetail = ({ page }) => {
             });
         };
         if (window.pageYOffset > 0) scrollToTop();
-        console.log(window.pageYOffset);
     }, []);
 
     useEffect(() => {
