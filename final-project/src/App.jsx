@@ -30,6 +30,8 @@ import KakaoLogin from "./KakaoLogin";
 
 //utils
 import { checkAdminDB, checkLoggedInUser } from "./Redux/Async/user"; // 로그인 체크
+import { setDarkTheme } from "./Redux/Modules/userSlice"; //다크모드 주입 함수
+import { getDarkTheme } from "./Shared/utils";
 
 function App() {
     // redux dispatch
@@ -43,6 +45,14 @@ function App() {
         if (is_token) {
             dispatch(checkLoggedInUser());
             dispatch(checkAdminDB());
+        }
+
+        const LSDarkTheme = getDarkTheme(); //로컬스토리지에 있는 dark모드 값입니다.
+        if (LSDarkTheme === "true") {
+            setDarkTheme(true);
+        }
+        if (!LSDarkTheme || LSDarkTheme === "false") {
+            setDarkTheme(false);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [dispatch, isLoggedIn]);

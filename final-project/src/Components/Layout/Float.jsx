@@ -4,7 +4,9 @@ import mixin from "../../Styles/Mixin";
 import theme from "../../Styles/theme";
 import { useLocation } from "react-router";
 import { history } from "../../Redux/configureStore";
+import { setDarkTheme } from "../../Redux/Modules/userSlice";
 import { getDarkTheme } from "../../Shared/utils";
+import { useDispatch, useSelector } from "react-redux";
 
 //아이콘
 import { GrEdit } from "react-icons/gr";
@@ -15,10 +17,11 @@ import { FaRegMoon, FaRegSun } from "react-icons/fa";
 import FloatSelectCountry from "../Shared/FloatSelectCountry";
 
 const Float = () => {
+    const dispatch = useDispatch();
     const { pathname } = useLocation();
     const [isWriteBntOn, setIsWriteBntOn] = useState(false); //작성버튼을 보여줄지 말지에 대한 판별값, 자유게시판, 국가게시판이면 글쓰기버튼이 생긴다.
     const [isScrollTopBtnOn, setIsScrollTopBtnOn] = useState(false); //위로가기 버튼을 보여줄지 말지에 대한 판별값
-    const [isDarkTheme, setIsDarkTheme] = useState(false);
+    const isDarkTheme = useSelector(state => state.user.isDarkTheme);
 
     const isDesktop =
         document.documentElement.clientWidth >= 1080 ? true : false;
@@ -41,11 +44,11 @@ const Float = () => {
         //다크모드를 켜고 끄는 함수입니다.
         const LSDarkTheme = getDarkTheme(); //로컬스토리지에 있는 dark모드 값입니다.
         if (LSDarkTheme === "true") {
-            setIsDarkTheme(false);
+            dispatch(setDarkTheme(false));
             return localStorage.setItem("ufo_dark_theme", "false");
         }
         if (!LSDarkTheme || LSDarkTheme === "false") {
-            setIsDarkTheme(true);
+            dispatch(setDarkTheme(true));
             localStorage.setItem("ufo_dark_theme", "true");
         }
     };
