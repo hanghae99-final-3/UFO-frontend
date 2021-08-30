@@ -18,9 +18,9 @@ const Tag = styled.span`
     min-width: 74px;
     border-radius: 16px;
     ${mixin.boxShadow()}
-    background-color: ${props => props.theme.color.mint};
+    background-color: ${props => props.theme.color.mainMint};
     ${mixin.textProps(12, "semiBold", "black", "center")};
-    ${mixin.outline("2px solid", "mint")}
+    ${mixin.outline("2px solid", "mainMint")}
     ${props => props.rightGap && `margin-right:${props.rightGap};`};
     ${props => props.leftGap && `margin-left:${props.leftGap};`};
 

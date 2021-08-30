@@ -176,8 +176,10 @@ const Home = () => {
                         </Header>
                         <UnivBoardMessageContainer>
                             <UnivBoardMessage>
-                                로그인 후, 대학 인증을 하면 더 많은 글을 볼 수
-                                있어요.
+                                로그인 후, 대학 인증을 하면
+                            </UnivBoardMessage>
+                            <UnivBoardMessage>
+                                더 많은 글을 볼 수 있어요.
                             </UnivBoardMessage>
                             <UnivBoardMessageControls>
                                 <DefaultButton
@@ -328,6 +330,11 @@ const UnivBoardMessageContainer = styled.div`
     min-height: ${({ theme }) => theme.calRem(100)};
     height: 100%;
     ${mixin.flexBox("center", "center", "column", null)};
+    span {
+        :nth-child(1) {
+            margin-bottom: 10px;
+        }
+    }
 `;
 
 const UnivBoardMessage = styled.span`

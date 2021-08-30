@@ -22,10 +22,13 @@ const Tag = styled.span`
     ${props => props.leftGap && `margin-left:${props.leftGap};`};
     border-radius: 16px;
     ${mixin.boxShadow()}
-    background-color: ${props => (props.announcement ? "mint" : "white")};
     ${mixin.textProps(18, "semiBold", "gray1")};
+    background-color: ${props =>
+        props.announcement
+            ? props.theme.color.mainMint
+            : props.theme.color.white};
     ${props =>
-        mixin.outline("2px solid", props.announcement ? "mint" : "blue1")};
+        mixin.outline("2px solid", props.announcement ? "mainMint" : "blue1")};
 
     @media ${({ theme }) => theme.mobile} {
         min-width: ${({ theme }) => theme.calRem(62)};

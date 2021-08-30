@@ -182,6 +182,18 @@ const BoardContentContainer = styled.div`
 const PaginationContainer = styled.div`
     .MuiPagination-ul {
         justify-content: center;
+
+        li:first-child button,
+        li:last-child button {
+            background: ${({ theme }) => theme.color.blue2};
+            color: ${({ theme }) => theme.color.white};
+        }
+        li button {
+            border: 2px solid ${({ theme }) => theme.color.blue3};
+            &.Mui-selected {
+                border: 2px solid ${({ theme }) => theme.color.mainMint};
+            }
+        }
     }
     ${mixin.floatBox("relative")};
     > button {

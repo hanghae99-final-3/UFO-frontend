@@ -18,7 +18,9 @@ const Button = styled.button`
     border-radius: 16px;
     transition: all 0.5s ease;
     background-color: ${props =>
-        props.isSelected ? props.theme.color.mint : props.theme.color.white};
+        props.isSelected
+            ? props.theme.color.mainMint
+            : props.theme.color.white};
     ${props =>
         props.isSelected
             ? mixin.textProps(18, "semiBold", "gray1")
@@ -28,7 +30,7 @@ const Button = styled.button`
             ? `box-shadow: inset -2px 5px 5px -5px #cdcdcd;`
             : `box-shadow:  0 5px 5px -4px #cdcdcd;`}
         ${props =>
-        mixin.outline("2px solid", props.isSelected ? "mint" : "mainGray")}
+        mixin.outline("2px solid", props.isSelected ? "mainMint" : "blue2")}
         ${props => props.rightGap && `margin-right:${props.rightGap};`}
         ${props => props.leftGap && `margin-left:${props.leftGap};`}
         ${props =>

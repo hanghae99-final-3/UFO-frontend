@@ -92,7 +92,22 @@ const BoardBox = ({ postList, fixedList, boardName, announcement }) => {
                                     announcement={announcement}
                                     rightGap={isDesktop ? "20px" : "8px"}
                                 >
-                                    {!announcement && "#"}
+                                    {!announcement &&
+                                        boardName === "freeboard" && (
+                                            <img
+                                                style={{
+                                                    width: "15px",
+                                                    marginRight: "1px",
+                                                }}
+                                                src={
+                                                    categories
+                                                        .countrySelectorFlagList[
+                                                        post.country_id - 1
+                                                    ]?.icon
+                                                }
+                                                alt=""
+                                            />
+                                        )}
                                     {boardName === "freeboard" &&
                                         !announcement &&
                                         categories.freeCategory[post.category]

@@ -51,7 +51,7 @@ export default MainSearch;
 
 //---------스타일 컴포넌트----------
 const SearchForm = styled.form`
-    margin-top: 70px;
+    margin-top: 30px;
     width: 100%;
     padding-bottom: ${({ theme }) => theme.calRem(5)};
     ${mixin.flexBox("center")}
