@@ -116,7 +116,7 @@ const Header = () => {
                                             },
                                         }}
                                     >
-                                        대학게시판
+                                        대학 게시판
                                     </Link>
                                 </Control>
                                 <Control>
@@ -131,7 +131,7 @@ const Header = () => {
                                             },
                                         }}
                                     >
-                                        자유게시판
+                                        자유 게시판
                                     </Link>
                                 </Control>
                                 <Control>
