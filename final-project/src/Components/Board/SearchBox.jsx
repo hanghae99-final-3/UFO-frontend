@@ -29,6 +29,7 @@ import {
     getUnivBoardDB,
     getUnivSearchResult,
 } from "../../Redux/Async/univBoard";
+import Swal from "sweetalert2";
 
 /**
  * @author heesung
@@ -107,10 +108,13 @@ const SearchBox = ({
     //검색창 form onSubmit 이벤트 핸들링
     const handleSearch = e => {
         e.preventDefault();
-
+        const regexp = /^\S*$/;
         // history.push(`/util/search/${searchTerm}`);
         if (searchTerm === "") {
-            return window.alert("검색어를 입력해 주세요.");
+            return Swal.fire("에러", "검색어를 입력해주세요.😉", "error");
+        }
+        if (!regexp.test(searchTerm)) {
+            return Swal.fire("에러", "검색어를 입력해주세요.😉", "error");
         }
 
         if (history.location.pathname.split("/")[1] === "freeboard") {
@@ -154,7 +158,9 @@ const SearchBox = ({
             <SearchBoxContainer>
                 {page && (
                     <TitleContainer>
-                        {page === "univboard"&&<UnivName>{univName}</UnivName>}
+                        {page === "univboard" && (
+                            <UnivName>{univName}</UnivName>
+                        )}
                         <TitleSpan onClick={() => handleGoToList(page)}>
                             {page === "freeboard"
                                 ? "자유 게시판"
@@ -224,7 +230,7 @@ const SearchBox = ({
                         <SearchForm onSubmit={handleSearch}>
                             <MuiThemeProvider theme={MuiTheme}>
                                 <InputBox
-                                    placeholder="검색어를 입력해주세요!"
+                                    placeholder="UFO에게 무엇이든 검색해보세요 "
                                     value={searchTerm}
                                     onChange={onSearchTermChange}
                                 />
@@ -263,14 +269,14 @@ const TitleContainer = styled.div`
 `;
 
 const UnivName = styled.span`
-display: inline-block;
+    display: inline-block;
     margin-bottom: 10px;
-    width:100%;
+    width: 100%;
     ${mixin.textProps(20, "semiBold", "gray2")};
     @media ${({ theme }) => theme.mobile} {
         ${mixin.textProps(12, "semiBold", "gray2")};
     }
-`
+`;
 
 const TitleSpan = styled.span`
     cursor: pointer;

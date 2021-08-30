@@ -14,6 +14,7 @@ import { getFreeListDB, getIssuePostListDB } from "../../Redux/Async/freeBoard";
 //배너
 import bnr1_mobile from "../../Assets/event1_mobile.png";
 import bnr1_pc from "../../Assets/event1_pc.png";
+import bnr2_pc from "../../Assets/event2_pc.png";
 
 //컴포넌트
 import MainSlider from "../../Components/Home/MainSlider"; // 메인 페이지 슬라이더 컴포넌트
@@ -106,9 +107,9 @@ const Home = () => {
                 target="_blank"
             >
                 {isDesktop ? (
-                    <img src={bnr1_pc} alt="banner" />
+                    <img src={bnr2_pc} alt="banner" />
                 ) : (
-                    <img src={bnr1_mobile} alt="banner" />
+                    <img src={bnr2_pc} alt="banner" />
                 )}
             </Banner>
             {/* 인기 게시글 슬라이더 불러오기*/}
@@ -122,10 +123,10 @@ const Home = () => {
                 {/* 대학 게시판 불러오기*/}
                 {isAuthenticated !== null && isLoggedIn && (
                     <PreviewBoardBox
-                        title="🎓대학 게시판"
+                        title="대학 게시판 🎓"
                         fixedList={announcement && announcement.slice(0, 2)}
                         postList={
-                            univBoardPostList && univBoardPostList.slice(0, 6)
+                            univBoardPostList && univBoardPostList.slice(0, 8)
                         }
                         boardName="univboard"
                     />
@@ -133,11 +134,12 @@ const Home = () => {
                 {isAuthenticated === null && (
                     <Content>
                         <Header>
-                            <TitleHeading>🎓대학 게시판</TitleHeading>
+                            <TitleHeading>대학 게시판 🎓</TitleHeading>
                         </Header>
                         <UnivBoardMessageContainer>
                             <UnivBoardMessage>
-                                대학 인증 후, 학교 게시판을 이용하실 수 있습니다
+                                대학 인증 후, 학교 게시판을 이용하실 수
+                                있습니다.
                             </UnivBoardMessage>
                             <UnivBoardMessageControls>
                                 <DefaultButton
@@ -166,11 +168,12 @@ const Home = () => {
                 {isLoggedIn === false && (
                     <Content>
                         <Header>
-                            <TitleHeading>🎓대학 게시판</TitleHeading>
+                            <TitleHeading>대학 게시판 🎓</TitleHeading>
                         </Header>
                         <UnivBoardMessageContainer>
                             <UnivBoardMessage>
-                                대학 게시판은 로그인 후 이용하실 수 있습니다
+                                로그인 후, 대학 인증을 하면 더 많은 글을 볼 수
+                                있어요.
                             </UnivBoardMessage>
                             <UnivBoardMessageControls>
                                 <DefaultButton
@@ -205,9 +208,9 @@ const Home = () => {
                     /* country ==== 0 , 즉 전체 선택의 경우 
                     필터하지 않은 포스트를 props로 전달한다.*/
                     <PreviewBoardBox
-                        title="🗽자유 게시판"
+                        title="자유 게시판 💬"
                         postList={
-                            freeBoardPostList && freeBoardPostList.slice(0, 6)
+                            freeBoardPostList && freeBoardPostList.slice(0, 8)
                         }
                         boardName="freeboard"
                     />
@@ -215,7 +218,7 @@ const Home = () => {
                     /*  유저가 특정 국가를 선택했을 경우, 자유 게시판을 
                     해당 국의 게시글로 필터링하여 props로 전달한다.*/
                     <PreviewBoardBox
-                        title="🗽자유 게시판"
+                        title="자유 게시판 💬"
                         postList={
                             freeBoardPostList &&
                             freeBoardPostList

@@ -16,7 +16,7 @@ const Signup = props => {
     React.useEffect(() => {
         if (isSignupSuccess) {
             dispatch(resetSignupSuccess());
-            Swal.fire("완료", "회원가입 성공", "success");
+            Swal.fire("완료", "UFO에 오신걸 환영해요!🛸", "success");
             props.history.replace("/login");
         }
     }, [isSignupSuccess, props.history, dispatch]);
@@ -39,7 +39,7 @@ const Signup = props => {
             .email("이메일 형식을 확인하세요.")
             .required("이메일을 입력하세요."),
         password: Yup.string()
-            .min(6, "비밀번호는 6자리 이상으로 입력하세요.")
+            .min(4, "비밀번호는 4자리 이상 입력해주세요")
             .required("비밀번호를 입력하세요."),
         confirmPassword: Yup.string()
             .oneOf([Yup.ref("password"), null], "비밀번호가 같지 않습니다.")

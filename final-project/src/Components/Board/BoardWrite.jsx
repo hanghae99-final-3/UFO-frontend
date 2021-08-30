@@ -171,19 +171,27 @@ const BoardWrite = ({ boardName }) => {
         //서버에 필요한 정보를 정리하고, 포스트를 추가하는 미들웨어 함수로 보낸다.
         if (!user.user_id)
             return Swal.fire("에러", "로그인을 해주세요!", "error");
-        if (user.user_id && !post?.category)
-            return Swal.fire("에러", "카테고리를 설정해주세요!", "error");
-        if (user.user_id && !post?.title)
-            return Swal.fire("에러", "제목을 적어주세요!", "error");
-        if (user.user_id && !post?.content)
-            return Swal.fire("에러", "내용을 적어주세요!", "error");
+        if (user.user_id && !post.category)
+            return Swal.fire(
+                "에러",
+                "게시글의 카테고리 태그를 설정해주세요.",
+                "error",
+            );
+        if (user.user_id && !post.title)
+            return Swal.fire("에러", "제목을 작성해주세요.", "error");
+        if (user.user_id && !post.content)
+            return Swal.fire("에러", "내용을 작성해주세요.", "error");
 
         //----본문에서 유저가 실제로 사용하는 이미지 url목록들을 솎아냅니다.
         const imgList = getImgList(post.content);
 
         if (boardName === "freeboard") {
             if (user.user_id && !post.country_id)
-                return Swal.fire("에러", "국가를 설정해주세요!", "error");
+                return Swal.fire(
+                    "에러",
+                    "게시글의 국가 태그를 설정해주세요.",
+                    "error",
+                );
 
             const req = {
                 title: post.title,
