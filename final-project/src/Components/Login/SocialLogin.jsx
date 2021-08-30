@@ -65,6 +65,8 @@ const KakaoButtonBox = styled.button`
 `;
 
 const MemberCheckBox = styled.div`
+    width : 344px;
+    justify-content: space-between;
     margin-top: 27px;
     display: flex;
     @media ${({ theme }) => theme.mobile} {
