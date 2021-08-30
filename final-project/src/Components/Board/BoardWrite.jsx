@@ -213,7 +213,8 @@ const BoardWrite = ({ boardName }) => {
     if (!isLoggedIn)
         return (
             <Message
-                message="로그인을 하면 글을 작성할 수 있어요!"
+                strong="로그인"
+                message="을 하면 글을 작성할 수 있어요!"
                 link="/login"
                 buttonValue="로그인하러가기"
             />
@@ -223,7 +224,8 @@ const BoardWrite = ({ boardName }) => {
     if (boardName === "univboard" && !user.school_auth)
         return (
             <Message
-                message="대학인증을 하면 글을 작성할 수 있어요!"
+                strong="대학인증"
+                message="을 하면 글을 작성할 수 있어요!"
                 link="/mypage"
                 buttonValue="대학인증하러가기"
             />
