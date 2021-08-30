@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useCookies } from "react-cookie";
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { loginUserDB } from "../../Redux/Async/user";
 import { history } from "../../Redux/configureStore";
 
@@ -25,7 +25,7 @@ const LoginPresenter = ({
 }) => {
     const dispatch = useDispatch();
     const [cookies, setCookie, removeCookie] = useCookies(["rememberEmail"]);
-
+    const isDarkTheme = useSelector(state=>state.user.isDarkTheme)
     const [email, setEmail] = useState("");
     useEffect(() => {
         if (cookies.rememberEmail !== undefined) {
@@ -59,13 +59,14 @@ const LoginPresenter = ({
     return (
         <MainContainer>
             <div>
-                <LoginText variant="h4">로그인</LoginText>
+                <LoginText variant="h4" isDarkTheme={isDarkTheme}>로그인</LoginText>
             </div>
             {socialLoginMode ? (
                 <SocialLogin toggleLoginMode={toggleLoginMode} />
             ) : (
                 <Form onSubmit={loginFormik.handleSubmit}>
                     <Input
+                        isDarkTheme={isDarkTheme}
                         label="ID"
                         id="email"
                         name="email"
@@ -77,6 +78,7 @@ const LoginPresenter = ({
                         <ErrorBox>{loginFormik.errors.email}</ErrorBox>
                     ) : null}
                     <Input
+                        isDarkTheme={isDarkTheme}
                         placeholder="PW"
                         label="PW"
                         id="password"
@@ -108,8 +110,9 @@ const LoginPresenter = ({
                         로그인
                     </LoginBtn>
                     <MemberCheckBox>
-                        <DoYouHaveID>UFO와 함께하실래요?</DoYouHaveID>
+                        <DoYouHaveID isDarkTheme={isDarkTheme}>UFO와 함께하실래요?</DoYouHaveID>
                         <GoSignUp
+                            isDarkTheme={isDarkTheme}
                             onClick={() => {
                                 history.push("/signup");
                             }}
@@ -172,10 +175,10 @@ const Form = styled.form`
 // 로그인 타이틀
 const LoginText = styled.span`
     width: ${({ theme }) => theme.calRem(120)};
-    ${mixin.textProps(40, "extraBold", "black")}
+    ${props=>mixin.textProps(40, "extraBold", props.isDarkTheme?"white":"black")}
 
     @media ${({ theme }) => theme.mobile} {
-        ${mixin.textProps(22, "extraBold", "black")}
+        ${props=>mixin.textProps(22, "extraBold", props.isDarkTheme?"white":"black")}
     }
 `;
 const AutoLogin = styled.div`
@@ -212,19 +215,20 @@ const Input = styled.input`
     padding: ${({ theme }) => theme.calRem(10)};
     width: 100%;
     border: none;
+    background:none;
     border-radius: 0px;
     ::placeholder {
-        ${mixin.textProps(18, "semiBold", "gray4")}
+        ${props=>mixin.textProps(18, "semiBold", props.isDarkTheme?"gray2":"gray4")}
     }
     ${mixin.textProps(18, "semiBold", "gray3")}
-    ${props => mixin.outline("1px solid", "mainGray", "bottom")};
+    ${props => mixin.outline("1px solid", props.isDarkTheme?"gray1":"mainGray", "bottom")};
     :focus {
         ${props => mixin.outline("1px solid", "gray1", "bottom")};
     }
 
     @media ${({ theme }) => theme.mobile} {
         ::placeholder {
-            ${mixin.textProps(14, "semiBold", "gray4")}
+            ${props=>mixin.textProps(14, "semiBold", props.isDarkTheme?"gray2":"gray4")}
         }
         ${mixin.textProps(14, "semiBold", "gray3")}
     }
@@ -244,20 +248,20 @@ const MemberCheckBox = styled.div`
 
 // 회원가입 문구
 const DoYouHaveID = styled.p`
-    ${mixin.textProps(20, "semiBold", "gray3")}
+    ${props=>mixin.textProps(20, "semiBold", props.isDarkTheme?"gray2":"gray3")}
     //모바일 사이즈
     @media ${({ theme }) => theme.mobile} {
-        ${mixin.textProps(16, "semiBold", "gray3")}
+        ${props=>mixin.textProps(16, "semiBold", props.isDarkTheme?"gray2":"gray3")}
     }
 `;
 
 // 회원가입 하러가기 버튼
 const GoSignUp = styled.button`
-    background-color: ${({ theme }) => theme.color.white};
-    ${mixin.textProps(20, "semiBold", "mainBlue")}
+    background: none;
+    ${props=>mixin.textProps(20, "semiBold", props.isDarkTheme?"mainMint":"mainBlue")}
     //모바일 사이즈
     @media ${({ theme }) => theme.mobile} {
-        ${mixin.textProps(16, "semiBold", "mainBlue")}
+        ${props=>mixin.textProps(16, "semiBold", props.isDarkTheme?"mainMint":"mainBlue")}
     }
 `;
 

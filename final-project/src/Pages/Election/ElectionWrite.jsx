@@ -25,6 +25,7 @@ const ElectionWrite = () => {
     const dispatch = useDispatch();
     const [isLoading, setIsLoading] = useState(false); //이미지가 업로드중인지 아닌지 판별하는 state (이미 이미지가 업로드 중이면(true면) 이미지 업로드를 막는 역할)
     const userInfo = useSelector(state => state.user.user);
+    const isDarkTheme = useSelector(state => state.user.isDarkTheme); // 다크모드
     const { id: electionPostId } = useParams(); //선거게시글의 포스트아이디입니다.
     const isEdit = electionPostId ? true : false; //수정모드인지 아닌지 판별해주는 값
     const isAdmin = useSelector(state => state.user.isAdmin); //관리자인지 아닌지 판별해주는 값
@@ -248,9 +249,10 @@ const ElectionWrite = () => {
         <ElectionWriteContainer>
             {/* 선거 게시글의 제목, 내용을 입력하는 곳입니다. */}
             <WriteElectionInfoBox>
-                <Title>투표 정보</Title>
+                <Title isDarkTheme={isDarkTheme}>투표 정보</Title>
                 {/* 선거게시글 제목입력란 */}
                 <InputTitle
+                    isDarkTheme={isDarkTheme}
                     name="name"
                     type="text"
                     placeholder="투표 제목을 입력해주세요."
@@ -259,6 +261,7 @@ const ElectionWrite = () => {
                 />
                 {/* 선거게시글 내용입력란 */}
                 <InputContent
+                    isDarkTheme={isDarkTheme}
                     name="content"
                     type="text"
                     placeholder="투표 내용을 입력해주세요."
@@ -269,7 +272,7 @@ const ElectionWrite = () => {
 
             {/* 투표기간을 입력하는 공간입니다. */}
             <WriteElectionDurationBox>
-                <Title>투표 기간</Title>
+                <Title isDarkTheme={isDarkTheme}>투표 기간</Title>
                 <DateTimePicker
                     defaultDate={defaultDate}
                     originStartDate={post?.start_date}
@@ -280,7 +283,7 @@ const ElectionWrite = () => {
 
             {/* 선거 후보자의 이름, 학과, 소개, 사진을 입력하는 곳입니다. */}
             <WriteCandidateBox>
-                <Title bottomGap>후보자 정보</Title>
+                <Title bottomGap isDarkTheme={isDarkTheme}>후보자 정보</Title>
                 <CandidateAccordian
                     candidates={post?.candidates}
                     getData={setCandidateInfo}
@@ -299,12 +302,12 @@ const ElectionWrite = () => {
 const ElectionWriteContainer = styled.div``;
 
 const Title = styled.h5`
-    ${mixin.textProps(30, "extraBold", "black")};
-    ${mixin.outline("1px solid", "gray4", "bottom")}
+    ${props=>mixin.textProps(30, "extraBold", props.isDarkTheme?"white":"black")};
+    ${props=>mixin.outline("1px solid", props.isDarkTheme?"gray1":"gray4", "bottom")}
     padding-bottom: ${({ theme }) => theme.calRem(10)};
 
     @media ${({ theme }) => theme.mobile} {
-        ${mixin.textProps(22, "extraBold", "black")};
+        ${props=>mixin.textProps(22, "extraBold", props.isDarkTheme?"white":"black")};
         padding-bottom: ${({ theme }) => theme.calRem(8)};
     }
 `;
@@ -321,12 +324,13 @@ const InputTitle = styled.input`
     border: none;
     padding: ${({ theme }) => theme.calRem(20)} 0;
     transition: border-bottom 1s ease;
-    ${mixin.outline("1px solid", "gray4", "bottom")}
+    background:none;
+    ${props=>mixin.outline("1px solid", props.isDarkTheme?"gray1":"gray4", "bottom")}
     ${mixin.textProps(40, "extraBold", "gray2")};
     ::placeholder {
-        ${mixin.textProps(40, "extraBold", "gray4")};
+        ${props=>mixin.textProps(40, "extraBold", props.isDarkTheme?"mainGray":"gray4")};
         @media ${({ theme }) => theme.mobile} {
-            ${mixin.textProps(22, "extraBold", "gray4")};
+            ${props=>mixin.textProps(22, "extraBold", props.isDarkTheme?"mainGray":"gray4")};
         }
     }
     :focus {
@@ -340,9 +344,10 @@ const InputTitle = styled.input`
 `;
 const InputContent = styled.textarea`
     border: none;
+    background : none;
     padding: ${({ theme }) => theme.calRem(30)} 0;
     transition: border-bottom 1s ease;
-    ${mixin.outline("1px solid", "gray4", "bottom")}
+    ${props=>mixin.outline("1px solid", props.isDarkTheme?"gray1":"gray4", "bottom")}
     ${mixin.textProps(20, "regular", "gray2")};
     ::placeholder {
         ${mixin.textProps(20, "regular", "gray4")};
