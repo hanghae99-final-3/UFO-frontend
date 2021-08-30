@@ -25,7 +25,7 @@ const Layout = ({ children }) => {
 };
 
 const StyledLayout = styled.div`
-    ${props => props.isDarkTheme && `background:${theme.color.black}`}
+    /* ${props => props.isDarkTheme && `background:${theme.color.black}`} */
 `;
 
 export default Layout;

@@ -49,7 +49,7 @@ function App() {
 
         const LSDarkTheme = getDarkTheme(); //로컬스토리지에 있는 dark모드 값입니다.
         if (LSDarkTheme === "true") {
-            setDarkTheme(true);
+            return setDarkTheme(true);
         }
         if (!LSDarkTheme || LSDarkTheme === "false") {
             setDarkTheme(false);

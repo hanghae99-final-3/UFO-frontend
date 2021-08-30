@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import mixin from "../../Styles/Mixin";
+import theme from "../../Styles/theme";
 import { history } from "../../Redux/configureStore";
+import { useSelector } from "react-redux";
 
 /**
  * @author jiyeong
@@ -17,11 +19,16 @@ const Message = ({ strong, message, link, buttonValue }) => {
     const [top, setTop] = useState(null);
     const topRelativeFromViewport = top;
     const baseComponent = useRef(null);
+    const isDarkTheme = useSelector(state => state.user.isDarkTheme);
     useEffect(() => {
         setTop(baseComponent.current.getBoundingClientRect().top);
     }, []);
     return (
-        <MessageContainer ref={baseComponent} top={topRelativeFromViewport}>
+        <MessageContainer
+            ref={baseComponent}
+            isDarkTheme={isDarkTheme}
+            top={topRelativeFromViewport}
+        >
             <p>
                 <span>{strong}</span>
                 {message}
@@ -40,6 +47,7 @@ const MessageContainer = styled.div`
     ${mixin.flexBox("center", "center", "column", null)};
     height: calc(100vh - ${props => props.top}px);
     width: 100%;
+    ${props => props.isDarkTheme && `background:${theme.color.black};`}
     @media ${({ theme }) => theme.mobile} {
         width: calc(100% - 30px);
     }
