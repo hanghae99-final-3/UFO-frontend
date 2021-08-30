@@ -53,7 +53,7 @@ const MyPost = props => {
                         : `${username} 님과 UFO가 함께한 순간들`}
                 </MyPostHeader>
             </MyPostHeaderContainer>
-            <ButtonContainer>
+            <ButtonContainer isDarkTheme={isDarkTheme}>
                 <Button
                     isDarkTheme={isDarkTheme}
                     name="alarmButton"
@@ -96,7 +96,12 @@ const MyPostHeaderContainer = styled.div`
 const ButtonContainer = styled.div`
     padding: 9px 0;
     margin-bottom: 19px;
-    ${mixin.outline("1.5px solid", "gray4", "top")}
+    ${props =>
+        mixin.outline(
+            "1.5px solid",
+            props.isDarkTheme ? "gray1" : "gray4",
+            "top",
+        )}
     ${mixin.outline("1.5px solid", "gray4", "bottom")}
      //모바일 사이즈
      @media ${({ theme }) => theme.mobile} {

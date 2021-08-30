@@ -51,38 +51,110 @@ const BoardBox = ({ postList, fixedList, boardName, announcement }) => {
                                 _onClick(post.post_id, post?.category);
                             }}
                         >
-                            <AnnounceTag rightGap={isDesktop ? "20px" : "8px"}>
-                                공지
-                            </AnnounceTag>
-                            <AnnounceTitle>{post.title}</AnnounceTitle>
-                            <IconContainer>
-                                <>
-                                    <Icon isDarkTheme={isDarkTheme}>
-                                        {post?.like?.is_like === false ? (
-                                            <FavoriteBorder />
-                                        ) : (
-                                            <FavoriteIcon
-                                                className={classes.heart}
-                                            />
-                                        )}
-                                        <IconSpan isDarkTheme={isDarkTheme}>
-                                            {post.like && post.like.all_like}
-                                        </IconSpan>
-                                    </Icon>
-                                    <Icon isDarkTheme={isDarkTheme}>
-                                        <MdComment />
-                                        <IconSpan isDarkTheme={isDarkTheme}>
-                                            {post.comment_count}
-                                        </IconSpan>
-                                    </Icon>
-                                </>
-                                <Icon isDarkTheme={isDarkTheme}>
-                                    <VisibilityIcon />
-                                    <IconSpan isDarkTheme={isDarkTheme}>
-                                        {post.view_count}
-                                    </IconSpan>
-                                </Icon>
-                            </IconContainer>
+                            <GridContainer>
+                                <AnnounceTag
+                                    rightGap={isDesktop ? "20px" : "8px"}
+                                >
+                                    {boardName === "freeboard" && (
+                                        <img
+                                            style={{
+                                                width: "15px",
+                                                marginRight: "1px",
+                                            }}
+                                            src={
+                                                categories
+                                                    .countrySelectorFlagList[
+                                                    post.country_id - 1
+                                                ]?.icon
+                                            }
+                                            alt=""
+                                        />
+                                    )}
+                                    {boardName === "freeboard" &&
+                                        categories.freeCategory[post.category]
+                                            ?.categoryName}
+                                    {boardName === "univboard" &&
+                                        categories.univCategory[post.category]
+                                            ?.categoryName}
+                                </AnnounceTag>
+                                <PostTitle isDarkTheme={isDarkTheme}>
+                                    {post.title}
+                                </PostTitle>
+                                {/* 데스크탑 */}
+                                {isDesktop ? (
+                                    <IconContainer>
+                                        <>
+                                            <Icon isDarkTheme={isDarkTheme}>
+                                                {post?.like?.is_like ===
+                                                false ? (
+                                                    <FavoriteBorder />
+                                                ) : (
+                                                    <FavoriteIcon
+                                                        className={
+                                                            classes.heart
+                                                        }
+                                                    />
+                                                )}
+                                                <IconSpan
+                                                    isDarkTheme={isDarkTheme}
+                                                >
+                                                    {post.like &&
+                                                        post.like.all_like}
+                                                </IconSpan>
+                                            </Icon>
+                                            <Icon isDarkTheme={isDarkTheme}>
+                                                <MdComment />
+                                                <IconSpan
+                                                    isDarkTheme={isDarkTheme}
+                                                >
+                                                    {post.comment_count}
+                                                </IconSpan>
+                                            </Icon>
+                                        </>
+                                        <Icon isDarkTheme={isDarkTheme}>
+                                            <VisibilityIcon />
+                                            <IconSpan isDarkTheme={isDarkTheme}>
+                                                {post.view_count}
+                                            </IconSpan>
+                                        </Icon>
+                                    </IconContainer>
+                                ) : null}
+                            </GridContainer>
+                            {isMobile && (
+                                <IconContainer isDarkTheme={isDarkTheme}>
+                                    <Username isDarkTheme={isDarkTheme}>
+                                        Admin
+                                    </Username>
+                                    <IconWrapper>
+                                        <Icon isDarkTheme={isDarkTheme}>
+                                            {post?.like?.is_like === false ? (
+                                                <FavoriteBorder />
+                                            ) : (
+                                                <FavoriteIcon
+                                                    className={classes.heart}
+                                                />
+                                            )}
+                                            <IconSpan isDarkTheme={isDarkTheme}>
+                                                {post.like &&
+                                                    post.like.all_like}
+                                            </IconSpan>
+                                        </Icon>
+                                        <Icon isDarkTheme={isDarkTheme}>
+                                            <MdComment />
+                                            <IconSpan isDarkTheme={isDarkTheme}>
+                                                {post.comment_count}
+                                            </IconSpan>
+                                        </Icon>
+
+                                        <Icon isDarkTheme={isDarkTheme}>
+                                            <VisibilityIcon />
+                                            <IconSpan isDarkTheme={isDarkTheme}>
+                                                {post.view_count}
+                                            </IconSpan>
+                                        </Icon>
+                                    </IconWrapper>
+                                </IconContainer>
+                            )}
                         </PostContainer>
                     ))}
                 {postList &&
@@ -96,37 +168,29 @@ const BoardBox = ({ postList, fixedList, boardName, announcement }) => {
                         >
                             <GridContainer>
                                 <DefaultTag
-                                    announcement={announcement}
                                     rightGap={isDesktop ? "20px" : "8px"}
                                 >
-                                    {!announcement &&
-                                        boardName === "freeboard" && (
-                                            <img
-                                                style={{
-                                                    width: "15px",
-                                                    marginRight: "1px",
-                                                }}
-                                                src={
-                                                    categories
-                                                        .countrySelectorFlagList[
-                                                        post.country_id - 1
-                                                    ]?.icon
-                                                }
-                                                alt=""
-                                            />
-                                        )}
+                                    {boardName === "freeboard" && (
+                                        <img
+                                            style={{
+                                                width: "15px",
+                                                marginRight: "1px",
+                                            }}
+                                            src={
+                                                categories
+                                                    .countrySelectorFlagList[
+                                                    post.country_id - 1
+                                                ]?.icon
+                                            }
+                                            alt=""
+                                        />
+                                    )}
                                     {boardName === "freeboard" &&
-                                        !announcement &&
                                         categories.freeCategory[post.category]
                                             ?.categoryName}
                                     {boardName === "univboard" &&
-                                        !announcement &&
                                         categories.univCategory[post.category]
                                             ?.categoryName}
-                                    {boardName === "univboard" &&
-                                        boardName &&
-                                        announcement &&
-                                        "공지"}
                                 </DefaultTag>
                                 <PostTitle isDarkTheme={isDarkTheme}>
                                     {post.title}
@@ -287,6 +351,7 @@ const Icon = styled.div`
         font-size: ${({ theme }) => theme.fontSize["12"]};
     }
     svg {
+        color: white;
         margin-right: 2px;
         font-size: 20px;
     }
