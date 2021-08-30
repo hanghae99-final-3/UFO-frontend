@@ -145,12 +145,19 @@ const StyledAccordion = styled.div`
             : `.MuiAccordionSummary-expandIcon {
         color: ${props.theme.color.gray2};
     }`}
-    .MuiButtonBase-root.MuiAccordionSummary-root{
+    /* ${props => props.isDarkTheme?`.MuiButtonBase-root.MuiAccordionSummary-root{
         background-color:${({theme})=>theme.color.black};
-    }
-        .MuiPaper-root.MuiAccordion-root.Mui-expanded.MuiAccordion-rounded.MuiPaper-elevation1.MuiPaper-rounded{
+    }`
+            :`.MuiButtonBase-root.MuiAccordionSummary-root{
+        background-color:${({theme})=>theme.color.black};
+    }`} */
+    
+    ${props=>props.isDarkTheme?`.MuiPaper-root.MuiAccordion-root.Mui-expanded.MuiAccordion-rounded.MuiPaper-elevation1.MuiPaper-rounded{
+        background-color:${({theme})=>theme.color.white};//후보자 추가 배경
+    }`:`.MuiPaper-root.MuiAccordion-root.Mui-expanded.MuiAccordion-rounded.MuiPaper-elevation1.MuiPaper-rounded{
         background-color:${({theme})=>theme.color.black};//후보자 추가 배경
-    }
+    }`}
+        
     
     .MuiAccordionSummary-content {
         ${mixin.flexBox("space-between", "center")}
