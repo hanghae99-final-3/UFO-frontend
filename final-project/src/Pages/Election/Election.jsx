@@ -309,13 +309,7 @@ const FinishedPost = styled.div`
 const VotingComplete = styled.div`
     ${mixin.floatBox("absolute")}
     width: 100%;
-    background: ${props => {
-        if (props.isDarkTheme) {
-            return "transparent";
-        } else {
-            return "rgba(0, 0, 0, 0.55)";
-        }
-    }};
+    background: rgba(0, 0, 0, 0.55);
     ${mixin.textProps(20, "regular", "mainMint")}
     ${mixin.flexBox("center", "center")};
     :hover {

@@ -163,16 +163,16 @@ const SearchBox = ({
         <React.Fragment>
             <SearchBoxContainer>
                 {page && (
-                    <TitleContainer>
+                    <TitleContainer isDarkTheme={isDarkTheme}>
                         {page === "freeboard" && (
-                            <UnivName isDarkTheme={isDarkTheme}>
+                            <SubTitle isDarkTheme={isDarkTheme}>
                                 {selectedCountryEngName}
-                            </UnivName>
+                            </SubTitle>
                         )}
                         {page === "univboard" && (
-                            <UnivName isDarkTheme={isDarkTheme}>
+                            <SubTitle isDarkTheme={isDarkTheme}>
                                 {univName}
-                            </UnivName>
+                            </SubTitle>
                         )}
                         <TitleSpan
                             isDarkTheme={isDarkTheme}
@@ -280,7 +280,12 @@ const SearchBoxContainer = styled.div`
 const TitleContainer = styled.div`
     /* margin-bottom: 10px; */
     padding-bottom: 10px;
-    ${mixin.outline("1.5px solid", "gray4", "bottom")}
+    ${props =>
+        mixin.outline(
+            "1.5px solid",
+            props.isDarkTheme ? "gray1" : "gray4",
+            "bottom",
+        )}
 
     //모바일 사이즈
     @media ${({ theme }) => theme.mobile} {
@@ -288,7 +293,7 @@ const TitleContainer = styled.div`
     }
 `;
 
-const UnivName = styled.span`
+const SubTitle = styled.span`
     display: inline-block;
     margin-bottom: 10px;
     width: 100%;

@@ -23,7 +23,7 @@ const CandidateAccordian = ({
     deleteCard,
 }) => {
     const [focusCardList, setFocusCardList] = useState([]);
-    const isDarkTheme = useSelector(state=>state.user.isDarkTheme)
+    const isDarkTheme = useSelector(state => state.user.isDarkTheme);
     const setFocusList = idx => {
         //---- 포커스가 된 아코디언카드의 idx를 가져와서 focusCardList에 저장한다. 이미 focusCardList에 있는 값이라면 삭제한다.
         if (focusCardList.includes(idx)) {
@@ -35,8 +35,8 @@ const CandidateAccordian = ({
     };
 
     return (
-        <Container >
-            <CandidateControls>
+        <Container>
+            <CandidateControls isDarkTheme={isDarkTheme}>
                 <span>현재 후보자 인원: {candidates?.length}명</span>
                 <DefaultButton onClick={addCard}>후보자 추가</DefaultButton>
             </CandidateControls>
@@ -44,6 +44,7 @@ const CandidateAccordian = ({
                 // 머테리얼 ui의 Accordion을 적용한 부분입니다.
                 <StyledAccordion
                     key={idx}
+                    isDarkTheme={isDarkTheme}
                     isFocus={focusCardList.includes(`${idx}`)}
                 >
                     <Accordion>
@@ -63,7 +64,7 @@ const CandidateAccordian = ({
                             </DefaultButton>
                         </AccordionSummary>
                         {/* 아코디언 디자인의 상세내용 부분입니다. */}
-                        <AccordionDetails >
+                        <AccordionDetails>
                             <CandidateWriteBox>
                                 {/* 후보자의 사진에 관련된 작업을 하는 공간입니다. */}
                                 <CandidateImage>
@@ -122,22 +123,18 @@ const CandidateAccordian = ({
     );
 };
 
-const Container = styled.div`
-    
-`;
+const Container = styled.div``;
 
 const StyledAccordion = styled.div`
     margin-bottom: 1px;
     position: relative;
-    
     /* 아코디언의 border설정 */
     ${props =>
         props.isFocus
             ? mixin.outline("4px solid", "mainMint", "top")
             : mixin.outline("4px solid", "blue2", "top")}
-
     /* 아코디언을 접고펴는 아이콘 스타일링 */
-    ${props =>
+        ${props =>
         props.isFocus
             ? `.MuiAccordionSummary-expandIcon {
         color: ${props.theme.color.mainMint};
@@ -145,13 +142,20 @@ const StyledAccordion = styled.div`
             : `.MuiAccordionSummary-expandIcon {
         color: ${props.theme.color.gray2};
     }`}
-    .MuiButtonBase-root.MuiAccordionSummary-root{
-        background-color:${({theme})=>theme.color.black};
+
+    .MuiPaper-root {
+        transition: all 0.5s ease;
+        ${props =>
+            props.isDarkTheme &&
+            `background-color: ${props.theme.color.black};`};
     }
-        .MuiPaper-root.MuiAccordion-root.Mui-expanded.MuiAccordion-rounded.MuiPaper-elevation1.MuiPaper-rounded{
-        background-color:${({theme})=>theme.color.black};//후보자 추가 배경
+    .MuiPaper-root.MuiAccordion-root.Mui-expanded.MuiAccordion-rounded.MuiPaper-elevation1.MuiPaper-rounded {
+        transition: all 0.5s ease;
+        ${props =>
+            props.isDarkTheme &&
+            `background-color: ${props.theme.color.black};`};
     }
-    
+
     .MuiAccordionSummary-content {
         ${mixin.flexBox("space-between", "center")}
     }
@@ -159,13 +163,17 @@ const StyledAccordion = styled.div`
     .MuiPaper-elevation1 {
         box-shadow: none;
     }
-
 `;
 
 const CandidateTitle = styled.span`
-    ${mixin.textProps(30, "extraBold","gray2")}
+    ${mixin.textProps(30, "extraBold", "gray2")}
     span:first-child {
-        ${props=>mixin.textProps(30, "extraBold", props.isDarkTheme?"white":"gray2")}
+        ${props =>
+            mixin.textProps(
+                30,
+                "extraBold",
+                props.isDarkTheme ? "white" : "gray2",
+            )}
         margin-right: ${({ theme }) => theme.calRem(10)};
     }
 `;
@@ -173,6 +181,18 @@ const CandidateTitle = styled.span`
 const CandidateControls = styled.div`
     margin: ${({ theme }) => theme.calRem(10)} 0;
     ${mixin.flexBox("space-between", "center")}
+    span {
+        ${props =>
+            props.isDarkTheme
+                ? mixin.textProps(20, "extraBold", "mainGray")
+                : mixin.textProps(20, "extraBold", "gray1")};
+        @media ${({ theme }) => theme.mobile} {
+            ${props =>
+                props.isDarkTheme
+                    ? mixin.textProps(16, "extraBold", "mainGray")
+                    : mixin.textProps(16, "extraBold", "gray1")};
+        }
+    }
 `;
 
 const Freeview = styled.div`
@@ -180,7 +200,7 @@ const Freeview = styled.div`
     width: ${({ theme }) => theme.calRem(210)};
     border-radius: 25px;
     ${mixin.flexBox("center", "center", null, `${theme.calRem(250)}`)}
-    ${mixin.boxShadow()};
+    ${props => (props.isDarkTheme ? mixin.darkBoxShadow() : mixin.boxShadow())};
     margin-right: ${theme.calRem(80)};
     img {
         width: 100%;
@@ -188,7 +208,12 @@ const Freeview = styled.div`
         object-fit: cover;
     }
     span {
-        ${props=>mixin.textProps(20, "regular", props.isDarkTheme?"gray3":"gray1")} //이미지를 추가해 주세요!
+        ${props =>
+            mixin.textProps(
+                20,
+                "regular",
+                props.isDarkTheme ? "gray3" : "gray1",
+            )}
     }
 `;
 const CandidateWriteBox = styled.div`
@@ -214,18 +239,33 @@ const CandidateContent = styled.div`
     width: 100%;
     align-items: flex-start;
     span {
-        ${props=>mixin.textProps(20, "semiBold", props.isDarkTheme?"gray3":"gray1")} //이름,전공,소개를 작성해주세요
+        ${props =>
+            mixin.textProps(
+                20,
+                "semiBold",
+                props.isDarkTheme ? "white" : "gray1",
+            )}//이름,전공,소개를 작성해주세요
     }
     input,
     textarea {
         width: 100%;
         all: unset;
         padding-bottom: ${({ theme }) => theme.calRem(10)};
-        ${props=>mixin.outline("1px solid", props.isDarkTheme?"gray2":"gray4", "bottom")}
+        ${props =>
+            mixin.outline(
+                "1px solid",
+                props.isDarkTheme ? "gray2" : "gray4",
+                "bottom",
+            )}
         ${mixin.textProps(20, "regular", "gray2")}
         transition: border-bottom 1s ease;
         ::placeholder {
-            ${props=>mixin.textProps(20, "regular", props.isDarkTheme?"gray3":"gray4")}
+            ${props =>
+                mixin.textProps(
+                    20,
+                    "regular",
+                    props.isDarkTheme ? "gray3" : "gray4",
+                )}
         }
         :focus {
             ${mixin.outline("1px solid", "gray1", "bottom")}
