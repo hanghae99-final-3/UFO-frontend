@@ -13,9 +13,11 @@ import { FaArrowRight, FaArrowLeft } from "react-icons/fa";
 
 //컴포넌트
 import SlideCard from "./SlideCard";
+import { useSelector } from "react-redux";
 
 const MainSlider = ({ postList }) => {
     const isMobile = document.documentElement.clientWidth < 798 ? true : false;
+    const isDarkTheme = useSelector(state => state.user.isDarkTheme);
 
     const isTablet =
         document.documentElement.clientWidth >= 798 &&
@@ -87,7 +89,7 @@ const MainSlider = ({ postList }) => {
 
     return (
         <SlideContainer>
-            <PageTitle>인기 게시글 🔥</PageTitle>
+            <PageTitle isDarkTheme={isDarkTheme}>인기 게시글 🔥</PageTitle>
             <Slider {...settings}>
                 {postList &&
                     postList.map((post, idx) => (
@@ -118,10 +120,16 @@ const SlideContainer = styled.div`
 `;
 
 const PageTitle = styled.span`
-    ${mixin.textProps(30, "extraBold", "black")}
+    ${props =>
+        mixin.textProps(30, "extraBold", props.isDarkTheme ? "white" : "black")}
 
     @media ${({ theme }) => theme.mobile} {
-        ${mixin.textProps(22, "extraBold", "black")}
+        ${props =>
+            mixin.textProps(
+                22,
+                "extraBold",
+                props.isDarkTheme ? "white" : "black",
+            )}
     }
 `;
 

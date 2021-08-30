@@ -1,13 +1,15 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import mixin from "../../Styles/Mixin";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { history } from "../../Redux/configureStore";
 import Swal from "sweetalert2";
+import { getDarkTheme } from "../../Shared/utils";
 
 const MainSearch = props => {
     const [focused, setFocused] = useState(false);
     const [searchTerm, setSearchTerm] = useState("");
+    const isDarkTheme = useSelector(state => state.user.isDarkTheme);
 
     const handleSearchTermChange = e => {
         setSearchTerm(e.target.value);
@@ -34,13 +36,18 @@ const MainSearch = props => {
     };
     return (
         <React.Fragment>
-            <SearchForm focused={focused} onSubmit={handleSearch}>
+            <SearchForm
+                focused={focused}
+                onSubmit={handleSearch}
+                isDarkTheme={isDarkTheme}
+            >
                 <Input
                     value={searchTerm}
                     onChange={handleSearchTermChange}
                     onFocus={handleFocus}
                     onBlur={handleBlur}
                     placeholder="🔍 UFO에게 무엇이든 검색해보세요."
+                    isDarkTheme={isDarkTheme}
                 />
             </SearchForm>
         </React.Fragment>
@@ -55,13 +62,25 @@ const SearchForm = styled.form`
     width: 100%;
     padding-bottom: ${({ theme }) => theme.calRem(5)};
     ${mixin.flexBox("center")}
-    ${props =>
-        mixin.outline(
-            "4px solid",
-            props.focused ? "mainMint" : "gray4",
-            "bottom",
-        )};
+
+    ${props => {
+        if (props.isDarkTheme) {
+            return mixin.outline(
+                "4px solid",
+                props.focused ? "mainMint" : "gray2",
+                "bottom",
+            );
+        } else {
+            return mixin.outline(
+                "4px solid",
+                props.focused ? "mainMint" : "gray4",
+                "bottom",
+            );
+        }
+    }};
+
     transition: border-color 1s ease;
+
     @media ${({ theme }) => theme.mobile} {
         margin-top: 0;
     }
@@ -69,17 +88,39 @@ const SearchForm = styled.form`
 const Input = styled.input`
     width: 75%;
     text-align: center;
-    ${mixin.textProps(30, "extraBold", "gray2")};
+    background-color: transparent;
+
+    ${props =>
+        mixin.textProps(
+            30,
+            "extraBold",
+            props.isDarkTheme ? "mainGray" : "gray2",
+        )};
     ::placeholder {
-        ${mixin.textProps(30, "extraBold", "gray3")};
+        ${props =>
+            mixin.textProps(
+                30,
+                "extraBold",
+                props.isDarkTheme ? "mainGray" : "gray3",
+            )};
     }
     ${mixin.outline("none")}
     @media ${({ theme }) => theme.mobile} {
         width: 100%;
         text-align: start;
-        ${mixin.textProps(22, "extraBold", "gray2")};
+        ${props =>
+            mixin.textProps(
+                22,
+                "extraBold",
+                props.isDarkTheme ? "mainGray" : "gray2",
+            )};
         ::placeholder {
-            ${mixin.textProps(22, "extraBold", "gray3")};
+            ${props =>
+                mixin.textProps(
+                    22,
+                    "extraBold",
+                    props.isDarkTheme ? "mainGray" : "gray3",
+                )};
         }
     }
 `;
