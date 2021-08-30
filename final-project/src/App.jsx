@@ -46,7 +46,10 @@ function App() {
             dispatch(checkLoggedInUser());
             dispatch(checkAdminDB());
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [dispatch, isLoggedIn]);
 
+    useEffect(() => {
         const LSDarkTheme = getDarkTheme(); //로컬스토리지에 있는 dark모드 값입니다.
         if (LSDarkTheme === "true") {
             return setDarkTheme(true);
@@ -54,8 +57,7 @@ function App() {
         if (!LSDarkTheme || LSDarkTheme === "false") {
             setDarkTheme(false);
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [dispatch, isLoggedIn]);
+    }, []);
 
     return (
         <>

@@ -109,7 +109,6 @@ const BoardWrite = ({ boardName }) => {
                 post_id: post.post_id,
                 img_list: imgList,
             };
-            console.log(imgList);
 
             history.push(`/freeboard/detail/${postId}`);
             dispatch(editFreePostDB(req));
@@ -203,7 +202,6 @@ const BoardWrite = ({ boardName }) => {
                 country_id: post.country_id,
                 img_list: imgList,
             };
-            console.log(imgList);
             dispatch(addFreePostDB(req));
             history.push("/freeboard");
         }

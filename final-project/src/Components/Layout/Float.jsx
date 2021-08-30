@@ -40,7 +40,7 @@ const Float = () => {
         });
     };
 
-    const swichDarkTheme = () => {
+    const switchDarkTheme = () => {
         //다크모드를 켜고 끄는 함수입니다.
         const LSDarkTheme = getDarkTheme(); //로컬스토리지에 있는 dark모드 값입니다.
         if (LSDarkTheme === "true") {
@@ -85,7 +85,7 @@ const Float = () => {
                 )}
 
                 {/* 다크모드 */}
-                <Button onClick={swichDarkTheme}>
+                <Button onClick={switchDarkTheme}>
                     {isDarkTheme ? <FaRegMoon /> : <FaRegSun />}
                 </Button>
 

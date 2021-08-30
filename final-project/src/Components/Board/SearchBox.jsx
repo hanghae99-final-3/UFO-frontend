@@ -164,7 +164,6 @@ const SearchBox = ({
             <SearchBoxContainer>
                 {page && (
                     <TitleContainer>
-                        {console.log("")}
                         {page === "freeboard" && (
                             <UnivName isDarkTheme={isDarkTheme}>
                                 {selectedCountryEngName}
