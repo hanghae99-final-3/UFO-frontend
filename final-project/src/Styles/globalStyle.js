@@ -13,6 +13,7 @@ export const GlobalStyle = createGlobalStyle`
   box-sizing:border-box;
   font-family: 'Pretendard', sans-serif;
 
+
   &:focus,&:hover,&:active{
   outline:none 
   }
@@ -30,6 +31,8 @@ button {
 body{
     height: 100vh;
     position: relative;
+   transition: all .5s ease;
+
   /* 스크롤바 제거 */
   &::-webkit-scrollbar {
     display: none;

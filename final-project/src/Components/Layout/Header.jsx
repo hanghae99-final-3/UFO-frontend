@@ -83,7 +83,11 @@ const Header = ({ isDarkTheme }) => {
                 <RightColumn>
                     {/* 유저가 로그인을 하면 유저네임이 나옵니다! */}
                     <Sparkles color="#83ffca">
-                        <UserName userName={userName} onClick={onClickUserName}>
+                        <UserName
+                            isDarkTheme={isDarkTheme}
+                            userName={userName}
+                            onClick={onClickUserName}
+                        >
                             {userName ? `${userName}님` : "로그인하기"}
                         </UserName>
                     </Sparkles>
@@ -246,9 +250,13 @@ const Header = ({ isDarkTheme }) => {
 };
 
 const HeaderContainer = styled.header`
+    transition: all 0.5s ease;
     position: fixed;
     width: 100vw;
     box-shadow: 0px 4px 7px 0px #e4ddff;
+    ${props =>
+        props.isDarkTheme &&
+        `box-shadow: 0px 4px 7px 0px rgba(134 137 255 / 16%);`}
     background: ${({ theme }) => theme.color.white};
     z-index: 99;
     ${props => props.isDarkTheme && `background:${theme.color.black}`}
@@ -296,10 +304,16 @@ const RightColumn = styled.div`
 
 const UserName = styled.span`
     margin-right: ${({ theme }) => theme.calRem(20)};
-    ${mixin.textProps(30, "extraBold", "gray1")}
+    ${props =>
+        mixin.textProps(30, "extraBold", props.isDarkTheme ? "gray3" : "gray1")}
     cursor:pointer;
     @media ${({ theme }) => theme.mobile} {
-        ${mixin.textProps(20, "extraBold", "gray1")}
+        ${props =>
+            mixin.textProps(
+                20,
+                "extraBold",
+                props.isDarkTheme ? "gray3" : "gray1",
+            )}
     }
 `;
 
@@ -332,7 +346,10 @@ const MenuContainer = styled.div`
         height: 100%;
         background: rgba(255, 255, 255, 0.7);
         box-shadow: inset -13px 3px 7px 0px #e4ddff;
-        ${props => props.isDarkTheme && `background:rgba(0, 0, 0, 0.7)`}
+        ${props => props.isDarkTheme && `background:rgba(48, 48, 48, 0.3);`};
+        ${props =>
+            props.isDarkTheme &&
+            `box-shadow: inset -13px 3px 7px 0px rgba(134 137 255 / 9%);`};
     }
     @media ${({ theme }) => theme.mobile} {
         height: calc(100vh - 48px);

@@ -32,6 +32,7 @@ body{
     height: 100vh;
     position: relative;
     background: #292b2d;
+    transition: all .5s ease;
 
   /* 스크롤바 제거 */
   &::-webkit-scrollbar {

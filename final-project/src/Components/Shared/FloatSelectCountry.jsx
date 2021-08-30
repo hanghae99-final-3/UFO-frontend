@@ -100,9 +100,6 @@ export default function SelectCountry() {
                         {/* {selectedData.icon} */}
                         {selectedData.name}
                     </SeletName>
-                    {/* <Icon>
-                        {isSelectOpen ? <ExpandMoreIcon /> : <ExpandLessIcon />}
-                    </Icon> */}
                 </Button>
             </Container>
         );
@@ -110,15 +107,6 @@ export default function SelectCountry() {
     //셀렉터가 열렸을 때
     return (
         <Container onClick={() => openSelector(false)}>
-            <Header>
-                <SeletName>
-                    {/* {selectedData.icon} */}
-                    {selectedData.name}
-                </SeletName>
-                {/* <Icon>
-                    {isSelectOpen ? <ExpandMoreIcon /> : <ExpandLessIcon />}
-                </Icon> */}
-            </Header>
             <CountrySelector isSelectOpen={isSelectOpen}>
                 {categories.countrySelectorList.map(ele => (
                     <Option
@@ -147,12 +135,12 @@ const Container = styled.div`
 `;
 
 const Button = styled.button`
-    background: ${({ theme }) => theme.color.white};
+    background: ${({ theme }) => theme.color.mainBlue};
     width: ${({ theme }) => theme.calRem(60)};
     height: ${({ theme }) => theme.calRem(60)};
     ${mixin.flexBox("center", "center", null, null)};
     ${mixin.outline("1px solid", "gray3")}
-    ${mixin.textProps(40, "regular", "gray3")}
+    ${mixin.textProps(40, "regular", "mainMint")}
     border-radius: 50%;
     line-height: 1;
     transition: all 0.3s ease;
@@ -169,15 +157,6 @@ const Button = styled.button`
     }
 `;
 
-const Header = styled.div`
-    ${mixin.flexBox("center")}
-    ${mixin.outline("1px solid", "mainBlue")}
-    background-color: ${props => props.theme.color.white};
-    border-radius: 18px 18px 0 0;
-    border-bottom: none;
-    padding: ${({ theme }) => `${theme.calRem(5)} 0`};
-`;
-
 const Icon = styled.div`
     color: ${props => props.theme.color.mainMint};
     svg {
@@ -188,18 +167,18 @@ const Icon = styled.div`
 `;
 
 const SeletName = styled.span`
-    ${mixin.textProps(18, "semiBold", "gray2")}
+    ${mixin.textProps(18, "semiBold", "mainMint")}
     @media ${({ theme }) => theme.mobile} {
-        ${mixin.textProps(12, "semiBold", "gray2")}
+        ${mixin.textProps(12, "semiBold", "mainMint")}
     }
 `;
 
 const CountrySelector = styled.div`
     ${props => (props.isSelectOpen ? `display:block;` : `display:none;`)};
-    border-radius: 0 0 18px 18px;
+    border-radius: 25px;
     background-color: ${props => props.theme.color.mainBlue};
     color: ${props => props.theme.color.white};
-    padding: ${({ theme }) => `${theme.calRem(10)} 0`};
+    padding: ${({ theme }) => `${theme.calRem(16)} 0`};
     text-align: center;
     width: 100%;
 `;
@@ -210,7 +189,7 @@ const Option = styled.div`
             ? mixin.textProps(18, "semiBold", "mainMint")
             : mixin.textProps(18, "semiBold", "blue3")};
     :not(:last-child) {
-        margin-bottom: ${({ theme }) => theme.calRem(7)};
+        margin-bottom: ${({ theme }) => theme.calRem(10)};
     }
     @media ${({ theme }) => theme.mobile} {
         ${props =>
