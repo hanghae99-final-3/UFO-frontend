@@ -39,8 +39,12 @@ const Button = styled.button`
             : mixin.textProps(18, "semiBold", "gray3")}
     ${props =>
         props.isSelected
-            ? `box-shadow: inset -2px 5px 5px -5px #cdcdcd;`
-            : `box-shadow:  0 5px 5px -4px #cdcdcd;`}
+            ? `box-shadow: inset -2px 5px 5px -5px ${
+                  props.isDarkTheme ? "rgba(0,0,0,.8)" : "#cdcdcd"
+              };`
+            : `box-shadow:  0 5px 5px -4px ${
+                  props.isDarkTheme ? "rgba(0,0,0,.8)" : "#cdcdcd"
+              };`}
         ${props =>
         mixin.outline("2px solid", props.isSelected ? "mainMint" : "blue2")}
         ${props => props.rightGap && `margin-right:${props.rightGap};`}

@@ -23,7 +23,8 @@ const Button = styled.button`
         props.isDarkTheme
             ? props.theme.color.mainGray
             : props.theme.color.gray3};
-    ${mixin.boxShadow()}
+    ${props => (props.isDarkTheme ? mixin.darkBoxShadow() : mixin.boxShadow())};
+
     ${props =>
         mixin.textProps(18, "semiBold", props.isDarkTheme ? "black" : "white")};
     ${props => props.rightGap && `margin-right: ${props.rightGap};`};

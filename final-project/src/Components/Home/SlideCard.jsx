@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { history } from "../../Redux/configureStore";
 import mixin from "../../Styles/Mixin";
 
-export default function SlideCard({ post, rank, active }) {
+export default function SlideCard({ post, rank, active, isDarkTheme }) {
     // 디테일 페이지 바로가기 버튼 이벤트 헨들러
     const onDetailButtonClick = () => {
         history.push(`/freeboard/detail/${post.post_id}`);
@@ -19,7 +19,11 @@ export default function SlideCard({ post, rank, active }) {
         post.img_list[0] === "";
 
     return (
-        <CardContainer active={active} onClick={onDetailButtonClick}>
+        <CardContainer
+            active={active}
+            onClick={onDetailButtonClick}
+            isDarkTheme={isDarkTheme}
+        >
             <Preview imageNone={imageNone}>
                 <PreviewTitle active={active}>{post.title}</PreviewTitle>
                 <PreviewContent active={active}>
@@ -44,7 +48,7 @@ const CardContainer = styled.div`
     position: relative;
     cursor: pointer;
     margin-bottom: 10px;
-    ${mixin.boxShadow()}
+    ${props => (props.isDarkTheme ? mixin.darkBoxShadow() : mixin.boxShadow())};
     ${mixin.flexBox("space-between", "center")};
     ${props =>
         props.active &&

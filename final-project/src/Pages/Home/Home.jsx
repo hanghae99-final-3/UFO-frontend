@@ -108,6 +108,7 @@ const Home = () => {
             <MainSearch />
             {/* 배너 */}
             <Banner
+                isDarkTheme={isDarkTheme}
                 href="https://docs.google.com/forms/d/19dYEzERALVHU02A1f_E5WHBttXIpROdtf1HVQcwkqkw/viewform?ts=6125ed6e&edit_requested=true"
                 target="_blank"
             >
@@ -333,7 +334,8 @@ const Banner = styled.a`
     img {
         width: 100%;
         border-radius: 25px;
-        ${mixin.boxShadow()}
+        ${props =>
+            props.isDarkTheme ? mixin.darkBoxShadow() : mixin.boxShadow()};
     }
     @media ${({ theme }) => theme.mobile} {
         margin-top: ${theme.calRem(48)};
