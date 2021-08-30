@@ -27,7 +27,6 @@ const LoginPresenter = ({
     const [cookies, setCookie, removeCookie] = useCookies(["rememberEmail"]);
 
     const [email, setEmail] = useState("");
-
     useEffect(() => {
         if (cookies.rememberEmail !== undefined) {
             setEmail(cookies.rememberEmail);
@@ -210,7 +209,7 @@ const LoginBtn = styled.button`
 
 const Input = styled.input`
     transition: border-color 1s ease;
-    padding-bottom: ${({ theme }) => theme.calRem(5)};
+    padding: ${({ theme }) => theme.calRem(10)};
     width: 100%;
     border: none;
     border-radius: 0px;

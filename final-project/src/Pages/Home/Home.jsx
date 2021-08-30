@@ -108,9 +108,9 @@ const Home = () => {
                 target="_blank"
             >
                 {isDesktop ? (
-                    <img src={bnr2_pc} alt="banner" />
+                    <img src={bnr1_pc} alt="banner" />
                 ) : (
-                    <img src={bnr2_mobile} alt="banner" />
+                    <img src={bnr1_mobile} alt="banner" />
                 )}
             </Banner>
             {/* 인기 게시글 슬라이더 불러오기*/}
