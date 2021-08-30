@@ -197,9 +197,9 @@ const PaginationContainer = styled.div`
             color: ${({ theme }) => theme.color.white};
         }
         li button {
-            border: 2px solid ${({ theme }) => theme.color.blue2};
+            border: 2px solid ${({ theme }) => theme.color.blue3};
             &.Mui-selected {
-                border: 2px solid #bcffe2;
+                border: 2px solid ${({ theme }) => theme.color.mainMint};
             }
         }
     }

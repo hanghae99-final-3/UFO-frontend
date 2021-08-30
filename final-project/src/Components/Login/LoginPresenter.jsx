@@ -233,8 +233,9 @@ const Input = styled.input`
 
 // 체크박스
 const MemberCheckBox = styled.div`
+    width: 100%;
     margin-top: ${({ theme }) => theme.calRem(27)};
-    ${mixin.flexBox("center", null, null, null)}
+    ${mixin.flexBox("space-between", null, null, null)}
 
     //모바일 사이즈
     @media ${({ theme }) => theme.mobile} {
