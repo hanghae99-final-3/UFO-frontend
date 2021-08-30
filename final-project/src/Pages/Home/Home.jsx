@@ -15,6 +15,7 @@ import { getFreeListDB, getIssuePostListDB } from "../../Redux/Async/freeBoard";
 import bnr1_mobile from "../../Assets/event1_mobile.png";
 import bnr1_pc from "../../Assets/event1_pc.png";
 import bnr2_pc from "../../Assets/event2_pc.png";
+import bnr2_mobile from "../../Assets/event2_mobile.png";
 
 //컴포넌트
 import MainSlider from "../../Components/Home/MainSlider"; // 메인 페이지 슬라이더 컴포넌트
@@ -55,12 +56,12 @@ const Home = () => {
 
     const openModal = () => {
         //모달을 여는 함수입니다.
-        setModalVisible(true);
+        setModalVisible(!modalVisible);
     };
 
     const closeModal = () => {
         //모달을 닫는 함수입니다.
-        setModalVisible(false);
+        setModalVisible(!modalVisible);
     };
 
     const goToSupportUniv = () => {
@@ -109,7 +110,7 @@ const Home = () => {
                 {isDesktop ? (
                     <img src={bnr2_pc} alt="banner" />
                 ) : (
-                    <img src={bnr2_pc} alt="banner" />
+                    <img src={bnr2_mobile} alt="banner" />
                 )}
             </Banner>
             {/* 인기 게시글 슬라이더 불러오기*/}
@@ -156,6 +157,9 @@ const Home = () => {
                                             closable={true}
                                             maskClosable={true}
                                             onClose={closeModal}
+                                            extend
+                                            //버전2
+                                            // width="70vw"
                                         >
                                             <SupportUniv ref={supportUnivRef} />
                                         </Modal>
