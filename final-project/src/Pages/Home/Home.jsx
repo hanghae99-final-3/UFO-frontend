@@ -16,6 +16,8 @@ import bnr1_mobile from "../../Assets/event1_mobile.png";
 import bnr1_pc from "../../Assets/event1_pc.png";
 import bnr2_pc from "../../Assets/event2_pc.png";
 import bnr2_mobile from "../../Assets/event2_mobile.png";
+import bnr3_pc from '../../Assets/event3_pc.png'
+import bnr3_mobile from '../../Assets/event3_mobile.png'
 
 //컴포넌트
 import MainSlider from "../../Components/Home/MainSlider"; // 메인 페이지 슬라이더 컴포넌트
@@ -108,9 +110,9 @@ const Home = () => {
                 target="_blank"
             >
                 {isDesktop ? (
-                    <img src={bnr1_pc} alt="banner" />
+                    <img src={bnr3_pc} alt="banner" />
                 ) : (
-                    <img src={bnr1_mobile} alt="banner" />
+                    <img src={bnr3_mobile} alt="banner" />
                 )}
             </Banner>
             {/* 인기 게시글 슬라이더 불러오기*/}
