@@ -178,7 +178,7 @@ const LoginText = styled.span`
     ${props=>mixin.textProps(40, "extraBold", props.isDarkTheme?"white":"black")}
 
     @media ${({ theme }) => theme.mobile} {
-        ${mixin.textProps(22, "extraBold", "black")}
+        ${props=>mixin.textProps(22, "extraBold", props.isDarkTheme?"white":"black")}
     }
 `;
 const AutoLogin = styled.div`
