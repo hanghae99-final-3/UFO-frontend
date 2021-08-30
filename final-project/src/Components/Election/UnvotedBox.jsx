@@ -8,7 +8,7 @@ import { useParams } from "react-router";
 //애니메이션
 import Boop from "../../Elements/Animations/Boop";
 
-const UnvotedBox = ({ list }) => {
+const UnvotedBox = ({ list, isDarkTheme }) => {
     // 현재 진행중이지만, 투표를 하지 않은 게시글을 보여줍니다.
 
     const { id: postId } = useParams(); //게시글아이디
@@ -27,6 +27,7 @@ const UnvotedBox = ({ list }) => {
                         {list.map((post, idx) => (
                             <Boop timing={200} y={-7} key={idx}>
                                 <UnvotedCard
+                                    isDarkTheme={isDarkTheme}
                                     // 현재 불러온 게시글들 중 id가 현재게시글과 같은 것이 있다면 selected를 true로 반환합니다.
                                     isSelected={
                                         post.election_id === Number(postId)
@@ -47,13 +48,17 @@ const UnvotedBox = ({ list }) => {
                         <>
                             {isMore ? (
                                 <More
+                                    isDarkTheme={isDarkTheme}
                                     isSelected
                                     onClick={() => setIsMore(false)}
                                 >
                                     숨기기
                                 </More>
                             ) : (
-                                <More onClick={() => setIsMore(true)}>
+                                <More
+                                    isDarkTheme={isDarkTheme}
+                                    onClick={() => setIsMore(true)}
+                                >
                                     더보기
                                 </More>
                             )}
@@ -63,13 +68,17 @@ const UnvotedBox = ({ list }) => {
                         <>
                             {isMore ? (
                                 <More
+                                    isDarkTheme={isDarkTheme}
                                     isSelected
                                     onClick={() => setIsMore(false)}
                                 >
                                     숨기기
                                 </More>
                             ) : (
-                                <More onClick={() => setIsMore(true)}>
+                                <More
+                                    isDarkTheme={isDarkTheme}
+                                    onClick={() => setIsMore(true)}
+                                >
                                     더보기
                                 </More>
                             )}
@@ -113,16 +122,26 @@ const UnvotedCard = styled.div`
     ${props =>
         props.isSelected
             ? mixin.outline("3px solid", "mainMint")
+            : props.isDarkTheme
+            ? mixin.outline("3px solid", "blue2")
             : mixin.outline("3px solid", "mainGray")}
     border-radius: 35px;
     padding: ${({ theme }) => theme.calRem(30)};
     cursor: pointer;
-    background-color: ${({ theme }) => theme.color.mainGray};
+    background-color: ${props =>
+        props.isDarkTheme
+            ? props.theme.color.black
+            : props.theme.color.mainGray};
     ${mixin.boxShadow()}
 
     span {
         ${mixin.textboxOverflow(1)}
-        ${mixin.textProps(16, "extraBold", "gray1")};
+        ${props =>
+            mixin.textProps(
+                16,
+                "extraBold",
+                props.isDarkTheme ? "mainGray" : "gray1",
+            )};
     }
 
     @media ${({ theme }) => theme.mobile} {
@@ -135,7 +154,8 @@ const More = styled.button`
     height: 32px;
     min-width: 80px;
     border-radius: 20px;
-    ${mixin.textProps(18, "semiBold", "white")};
+    ${props =>
+        mixin.textProps(18, "semiBold", props.isDarkTheme ? "black" : "white")};
     margin-top: ${({ theme }) => theme.calRem(30)};
     ${mixin.boxShadow()}
     background: ${props =>
@@ -147,7 +167,12 @@ const More = styled.button`
         margin-top: ${({ theme }) => theme.calRem(16)};
         min-width: ${({ theme }) => theme.calRem(64)};
         height: ${({ theme }) => theme.calRem(24)};
-        ${mixin.textProps(11, "semiBold", "white")};
+        ${props =>
+            mixin.textProps(
+                11,
+                "semiBold",
+                props.isDarkTheme ? "black" : "white",
+            )};
     }
 `;
 export default UnvotedBox;

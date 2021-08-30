@@ -6,17 +6,19 @@ import mixin from "../../Styles/Mixin";
 import CandidateCard from "./CandidateCard";
 import CandidateIntroBox from "./CandidateIntroBox";
 
-const CandidateBox = ({ candidateList }) => {
+const CandidateBox = ({ candidateList, isDarkTheme }) => {
     const [candidateIdx, setCandidateIdx] = useState(0); //상세페이지에서 보여줄 후보자의 id값
     const getCandidateIdx = idx => {
         setCandidateIdx(idx);
     };
+
     return (
         <CandidateBoxContainer>
             <CandidateCardBox>
                 {candidateList &&
                     candidateList.map((candidate, idx) => (
                         <CandidateCard
+                            isDarkTheme={isDarkTheme}
                             candidate={candidate}
                             key={idx}
                             idx={idx}
@@ -26,7 +28,11 @@ const CandidateBox = ({ candidateList }) => {
                         />
                     ))}
             </CandidateCardBox>
-            <CandidateIntroBox candidates={candidateList} idx={candidateIdx} />
+            <CandidateIntroBox
+                isDarkTheme={isDarkTheme}
+                candidates={candidateList}
+                idx={candidateIdx}
+            />
         </CandidateBoxContainer>
     );
 };

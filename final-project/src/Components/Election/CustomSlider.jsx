@@ -12,7 +12,7 @@ import Boop from "../../Elements/Animations/Boop";
 import CandidateCard from "./CandidateCard";
 
 //getCurrentIdx는 현재 포커스되어있는 슬라이드의 인덱스를 부모컴포넌트에 넘겨주는 함수입니다.
-const CustomSlider = ({ candidateList, getCurrentIdx }) => {
+const CustomSlider = ({ candidateList, getCurrentIdx, isDarkTheme }) => {
     //PC가 아닐때 사용하는 Slider입니다!!!!
 
     const TOTAL_SLIDES = candidateList.length - 1;
@@ -51,6 +51,7 @@ const CustomSlider = ({ candidateList, getCurrentIdx }) => {
         return (
             //onClick으로 받아온 함수를 실행시킵니다. direction은 스타일링을 위해 필요한 props 입니다.
             <ArrowContainer
+                isDarkTheme={isDarkTheme}
                 isTablet={isTablet}
                 isMobile={isMobile}
                 direction="next"
@@ -67,7 +68,11 @@ const CustomSlider = ({ candidateList, getCurrentIdx }) => {
         //PrevArrow 슬라이더 네비게이션 렌더링 함수입니다.
         return (
             //onClick으로 받아온 함수를 실행시킵니다. direction은 스타일링을 위해 필요한 props 입니다.
-            <ArrowContainer direction="prev" onClick={onClick}>
+            <ArrowContainer
+                isDarkTheme={isDarkTheme}
+                direction="prev"
+                onClick={onClick}
+            >
                 <Boop rotation={0} timing={200} x={-5} y={0}>
                     <FaArrowLeft />
                 </Boop>
@@ -121,7 +126,8 @@ const Slide = styled.div`
 const ArrowContainer = styled.div`
     cursor: pointer;
     z-index: 99;
-    ${mixin.textProps(20, "regular", "black")}
+    ${props =>
+        mixin.textProps(20, "regular", props.isDarkTheme ? "white" : "black")}
     :hover {
         svg {
             color: ${({ theme }) => theme.color.blue2};

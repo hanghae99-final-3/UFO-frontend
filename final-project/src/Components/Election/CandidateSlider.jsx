@@ -14,10 +14,14 @@ import Boop from "../../Elements/Animations/Boop";
 import CandidateIntroBox from "./CandidateIntroBox";
 import CustomSlider from "./CustomSlider";
 
-const CandidateSlider = ({ candidateList }) => {
+const CandidateSlider = ({ isDarkTheme, candidateList }) => {
     const NextArrow = ({ onClick }) => {
         return (
-            <ArrowContainer direction="next" onClick={onClick}>
+            <ArrowContainer
+                isDarkTheme={isDarkTheme}
+                direction="next"
+                onClick={onClick}
+            >
                 <Boop rotation={0} timing={200} x={5} y={0}>
                     <FaArrowRight />
                 </Boop>
@@ -27,7 +31,11 @@ const CandidateSlider = ({ candidateList }) => {
 
     const PrevArrow = ({ onClick }) => {
         return (
-            <ArrowContainer direction="prev" onClick={onClick}>
+            <ArrowContainer
+                isDarkTheme={isDarkTheme}
+                direction="prev"
+                onClick={onClick}
+            >
                 <Boop rotation={0} timing={200} x={-5} y={0}>
                     <FaArrowLeft />
                 </Boop>
@@ -68,7 +76,11 @@ const CandidateSlider = ({ candidateList }) => {
                     {candidateList &&
                         candidateList.map((candidate, idx) => (
                             <Slide key={idx} active={idx === cardIndex}>
-                                <CandidateCard candidate={candidate} />
+                                <CandidateCard
+                                    isDarkTheme={isDarkTheme}
+                                    candidate={candidate}
+                                    isDarkTheme={isDarkTheme}
+                                />
                             </Slide>
                         ))}
                 </Slider>
@@ -77,11 +89,13 @@ const CandidateSlider = ({ candidateList }) => {
             {/* PC가 아니면 커스텀 slider을 사용한다. */}
             {!isDesktop && (
                 <CustomSlider
+                    isDarkTheme={isDarkTheme}
                     candidateList={candidateList}
                     getCurrentIdx={getCurrentIdxSetIndex}
                 />
             )}
             <CandidateIntroBox
+                isDarkTheme={isDarkTheme}
                 candidates={candidateList}
                 idx={cardIndex && cardIndex}
             />
@@ -100,7 +114,8 @@ const SlideContainer = styled.div`
 const ArrowContainer = styled.div`
     cursor: pointer;
     z-index: 99;
-    ${mixin.textProps(20, "regular", "black")}
+    ${props =>
+        mixin.textProps(20, "regular", props.isDarkTheme ? "white" : "black")}
     :hover {
         svg {
             color: ${({ theme }) => theme.color.blue2};

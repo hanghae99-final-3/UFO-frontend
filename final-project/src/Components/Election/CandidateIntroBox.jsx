@@ -3,7 +3,7 @@ import styled from "styled-components";
 import mixin from "../../Styles/Mixin";
 import theme from "../../Styles/theme";
 
-const CandidateIntroBox = ({ candidates, idx }) => {
+const CandidateIntroBox = ({ candidates, idx, isDarkTheme }) => {
     const isDesktop =
         document.documentElement.clientWidth >= 1080 ? true : false;
     return (
@@ -18,7 +18,7 @@ const CandidateIntroBox = ({ candidates, idx }) => {
                     alt={candidates[idx]?.name}
                 />
                 <CandidateInfo>
-                    <CandidateName>
+                    <CandidateName isDarkTheme={isDarkTheme}>
                         {isDesktop ? (
                             <strong>
                                 기호 {idx + 1}번 {""}
@@ -33,14 +33,14 @@ const CandidateIntroBox = ({ candidates, idx }) => {
                             </>
                         )}
                     </CandidateName>
-                    <CandidateIntro>
+                    <CandidateIntro isDarkTheme={isDarkTheme}>
                         <p>{candidates[idx]?.major}</p>
                         {isDesktop && <p>{candidates[idx]?.content}</p>}
                     </CandidateIntro>
                 </CandidateInfo>
             </Top>
             {!isDesktop && (
-                <Bottom>
+                <Bottom isDarkTheme={isDarkTheme}>
                     <p>{candidates[idx]?.content}</p>
                 </Bottom>
             )}
@@ -93,22 +93,45 @@ const CandidateName = styled.div`
         margin-bottom: ${({ theme }) => theme.calRem(16)};
     }
     strong {
-        ${mixin.textProps(30, "extraBold", "black")}
+        ${props =>
+            mixin.textProps(
+                30,
+                "extraBold",
+                props.isDarkTheme ? "white" : "black",
+            )}
         @media ${({ theme }) => theme.mobile} {
             display: inline-block;
             width: 100%;
-            ${mixin.textProps(22, "extraBold", "black")}
+            ${props =>
+                mixin.textProps(
+                    22,
+                    "extraBold",
+                    props.isDarkTheme ? "white" : "black",
+                )}
             margin-bottom: ${({ theme }) => theme.calRem(8)};
         }
     }
     span {
-        ${mixin.textProps(22, "extraBold", "black")}
+        ${props =>
+            mixin.textProps(
+                22,
+                "extraBold",
+                props.isDarkTheme ? "white" : "black",
+            )}
     }
 `;
 const CandidateIntro = styled.div`
-    ${mixin.textProps(20, "regular", "gray1")}
+    ${props =>
+        mixin.textProps(
+            20,
+            "regular",
+            props.isDarkTheme ? "mainGray" : "gray1",
+        )}
     @media ${({ theme }) => theme.mobile} {
-        ${mixin.textProps(16, "regular", "gray1")}
+        ${props =>
+            mixin.textProps(16, "regular", props =>
+                props.isDarkTheme ? "mainGray" : "gray1",
+            )}
     }
     span {
         font-weight: ${({ theme }) => theme.fontWeight.semiBold};
@@ -120,7 +143,12 @@ const Bottom = styled.div`
     margin-top: ${({ theme }) => theme.calRem(16)};
     padding-bottom: ${({ theme }) => theme.calRem(32)};
     p {
-        ${mixin.textProps(16, "regular", "black")}
+        ${props =>
+            mixin.textProps(
+                16,
+                "regular",
+                props.isDarkTheme ? "mainGray" : "black",
+            )}
     }
 `;
 

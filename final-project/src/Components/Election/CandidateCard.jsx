@@ -10,6 +10,7 @@ import theme from "../../Styles/theme";
 // cursor는 카드에 마우스를 올리면 포인터가 필요한지 아닌지에 대한 판별값입니다.
 
 const CandidateCard = ({
+    isDarkTheme,
     candidate,
     idx,
     getCandidateIdx,
@@ -36,7 +37,8 @@ const CandidateCard = ({
                 src={`https://yzkim9501.site/${candidate.photo}`}
                 alt={candidate.name}
             />
-            <CandidateName isVoteCard={isVoteCard}>
+
+            <CandidateName isDarkTheme={isDarkTheme} isVoteCard={isVoteCard}>
                 <span>{candidate.name}</span>
             </CandidateName>
         </Container>
@@ -75,7 +77,8 @@ const CandidateImage = styled.img`
 const CandidateName = styled.div`
     width: 100%;
     ${mixin.flexBox("center", "center", null, `${theme.calRem(40)}`)}
-    background: ${({ theme }) => theme.color.white};
+    background: ${props =>
+        props.isDarkTheme ? props.theme.color.gray1 : props.theme.color.white};
     text-align: center;
     border-radius: 0 0 25px 25px;
     @media ${({ theme }) => theme.mobile} {
@@ -84,9 +87,19 @@ const CandidateName = styled.div`
     }
     span {
         line-height: 1;
-        ${mixin.textProps(18, "semiBold", "gray2")}
+        ${props =>
+            mixin.textProps(
+                18,
+                "semiBold",
+                props.isDarkTheme ? "white" : "gray2",
+            )}
         @media ${({ theme }) => theme.mobile} {
-            ${mixin.textProps(12, "semiBold", "gray2")}
+            ${props =>
+                mixin.textProps(
+                    12,
+                    "semiBold",
+                    props.isDarkTheme ? "white" : "gray2",
+                )}
         }
     }
 `;
