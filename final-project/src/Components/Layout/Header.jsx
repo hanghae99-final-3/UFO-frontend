@@ -83,7 +83,7 @@ const Header = () => {
                     {/* 유저가 로그인을 하면 유저네임이 나옵니다! */}
                     <Sparkles color="#83ffca">
                         <UserName userName={userName} onClick={onClickUserName}>
-                            {userName ? `${userName}님` : "로그인하러가기"}
+                            {userName ? `${userName}님` : "로그인하기"}
                         </UserName>
                     </Sparkles>
 

@@ -73,6 +73,10 @@ const SearchBox = ({
     const selectedCountry = useSelector(
         state => state.freeBoard.selectedCountryId,
     );
+    const selectedCountryEngName = useSelector(
+        state => state.freeBoard.selectedCountry?.engName,
+    );
+
     const selectedSearchOrder = useSelector(
         state => state.freeBoard?.selectedSearchOrder,
     );
@@ -158,13 +162,17 @@ const SearchBox = ({
             <SearchBoxContainer>
                 {page && (
                     <TitleContainer>
+                        {console.log("")}
+                        {page === "freeboard" && (
+                            <UnivName>{selectedCountryEngName}</UnivName>
+                        )}
                         {page === "univboard" && (
                             <UnivName>{univName}</UnivName>
                         )}
                         <TitleSpan onClick={() => handleGoToList(page)}>
                             {page === "freeboard"
-                                ? "자유 게시판"
-                                : "대학 게시판"}
+                                ? "자유 게시판 💬"
+                                : "대학 게시판 🎓"}
                         </TitleSpan>
                     </TitleContainer>
                 )}

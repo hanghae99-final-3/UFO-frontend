@@ -184,10 +184,10 @@ const Home = () => {
                                     rightGap={theme.calRem(8)}
                                     onClick={() => history.push("/login")}
                                 >
-                                    로그인하러가기
+                                    로그인하기
                                 </DefaultButton>
                                 <DefaultButton onClick={openModal}>
-                                    지원대학목록보기
+                                    지원대학 목록
                                 </DefaultButton>
                                 {modalVisible && (
                                     <Modal

@@ -18,7 +18,7 @@ const SupportUniv = forwardRef((props, ref) => {
             <Heading>
                 <Title>지원대학목록</Title>
                 <DefaultButton onClick={() => history.push("/univboard")}>
-                    대학게시판 가기
+                    대학 게시판 가기
                 </DefaultButton>
             </Heading>
             <SupportBox isDesktop={isDesktop}>

@@ -17,12 +17,18 @@ const country = [
 ];
 
 const countrySelectorList = [
-    { id: 0, name: "전체", icon: "🌍" },
-    { id: 3, name: "미국", icon: "🍔" },
-    { id: 5, name: "영국", icon: "🍟" },
-    { id: 2, name: "호주", icon: "🍕" },
-    { id: 1, name: "베트남", icon: "🌭" },
-    { id: 4, name: "캐나다", icon: "🌮" },
+    // { id: 0, name: "전체", icon: "🌍" },
+    // { id: 3, name: "미국", icon: "🍔" },
+    // { id: 5, name: "영국", icon: "🍟" },
+    // { id: 2, name: "호주", icon: "🍕" },
+    // { id: 1, name: "베트남", icon: "🌭" },
+    // { id: 4, name: "캐나다", icon: "🌮" },
+    { id: 0, name: "전체", icon: "🌍", engName: "All" },
+    { id: 3, name: "미국", icon: "🍔", engName: "the United States" },
+    { id: 5, name: "영국", icon: "🍟", engName: "the United Kingdom" },
+    { id: 2, name: "호주", icon: "🍕", engName: "Australia" },
+    { id: 1, name: "베트남", icon: "🌭", engName: "Vietnam" },
+    { id: 4, name: "캐나다", icon: "🌮", engName: "Canada" },
 ];
 
 const countrySelectorFlagList = [

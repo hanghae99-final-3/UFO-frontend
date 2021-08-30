@@ -70,7 +70,7 @@ const PreviewBoardBox = ({
             <Header>
                 {tag && (
                     <LargeTag>
-                        {"#"}
+                        💬
                         {tag.categoryName}
                     </LargeTag>
                 )}

@@ -20,14 +20,19 @@ export default function SelectCountry() {
     const [isSelectOpen, setIsSelectOpen] = useState(false); // select 열림 / 닫힘 값
     const selectedData = useSelector(
         state => state.freeBoard.selectedCountry,
-    ) || { id: 0, name: "전체", icon: "🌍" }; //셀렉터의 정보가 담겨져있습니다!
+    ) || { id: 0, name: "전체", icon: "🌍", engName: "All" }; //셀렉터의 정보가 담겨져있습니다!
 
     useEffect(() => {
         //초기설정을 위한 useEffect입니다!!!
         if (!cookies.rememberCountry) {
             //쿠키값이 없으면 0번(전체)으로 초기화시켜줍니다.
             return dispatch(
-                setCountryReducer({ id: 0, name: "전체", icon: "🌍" }),
+                setCountryReducer({
+                    id: 0,
+                    name: "전체",
+                    icon: "🌍",
+                    engName: "All",
+                }),
             );
         }
 
@@ -42,6 +47,7 @@ export default function SelectCountry() {
                 id: Number(cookies.rememberCountry),
                 name: matchData.name,
                 icon: matchData.icon,
+                engName: matchData.engName,
             }),
         );
 
@@ -75,6 +81,7 @@ export default function SelectCountry() {
                 id: Number(event.target.id),
                 name: matchData.name,
                 icon: matchData.icon,
+                engName: matchData.engName,
             }),
         );
     };

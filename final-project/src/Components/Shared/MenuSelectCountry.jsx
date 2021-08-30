@@ -13,7 +13,7 @@ export default function SelectCountry() {
     const [cookies, setCookie] = useCookies(["rememberCountry"]); // 쿠키 훅스
     const selectedData = useSelector(
         state => state.freeBoard.selectedCountry,
-    ) || { id: 0, name: "전체", icon: "🌍" }; //셀렉터의 정보가 담겨져있습니다!
+    ) || { id: 0, name: "전체", icon: "🌍", engName: "All" }; //셀렉터의 정보가 담겨져있습니다!
 
     // 국가 선택 변경 핸들러
     const handleChange = event => {
@@ -39,6 +39,7 @@ export default function SelectCountry() {
                 id: Number(event.target.id),
                 name: matchData.name,
                 icon: matchData.icon,
+                engName: matchData.engName,
             }),
         );
     };
