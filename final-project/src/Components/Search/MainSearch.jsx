@@ -40,7 +40,7 @@ const MainSearch = props => {
                     onChange={handleSearchTermChange}
                     onFocus={handleFocus}
                     onBlur={handleBlur}
-                    placeholder="🔎 UFO에게 무엇이든 검색해보세요."
+                    placeholder="🔍 UFO에게 무엇이든 검색해보세요."
                 />
             </SearchForm>
         </React.Fragment>
