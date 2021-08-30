@@ -105,7 +105,9 @@ const SignupPresenter = ({ validate, onSignupSubmit }) => {
                     ) : null}
                 </InputWrapper>
                 <ButtonContainer>
-                    <CancelButtonBox>취소</CancelButtonBox>
+                    <CancelButtonBox onClick={() => history.push("/login")}>
+                        취소
+                    </CancelButtonBox>
                     <SignUpButtonBox type="submit" variant="contained">
                         회원가입
                     </SignUpButtonBox>
