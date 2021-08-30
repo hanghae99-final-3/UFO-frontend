@@ -44,7 +44,7 @@ body{
 .ck-content{
     *{
         font-size: ${({ theme }) => theme.fontSize["20"]};
-        color:${({ theme }) => theme.color.gray1};
+        color:${({ theme }) => theme.color.gray3};
         @media ${({ theme }) => theme.mobile} {
             font-size: ${({ theme }) => theme.fontSize["16"]};
         }

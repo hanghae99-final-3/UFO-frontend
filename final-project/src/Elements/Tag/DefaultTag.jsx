@@ -1,12 +1,15 @@
 import React from "react";
 import styled from "styled-components";
 import mixin from "../../Styles/Mixin";
+import { useSelector } from "react-redux";
 
 //announcement는 공지글인 경우 true입니다.
 
 const DefaultTag = ({ children, announcement, ...props }) => {
+    const isDarkTheme = useSelector(state => state.user.isDarkTheme); //다크모드인지 아닌지 판별 state
+
     return (
-        <Tag announcement={announcement} {...props}>
+        <Tag announcement={announcement} isDarkTheme={isDarkTheme} {...props}>
             {children}
         </Tag>
     );

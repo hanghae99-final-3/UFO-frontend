@@ -45,6 +45,7 @@ const BoardWrite = ({ boardName }) => {
     const user = useSelector(state => state.user.user); //유저정보
     const [post, setPost] = useState(null); //이 state는 입력값들이 들어갈 곳입니다!
     const [isAnnouncement, setIsAnnouncement] = useState(false); // 게시물 공지 설정 값
+    const isDarkTheme = useSelector(state => state.user.isDarkTheme); //다크모드인지 아닌지 판별 state
 
     const getContentFromEditor = content => {
         //에디터로부터 content 값 가져오기
@@ -245,7 +246,7 @@ const BoardWrite = ({ boardName }) => {
             //게시글 수정모드
             <>
                 {/* 게시판제목 */}
-                <BoardTitle onClick={goBoard}>
+                <BoardTitle isDarkTheme={isDarkTheme} onClick={goBoard}>
                     <h3>
                         {boardName === "freeboard"
                             ? "자유게시판"
@@ -253,11 +254,13 @@ const BoardWrite = ({ boardName }) => {
                     </h3>
                 </BoardTitle>
                 <InputTitle
+                    isDarkTheme={isDarkTheme}
                     placeholder="제목을 입력해주세요!"
                     onChange={e => setPost({ ...post, title: e.target.value })}
                     value={post.title}
                 />
                 <Editor
+                    isDarkTheme={isDarkTheme}
                     originContent={post.content}
                     getContentFromEditor={getContentFromEditor}
                 />
@@ -275,7 +278,7 @@ const BoardWrite = ({ boardName }) => {
         // 게시글 작성모드
         <>
             {/* 게시판제목 */}
-            <BoardTitle onClick={goBoard}>
+            <BoardTitle isDarkTheme={isDarkTheme} onClick={goBoard}>
                 <h3>
                     {boardName === "freeboard" ? "자유 게시판" : "대학 게시판"}
                 </h3>
@@ -284,10 +287,12 @@ const BoardWrite = ({ boardName }) => {
             {/* 태그선택 */}
             <SelectBox>
                 {boardName === "freeboard" && (
-                    <CountrySelect>
+                    <CountrySelect isDarkTheme={isDarkTheme}>
                         {/* 자유게시판이면 국가선택란이 나타난다. */}
                         <TagSelectTextBox>
-                            <SelectTitle>국가 설정</SelectTitle>
+                            <SelectTitle isDarkTheme={isDarkTheme}>
+                                국가 설정
+                            </SelectTitle>
                         </TagSelectTextBox>
                         <TagSelectorBox>
                             {categories.country.map(ele => (
@@ -308,10 +313,12 @@ const BoardWrite = ({ boardName }) => {
                         </TagSelectorBox>
                     </CountrySelect>
                 )}
-                <TagSelect>
+                <TagSelect isDarkTheme={isDarkTheme}>
                     {/* 카테고리 중  선택하기 */}
                     <TagSelectTextBox>
-                        <SelectTitle>태그 설정</SelectTitle>
+                        <SelectTitle isDarkTheme={isDarkTheme}>
+                            태그 설정
+                        </SelectTitle>
                     </TagSelectTextBox>
                     <TagSelectorBox>
                         {categoryList.map((ele, idx) => (
@@ -346,7 +353,9 @@ const BoardWrite = ({ boardName }) => {
                 {boardName === "univboard" && isAdmin && (
                     <AnnounceSelect>
                         {/* 카테고리 중 카테고리 선택하기 */}
-                        <SelectTitle>공지 설정</SelectTitle>
+                        <SelectTitle isDarkTheme={isDarkTheme}>
+                            공지 설정
+                        </SelectTitle>
                         <AnnounceSelector
                             isSelected={isAnnouncement}
                             rightGap="10px"
@@ -361,12 +370,16 @@ const BoardWrite = ({ boardName }) => {
 
             {/* 제목입력란 */}
             <InputTitle
+                isDarkTheme={isDarkTheme}
                 placeholder="제목을 입력해주세요!"
                 onChange={e => setPost({ ...post, title: e.target.value })}
             />
 
             {/* 컨텐츠입력란 (에디터) */}
-            <Editor getContentFromEditor={getContentFromEditor} />
+            <Editor
+                getContentFromEditor={getContentFromEditor}
+                isDarkTheme={isDarkTheme}
+            />
 
             {/* 컨트롤 버튼 */}
             <Controls>
@@ -381,9 +394,16 @@ const BoardWrite = ({ boardName }) => {
 
 const BoardTitle = styled.div`
     cursor: pointer;
-    ${mixin.outline("1px solid", "gray4", "bottom")}
+    ${mixin.outline("1px solid", "gray4", "bottom")};
+    ${props => props.isDarkTheme && `border-color:${props.theme.color.gray1};`}
+
     h3 {
-        ${mixin.textProps(30, "extraBold", "black")}
+        ${props =>
+            mixin.textProps(
+                30,
+                "extraBold",
+                props.isDarkTheme ? "white" : "black",
+            )};
         margin-bottom: ${theme.calRem(10)};
         @media ${({ theme }) => theme.mobile} {
             ${mixin.textProps(22, "extraBold", "black")};
@@ -407,9 +427,15 @@ const TagSelectTextBox = styled.div`
 const SelectTitle = styled.span`
     display: inline-block;
     width: 60px;
-    ${mixin.textProps(14, "semiBold", "gray3")}
+    ${props =>
+        mixin.textProps(14, "semiBold", props.isDarkTheme ? "gray2" : "gray3")}
     @media ${({ theme }) => theme.mobile} {
-        ${mixin.textProps(11, "semiBold", "gray3")};
+        ${props =>
+            mixin.textProps(
+                11,
+                "semiBold",
+                props.isDarkTheme ? "gray2" : "gray3",
+            )}
     }
 `;
 
@@ -427,7 +453,13 @@ const TagSelectorBox = styled.div`
 `;
 
 const CountrySelect = styled.div`
-    ${mixin.outline("1px solid", "gray4", "bottom")}
+    ${props =>
+        mixin.outline(
+            "1px solid",
+            props.isDarkTheme ? "gray1" : "gray4",
+            "bottom",
+        )}
+
     ${mixin.flexBox(null, "center")}
     padding:${({ theme }) => theme.calRem(15)} 0;
     @media ${({ theme }) => theme.mobile} {
@@ -437,7 +469,13 @@ const CountrySelect = styled.div`
 
 const TagSelect = styled.div`
     padding: ${({ theme }) => theme.calRem(15)} 0;
-    ${mixin.outline("1px solid", "gray4", "bottom")}
+    ${props =>
+        mixin.outline(
+            "1px solid",
+            props.isDarkTheme ? "gray1" : "gray4",
+            "bottom",
+        )}
+
     ${mixin.flexBox(null, "center")}
         @media ${({ theme }) => theme.mobile} {
         //TagSelect는 모바일로 갔을 때 오른쪽으로 스와이프하는 기능때문에 padding을 초기화시켜줘야한다.
@@ -454,17 +492,37 @@ const AnnounceSelect = styled.div`
 
 const InputTitle = styled.input`
     all: unset;
-    ${mixin.outline("1px solid", "gray4", "bottom")};
-    ${mixin.textProps(30, "extraBold", "black")};
+    ${props =>
+        mixin.outline(
+            "1px solid",
+            props.isDarkTheme ? "black" : "gray4",
+            "bottom",
+        )};
+    ${props =>
+        mixin.textProps(
+            30,
+            "extraBold",
+            props.isDarkTheme ? "mainGray" : "black",
+        )};
     transition: border-bottom 1s ease;
     padding: ${theme.calRem(20)} 0;
     width: 100%;
     transition: border-bottom 1s ease;
     :focus {
-        ${mixin.outline("1px solid", "black", "bottom")};
+        ${props =>
+            mixin.outline(
+                "1px solid",
+                props.isDarkTheme ? "mainGray" : "black",
+                "bottom",
+            )};
     }
     ::placeholder {
-        ${mixin.textProps(30, "extraBold", "mainGray")};
+        ${props =>
+            mixin.textProps(
+                30,
+                "extraBold",
+                props.isDarkTheme ? "gray1" : "mainGray",
+            )};
         @media ${({ theme }) => theme.mobile} {
             ${mixin.textProps(22, "extraBold", "mainGray")};
         }
