@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import mixin from "../../Styles/Mixin";
 import theme from "../../Styles/theme";
+import { useSelector } from "react-redux";
 
 //컴포넌트
 import DefaultButton from "../../Elements/Buttons/DefaultButton";
@@ -22,7 +23,7 @@ const CandidateAccordian = ({
     deleteCard,
 }) => {
     const [focusCardList, setFocusCardList] = useState([]);
-
+    const isDarkTheme = useSelector(state=>state.user.isDarkTheme)
     const setFocusList = idx => {
         //---- 포커스가 된 아코디언카드의 idx를 가져와서 focusCardList에 저장한다. 이미 focusCardList에 있는 값이라면 삭제한다.
         if (focusCardList.includes(idx)) {
@@ -34,7 +35,7 @@ const CandidateAccordian = ({
     };
 
     return (
-        <Container>
+        <Container >
             <CandidateControls>
                 <span>현재 후보자 인원: {candidates?.length}명</span>
                 <DefaultButton onClick={addCard}>후보자 추가</DefaultButton>
@@ -53,7 +54,7 @@ const CandidateAccordian = ({
                             id="panel1a-header"
                             onClick={() => setFocusList(`${idx}`)}
                         >
-                            <CandidateTitle>
+                            <CandidateTitle isDarkTheme={isDarkTheme}>
                                 <span>기호 {idx + 1}번</span>
                                 <span>{ele?.name}</span>
                             </CandidateTitle>
@@ -62,12 +63,12 @@ const CandidateAccordian = ({
                             </DefaultButton>
                         </AccordionSummary>
                         {/* 아코디언 디자인의 상세내용 부분입니다. */}
-                        <AccordionDetails>
+                        <AccordionDetails >
                             <CandidateWriteBox>
                                 {/* 후보자의 사진에 관련된 작업을 하는 공간입니다. */}
                                 <CandidateImage>
                                     {/* 후보자의 사진을 미리보기 할 수 있는 곳입니다. */}
-                                    <Freeview>
+                                    <Freeview isDarkTheme={isDarkTheme}>
                                         {/* 후보자의 이미지가 있으면 보여주고, 아니면 기본문자열을 보여줍니다. */}
                                         {ele.photo ? (
                                             <img
@@ -86,7 +87,7 @@ const CandidateAccordian = ({
                                     {/* Uploader은 type이 file인 input입니다. 브라우저 상에서는 보이지 않게 숨겨두었습니다. */}
                                 </CandidateImage>
                                 {/* 후보자의 상세 내용이 담길 곳입니다. */}
-                                <CandidateContent>
+                                <CandidateContent isDarkTheme={isDarkTheme}>
                                     {/* 후보자의 이름 */}
                                     <span>이름</span>
                                     <input
@@ -121,12 +122,14 @@ const CandidateAccordian = ({
     );
 };
 
-const Container = styled.div``;
+const Container = styled.div`
+    
+`;
 
 const StyledAccordion = styled.div`
     margin-bottom: 1px;
     position: relative;
-
+    
     /* 아코디언의 border설정 */
     ${props =>
         props.isFocus
@@ -142,6 +145,12 @@ const StyledAccordion = styled.div`
             : `.MuiAccordionSummary-expandIcon {
         color: ${props.theme.color.gray2};
     }`}
+    .MuiButtonBase-root.MuiAccordionSummary-root{
+        background-color:${({theme})=>theme.color.black};
+    }
+        .MuiPaper-root.MuiAccordion-root.Mui-expanded.MuiAccordion-rounded.MuiPaper-elevation1.MuiPaper-rounded{
+        background-color:${({theme})=>theme.color.black};//후보자 추가 배경
+    }
     
     .MuiAccordionSummary-content {
         ${mixin.flexBox("space-between", "center")}
@@ -150,11 +159,13 @@ const StyledAccordion = styled.div`
     .MuiPaper-elevation1 {
         box-shadow: none;
     }
+
 `;
 
 const CandidateTitle = styled.span`
-    ${mixin.textProps(30, "extraBold", "gray2")}
+    ${mixin.textProps(30, "extraBold","gray2")}
     span:first-child {
+        ${props=>mixin.textProps(30, "extraBold", props.isDarkTheme?"white":"gray2")}
         margin-right: ${({ theme }) => theme.calRem(10)};
     }
 `;
@@ -177,7 +188,7 @@ const Freeview = styled.div`
         object-fit: cover;
     }
     span {
-        ${mixin.textProps(20, "regular", "gray1")}
+        ${props=>mixin.textProps(20, "regular", props.isDarkTheme?"gray3":"gray1")} //이미지를 추가해 주세요!
     }
 `;
 const CandidateWriteBox = styled.div`
@@ -203,18 +214,18 @@ const CandidateContent = styled.div`
     width: 100%;
     align-items: flex-start;
     span {
-        ${mixin.textProps(20, "semiBold", "gray1")}
+        ${props=>mixin.textProps(20, "semiBold", props.isDarkTheme?"gray3":"gray1")} //이름,전공,소개를 작성해주세요
     }
     input,
     textarea {
         width: 100%;
         all: unset;
         padding-bottom: ${({ theme }) => theme.calRem(10)};
-        ${mixin.outline("1px solid", "gray4", "bottom")}
+        ${props=>mixin.outline("1px solid", props.isDarkTheme?"gray2":"gray4", "bottom")}
         ${mixin.textProps(20, "regular", "gray2")}
         transition: border-bottom 1s ease;
         ::placeholder {
-            ${mixin.textProps(20, "regular", "gray4")}
+            ${props=>mixin.textProps(20, "regular", props.isDarkTheme?"gray3":"gray4")}
         }
         :focus {
             ${mixin.outline("1px solid", "gray1", "bottom")}
