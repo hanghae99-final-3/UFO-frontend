@@ -93,6 +93,7 @@ const Header = ({ isDarkTheme }) => {
                     </Sparkles>
 
                     <MenuBtn
+                        isDarkTheme={isDarkTheme}
                         onClick={() => {
                             setMenuOn(!menuOn);
                         }}
@@ -321,9 +322,19 @@ const MenuBtn = styled.button`
     background: inherit;
     line-height: 0;
     svg {
-        ${mixin.textProps(30, "extraBold", "gray1")}
+        ${props =>
+            mixin.textProps(
+                30,
+                "extraBold",
+                props.isDarkTheme ? "white" : "gray1",
+            )}
         @media ${({ theme }) => theme.mobile} {
-            ${mixin.textProps(24, "extraBold", "gray1")}
+            ${props =>
+                mixin.textProps(
+                    24,
+                    "extraBold",
+                    props.isDarkTheme ? "white" : "gray1",
+                )}
         }
     }
 `;

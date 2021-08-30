@@ -12,7 +12,6 @@ export const DarkGlobalStyle = createGlobalStyle`
   padding:0;
   box-sizing:border-box;
   font-family: 'Pretendard', sans-serif;
-  color:#fff;
 
   &:focus,&:hover,&:active{
   outline:none 
@@ -72,10 +71,23 @@ body{
   border-radius:50px;
   border: solid 3px;
   border-color: ${({ theme }) => theme.color.mainMint};
+  background:${({ theme }) => theme.color.black};
+
+
 .swal2-title{
-  color :${({ theme }) => theme.color.black};
+  color :${({ theme }) => theme.color.white};
   font-size: ${({ theme }) => theme.fontSize["22"]};
 }
+
+.swal2-html-container{
+    color:${({ theme }) => theme.color.mainGray}
+}
+
+.swal2-close{
+    margin-right:15px;
+    margin-top:15px;
+}
+
 .swal2-confirm.swal2-styled{
   border-radius: 20px;
   background-color: ${({ theme }) => theme.color.blue1};

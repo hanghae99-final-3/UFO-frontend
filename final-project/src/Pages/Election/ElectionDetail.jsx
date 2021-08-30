@@ -232,7 +232,7 @@ const ElectionDetail = () => {
             {!isFinished ? (
                 <>
                     <VoteContainer>
-                        <VoteTitle>
+                        <VoteTitle isDarkTheme={isDarkTheme}>
                             <h5>투표하기</h5>
                             <p>
                                 비밀 투표이며, 투표 완료시, 변경이 불가합니다.
@@ -250,6 +250,7 @@ const ElectionDetail = () => {
                                             selectCandidateId ===
                                             candidate.candidate_id
                                         }
+                                        isDarkTheme={isDarkTheme}
                                         cursor
                                         isVoteCard
                                     />
@@ -269,6 +270,7 @@ const ElectionDetail = () => {
                 <ElectedContainer>
                     <Title isDarkTheme={isDarkTheme}>당선자</Title>
                     <ElectedCard
+                        isDarkTheme={isDarkTheme}
                         candidates={post?.candidates}
                         electionPostId={electionPostId}
                     />
@@ -449,10 +451,20 @@ const VoteTitle = styled.div`
     }
 
     h5 {
-        ${mixin.textProps(30, "extraBold", "black")};
+        ${props =>
+            mixin.textProps(
+                30,
+                "extraBold",
+                props.isDarkTheme ? "white" : "black",
+            )};
         line-height: 1;
         @media ${({ theme }) => theme.mobile} {
-            ${mixin.textProps(22, "extraBold", "black")};
+            ${props =>
+                mixin.textProps(
+                    22,
+                    "extraBold",
+                    props.isDarkTheme ? "white" : "black",
+                )};
         }
     }
     p {

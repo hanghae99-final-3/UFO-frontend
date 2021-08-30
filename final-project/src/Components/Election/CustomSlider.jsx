@@ -93,7 +93,10 @@ const CustomSlider = ({ candidateList, getCurrentIdx, isDarkTheme }) => {
                 {candidateList &&
                     candidateList.map((candidate, idx) => (
                         <Slide id={idx}>
-                            <CandidateCard candidate={candidate} />
+                            <CandidateCard
+                                isDarkTheme={isDarkTheme}
+                                candidate={candidate}
+                            />
                         </Slide>
                     ))}
             </SliderContainer>

@@ -289,7 +289,7 @@ const BoardWrite = ({ boardName }) => {
                 {boardName === "freeboard" && (
                     <CountrySelect isDarkTheme={isDarkTheme}>
                         {/* 자유게시판이면 국가선택란이 나타난다. */}
-                        <TagSelectTextBox>
+                        <TagSelectTextBox isDarkTheme={isDarkTheme}>
                             <SelectTitle isDarkTheme={isDarkTheme}>
                                 국가 설정
                             </SelectTitle>
@@ -315,7 +315,7 @@ const BoardWrite = ({ boardName }) => {
                 )}
                 <TagSelect isDarkTheme={isDarkTheme}>
                     {/* 카테고리 중  선택하기 */}
-                    <TagSelectTextBox>
+                    <TagSelectTextBox isDarkTheme={isDarkTheme}>
                         <SelectTitle isDarkTheme={isDarkTheme}>
                             태그 설정
                         </SelectTitle>
@@ -406,7 +406,12 @@ const BoardTitle = styled.div`
             )};
         margin-bottom: ${theme.calRem(10)};
         @media ${({ theme }) => theme.mobile} {
-            ${mixin.textProps(22, "extraBold", "black")};
+            ${props =>
+                mixin.textProps(
+                    22,
+                    "extraBold",
+                    props.isDarkTheme ? "white" : "black",
+                )};
             margin-bottom: ${theme.calRem(8)};
         }
     }
@@ -418,7 +423,10 @@ const TagSelectTextBox = styled.div`
     @media ${({ theme }) => theme.mobile} {
         position: absolute;
         z-index: 10;
-        background: white;
+        background: ${props =>
+            props.isDarkTheme
+                ? props.theme.color.black
+                : props.theme.color.white};
         height: ${theme.calRem(42)};
         line-height: 42px;
     }
