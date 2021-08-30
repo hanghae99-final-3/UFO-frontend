@@ -146,7 +146,7 @@ const Header = () => {
                                             },
                                         }}
                                     >
-                                        투표함
+                                        선거함
                                     </Link>
                                 </Control>
                                 {isLoggedIn ? (
@@ -339,11 +339,11 @@ const MenuContainer = styled.div`
 
 const Menu = styled.div`
     z-index: 10;
-    padding: 80px 0;
+    padding-top: 80px;
     padding-left: 60px;
     ${props =>
         props.menuOn ? mixin.flexBox("space-between", null, "column") : ""};
-    ${props => (props.menuOn ? `display:flex;` : `display:none;`)};
+    ${props => (props.menuOn ? `display:block;` : `display:none;`)};
 
     width: 500px;
     background: ${({ theme }) => theme.color.mainBlue};
@@ -352,14 +352,11 @@ const Menu = styled.div`
         height: calc(100vh - 48px);
         padding: ${({ theme }) => theme.calRem(35)} 0 0
             ${({ theme }) => theme.calRem(40)};
-        ${props => (props.menuOn ? `display:block;` : `display:none;`)};
     }
 `;
 
 const SelecterBox = styled.div`
-    @media ${({ theme }) => theme.mobile} {
-        margin-bottom: ${({ theme }) => theme.calRem(20)};
-    }
+    margin-bottom: ${({ theme }) => theme.calRem(20)};
 `;
 
 const SelectCountryTitle = styled.span`
@@ -372,20 +369,12 @@ const SelectCountryTitle = styled.span`
     }
 `;
 
-const Controls = styled.ul`
-    ${mixin.flexBox("space-between", null, "column", "75%")};
-    @media ${({ theme }) => theme.mobile} {
-        display: block;
-        height: max-content;
-    }
-`;
+const Controls = styled.ul``;
 
 const Control = styled.li`
     cursor: pointer;
     /* Link의 state를 활용하여 조건부 렌더링을 해보았습니다. */
-    @media ${({ theme }) => theme.mobile} {
-        margin-bottom: ${({ theme }) => theme.calRem(20)};
-    }
+    margin-bottom: ${({ theme }) => theme.calRem(20)};
 
     a {
         ${({ children }) =>
