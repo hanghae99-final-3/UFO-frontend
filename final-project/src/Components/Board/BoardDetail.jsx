@@ -53,6 +53,8 @@ const BoardDetail = ({ page }) => {
     const { id: postId } = useParams(); // 게시물 아이디
     const userId = useSelector(state => state.user.user.user_id); // 유저 아이디
     const isLoggedIn = useSelector(state => state.user.isLoggedIn); // 로그인 상태
+    const isDarkTheme = useSelector(state=>state.user.isDarkTheme); //다크모드
+    
 
     let now = new Date(); // 게시물 조회 최초 시간
     let after20m = new Date(); // 최초 조회후 20분이후 시간
@@ -195,9 +197,9 @@ const BoardDetail = ({ page }) => {
             <Page onClick={handleGoToList}>
                 {page === "freeboard" ? "자유 게시판" : "대학 게시판"}
             </Page>
-            <ContentHeaderContainer>
+            <ContentHeaderContainer isDarkTheme={isDarkTheme}>
                 {page === "freeboard" ? (
-                    <DefaultTag>
+                    <DefaultTag >
                         #{post && categories.freeBoardTags[post.category]}
                     </DefaultTag>
                 ) : (
@@ -206,7 +208,7 @@ const BoardDetail = ({ page }) => {
                     </DefaultTag>
                 )}
 
-                <Title>{post && post.title}</Title>
+                <Title isDarkTheme={isDarkTheme}>{post && post.title}</Title>
                 <NicknameIconContainer>
                     <IconContainer>
                         <Nickname>
@@ -244,9 +246,10 @@ const BoardDetail = ({ page }) => {
                     </IconContainer>
                 </NicknameIconContainer>
             </ContentHeaderContainer>
-            <ContentBodyContainer>
+            <ContentBodyContainer isDarkTheme={isDarkTheme}>
                 {post && (
                     <ContentBody
+                    
                         className="ck-content"
                         dangerouslySetInnerHTML={{ __html: post.content }}
                     ></ContentBody>
@@ -303,12 +306,12 @@ const MainContentContainer = styled.div`
 const Title = styled.h3`
     display: block;
     margin: 20px 0 0 0;
-    ${mixin.textProps(30, "extraBlack", "black")};
+    ${props=> mixin.textProps(30, "extraBlack", props.isDarkTheme?"white":"black")};
 
     //모바일 사이즈
     @media ${({ theme }) => theme.mobile} {
         margin-top: ${({ theme }) => theme.calRem(13)};
-        ${mixin.textProps(22, "extraBold", "black")};
+        ${props=>mixin.textProps(22, "extraBold", props.isDarkTheme?"white":"black")};
     }
 `;
 
@@ -361,7 +364,7 @@ const IconContainer = styled.div`
 `;
 
 const ContentHeaderContainer = styled.div`
-    ${mixin.outline("1.5px solid", "gray4", "bottom")}
+    ${props=>mixin.outline("1.5px solid", props.isDarkTheme?"gray1":"gray4", "bottom")}
 `;
 const ContentBody = styled.div`
     padding: 30px 0;
@@ -374,7 +377,7 @@ const ContentBody = styled.div`
 const ContentBodyContainer = styled.div`
     min-height: 100px;
     ${mixin.flexBox(null, "center")}
-    ${mixin.outline("1.5px solid", "gray4", "bottom")}
+    ${props=>mixin.outline("1.5px solid", props.isDarkTheme?"gray1":"gray4", "bottom")}
 `;
 
 const ButtonContainer = styled.div`
