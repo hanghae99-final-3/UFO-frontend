@@ -71,7 +71,8 @@ body{
   border-radius:50px;
   border: solid 3px;
   border-color: ${({ theme }) => theme.color.mainMint};
-.swal2-title{
+
+  .swal2-title{
   color :${({ theme }) => theme.color.black};
   font-size: ${({ theme }) => theme.fontSize["22"]};
 }
@@ -81,6 +82,7 @@ body{
   width : 90px;
   /* ${mixin.textProps(11, "semiBold", "white")} */
 }
+
 .swal2-cancel.swal2-styled{
   width : 90px;
   border-radius:20px;
@@ -90,6 +92,14 @@ body{
   color:${({ theme }) => theme.color.danger};
   border-color: ${({ theme }) => theme.color.danger};
 }
+
+.swal2-popup.swal2-modal.swal2-icon-success.swal2-show{
+      border-radius:50px;
+  border: solid 3px;
+  border-color: ${({ theme }) => theme.color.mainMint};
+}
+
+
 
 }
 `;

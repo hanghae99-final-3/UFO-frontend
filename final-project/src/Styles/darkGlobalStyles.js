@@ -67,11 +67,25 @@ body{
 }
 
 /* swal css 설정 */
-.swal2-popup.swal2-modal.swal2-icon-warning.swal2-show{
+/* swal 주의 */
+.swal2-popup{
   border-radius:50px;
   border: solid 3px;
   border-color: ${({ theme }) => theme.color.mainMint};
   background:${({ theme }) => theme.color.black};
+  .swal2-success-circular-line-right{
+  background-color: ${({ theme }) => theme.color.black} !important;
+}
+
+.swal2-success-circular-line-left{
+  background-color: ${({ theme }) => theme.color.black} !important;
+}
+
+.swal2-success-fix{
+  background-color: ${({ theme }) => theme.color.black} !important;
+}
+}
+
 
 
 .swal2-title{
@@ -99,10 +113,12 @@ body{
   border-radius:20px;
   background-color: ${({ theme }) => theme.color.blue1};
 }
+
 .swal2-icon.swal2-warning.swal2-icon-show{
   color:${({ theme }) => theme.color.danger};
   border-color: ${({ theme }) => theme.color.danger};
 }
 
-}
+
+
 `;

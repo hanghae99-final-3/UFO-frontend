@@ -53,14 +53,38 @@ const MessageContainer = styled.div`
     }
 
     p {
-        ${mixin.textProps(40, "extraBold", "gray2", "center")};
+        ${props =>
+            mixin.textProps(
+                40,
+                "extraBold",
+                props.isDarkTheme ? "mainGray" : "gray2",
+                "center",
+            )};
         @media ${({ theme }) => theme.mobile} {
-            ${mixin.textProps(28, "extraBold", "black", "center")};
+            ${props =>
+                mixin.textProps(
+                    28,
+                    "extraBold",
+                    props.isDarkTheme ? "mainGray" : "black",
+                    "center",
+                )};
         }
         span {
-            ${mixin.textProps(40, "extraBold", "black", "center")};
+            ${props =>
+                mixin.textProps(
+                    40,
+                    "extraBold",
+                    props.isDarkTheme ? "white" : "black",
+                    "center",
+                )};
             @media ${({ theme }) => theme.mobile} {
-                ${mixin.textProps(28, "extraBold", "black", "center")};
+                ${props =>
+                    mixin.textProps(
+                        28,
+                        "extraBold",
+                        props.isDarkTheme ? "white" : "black",
+                        "center",
+                    )};
             }
         }
     }
