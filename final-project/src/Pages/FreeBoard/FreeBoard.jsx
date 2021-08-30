@@ -90,8 +90,10 @@ const FreeBoard = () => {
     };
 
     // 초기 페이지 진입시 게시물 요청
+    const [initialRender, setInitialRender] = useState(1);
     useEffect(() => {
         dispatch(getFreeListDB(postListQueryData));
+        setInitialRender(prev => prev + 1);
     }, [dispatch, page, selectedTag, selectedCountry]);
 
     // 무한 스크롤 next call 요청
