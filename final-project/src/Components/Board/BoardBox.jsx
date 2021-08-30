@@ -13,6 +13,7 @@ import { makeStyles } from "@material-ui/core"; // material ui 스타일링 훅�
 //컴포넌트
 import AnnounceTag from "../../Elements/Tag/AnnounceTag";
 import DefaultTag from "../../Elements/Tag/DefaultTag";
+import { useSelector } from "react-redux";
 
 const useStyles = makeStyles({
     heart: {
@@ -21,6 +22,8 @@ const useStyles = makeStyles({
 });
 
 const BoardBox = ({ postList, fixedList, boardName, announcement }) => {
+    const isDarkTheme = useSelector(state => state.user.isDarkTheme);
+
     const isDesktop =
         document.documentElement.clientWidth >= 1080 ? true : false;
     const isMobile = document.documentElement.clientWidth < 798 ? true : false;
@@ -42,6 +45,7 @@ const BoardBox = ({ postList, fixedList, boardName, announcement }) => {
                 {fixedList &&
                     fixedList.map((post, idx) => (
                         <PostContainer
+                            isDarkTheme={isDarkTheme}
                             key={idx}
                             onClick={() => {
                                 _onClick(post.post_id, post?.category);
@@ -53,7 +57,7 @@ const BoardBox = ({ postList, fixedList, boardName, announcement }) => {
                             <AnnounceTitle>{post.title}</AnnounceTitle>
                             <IconContainer>
                                 <>
-                                    <Icon>
+                                    <Icon isDarkTheme={isDarkTheme}>
                                         {post?.like?.is_like === false ? (
                                             <FavoriteBorder />
                                         ) : (
@@ -61,20 +65,22 @@ const BoardBox = ({ postList, fixedList, boardName, announcement }) => {
                                                 className={classes.heart}
                                             />
                                         )}
-                                        <IconSpan>
+                                        <IconSpan isDarkTheme={isDarkTheme}>
                                             {post.like && post.like.all_like}
                                         </IconSpan>
                                     </Icon>
-                                    <Icon>
+                                    <Icon isDarkTheme={isDarkTheme}>
                                         <MdComment />
-                                        <IconSpan>
+                                        <IconSpan isDarkTheme={isDarkTheme}>
                                             {post.comment_count}
                                         </IconSpan>
                                     </Icon>
                                 </>
-                                <Icon>
+                                <Icon isDarkTheme={isDarkTheme}>
                                     <VisibilityIcon />
-                                    <IconSpan>{post.view_count}</IconSpan>
+                                    <IconSpan isDarkTheme={isDarkTheme}>
+                                        {post.view_count}
+                                    </IconSpan>
                                 </Icon>
                             </IconContainer>
                         </PostContainer>
@@ -82,6 +88,7 @@ const BoardBox = ({ postList, fixedList, boardName, announcement }) => {
                 {postList &&
                     postList.map((post, idx) => (
                         <PostContainer
+                            isDarkTheme={isDarkTheme}
                             key={idx}
                             onClick={() => {
                                 _onClick(post.post_id, post?.category);
@@ -121,12 +128,14 @@ const BoardBox = ({ postList, fixedList, boardName, announcement }) => {
                                         announcement &&
                                         "공지"}
                                 </DefaultTag>
-                                <PostTitle>{post.title}</PostTitle>
+                                <PostTitle isDarkTheme={isDarkTheme}>
+                                    {post.title}
+                                </PostTitle>
                                 {/* 데스크탑 */}
                                 {isDesktop ? (
                                     <IconContainer>
                                         <>
-                                            <Icon>
+                                            <Icon isDarkTheme={isDarkTheme}>
                                                 {post?.like?.is_like ===
                                                 false ? (
                                                     <FavoriteBorder />
@@ -137,21 +146,25 @@ const BoardBox = ({ postList, fixedList, boardName, announcement }) => {
                                                         }
                                                     />
                                                 )}
-                                                <IconSpan>
+                                                <IconSpan
+                                                    isDarkTheme={isDarkTheme}
+                                                >
                                                     {post.like &&
                                                         post.like.all_like}
                                                 </IconSpan>
                                             </Icon>
-                                            <Icon>
+                                            <Icon isDarkTheme={isDarkTheme}>
                                                 <MdComment />
-                                                <IconSpan>
+                                                <IconSpan
+                                                    isDarkTheme={isDarkTheme}
+                                                >
                                                     {post.comment_count}
                                                 </IconSpan>
                                             </Icon>
                                         </>
-                                        <Icon>
+                                        <Icon isDarkTheme={isDarkTheme}>
                                             <VisibilityIcon />
-                                            <IconSpan>
+                                            <IconSpan isDarkTheme={isDarkTheme}>
                                                 {post.view_count}
                                             </IconSpan>
                                         </Icon>
@@ -159,10 +172,12 @@ const BoardBox = ({ postList, fixedList, boardName, announcement }) => {
                                 ) : null}
                             </GridContainer>
                             {isMobile && (
-                                <IconContainer>
-                                    <Username>{post["user.nickname"]}</Username>
+                                <IconContainer isDarkTheme={isDarkTheme}>
+                                    <Username isDarkTheme={isDarkTheme}>
+                                        {post["user.nickname"]}
+                                    </Username>
                                     <IconWrapper>
-                                        <Icon>
+                                        <Icon isDarkTheme={isDarkTheme}>
                                             {post?.like?.is_like === false ? (
                                                 <FavoriteBorder />
                                             ) : (
@@ -170,21 +185,21 @@ const BoardBox = ({ postList, fixedList, boardName, announcement }) => {
                                                     className={classes.heart}
                                                 />
                                             )}
-                                            <IconSpan>
+                                            <IconSpan isDarkTheme={isDarkTheme}>
                                                 {post.like &&
                                                     post.like.all_like}
                                             </IconSpan>
                                         </Icon>
-                                        <Icon>
+                                        <Icon isDarkTheme={isDarkTheme}>
                                             <MdComment />
-                                            <IconSpan>
+                                            <IconSpan isDarkTheme={isDarkTheme}>
                                                 {post.comment_count}
                                             </IconSpan>
                                         </Icon>
 
-                                        <Icon>
+                                        <Icon isDarkTheme={isDarkTheme}>
                                             <VisibilityIcon />
-                                            <IconSpan>
+                                            <IconSpan isDarkTheme={isDarkTheme}>
                                                 {post.view_count}
                                             </IconSpan>
                                         </Icon>
@@ -203,11 +218,17 @@ const BoardContainer = styled.div`
     width: 100%;
 `;
 const PostTitle = styled.span`
-    ${mixin.textProps(20, "semiBold", "gray2")};
+    ${props =>
+        mixin.textProps(20, "semiBold", props.isDarkTheme ? "gray3" : "gray2")};
 
     @media ${({ theme }) => theme.mobile} {
         line-height: 1;
-        ${mixin.textProps(16, "semiBold", "gray2")};
+        ${props =>
+            mixin.textProps(
+                16,
+                "semiBold",
+                props.isDarkTheme ? "gray3" : "gray2",
+            )};
     }
 `;
 const AnnounceTitle = styled.p`
@@ -247,7 +268,12 @@ const IconContainer = styled.div`
     @media ${({ theme }) => theme.mobile} {
         display: flex;
         justify-content: space-between;
-        ${mixin.outline("1px solid", "gray4", "bottom")};
+        ${props =>
+            mixin.outline(
+                "1px solid",
+                props.isDarkTheme ? "gray1" : "gray4",
+                "bottom",
+            )};
         padding-bottom: 16px;
         margin-bottom: 16px;
     }
@@ -273,11 +299,13 @@ const Icon = styled.div`
 `;
 
 const IconSpan = styled.span`
-    ${mixin.textProps(12, "semiBold", "gray3")}
+    ${props =>
+        mixin.textProps(12, "semiBold", props.isDarkTheme ? "gray2" : "gray3")}
 `;
 
 const Username = styled.span`
-    ${mixin.textProps(12, "semiBold", "gray3")}
+    ${props =>
+        mixin.textProps(12, "semiBold", props.isDarkTheme ? "gray2" : "gray3")}
 `;
 
 export default BoardBox;

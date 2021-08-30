@@ -16,8 +16,8 @@ import bnr1_mobile from "../../Assets/event1_mobile.png";
 import bnr1_pc from "../../Assets/event1_pc.png";
 import bnr2_pc from "../../Assets/event2_pc.png";
 import bnr2_mobile from "../../Assets/event2_mobile.png";
-import bnr3_pc from '../../Assets/event3_pc.png'
-import bnr3_mobile from '../../Assets/event3_mobile.png'
+import bnr3_pc from "../../Assets/event3_pc.png";
+import bnr3_mobile from "../../Assets/event3_mobile.png";
 
 //컴포넌트
 import MainSlider from "../../Components/Home/MainSlider"; // 메인 페이지 슬라이더 컴포넌트
@@ -28,6 +28,8 @@ import DefaultButton from "../../Elements/Buttons/DefaultButton";
 import Modal from "../../Components/Shared/Modal";
 
 const Home = () => {
+    const isDarkTheme = useSelector(state => state.user.isDarkTheme);
+
     const supportUnivRef = useRef(null); //지원대학 ref
     const dispatch = useDispatch();
     // 자유 게시판 게시물 리덕스 스토어 구독
@@ -137,7 +139,9 @@ const Home = () => {
                 {isAuthenticated === null && (
                     <Content>
                         <Header>
-                            <TitleHeading>대학 게시판 🎓</TitleHeading>
+                            <TitleHeading isDarkTheme={isDarkTheme}>
+                                대학 게시판 🎓
+                            </TitleHeading>
                         </Header>
                         <UnivBoardMessageContainer>
                             <UnivBoardMessage>
@@ -174,13 +178,15 @@ const Home = () => {
                 {isLoggedIn === false && (
                     <Content>
                         <Header>
-                            <TitleHeading>대학 게시판 🎓</TitleHeading>
+                            <TitleHeading isDarkTheme={isDarkTheme}>
+                                대학 게시판 🎓
+                            </TitleHeading>
                         </Header>
                         <UnivBoardMessageContainer>
-                            <UnivBoardMessage>
+                            <UnivBoardMessage isDarkTheme={isDarkTheme}>
                                 로그인 후, 대학 인증을 하면
                             </UnivBoardMessage>
-                            <UnivBoardMessage>
+                            <UnivBoardMessage isDarkTheme={isDarkTheme}>
                                 더 많은 글을 볼 수 있어요.
                             </UnivBoardMessage>
                             <UnivBoardMessageControls>
@@ -309,9 +315,15 @@ const Header = styled.div`
 const Content = styled.div``;
 
 const TitleHeading = styled.span`
-    ${mixin.textProps(30, "extraBold", "black")}
+    ${props =>
+        mixin.textProps(30, "extraBold", props.isDarkTheme ? "white" : "black")}
     @media ${({ theme }) => theme.mobile} {
-        ${mixin.textProps(22, "extraBold", "black")}
+        ${props =>
+            mixin.textProps(
+                22,
+                "extraBold",
+                props.isDarkTheme ? "white" : "black",
+            )}
     }
 `;
 
@@ -340,7 +352,8 @@ const UnivBoardMessageContainer = styled.div`
 `;
 
 const UnivBoardMessage = styled.span`
-    ${mixin.textProps(18, "semiBold", "gray2")};
+    ${props =>
+        mixin.textProps(18, "semiBold", props.isDarkTheme ? "gray3" : "gray2")};
 `;
 
 const UnivBoardMessageControls = styled.div`

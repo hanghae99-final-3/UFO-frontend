@@ -23,7 +23,6 @@ import SmallTag from "../../Elements/Tag/SmallTag";
 import SmallAnnounceTag from "../../Elements/Tag/SmallAnnounceTag";
 
 //국기
-
 const useStyles = makeStyles({
     heart: {
         fill: "#FF5372",
@@ -40,6 +39,7 @@ const PreviewBoardBox = ({
     announcement,
 }) => {
     const classes = useStyles();
+    const isDarkTheme = useSelector(state => state.user.isDarkTheme);
 
     // 로그인 유무
     const isLoggedIn = useSelector(state => state.user.isLoggedIn);
@@ -68,15 +68,24 @@ const PreviewBoardBox = ({
     return (
         <BoardContainer>
             <Header>
-                {tag && <LargeTag>{tag.categoryName} 💬</LargeTag>}
+                {tag && (
+                    <LargeTag isDarkTheme={isDarkTheme}>
+                        {tag.categoryName} 💬
+                    </LargeTag>
+                )}
                 {title && (
-                    <TitleHeading onClick={onToMoreClicked}>
+                    <TitleHeading
+                        isDarkTheme={isDarkTheme}
+                        onClick={onToMoreClicked}
+                    >
                         {title}
                     </TitleHeading>
                 )}
                 {myPostTitle && <TitleHeading>{myPostTitle}</TitleHeading>}
                 <Boop rotation={15} timing={200}>
-                    <More onClick={onToMoreClicked}>더보기</More>
+                    <More isDarkTheme={isDarkTheme} onClick={onToMoreClicked}>
+                        더보기
+                    </More>
                 </Boop>
             </Header>
             <Content>
@@ -104,14 +113,14 @@ const PreviewBoardBox = ({
                                                     className={classes.heart}
                                                 />
                                             )}
-                                            <IconSpan>
+                                            <IconSpan isDarkTheme={isDarkTheme}>
                                                 {post.like &&
                                                     post.like.all_like}
                                             </IconSpan>
                                         </Icon>
                                         <Icon>
                                             <MdComment />
-                                            <IconSpan>
+                                            <IconSpan isDarkTheme={isDarkTheme}>
                                                 {post.comment_count}
                                             </IconSpan>
                                         </Icon>
@@ -119,7 +128,9 @@ const PreviewBoardBox = ({
                                 )}
                                 <Icon>
                                     <VisibilityIcon />
-                                    <IconSpan>{post.view_count}</IconSpan>
+                                    <IconSpan isDarkTheme={isDarkTheme}>
+                                        {post.view_count}
+                                    </IconSpan>
                                 </Icon>
                             </IconContainer>
                         </PostContainer>
@@ -163,7 +174,9 @@ const PreviewBoardBox = ({
                                     announcement &&
                                     "공지"}
                             </SmallTag>
-                            <PostTitle>{post.title}</PostTitle>
+                            <PostTitle isDarkTheme={isDarkTheme}>
+                                {post.title}
+                            </PostTitle>
 
                             <IconContainer>
                                 {/* 데스크탑일때만 좋아요와 댓글수가 보입니다. */}
@@ -177,14 +190,14 @@ const PreviewBoardBox = ({
                                                     className={classes.heart}
                                                 />
                                             )}
-                                            <IconSpan>
+                                            <IconSpan isDarkTheme={isDarkTheme}>
                                                 {post.like &&
                                                     post.like.all_like}
                                             </IconSpan>
                                         </Icon>
                                         <Icon title={title} tag={tag}>
                                             <MdComment />
-                                            <IconSpan>
+                                            <IconSpan isDarkTheme={isDarkTheme}>
                                                 {post.comment_count}
                                             </IconSpan>
                                         </Icon>
@@ -193,7 +206,9 @@ const PreviewBoardBox = ({
 
                                 <Icon title={title} tag={tag}>
                                     <VisibilityIcon />
-                                    <IconSpan>{post.view_count}</IconSpan>
+                                    <IconSpan isDarkTheme={isDarkTheme}>
+                                        {post.view_count}
+                                    </IconSpan>
                                 </Icon>
                             </IconContainer>
                         </PostContainer>
@@ -210,7 +225,8 @@ const BoardContainer = styled.div`
 `;
 
 const IconSpan = styled.span`
-    ${mixin.textProps(12, "semiBold", "gray3")}
+    ${props =>
+        mixin.textProps(12, "semiBold", props.isDarkTheme ? "gray2" : "gray3")}
 `;
 const Header = styled.div`
     margin-bottom: ${({ theme }) => theme.calRem(10)};
@@ -225,39 +241,69 @@ const Header = styled.div`
 `;
 
 const LargeTag = styled.span`
-    ${mixin.textProps(30, "extraBold", "black")}
+    ${props =>
+        mixin.textProps(30, "extraBold", props.isDarkTheme ? "white" : "black")}
     @media ${({ theme }) => theme.mobile} {
-        ${mixin.textProps(22, "extraBold", "black")}
+        ${props =>
+            mixin.textProps(
+                22,
+                "extraBold",
+                props.isDarkTheme ? "white" : "black",
+            )}
     }
 `;
 const TitleHeading = styled.span`
     cursor: pointer;
-    ${mixin.textProps(30, "extraBold", "black")}
+    ${props =>
+        mixin.textProps(30, "extraBold", props.isDarkTheme ? "white" : "black")}
     @media ${({ theme }) => theme.mobile} {
-        ${mixin.textProps(22, "extraBold", "black")}
+        ${props =>
+            mixin.textProps(
+                22,
+                "extraBold",
+                props.isDarkTheme ? "white" : "black",
+            )}
     }
 `;
 const PostTitle = styled.p`
-    ${mixin.textProps(14, "semiBold", "gray2")}
+    ${props =>
+        mixin.textProps(14, "semiBold", props.isDarkTheme ? "gray3" : "gray2")}
     ${mixin.textOverflow()}
     @media ${({ theme }) => theme.mobile} {
-        ${mixin.textProps(12, "semiBold", "gray2")}
+        ${props =>
+            mixin.textProps(
+                12,
+                "semiBold",
+                props.isDarkTheme ? "gray3" : "gray2",
+            )}
     }
 `;
 const AnnounceTitle = styled.p`
-    ${mixin.textProps(14, "semiBold", "gray2")}
+    ${props =>
+        mixin.textProps(14, "semiBold", props.isDarkTheme ? "gray3" : "gray2")}
     ${mixin.textOverflow()}
     @media ${({ theme }) => theme.mobile} {
-        ${mixin.textProps(12, "semiBold", "gray2")}
+        ${props =>
+            mixin.textProps(
+                12,
+                "semiBold",
+                props.isDarkTheme ? "gray3" : "gray2",
+            )}
     }
 `;
 
 // 더보기 버튼
 const More = styled.span`
-    ${mixin.textProps(14, "semiBold", "gray3")}
+    ${props =>
+        mixin.textProps(14, "semiBold", props.isDarkTheme ? "gray2" : "gray3")}
     cursor: pointer;
     @media ${({ theme }) => theme.mobile} {
-        ${mixin.textProps(12, "semiBold", "gray3")}
+        ${props =>
+            mixin.textProps(
+                12,
+                "semiBold",
+                props.isDarkTheme ? "gray2" : "gray3",
+            )}
     }
 `;
 

@@ -15,6 +15,7 @@ import VisibilityIcon from "@material-ui/icons/Visibility"; // 조회수 아이�
 //컴포넌트
 import InfinityScroll from "../Shared/InfinityScroll"; // 무한 스크롤 컴포넌트
 import DefaultTag from "../../Elements/Tag/DefaultTag"; // 태그 스타일 컴포넌트
+import { useSelector } from "react-redux";
 
 const MyPostBoardBox = ({
     postList,
@@ -24,6 +25,7 @@ const MyPostBoardBox = ({
     size,
     isLoading,
 }) => {
+    const isDarkTheme = useSelector(state => state.user.isDarkTheme);
     // 게시물 클릭시 이벤틀 헨들러
     const _onClick = (postId, board) => {
         //자유게시판일때,
@@ -77,24 +79,38 @@ const MyPostBoardBox = ({
                                                   post.category
                                               ]}
                                     </DefaultTag>
-                                    <PostTitle>{post.title}</PostTitle>
+                                    <PostTitle isDarkTheme={isDarkTheme}>
+                                        {post.title}
+                                    </PostTitle>
                                     {Comment ? null : isMobile ? null : (
                                         <IconContainer>
                                             <>
                                                 <Icon>
                                                     <MdComment />
-                                                    <IconSpan>
+                                                    <IconSpan
+                                                        isDarkTheme={
+                                                            isDarkTheme
+                                                        }
+                                                    >
                                                         {post.comment_count}
                                                     </IconSpan>
                                                 </Icon>
                                                 <Icon>
                                                     <VisibilityIcon />
-                                                    <IconSpan>
+                                                    <IconSpan
+                                                        isDarkTheme={
+                                                            isDarkTheme
+                                                        }
+                                                    >
                                                         {post.view_count}
                                                     </IconSpan>
                                                 </Icon>
                                                 <Icon>
-                                                    <IconSpan>
+                                                    <IconSpan
+                                                        isDarkTheme={
+                                                            isDarkTheme
+                                                        }
+                                                    >
                                                         {TimeCounting(
                                                             post.createdAt,
                                                             timeOption,
@@ -110,18 +126,24 @@ const MyPostBoardBox = ({
                                         <>
                                             <Icon>
                                                 <MdComment />
-                                                <IconSpan>
+                                                <IconSpan
+                                                    isDarkTheme={isDarkTheme}
+                                                >
                                                     {post.comment_count}
                                                 </IconSpan>
                                             </Icon>
                                             <Icon>
                                                 <VisibilityIcon />
-                                                <IconSpan>
+                                                <IconSpan
+                                                    isDarkTheme={isDarkTheme}
+                                                >
                                                     {post.view_count}
                                                 </IconSpan>
                                             </Icon>
                                             <Icon>
-                                                <IconSpan>
+                                                <IconSpan
+                                                    isDarkTheme={isDarkTheme}
+                                                >
                                                     {TimeCounting(
                                                         post.createdAt.replace(
                                                             /\-/g,
@@ -137,7 +159,7 @@ const MyPostBoardBox = ({
 
                                 {Comment && (
                                     <CommentContent>
-                                        <MyComment>
+                                        <MyComment isDarkTheme={isDarkTheme}>
                                             {post.comment.content}
                                         </MyComment>
                                     </CommentContent>
@@ -160,10 +182,16 @@ const CommentContent = styled.div`
     }
 `;
 const IconSpan = styled.span`
-    ${mixin.textProps(12, "semiBold", "gray3")};
+    ${props =>
+        mixin.textProps(12, "semiBold", props.isDarkTheme ? "gray2" : "gray3")};
     //모바일 사이즈
     @media ${({ theme }) => theme.mobile} {
-        ${mixin.textProps(11, "semiBold", "gray3")}
+        ${props =>
+            mixin.textProps(
+                11,
+                "semiBold",
+                props.isDarkTheme ? "gray2" : "gray3",
+            )};
     }
 `;
 const BoardContainer = styled.div`
@@ -171,10 +199,16 @@ const BoardContainer = styled.div`
 `;
 const PostTitle = styled.span`
     ${mixin.flexBox(null, "center")};
-    ${mixin.textProps(20, "semiBold", "gray2")};
+    ${props =>
+        mixin.textProps(20, "semiBold", props.isDarkTheme ? "gray3" : "gray2")};
     //모바일 사이즈
     @media ${({ theme }) => theme.mobile} {
-        ${mixin.textProps(16, "semiBold", "gray2")};
+        ${props =>
+            mixin.textProps(
+                16,
+                "semiBold",
+                props.isDarkTheme ? "gray3" : "gray2",
+            )};
     }
 `;
 
@@ -227,9 +261,19 @@ const Icon = styled.div`
 `;
 const MyComment = styled.span`
     margin-left: 11%;
-    ${mixin.textProps(20, "semiBold", "gray1")};
+    ${props =>
+        mixin.textProps(
+            20,
+            "semiBold",
+            props.isDarkTheme ? "mainGray" : "gray1",
+        )};
     @media ${({ theme }) => theme.mobile} {
-        ${mixin.textProps(16, "semiBold", "gray1")};
+        ${props =>
+            mixin.textProps(
+                16,
+                "semiBold",
+                props.isDarkTheme ? "mainGray" : "gray1",
+            )};
         margin-left: 0px;
     }
 `;
