@@ -39,7 +39,7 @@ const Election = () => {
         return (
             <Message
                 strong="로그인"
-                message="을 해야만 선거함을 볼 수 있어요"
+                message="을 해야만 선거함을 볼 수 있어요!"
                 link="/login"
                 buttonValue="로그인하러가기"
             />
@@ -50,7 +50,7 @@ const Election = () => {
         return (
             <Message
                 strong="대학인증"
-                message="을 해야만 선거함을 볼 수 있어요"
+                message="을 해야만 선거함을 볼 수 있어요!"
                 link="/mypage"
                 buttonValue="대학인증하러가기"
             />

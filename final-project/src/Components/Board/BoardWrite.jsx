@@ -214,7 +214,7 @@ const BoardWrite = ({ boardName }) => {
         return (
             <Message
                 strong="로그인"
-                message="을 하면 글을 작성할 수 있어요!"
+                message="을 해야만 글을 작성할 수 있어요!"
                 link="/login"
                 buttonValue="로그인하러가기"
             />
@@ -225,7 +225,7 @@ const BoardWrite = ({ boardName }) => {
         return (
             <Message
                 strong="대학인증"
-                message="을 하면 글을 작성할 수 있어요!"
+                message="을 해야만 글을 작성할 수 있어요!"
                 link="/mypage"
                 buttonValue="대학인증하러가기"
             />

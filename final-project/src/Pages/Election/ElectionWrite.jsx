@@ -238,7 +238,7 @@ const ElectionWrite = () => {
         return (
             <Message
                 strong="관리자"
-                message="만 선거를 열 수 있어요"
+                message="만 선거를 열 수 있어요!"
                 link="/"
                 buttonValue="홈으로가기"
             />
