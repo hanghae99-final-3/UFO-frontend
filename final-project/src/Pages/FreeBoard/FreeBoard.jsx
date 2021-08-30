@@ -90,6 +90,7 @@ const FreeBoard = () => {
     };
 
     // 초기 페이지 진입시 게시물 요청
+
     useEffect(() => {
         dispatch(getFreeListDB(postListQueryData));
     }, [dispatch, page, selectedTag, selectedCountry]);

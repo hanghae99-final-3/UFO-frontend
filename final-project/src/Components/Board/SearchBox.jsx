@@ -89,6 +89,7 @@ const SearchBox = ({
 
     //태그 클릭 이벤트 핸들링
     const handleTagSelect = e => {
+        handleResetInfinity();
         setSelectedTag(parseInt(e.target.value));
     };
 
