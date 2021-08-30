@@ -4,10 +4,12 @@ import mixin from "../../Styles/Mixin";
 import theme from "../../Styles/theme";
 import { useLocation } from "react-router";
 import { history } from "../../Redux/configureStore";
+import { getDarkTheme } from "../../Shared/utils";
 
 //아이콘
 import { GrEdit } from "react-icons/gr";
 import { BiArrowToTop } from "react-icons/bi";
+import { FaRegMoon, FaRegSun } from "react-icons/fa";
 
 //컴포넌트
 import FloatSelectCountry from "../Shared/FloatSelectCountry";
@@ -16,6 +18,8 @@ const Float = () => {
     const { pathname } = useLocation();
     const [isWriteBntOn, setIsWriteBntOn] = useState(false); //작성버튼을 보여줄지 말지에 대한 판별값, 자유게시판, 국가게시판이면 글쓰기버튼이 생긴다.
     const [isScrollTopBtnOn, setIsScrollTopBtnOn] = useState(false); //위로가기 버튼을 보여줄지 말지에 대한 판별값
+    const [isDarkTheme, setIsDarkTheme] = useState(false);
+
     const isDesktop =
         document.documentElement.clientWidth >= 1080 ? true : false;
 
@@ -31,6 +35,19 @@ const Float = () => {
             top: 0,
             behavior: "smooth",
         });
+    };
+
+    const swichDarkTheme = () => {
+        //다크모드를 켜고 끄는 함수입니다.
+        const LSDarkTheme = getDarkTheme(); //로컬스토리지에 있는 dark모드 값입니다.
+        if (LSDarkTheme === "true") {
+            setIsDarkTheme(false);
+            return localStorage.setItem("ufo_dark_theme", "false");
+        }
+        if (!LSDarkTheme || LSDarkTheme === "false") {
+            setIsDarkTheme(true);
+            localStorage.setItem("ufo_dark_theme", "true");
+        }
     };
 
     useEffect(() => {
@@ -55,14 +72,21 @@ const Float = () => {
 
     return (
         <FloatContainer>
-            {/* 국가 선택 */}
             <FloatBox>
+                {/* 국가 선택 */}
                 <FloatSelectCountry />
                 {!isDesktop && isWriteBntOn && (
                     <Button onClick={goToWrite}>
                         <GrEdit />
                     </Button>
                 )}
+
+                {/* 다크모드 */}
+                <Button onClick={swichDarkTheme}>
+                    {isDarkTheme ? <FaRegMoon /> : <FaRegSun />}
+                </Button>
+
+                {/* 위로가기 */}
                 {isScrollTopBtnOn && (
                     <Button onClick={scrollToTop}>
                         <BiArrowToTop />
