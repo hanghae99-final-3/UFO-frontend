@@ -2,6 +2,12 @@
  * @역할 카테고리에 사용할 목록
  */
 
+import ausFlag from "../Assets/ausFlag.svg";
+import vietFlag from "../Assets/vietFlag.svg";
+import usFlag from "../Assets/usFlag.svg";
+import canFlag from "../Assets/canFlag.svg";
+import ukFlag from "../Assets/ukFlag.svg";
+
 const country = [
     { countryId: 1, countryName: "베트남" },
     { countryId: 2, countryName: "호주" },
@@ -17,6 +23,14 @@ const countrySelectorList = [
     { id: 2, name: "호주", icon: "🍕" },
     { id: 1, name: "베트남", icon: "🌭" },
     { id: 4, name: "캐나다", icon: "🌮" },
+];
+
+const countrySelectorFlagList = [
+    { id: 1, name: "베트남", icon: vietFlag },
+    { id: 2, name: "호주", icon: ausFlag },
+    { id: 3, name: "미국", icon: usFlag },
+    { id: 4, name: "캐나다", icon: canFlag },
+    { id: 5, name: "영국", icon: ukFlag },
 ];
 
 const freeCategory = [
@@ -125,6 +139,7 @@ const categories = {
     univCategory,
     supportList,
     countrySelectorList,
+    countrySelectorFlagList,
 };
 
 export default categories;

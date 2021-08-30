@@ -22,6 +22,8 @@ import { makeStyles } from "@material-ui/core"; // material ui 스타일링 훅�
 import SmallTag from "../../Elements/Tag/SmallTag";
 import SmallAnnounceTag from "../../Elements/Tag/SmallAnnounceTag";
 
+//국기
+
 const useStyles = makeStyles({
     heart: {
         fill: "#FF5372",
@@ -68,7 +70,7 @@ const PreviewBoardBox = ({
             <Header>
                 {tag && (
                     <LargeTag>
-                        {isDesktop ? "#" : "📌"}
+                        {"#"}
                         {tag.categoryName}
                     </LargeTag>
                 )}
@@ -139,7 +141,20 @@ const PreviewBoardBox = ({
                                 announcement={announcement}
                                 rightGap={theme.calRem(10)}
                             >
-                                {!announcement && "#"}
+                                {!announcement && boardName === "freeboard" && (
+                                    <img
+                                        style={{
+                                            width: "15px",
+                                            marginRight: "1px",
+                                        }}
+                                        src={
+                                            categories.countrySelectorFlagList[
+                                                post.country_id - 1
+                                            ]?.icon
+                                        }
+                                        alt=""
+                                    />
+                                )}
                                 {boardName === "freeboard" &&
                                     !announcement &&
                                     categories.freeCategory[post.category]

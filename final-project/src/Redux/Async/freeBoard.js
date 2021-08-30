@@ -102,14 +102,11 @@ export const editFreePostDB = createAsyncThunk(
         try {
             const response = await freeBoardApi.editPost(data);
             if (response.data.ok) {
+                Swal.fire("성공", "수정되었어요.", "success");
                 return response.data.result[0]; //서버에서 온 값이 배열로 묶여져서 들어와서 인덱스 처리했음.
             }
         } catch (err) {
-            Swal.fire(
-                "에러",
-                "게시글 수정에 실패하였습니다. 다시 시도해주세요!",
-                "error",
-            );
+            Swal.fire("에러", "수정하지 못했어요! 다시 시도해주세요!", "error");
             return thunkAPI.rejectWithValue(err.response.message);
         }
     },
@@ -128,15 +125,12 @@ export const deleteFreePostDB = createAsyncThunk(
         try {
             const response = await freeBoardApi.deletePost(data);
             if (response.data.ok) {
+                Swal.fire("성공", "삭제되었어요.", "success");
                 history.push("/freeboard");
                 return data.post_id;
             }
         } catch (err) {
-            Swal.fire(
-                "에러",
-                "게시글 삭제에 실패하였습니다. 다시 시도해주세요!",
-                "error",
-            );
+            Swal.fire("에러", "삭제하지 못했어요! 다시 시도해주세요.", "error");
             return thunkAPI.rejectWithValue(err.response.message);
         }
     },

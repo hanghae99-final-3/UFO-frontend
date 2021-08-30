@@ -40,8 +40,8 @@ const LoginPresenter = ({
         },
         validationSchema: Yup.object({
             email: Yup.string()
-                .email("이메일 형식을 확인하세요")
-                .required("이메일을 입력해주세요"),
+                .email("이메일 형식을 확인하세요.")
+                .required("이메일을 입력해주세요."),
             password: Yup.string().required("비밀번호를 입력해주세요."),
         }),
         onSubmit: async ({ email, password }, actions) => {

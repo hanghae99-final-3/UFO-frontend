@@ -1,12 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components"; // 스타일 컴포넌트 라이브러기
 
 import desktopLogo from "../../Assets/desktop_logo.svg"; // ufo 로고
 import mixin from "../../Styles/Mixin"; // 믹스인 객체
 import { history } from "../../Redux/configureStore"; // 히스토리 객체
 import { useFormik } from "formik"; // formik 훅스
+import instance from "../../Shared/api";
+import axios from "axios";
 
 const SignupPresenter = ({ validate, onSignupSubmit }) => {
+    const [isValidNickname, setIsValidNickname] = useState(false);
+
     // formik 훅스 + validationSchema
     const signupFormik = useFormik({
         initialValues: {
@@ -81,19 +85,27 @@ const SignupPresenter = ({ validate, onSignupSubmit }) => {
                         autocomplete="off"
                         {...signupFormik.getFieldProps("nickname")}
                     />
+                    {/* <button
+                        onClick={async () => {
+                            console.log(signupFormik.values.nickname);
+                            const body = {
+                                nickname: signupFormik.values.nickname,
+                            };
+
+                            await instance
+                                .get("util/nickname", body)
+                                .then(res => console.log(res));
+                        }}
+                    >
+                        중복확인
+                    </button> */}
                     {signupFormik.touched.nickname &&
                     signupFormik.errors.nickname ? (
                         <ErrorBox>{signupFormik.errors.nickname}</ErrorBox>
                     ) : null}
                 </InputWrapper>
                 <ButtonContainer>
-                    <CancelButtonBox
-                        onClick={() => {
-                            history.push("/");
-                        }}
-                    >
-                        취소
-                    </CancelButtonBox>
+                    <CancelButtonBox>취소</CancelButtonBox>
                     <SignUpButtonBox type="submit" variant="contained">
                         회원가입
                     </SignUpButtonBox>
