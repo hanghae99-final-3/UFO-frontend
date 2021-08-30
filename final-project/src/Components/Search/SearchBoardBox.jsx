@@ -10,6 +10,7 @@ import FavoriteIcon from "@material-ui/icons/Favorite"; // 좋아요 아이콘
 import FavoriteBorder from "@material-ui/icons/FavoriteBorder"; // 좋아요 아이콘
 import { makeStyles } from "@material-ui/core"; // material ui 스타일링 훅스
 import DefaultTag from "../../Elements/Tag/DefaultTag";
+import { useSelector } from "react-redux";
 
 const useStyles = makeStyles({
     heart: {
@@ -18,6 +19,8 @@ const useStyles = makeStyles({
 });
 
 const SearchBoardBox = ({ postList, fixedList, boardName, announcement }) => {
+    const isDarkTheme = useSelector(state => state.user.isDarkTheme);
+
     // material ui css class
     const classes = useStyles();
     // 게시물 디테일 페지이 이동
@@ -55,7 +58,9 @@ const SearchBoardBox = ({ postList, fixedList, boardName, announcement }) => {
                                     categories.univCategory[post.category]
                                         ?.categoryName}
                             </DefaultTag>
-                            <PostTitle>{post.title}</PostTitle>
+                            <PostTitle isDarkTheme={isDarkTheme}>
+                                {post.title}
+                            </PostTitle>
                             <IconContainer>
                                 <>
                                     {isDesktop ? (
@@ -67,7 +72,7 @@ const SearchBoardBox = ({ postList, fixedList, boardName, announcement }) => {
                                                     className={classes.heart}
                                                 />
                                             )}
-                                            <IconSpan>
+                                            <IconSpan isDarkTheme={isDarkTheme}>
                                                 {post.like &&
                                                     post.like.all_like}
                                             </IconSpan>
@@ -76,7 +81,7 @@ const SearchBoardBox = ({ postList, fixedList, boardName, announcement }) => {
                                     {isDesktop ? (
                                         <Icon>
                                             <MdComment />
-                                            <IconSpan>
+                                            <IconSpan isDarkTheme={isDarkTheme}>
                                                 {post.comment_count}
                                             </IconSpan>
                                         </Icon>
@@ -84,7 +89,9 @@ const SearchBoardBox = ({ postList, fixedList, boardName, announcement }) => {
                                 </>
                                 <Icon>
                                     <VisibilityIcon />
-                                    <IconSpan>{post.view_count}</IconSpan>
+                                    <IconSpan isDarkTheme={isDarkTheme}>
+                                        {post.view_count}
+                                    </IconSpan>
                                 </Icon>
                             </IconContainer>
                         </PostContainer>
@@ -99,12 +106,18 @@ const BoardContainer = styled.div`
     width: 100%;
 `;
 const PostTitle = styled.span`
-    ${mixin.textProps(20, "semiBold", "gray2")};
+    ${props =>
+        mixin.textProps(20, "semiBold", props.isDarkTheme ? "gray3" : "gray2")};
 
     @media ${({ theme }) => theme.mobile} {
         display: inline-flex;
         line-height: 2;
-        ${mixin.textProps(12, "semiBold", "gray2")};
+        ${props =>
+            mixin.textProps(
+                12,
+                "semiBold",
+                props.isDarkTheme ? "gray3" : "gray2",
+            )};
     }
 `;
 const SmallTag = styled.span`
@@ -166,7 +179,8 @@ const Icon = styled.div`
 `;
 
 const IconSpan = styled.span`
-    ${mixin.textProps(12, "semiBold", "gray3")}
+    ${props =>
+        mixin.textProps(12, "semiBold", props.isDarkTheme ? "gray2" : "gray3")}
 `;
 
 export default SearchBoardBox;

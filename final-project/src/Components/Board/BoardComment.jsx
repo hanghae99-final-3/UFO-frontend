@@ -33,6 +33,7 @@ const BoardComment = ({ boardName }) => {
     const dispatch = useDispatch();
     const { id: postId } = useParams();
     const user = useSelector(state => state.user.user); //유저정보
+    const isDarkTheme = useSelector(state=>state.user.isDarkTheme); //다크모드
     const commentList = useSelector(state =>
         boardName === "freeboard"
             ? state.freeBoard.commentList
@@ -84,7 +85,7 @@ const BoardComment = ({ boardName }) => {
 
     return (
         <BoardCommentContainer>
-            <CommentWrite>
+            <CommentWrite isDarkTheme={isDarkTheme}>
                 <CommentInput
                     type="text"
                     onChange={e => setContent(e.target.value)}
@@ -126,7 +127,7 @@ const CommentWrite = styled.div`
     padding-bottom: 10px;
     transition: border-bottom 0.3s ease;
     ${mixin.flexBox("space-between")};
-    ${mixin.outline("2px solid", "mainGray", "bottom")};
+    ${props=>mixin.outline("2px solid", props.isDarkTheme?"gray2":"mainGray", "bottom")};
     :hover {
         ${mixin.outline("2px solid", "gray1", "bottom")};
     }
@@ -419,7 +420,7 @@ const CommentContent = styled.span`
 `;
 
 const AddButton = styled.button`
-    background: white;
+    background: none;
     padding: 0 10px;
     @media ${({ theme }) => theme.mobile} {
         width: ${({ theme }) => theme.calRem(30)};

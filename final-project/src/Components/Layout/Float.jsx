@@ -40,7 +40,7 @@ const Float = () => {
         });
     };
 
-    const swichDarkTheme = () => {
+    const switchDarkTheme = () => {
         //다크모드를 켜고 끄는 함수입니다.
         const LSDarkTheme = getDarkTheme(); //로컬스토리지에 있는 dark모드 값입니다.
         if (LSDarkTheme === "true") {
@@ -85,7 +85,7 @@ const Float = () => {
                 )}
 
                 {/* 다크모드 */}
-                <Button onClick={swichDarkTheme}>
+                <Button onClick={switchDarkTheme}>
                     {isDarkTheme ? <FaRegMoon /> : <FaRegSun />}
                 </Button>
 
@@ -120,12 +120,13 @@ const FloatBox = styled.div`
 `;
 
 const Button = styled.button`
-    background: ${({ theme }) => theme.color.white};
+    margin-top: ${({ theme }) => theme.calRem(8)};
+    background: ${({ theme }) => theme.color.mainBlue};
     width: ${({ theme }) => theme.calRem(60)};
     height: ${({ theme }) => theme.calRem(60)};
     ${mixin.flexBox("center", "center", null, null)};
     ${mixin.outline("1px solid", "gray3")}
-    ${mixin.textProps(40, "regular", "gray3")}
+    ${mixin.textProps(40, "regular", "mainMint")}
     border-radius: 50%;
     line-height: 1;
     transition: all 0.3s ease;
@@ -138,17 +139,15 @@ const Button = styled.button`
     svg {
         vertical-align: middle;
         path {
-            stroke: ${({ theme }) => theme.color.gray3};
-            :hover {
-                stroke: ${({ theme }) => theme.color.gray2};
-            }
+            stroke: ${({ theme }) => theme.color.mainMint};
+            color: ${({ theme }) => theme.color.mainMint};
         }
     }
 
     @media ${({ theme }) => theme.mobile} {
         width: ${({ theme }) => theme.calRem(48)};
         height: ${({ theme }) => theme.calRem(48)};
-        ${mixin.textProps(28, "regular", "gray3")}
+        ${mixin.textProps(28, "regular", "mainBlue")}
     }
 `;
 

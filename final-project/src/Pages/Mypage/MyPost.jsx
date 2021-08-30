@@ -12,6 +12,8 @@ import Swal from "sweetalert2";
 
 const MyPost = props => {
     const { path } = useParams();
+    const isDarkTheme = useSelector(state => state.user.isDarkTheme);
+
     const username = useSelector(state => state.user.user.nickname); // 로그인 유저 닉네임
     const [selectedButton, setSelectedButton] = useState(""); // 선택된 버튼 값
     // 데스크탑 사이즈인지 아닌지 판별하는 변수
@@ -45,7 +47,7 @@ const MyPost = props => {
                 <title>UFO - 함께한 순간들</title>
             </Helmet>
             <MyPostHeaderContainer>
-                <MyPostHeader>
+                <MyPostHeader isDarkTheme={isDarkTheme}>
                     {isMobile
                         ? `UFO가 함께한 순간들`
                         : `${username} 님과 UFO가 함께한 순간들`}
@@ -53,6 +55,7 @@ const MyPost = props => {
             </MyPostHeaderContainer>
             <ButtonContainer>
                 <Button
+                    isDarkTheme={isDarkTheme}
                     name="alarmButton"
                     selectedButton={selectedButton}
                     onClick={() => Swal.fire("서비스 준비중입니다!")}
@@ -60,6 +63,7 @@ const MyPost = props => {
                     최근 알림
                 </Button>
                 <Button
+                    isDarkTheme={isDarkTheme}
                     name="myPostButton"
                     selectedButton={selectedButton}
                     onClick={handleButtonSelect}
@@ -67,6 +71,7 @@ const MyPost = props => {
                     내가 쓴 글
                 </Button>
                 <Button
+                    isDarkTheme={isDarkTheme}
                     name="myCommentButton"
                     selectedButton={selectedButton}
                     onClick={handleButtonSelect}
@@ -100,11 +105,21 @@ const ButtonContainer = styled.div`
     }
 `;
 const MyPostHeader = styled.span`
-    ${mixin.textProps(30, "extraBold", "black")};
+    ${props =>
+        mixin.textProps(
+            30,
+            "extraBold",
+            props.isDarkTheme ? "white" : "black",
+        )};
 
     //모바일 사이즈
     @media ${({ theme }) => theme.mobile} {
-        ${mixin.textProps(22, "extraBold", "black")};
+        ${props =>
+            mixin.textProps(
+                22,
+                "extraBold",
+                props.isDarkTheme ? "white" : "black",
+            )};
     }
 `;
 const Button = styled.button`
@@ -120,23 +135,41 @@ const Button = styled.button`
             "2px solid",
             props.name === props.selectedButton ? "mainMint" : "blue3",
         )};
-    ${props =>
-        mixin.textProps(
-            18,
-            "semiBold",
-            props.name === props.selectedButton ? "black" : "gray3",
-        )};
+    ${props => {
+        if (props.isDarkTheme) {
+            return mixin.textProps(
+                18,
+                "semiBold",
+                props.name === props.selectedButton ? "mainGray" : "gray2",
+            );
+        } else {
+            return mixin.textProps(
+                18,
+                "semiBold",
+                props.name === props.selectedButton ? "black" : "gray3",
+            );
+        }
+    }};
 
     //모바일 사이즈
     @media ${({ theme }) => theme.mobile} {
         height: ${({ theme }) => theme.calRem(24)};
         width: ${({ theme }) => theme.calRem(89)};
-        ${props =>
-            mixin.textProps(
-                11,
-                "semiBold",
-                props.name === props.selectedButton ? "black" : "gray3",
-            )};
+        ${props => {
+            if (props.isDarkTheme) {
+                return mixin.textProps(
+                    11,
+                    "semiBold",
+                    props.name === props.selectedButton ? "mainGray" : "gray2",
+                );
+            } else {
+                return mixin.textProps(
+                    11,
+                    "semiBold",
+                    props.name === props.selectedButton ? "black" : "gray3",
+                );
+            }
+        }};
         :nth-child(2) {
             margin: 0 ${({ theme }) => theme.calRem(10)};
         }

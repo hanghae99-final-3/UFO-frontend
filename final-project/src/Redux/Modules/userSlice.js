@@ -22,7 +22,7 @@ const initialState = {
     errorMessage: "",
     isSignupSuccess: "",
     isAdmin: false,
-    isDarkTheme: Boolean(getDarkTheme()),
+    isDarkTheme: getDarkTheme() === "true" ? true : false,
 };
 
 const userSlice = createSlice({

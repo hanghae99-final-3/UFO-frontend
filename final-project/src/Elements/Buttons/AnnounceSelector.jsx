@@ -1,11 +1,19 @@
 import React from "react";
 import styled from "styled-components";
 import mixin from "../../Styles/Mixin";
+import { useSelector } from "react-redux";
 
 //isSelected가 true/false일 때 스타일링이 적용되어있습니다.
 const AnnounceSelector = ({ isSelected, onClick, children, ...props }) => {
+    const isDarkTheme = useSelector(state => state.user.isDarkTheme); //다크모드인지 아닌지 판별 state
+
     return (
-        <Button isSelected={isSelected} onClick={onClick} {...props}>
+        <Button
+            isSelected={isSelected}
+            onClick={onClick}
+            isDarkTheme={isDarkTheme}
+            {...props}
+        >
             {children}
         </Button>
     );
@@ -14,13 +22,17 @@ const AnnounceSelector = ({ isSelected, onClick, children, ...props }) => {
 const Button = styled.button`
     padding: 0 10px;
     min-width: 79px;
+    height: 32px;
     box-sizing: border-box;
     border-radius: 16px;
     transition: all 0.5s ease;
     background-color: ${props =>
         props.isSelected
             ? props.theme.color.mainMint
+            : props.isDarkTheme
+            ? props.theme.color.black
             : props.theme.color.white};
+
     ${props =>
         props.isSelected
             ? mixin.textProps(18, "semiBold", "gray1")

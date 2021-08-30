@@ -46,6 +46,7 @@ const useStyles = makeStyles(theme => ({
 
 const UnivBoard = () => {
     const dispatch = useDispatch();
+    const isDarkTheme = useSelector(state => state.user.isDarkTheme);
     const classes = useStyles();
     const [page, setPage] = useState(1); // pagination 현재 페이지 값
     const univId = useSelector(state => state.user?.user?.univ_id); // 로그인의 인증 대학교 아이디
@@ -182,22 +183,36 @@ const BoardContentContainer = styled.div`
 const PaginationContainer = styled.div`
     .MuiPagination-ul {
         justify-content: center;
-
         li:first-child button,
         li:last-child button {
             background: ${({ theme }) => theme.color.blue2};
-            color: ${({ theme }) => theme.color.white};
+            color: ${({ theme, isDarkTheme }) => theme.color.white};
         }
         li button {
-            border: 2px solid ${({ theme }) => theme.color.blue3};
+            border: 2px solid ${({ theme, isDarkTheme }) => theme.color.blue3};
             &.Mui-selected {
-                border: 2px solid ${({ theme }) => theme.color.mainMint};
+                border: 2px solid
+                    ${({ theme, isDarkTheme }) => theme.color.mainMint};
             }
         }
     }
     ${mixin.floatBox("relative")};
     > button {
         ${mixin.floatBox("absolute", "0", "0")}
+    }
+    .MuiButtonBase-root.MuiPaginationItem-root.MuiPaginationItem-page.Mui-selected {
+        color: ${props =>
+            props.isDarkTheme
+                ? props.theme.color.white
+                : props.theme.color.black};
+        background-color: ${props =>
+            props.isDarkTheme ? "transparent" : null};
+    }
+    .MuiButtonBase-root.MuiPaginationItem-root.MuiPaginationItem-page {
+        color: ${props =>
+            props.isDarkTheme
+                ? props.theme.color.white
+                : props.theme.color.black};
     }
 `;
 

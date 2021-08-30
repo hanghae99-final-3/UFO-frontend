@@ -17,6 +17,7 @@ import DefaultSelector from "../../Elements/Buttons/DefaultSelector";
 
 const Election = () => {
     const dispatch = useDispatch();
+    const isDarkTheme = useSelector(state => state.user.isDarkTheme);
     const electionList = useSelector(state => state.election.list);
     const user = useSelector(state => state.user.user);
     const isLogin = useSelector(state => state.user.isLoggedIn); //login을 했는지 안했는지 판별값으로 사용합니다.
@@ -61,8 +62,8 @@ const Election = () => {
             <Helmet>
                 <title>UFO - 투표함</title>
             </Helmet>
-            <Title>투표함</Title>
-            <Controls>
+            <Title isDarkTheme={isDarkTheme}>투표함</Title>
+            <Controls isDarkTheme={isDarkTheme}>
                 <Selecter>
                     <DefaultSelector
                         isSelected={isOngoing}
@@ -94,6 +95,7 @@ const Election = () => {
                         {currentListName === "ongoing"
                             ? currentList.map(ele => (
                                   <OngoingPost
+                                      isDarkTheme={isDarkTheme}
                                       key={ele.election_id}
                                       isVoted={ele.votes.length > 0}
                                       onClick={() =>
@@ -104,7 +106,9 @@ const Election = () => {
                                   >
                                       <span>{ele.name}</span>
                                       {ele.votes.length > 0 && (
-                                          <VotingComplete>
+                                          <VotingComplete
+                                              isDarkTheme={isDarkTheme}
+                                          >
                                               투표 완료!
                                           </VotingComplete>
                                       )}
@@ -112,6 +116,7 @@ const Election = () => {
                               ))
                             : currentList.map(ele => (
                                   <FinishedPost
+                                      isDarkTheme={isDarkTheme}
                                       key={ele.election_id}
                                       isVoted={ele.votes.length > 0}
                                       onClick={() =>
@@ -122,7 +127,9 @@ const Election = () => {
                                   >
                                       <span>{ele.name}</span>
                                       {ele.votes.length > 0 && (
-                                          <VotingComplete>
+                                          <VotingComplete
+                                              isDarkTheme={isDarkTheme}
+                                          >
                                               투표 완료!
                                           </VotingComplete>
                                       )}
@@ -138,12 +145,27 @@ const Election = () => {
 const ElectionContainer = styled.div``;
 
 const Title = styled.div`
-    ${mixin.outline("1px solid", "gray4", "bottom")};
+    ${props =>
+        mixin.outline(
+            "1px solid",
+            props.isDarkTheme ? "gray1" : "gray4",
+            "bottom",
+        )};
     padding-bottom: ${({ theme }) => theme.calRem(10)};
     margin-bottom: ${({ theme }) => theme.calRem(10)};
-    ${mixin.textProps(30, "extraBold", "black")};
+    ${props =>
+        mixin.textProps(
+            30,
+            "extraBold",
+            props.isDarkTheme ? "white" : "black",
+        )};
     @media ${({ theme }) => theme.mobile} {
-        ${mixin.textProps(22, "extraBold", "black")};
+        ${props =>
+            mixin.textProps(
+                22,
+                "extraBold",
+                props.isDarkTheme ? "white" : "black",
+            )};
         padding-bottom: ${({ theme }) => theme.calRem(8)};
         margin-bottom: ${({ theme }) => theme.calRem(8)};
     }
@@ -152,7 +174,12 @@ const Title = styled.div`
 const Controls = styled.div`
     ${mixin.flexBox("space-between", "flex-end")};
     padding-bottom: ${({ theme }) => theme.calRem(10)};
-    ${mixin.outline("1px solid", "gray4", "bottom")};
+    ${props =>
+        mixin.outline(
+            "1px solid",
+            props.isDarkTheme ? "gray1" : "gray4",
+            "bottom",
+        )};
     @media ${({ theme }) => theme.mobile} {
         padding-bottom: ${({ theme }) => theme.calRem(8)};
     }
@@ -176,7 +203,7 @@ const OngoingPost = styled.div`
     overflow: hidden;
     border-radius: 50px;
     cursor: pointer;
-    ${mixin.boxShadow()}
+    ${props => (props.isDarkTheme ? null : mixin.boxShadow())}
     padding: ${({ theme }) => `${theme.calRem(20)} ${theme.calRem(25)}`};
     ${mixin.outline("3px solid", "blue2")}
     ${mixin.flexBox("center", "center", null, `${theme.calRem(100)}`)};
@@ -191,11 +218,21 @@ const OngoingPost = styled.div`
     }
 
     span {
-        ${mixin.textProps(20, "regular", "gray1")}
+        ${props =>
+            mixin.textProps(
+                20,
+                "extraBold",
+                props.isDarkTheme ? "mainGray" : "gray1",
+            )}
         ${mixin.textboxOverflow(2)}
 
         @media ${({ theme }) => theme.mobile} {
-            ${mixin.textProps(16, "regular", "gray1")}
+            ${props =>
+                mixin.textProps(
+                    16,
+                    "extraBold",
+                    props.isDarkTheme ? "mainGray" : "gray1",
+                )}
             ${mixin.textboxOverflow(1)}
         }
     }
@@ -236,7 +273,13 @@ const FinishedPost = styled.div`
 const VotingComplete = styled.div`
     ${mixin.floatBox("absolute")}
     width: 100%;
-    background: rgba(0, 0, 0, 0.55);
+    background: ${props => {
+        if (props.isDarkTheme) {
+            return "transparent";
+        } else {
+            return "rgba(0, 0, 0, 0.55)";
+        }
+    }};
     ${mixin.textProps(20, "regular", "mainMint")}
     ${mixin.flexBox("center", "center")};
     :hover {

@@ -55,6 +55,7 @@ const SearchBox = ({
     queryData,
 }) => {
     const classes = useStyles();
+    const isDarkTheme = useSelector(state => state.user.isDarkTheme);
     const dispatch = useDispatch();
     // 현재 선택되어있는 태그의 index값을 selectedTag 배열에 저장한다.
     const { id } = useParams();
@@ -163,14 +164,20 @@ const SearchBox = ({
             <SearchBoxContainer>
                 {page && (
                     <TitleContainer>
-                        {console.log("")}
                         {page === "freeboard" && (
-                            <UnivName>{selectedCountryEngName}</UnivName>
+                            <UnivName isDarkTheme={isDarkTheme}>
+                                {selectedCountryEngName}
+                            </UnivName>
                         )}
                         {page === "univboard" && (
-                            <UnivName>{univName}</UnivName>
+                            <UnivName isDarkTheme={isDarkTheme}>
+                                {univName}
+                            </UnivName>
                         )}
-                        <TitleSpan onClick={() => handleGoToList(page)}>
+                        <TitleSpan
+                            isDarkTheme={isDarkTheme}
+                            onClick={() => handleGoToList(page)}
+                        >
                             {page === "freeboard"
                                 ? "자유 게시판 💬"
                                 : "대학 게시판 🎓"}
@@ -179,8 +186,10 @@ const SearchBox = ({
                 )}
 
                 <TagContainer>
-                    <TagSelectTextBox>
-                        <TagSelectText>게시글 필터</TagSelectText>
+                    <TagSelectTextBox isDarkTheme={isDarkTheme}>
+                        <TagSelectText isDarkTheme={isDarkTheme}>
+                            게시글 필터
+                        </TagSelectText>
                     </TagSelectTextBox>
                     <TagSelectorBox>
                         {searchTag.map((tag, idx) => {
@@ -208,7 +217,7 @@ const SearchBox = ({
                             );
                         })}
                     </TagSelectorBox>
-                    <CancelButton>
+                    <CancelButton isDarkTheme={isDarkTheme}>
                         <Boop rotation={25}>
                             <CloseIcon onClick={handleReset} />
                         </Boop>
@@ -217,6 +226,7 @@ const SearchBox = ({
                 {!deactivateSearch && (
                     <InputContainer>
                         <Select
+                            isDarkTheme={isDarkTheme}
                             MenuProps={{
                                 disablePortal: true,
                                 getContentAnchorEl: null,
@@ -239,6 +249,7 @@ const SearchBox = ({
                         <SearchForm onSubmit={handleSearch}>
                             <MuiThemeProvider theme={MuiTheme}>
                                 <InputBox
+                                    isDarkTheme={isDarkTheme}
                                     placeholder="UFO에게 무엇이든 검색해보세요 "
                                     value={searchTerm}
                                     onChange={onSearchTermChange}
@@ -281,19 +292,39 @@ const UnivName = styled.span`
     display: inline-block;
     margin-bottom: 10px;
     width: 100%;
-    ${mixin.textProps(20, "semiBold", "gray2")};
+    ${props =>
+        mixin.textProps(
+            20,
+            "semiBold",
+            props.isDarkTheme ? "mainGray" : "gray2",
+        )};
     @media ${({ theme }) => theme.mobile} {
-        ${mixin.textProps(12, "semiBold", "gray2")};
+        ${props =>
+            mixin.textProps(
+                12,
+                "semiBold",
+                props.isDarkTheme ? "mainGray" : "gray2",
+            )};
     }
 `;
 
 const TitleSpan = styled.span`
     cursor: pointer;
-    ${mixin.textProps(30, "extraBold", "black")};
+    ${props =>
+        mixin.textProps(
+            30,
+            "extraBold",
+            props.isDarkTheme ? "white" : "black",
+        )};
 
     //모바일 사이즈
     @media ${({ theme }) => theme.mobile} {
-        ${mixin.textProps(22, "extraBold", "black")};
+        ${props =>
+            mixin.textProps(
+                22,
+                "extraBold",
+                props.isDarkTheme ? "white" : "black",
+            )};
     }
 `;
 const TagContainer = styled.div`
@@ -310,7 +341,10 @@ const TagSelectTextBox = styled.div`
     @media ${({ theme }) => theme.mobile} {
         position: absolute;
         z-index: 10;
-        background: white;
+        background-color: ${props =>
+            props.isDarkTheme
+                ? props.theme.color.black
+                : props.theme.color.white};
         height: 42px;
         line-height: 42px;
     }
@@ -340,14 +374,19 @@ const TagSelectorBox = styled.div`
 const CancelButton = styled.button`
     width: 40px;
     height: 30px;
-    border: 2px solid white;
+    border: 2px solid
+        ${props =>
+            props.isDarkTheme
+                ? props.theme.color.black
+                : props.theme.color.white};
     border-radius: 16px;
     text-align: center;
     font-size: ${props => props.theme.fontSize[18]};
     font-weight: ${props => props.theme.fontWeight.regular};
     color: ${props =>
-        props.selected ? props.theme.color.white : props.theme.color.gray1};
-    background-color: ${props => (props.selected ? "#707071" : "#ffffff")};
+        props.isDarkTheme ? props.theme.color.gray3 : props.theme.color.gray3};
+    background-color: ${props =>
+        props.isDarkTheme ? props.theme.color.black : props.theme.color.white};
 `;
 
 const InputBox = styled.input`
@@ -355,20 +394,34 @@ const InputBox = styled.input`
     border: none;
     border-radius: 0px;
     padding-bottom: 5px;
-    ${mixin.textProps(18, "semiBold", "gray3")};
-
-    ${props => mixin.outline("2px solid", "gray4", "bottom")};
+    background-color: transparent;
+    ${props =>
+        mixin.outline(
+            "2px solid",
+            props.isDarkTheme ? "gray2" : "gray4",
+            "bottom",
+        )};
     :focus {
         ${props => mixin.outline("2px solid", "mainMint", "bottom")};
     }
     transition: border-color 1s ease;
-    ${mixin.textProps(18, "semiBold", "gray1")};
+    ${props =>
+        mixin.textProps(
+            18,
+            "semiBold",
+            props.isDarkTheme ? "mainGray" : "gray1",
+        )};
     ::placeholder {
         ${mixin.textProps(18, "semiBold", "gray3")};
     }
 
     @media ${({ theme }) => theme.mobile} {
-        ${mixin.textProps(14, "semiBold", "gray1")};
+        ${props =>
+            mixin.textProps(
+                14,
+                "semiBold",
+                props.isDarkTheme ? "mainGray" : "gray1",
+            )};
         ::placeholder {
             ${mixin.textProps(14, "semiBold", "gray3")};
         }
@@ -400,6 +453,9 @@ const Select = styled(MuiSelect)`
         }
     }
     .MuiSvgIcon-root.MuiSelect-icon {
-        color: ${props => props.theme.color.gray3};
+        color: ${props =>
+            props.isDarkTheme
+                ? props.theme.color.gray3
+                : props.theme.color.gray3};
     }
 `;

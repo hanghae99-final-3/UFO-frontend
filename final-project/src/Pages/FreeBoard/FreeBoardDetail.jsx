@@ -22,7 +22,7 @@ const FreeBoardDetail = () => {
                 // deactivateSearch={true}
                 page="freeboard"
             /> */}
-            <BoardDetail page="freeboard" />
+            <BoardDetail page="freeboard"/>
             <BoardComment boardName="freeboard" />
             <RecommendList />
         </>

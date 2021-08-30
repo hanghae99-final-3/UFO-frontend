@@ -3,8 +3,10 @@ import styled from "styled-components";
 import mixin from "../../Styles/Mixin";
 import { history } from "../../Redux/configureStore";
 import Swal from "sweetalert2";
+import { useSelector } from "react-redux";
 
 const SocialLogin = ({ toggleLoginMode }) => {
+    const isDarkTheme = useSelector(state=>state.user.isDarkTheme)
     return (
         <React.Fragment>
             <ButtonBox variant="outlined" onClick={toggleLoginMode}>
@@ -14,13 +16,14 @@ const SocialLogin = ({ toggleLoginMode }) => {
                 variant="outlined"
                 onClick={() => Swal.fire("서비스 준비중입니다!")}
             >
-                <span href="https://yzkim9501.site/auth/kakao">
+                <KakaoSpan href="https://yzkim9501.site/auth/kakao" isDarkTheme={isDarkTheme}>
                     카카오 로그인
-                </span>
+                </KakaoSpan>
             </KakaoButtonBox>
             <MemberCheckBox>
-                <DoYouHaveID>UFO와 함께하실래요?</DoYouHaveID>
+                <DoYouHaveID isDarkTheme={isDarkTheme}>UFO와 함께하실래요?</DoYouHaveID>
                 <GoSignUp
+                    isDarkTheme={isDarkTheme}
                     onClick={() => {
                         history.push("/signup");
                     }}
@@ -53,16 +56,22 @@ const KakaoButtonBox = styled.button`
     width: 344px;
     height: 46px;
     border-radius: 50px;
-
-    ${mixin.textProps(20, "extraBold", "white")}
     background-color: #fee500;
     box-shadow: 0px 1px 1px 1px #ececec;
     @media ${({ theme }) => theme.mobile} {
-        ${mixin.textProps(16, "extraBold", "white")}
+        ${props=>mixin.textProps(16, "extraBold", props.isDarkTheme?"black":"white")}
         width: 264px;
         height: 40px;
     }
 `;
+const KakaoSpan = styled.span`
+    ${props=>mixin.textProps(20, "extraBold", props.isDarkTheme?"black":"white")}
+    @media ${({ theme }) => theme.mobile} {
+        ${props=>mixin.textProps(16, "extraBold", props.isDarkTheme?"black":"white")}
+        width: 264px;
+        height: 40px;
+    }
+`
 
 const MemberCheckBox = styled.div`
     width: 344px;
@@ -75,17 +84,17 @@ const MemberCheckBox = styled.div`
     }
 `;
 const DoYouHaveID = styled.p`
-    ${mixin.textProps(20, "semiBold", "gray3")}
+    ${props=>mixin.textProps(20, "semiBold", props.isDarkTheme?"gray2":"gray3")}
     @media ${({ theme }) => theme.mobile} {
-        ${mixin.textProps(16, "semiBold", "gray3")}
+        ${props=>mixin.textProps(16, "semiBold", props.isDarkTheme?"gray2":"gray3")}
     }
 `;
 const GoSignUp = styled.button`
-    background-color: ${({ theme }) => theme.color.white};
-    ${mixin.textProps(20, "semiBold", "mainBlue")}
+    background : none;
+    ${props=>mixin.textProps(20, "semiBold", props.isDarkTheme?"mainMint":"mainBlue")}
     //모바일 사이즈
      @media ${({ theme }) => theme.mobile} {
-        ${mixin.textProps(16, "semiBold", "mainBlue")}
+        ${props=>mixin.textProps(16, "semiBold", props.isDarkTheme?"mainMint":"mainBlue")}
     }
 `;
 

@@ -43,6 +43,7 @@ const ElectionDetail = () => {
     const isAdmin = useSelector(state => state.user.isAdmin); //관리자인지 아닌지에 대한 판별값
     const electionList = useSelector(state => state.election.list); // 모든 선거게시물의 리스트입니다.
     const post = useSelector(state => state.election.post); //선거게시물의 데이터가 들어있습니다.
+    const isDarkTheme = useSelector(state => state.user.isDarkTheme); //다크모드인지 아닌지 판별 state
     const [selectCandidateId, setSelectCandidateId] = useState(null); //선택한 후보자의 번호를 담는 state입니다.
     const unvotedElectionList = electionList.filter(
         post => post.votes.length < 1 && moment().isBefore(post.end_date),
@@ -147,11 +148,16 @@ const ElectionDetail = () => {
         <ElectionDetailContainer>
             <UnvotedContainer>
                 {/* 현재 진행중이지만, 투표를 하지 않은 게시글을 보여줍니다. */}
-                <Title>선택을 기다리는 투표함이 있어요</Title>
-                <UnvotedBox list={unvotedElectionList} />
+                <Title isDarkTheme={isDarkTheme}>
+                    선택을 기다리는 투표함이 있어요
+                </Title>
+                <UnvotedBox
+                    isDarkTheme={isDarkTheme}
+                    list={unvotedElectionList}
+                />
             </UnvotedContainer>
-            <ElectionInfoContainer>
-                <ElectionTitle>
+            <ElectionInfoContainer isDarkTheme={isDarkTheme}>
+                <ElectionTitle isDarkTheme={isDarkTheme}>
                     <h5>{post?.name}</h5>
                     <TitleControls>
                         {isDesktop ? (
@@ -182,7 +188,7 @@ const ElectionDetail = () => {
                 <p>{post?.content}</p>
             </ElectionInfoContainer>
             <CountdownContainer>
-                <Title>투표까지 남은 시간</Title>
+                <Title isDarkTheme={isDarkTheme}>투표까지 남은 시간</Title>
                 {/* 투표진행기간이면 카운트다운을 실행시키고, 진행전이면 투표 시작 전 문구를 렌더링, 끝났으면 투표 종료 문구를 렌더링합니다. */}
                 <TimeBox
                     isCountdown={!isBefore && !isFinished}
@@ -201,26 +207,32 @@ const ElectionDetail = () => {
                     start={post?.start_date && post.start_date}
                     end={post?.end_date && post.end_date}
                 />
-                <ElectionDate>
+                <ElectionDate isDarkTheme={isDarkTheme}>
                     <span>{post?.start_date}</span>
                     <span>{post?.end_date}</span>
                 </ElectionDate>
             </CountdownContainer>
             <CandidatesContainer>
-                <Title>후보자</Title>
+                <Title isDarkTheme={isDarkTheme}>후보자</Title>
                 {/* 후보자가 3명 이하면, CandidateBox를 렌더링, 아니면 CandidateSlider을 렌더링한다. */}
                 {post && post.candidates.length <= 3 && (
-                    <CandidateBox candidateList={post.candidates} />
+                    <CandidateBox
+                        isDarkTheme={isDarkTheme}
+                        candidateList={post.candidates}
+                    />
                 )}
                 {post && post.candidates.length > 3 && (
-                    <CandidateSlider candidateList={post && post.candidates} />
+                    <CandidateSlider
+                        isDarkTheme={isDarkTheme}
+                        candidateList={post && post.candidates}
+                    />
                 )}
             </CandidatesContainer>
             {/* 투표 종료 전이면 투표할 수 있는 컴포넌트를 렌더링하고 아니면 결과페이지를 보여줍니다. */}
             {!isFinished ? (
                 <>
                     <VoteContainer>
-                        <VoteTitle>
+                        <VoteTitle isDarkTheme={isDarkTheme}>
                             <h5>투표하기</h5>
                             <p>
                                 비밀 투표이며, 투표 완료시, 변경이 불가합니다.
@@ -238,6 +250,7 @@ const ElectionDetail = () => {
                                             selectCandidateId ===
                                             candidate.candidate_id
                                         }
+                                        isDarkTheme={isDarkTheme}
                                         cursor
                                         isVoteCard
                                     />
@@ -255,8 +268,9 @@ const ElectionDetail = () => {
                 </>
             ) : (
                 <ElectedContainer>
-                    <Title>당선자</Title>
+                    <Title isDarkTheme={isDarkTheme}>당선자</Title>
                     <ElectedCard
+                        isDarkTheme={isDarkTheme}
                         candidates={post?.candidates}
                         electionPostId={electionPostId}
                     />
@@ -280,16 +294,31 @@ const UnvotedContainer = styled.div`
 `;
 
 const Title = styled.h5`
-    ${mixin.textProps(30, "extraBold", "black")};
     ${props =>
-        !props.borderNone && mixin.outline("1px solid", "gray4", "bottom")}
+        mixin.textProps(
+            30,
+            "extraBold",
+            props.isDarkTheme ? "white" : "black",
+        )};
+    ${props =>
+        !props.borderNone &&
+        mixin.outline(
+            "1px solid",
+            props.isDarkTheme ? "gray1" : "gray4",
+            "bottom",
+        )}
     padding-bottom: ${({ theme }) => theme.calRem(10)};
     margin-bottom: ${({ theme }) => theme.calRem(15)};
 
     @media ${({ theme }) => theme.mobile} {
         padding-bottom: ${({ theme }) => theme.calRem(8)};
         margin-bottom: ${({ theme }) => theme.calRem(16)};
-        ${mixin.textProps(22, "extraBold", "black")};
+        ${props =>
+            mixin.textProps(
+                22,
+                "extraBold",
+                props.isDarkTheme ? "white" : "black",
+            )};
     }
 `;
 
@@ -299,15 +328,30 @@ const ElectionInfoContainer = styled.div`
         margin-bottom: ${({ theme }) => theme.calRem(48)};
     }
     p {
-        ${mixin.textProps(20, "regular", "black")};
+        ${props =>
+            mixin.textProps(
+                20,
+                "regular",
+                props.isDarkTheme ? "mainGray" : "black",
+            )};
         @media ${({ theme }) => theme.mobile} {
-            ${mixin.textProps(16, "regular", "black")};
+            ${props =>
+                mixin.textProps(
+                    16,
+                    "regular",
+                    props.isDarkTheme ? "mainGray" : "black",
+                )};
         }
     }
 `;
 
 const ElectionTitle = styled.div`
-    ${mixin.outline("1px solid", "gray4", "bottom")};
+    ${props =>
+        mixin.outline(
+            "1px solid",
+            props.isDarkTheme ? "gray1" : "gray4",
+            "bottom",
+        )};
     ${mixin.flexBox("space-between", "center")};
     padding-bottom: ${({ theme }) => theme.calRem(10)};
     margin-bottom: ${({ theme }) => theme.calRem(15)};
@@ -317,10 +361,20 @@ const ElectionTitle = styled.div`
     }
 
     h5 {
-        ${mixin.textProps(30, "extraBold", "black")};
+        ${props =>
+            mixin.textProps(
+                30,
+                "extraBold",
+                props.isDarkTheme ? "white" : "black",
+            )};
         line-height: 1.5;
         @media ${({ theme }) => theme.mobile} {
-            ${mixin.textProps(22, "extraBold", "black")};
+            ${props =>
+                mixin.textProps(
+                    22,
+                    "extraBold",
+                    props.isDarkTheme ? "white" : "black",
+                )};
         }
     }
 `;
@@ -354,7 +408,12 @@ const TimeBox = styled.div`
 const ElectionDate = styled.div`
     ${mixin.flexBox("space-between", "flex-end")};
     span {
-        ${mixin.textProps(20, "extraBold", "black")};
+        ${props =>
+            mixin.textProps(
+                20,
+                "extraBold",
+                props.isDarkTheme ? "white" : "black",
+            )};
 
         @media ${({ theme }) => theme.mobile} {
             font-size: ${({ theme }) => theme.fontSize["14"]};
@@ -377,7 +436,12 @@ const VoteContainer = styled.div`
 `;
 
 const VoteTitle = styled.div`
-    ${mixin.outline("1px solid", "gray4", "bottom")};
+    ${props =>
+        mixin.outline(
+            "1px solid",
+            props.isDarkTheme ? "gray1" : "gray4",
+            "bottom",
+        )};
     ${mixin.flexBox("space-between", "flex-end")};
     padding-bottom: ${({ theme }) => theme.calRem(10)};
     margin-bottom: ${({ theme }) => theme.calRem(15)};
@@ -387,10 +451,20 @@ const VoteTitle = styled.div`
     }
 
     h5 {
-        ${mixin.textProps(30, "extraBold", "black")};
+        ${props =>
+            mixin.textProps(
+                30,
+                "extraBold",
+                props.isDarkTheme ? "white" : "black",
+            )};
         line-height: 1;
         @media ${({ theme }) => theme.mobile} {
-            ${mixin.textProps(22, "extraBold", "black")};
+            ${props =>
+                mixin.textProps(
+                    22,
+                    "extraBold",
+                    props.isDarkTheme ? "white" : "black",
+                )};
         }
     }
     p {

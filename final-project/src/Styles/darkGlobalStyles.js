@@ -12,7 +12,6 @@ export const DarkGlobalStyle = createGlobalStyle`
   padding:0;
   box-sizing:border-box;
   font-family: 'Pretendard', sans-serif;
-  color:#fff;
 
   &:focus,&:hover,&:active{
   outline:none 
@@ -32,6 +31,7 @@ body{
     height: 100vh;
     position: relative;
     background: #292b2d;
+    transition: all .5s ease;
 
   /* 스크롤바 제거 */
   &::-webkit-scrollbar {
@@ -44,7 +44,7 @@ body{
 .ck-content{
     *{
         font-size: ${({ theme }) => theme.fontSize["20"]};
-        color:${({ theme }) => theme.color.gray1};
+        color:${({ theme }) => theme.color.gray3};
         @media ${({ theme }) => theme.mobile} {
             font-size: ${({ theme }) => theme.fontSize["16"]};
         }
@@ -67,14 +67,41 @@ body{
 }
 
 /* swal css 설정 */
-.swal2-popup.swal2-modal.swal2-icon-warning.swal2-show{
+/* swal 주의 */
+.swal2-popup{
   border-radius:50px;
   border: solid 3px;
   border-color: ${({ theme }) => theme.color.mainMint};
+  background:${({ theme }) => theme.color.black};
+  .swal2-success-circular-line-right{
+  background-color: ${({ theme }) => theme.color.black} !important;
+}
+
+.swal2-success-circular-line-left{
+  background-color: ${({ theme }) => theme.color.black} !important;
+}
+
+.swal2-success-fix{
+  background-color: ${({ theme }) => theme.color.black} !important;
+}
+}
+
+
+
 .swal2-title{
-  color :${({ theme }) => theme.color.black};
+  color :${({ theme }) => theme.color.white};
   font-size: ${({ theme }) => theme.fontSize["22"]};
 }
+
+.swal2-html-container{
+    color:${({ theme }) => theme.color.mainGray}
+}
+
+.swal2-close{
+    margin-right:15px;
+    margin-top:15px;
+}
+
 .swal2-confirm.swal2-styled{
   border-radius: 20px;
   background-color: ${({ theme }) => theme.color.blue1};
@@ -86,10 +113,12 @@ body{
   border-radius:20px;
   background-color: ${({ theme }) => theme.color.blue1};
 }
+
 .swal2-icon.swal2-warning.swal2-icon-show{
   color:${({ theme }) => theme.color.danger};
   border-color: ${({ theme }) => theme.color.danger};
 }
 
-}
+
+
 `;
