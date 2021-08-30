@@ -38,9 +38,10 @@ const Election = () => {
     if (!user.user_id)
         return (
             <Message
-                message="로그인을 한 사람만 선거게시글을 볼 수 있어요"
+                strong="로그인"
+                message="을 해야만 선거함을 볼 수 있어요!"
                 link="/login"
-                buttonValue="로그인 하러가기"
+                buttonValue="로그인하러가기"
             />
         );
 
@@ -48,9 +49,10 @@ const Election = () => {
     if (!user.univ_id || !user.country_id)
         return (
             <Message
-                message="대학인증을 한 사람만 선거게시글을 볼 수 있어요"
+                strong="대학인증"
+                message="을 해야만 선거함을 볼 수 있어요!"
                 link="/mypage"
-                buttonValue="대학인증 하러가기"
+                buttonValue="대학인증하러가기"
             />
         );
 
@@ -82,7 +84,7 @@ const Election = () => {
             </Controls>
             {currentList && currentList.length < 1 ? (
                 <Message
-                    message="아직 투표가 없습니다"
+                    message="아직 선거가 없습니다"
                     link="/"
                     buttonValue="홈으로"
                 />

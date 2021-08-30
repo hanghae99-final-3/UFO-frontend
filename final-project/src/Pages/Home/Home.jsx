@@ -11,10 +11,10 @@ import { history } from "../../Redux/configureStore";
 import { getUnivBoardDB } from "../../Redux/Async/univBoard"; // 대학 게시물 조회 thunk
 import { getFreeListDB, getIssuePostListDB } from "../../Redux/Async/freeBoard"; // 자유 게시판 thunks
 
-
 //배너
-import bnr1_mobile from "../../Assets/event1_mobile.png"
-import bnr1_pc from "../../Assets/event1_pc.png"
+import bnr1_mobile from "../../Assets/event1_mobile.png";
+import bnr1_pc from "../../Assets/event1_pc.png";
+import bnr2_pc from "../../Assets/event2_pc.png";
 
 //컴포넌트
 import MainSlider from "../../Components/Home/MainSlider"; // 메인 페이지 슬라이더 컴포넌트
@@ -49,11 +49,9 @@ const Home = () => {
 
     const [modalVisible, setModalVisible] = useState(false); //모달창을 보여줄지 말지에 대한 판별값입니다.
 
-//데스크탑 사이즈인지 아닌지에 대한 판별값입니다.
-const isDesktop =
-        document.documentElement.clientWidth >= 1080
-            ? true
-            : false
+    //데스크탑 사이즈인지 아닌지에 대한 판별값입니다.
+    const isDesktop =
+        document.documentElement.clientWidth >= 1080 ? true : false;
 
     const openModal = () => {
         //모달을 여는 함수입니다.
@@ -104,7 +102,16 @@ const isDesktop =
             {/* 메인 검색창 */}
             <MainSearch />
             {/* 배너 */}
-            {/* <Banner href="https://docs.google.com/forms/d/19dYEzERALVHU02A1f_E5WHBttXIpROdtf1HVQcwkqkw/viewform?ts=6125ed6e&edit_requested=true" target="_blank">{isDesktop? <img src={bnr1_pc} alt="banner" />:<img src={bnr1_mobile} alt="banner" />}</Banner> */}
+            <Banner
+                href="https://docs.google.com/forms/d/19dYEzERALVHU02A1f_E5WHBttXIpROdtf1HVQcwkqkw/viewform?ts=6125ed6e&edit_requested=true"
+                target="_blank"
+            >
+                {isDesktop ? (
+                    <img src={bnr2_pc} alt="banner" />
+                ) : (
+                    <img src={bnr2_pc} alt="banner" />
+                )}
+            </Banner>
             {/* 인기 게시글 슬라이더 불러오기*/}
             <MainSlider
                 postList={
@@ -113,13 +120,13 @@ const isDesktop =
             />
 
             <BoardContainer>
-                {/* 학교 게시판 불러오기*/}
+                {/* 대학 게시판 불러오기*/}
                 {isAuthenticated !== null && isLoggedIn && (
                     <PreviewBoardBox
-                        title="🎓학교 게시판"
+                        title="대학 게시판 🎓"
                         fixedList={announcement && announcement.slice(0, 2)}
                         postList={
-                            univBoardPostList && univBoardPostList.slice(0, 6)
+                            univBoardPostList && univBoardPostList.slice(0, 8)
                         }
                         boardName="univboard"
                     />
@@ -127,20 +134,22 @@ const isDesktop =
                 {isAuthenticated === null && (
                     <Content>
                         <Header>
-                            <TitleHeading>학교 게시판</TitleHeading>
+                            <TitleHeading>대학 게시판 🎓</TitleHeading>
                         </Header>
                         <UnivBoardMessageContainer>
                             <UnivBoardMessage>
-                                학교 인증 후, 학교 게시판을 이용하실 수 있습니다
+                                대학 인증 후, 학교 게시판을 이용하실 수
+                                있습니다.
                             </UnivBoardMessage>
                             <UnivBoardMessageControls>
                                 <DefaultButton
-                                    onClick={() => history.push("/login")}
+                                    rightGap={theme.calRem(8)}
+                                    onClick={() => history.push("/mypage")}
                                 >
-                                    로그인하러가기
+                                    대학인증하러가기
                                 </DefaultButton>
                                 <DefaultButton onClick={openModal}>
-                                    지원학교목록보기
+                                    지원대학목록보기
                                     {modalVisible && (
                                         <Modal
                                             visible={modalVisible}
@@ -148,7 +157,7 @@ const isDesktop =
                                             maskClosable={true}
                                             onClose={closeModal}
                                         >
-                                            Hello
+                                            <SupportUniv ref={supportUnivRef} />
                                         </Modal>
                                     )}
                                 </DefaultButton>
@@ -159,11 +168,12 @@ const isDesktop =
                 {isLoggedIn === false && (
                     <Content>
                         <Header>
-                            <TitleHeading>학교 게시판</TitleHeading>
+                            <TitleHeading>대학 게시판 🎓</TitleHeading>
                         </Header>
                         <UnivBoardMessageContainer>
                             <UnivBoardMessage>
-                                학교 게시판은 로그인 후 이용하실 수 있습니다
+                                로그인 후, 대학 인증을 하면 더 많은 글을 볼 수
+                                있어요.
                             </UnivBoardMessage>
                             <UnivBoardMessageControls>
                                 <DefaultButton
@@ -173,7 +183,7 @@ const isDesktop =
                                     로그인하러가기
                                 </DefaultButton>
                                 <DefaultButton onClick={openModal}>
-                                    지원학교목록보기
+                                    지원대학목록보기
                                 </DefaultButton>
                                 {modalVisible && (
                                     <Modal
@@ -198,9 +208,9 @@ const isDesktop =
                     /* country ==== 0 , 즉 전체 선택의 경우 
                     필터하지 않은 포스트를 props로 전달한다.*/
                     <PreviewBoardBox
-                        title="🗽자유 게시판"
+                        title="자유 게시판 💬"
                         postList={
-                            freeBoardPostList && freeBoardPostList.slice(0, 6)
+                            freeBoardPostList && freeBoardPostList.slice(0, 8)
                         }
                         boardName="freeboard"
                     />
@@ -208,7 +218,7 @@ const isDesktop =
                     /*  유저가 특정 국가를 선택했을 경우, 자유 게시판을 
                     해당 국의 게시글로 필터링하여 props로 전달한다.*/
                     <PreviewBoardBox
-                        title="🗽자유 게시판"
+                        title="자유 게시판 💬"
                         postList={
                             freeBoardPostList &&
                             freeBoardPostList
@@ -298,18 +308,17 @@ const TitleHeading = styled.span`
 `;
 
 const Banner = styled.a`
-display:inline-block;
-    margin-top:${theme.calRem(70)};
-img{
-    width:100%;
-    border-radius:25px;
-    ${mixin.boxShadow()}
-
-}
-@media ${({ theme }) => theme.mobile} {
-    margin-top:${theme.calRem(48)};
+    display: inline-block;
+    margin-top: ${theme.calRem(70)};
+    img {
+        width: 100%;
+        border-radius: 25px;
+        ${mixin.boxShadow()}
     }
-`
+    @media ${({ theme }) => theme.mobile} {
+        margin-top: ${theme.calRem(48)};
+    }
+`;
 
 const UnivBoardMessageContainer = styled.div`
     min-height: ${({ theme }) => theme.calRem(100)};

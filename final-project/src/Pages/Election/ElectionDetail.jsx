@@ -125,9 +125,10 @@ const ElectionDetail = () => {
     if (!userInfo.user_id)
         return (
             <Message
-                message="로그인을 한 사람만 선거게시글을 볼 수 있어요"
+                strong="로그인"
+                message="을 해야만 선거함을 볼 수 있어요!"
                 link="/login"
-                buttonValue="로그인 하러가기"
+                buttonValue="로그인하러가기"
             />
         );
 
@@ -135,7 +136,8 @@ const ElectionDetail = () => {
     if (!userInfo.univ_id || !userInfo.country_id)
         return (
             <Message
-                message="대학인증을 한 사람만 선거게시글을 볼 수 있어요"
+                strong="대학인증"
+                message="을 해야만 선거함을 볼 수 있어요"
                 link="/mypage"
                 buttonValue="대학인증하러가기"
             />

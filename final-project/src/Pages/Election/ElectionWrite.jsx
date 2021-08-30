@@ -51,11 +51,6 @@ const ElectionWrite = () => {
     });
 
     useEffect(() => {
-        if (!isAdmin) {
-            Swal.fire("에러", "관리자만 선거를 열 수 있어요!", "error");
-            return history.goBack();
-        }
-
         //선거게시글ID와 state로부터 원본 게시글 정보를 불러올 수 있으면 입력값 통합 state에 저장한다.
         if (electionPostId && electionPostFromState)
             return setPost(electionPostFromState);
@@ -163,7 +158,7 @@ const ElectionWrite = () => {
         if (!post.name || !post.content || !post.start_date || !post.end_date)
             return Swal.fire(
                 "에러",
-                "선거게시글에 대한 내용을 입력해주세요.",
+                "선거에 대한 내용을 입력해주세요.",
                 "error",
             );
         //----
@@ -238,15 +233,17 @@ const ElectionWrite = () => {
         //----
     };
 
-    //대학 인증을 한 사람만 볼 수 있도록 예외처리를 합니다.
-    if (!userInfo.univ_id || !userInfo.country_id)
+    //관리자가 아닌 유저 핸들링
+    if (!isAdmin) {
         return (
             <Message
-                message="대학인증을 한 사람만 선거게시글을 볼 수 있어요"
-                link="/mypage"
-                buttonValue="대학인증하러가기"
+                strong="관리자"
+                message="만 선거를 열 수 있어요!"
+                link="/"
+                buttonValue="홈으로가기"
             />
         );
+    }
     return (
         <ElectionWriteContainer>
             {/* 선거 게시글의 제목, 내용을 입력하는 곳입니다. */}

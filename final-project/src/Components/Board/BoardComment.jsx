@@ -49,8 +49,14 @@ const BoardComment = ({ boardName }) => {
 
     const addComment = () => {
         //서버에 필요한 정보를 정리하고, 댓글을 추가하는 미들웨어 함수로 보내줍니다.
-        if (user.user_id === undefined) return alert("로그인을 해주세요!"); //유저정보가 없으면 return 합니다.
-        if (user.user_id && !content) return alert("댓글을 입력해주세요!");
+        if (user.user_id === undefined)
+            return Swal.fire(
+                "에러",
+                "로그인을 해야만 작성할 수 있어요.",
+                "error",
+            ); //유저정보가 없으면 return 합니다.
+        if (user.user_id && !content)
+            return Swal.fire("에러", "내용을 작성해주세요.", "error");
 
         const req = {
             post_id: postId,
@@ -67,7 +73,7 @@ const BoardComment = ({ boardName }) => {
             if (!user.univ_id)
                 return Swal.fire(
                     "에러",
-                    "마이페이지에서 대학 인증을 해주세요!",
+                    "마이페이지에서 대학인증을 해주세요!",
                     "error",
                 );
             dispatch(addUnivBoardCommentDB(req));

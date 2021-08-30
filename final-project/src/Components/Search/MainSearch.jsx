@@ -21,8 +21,13 @@ const MainSearch = props => {
     };
     const handleSearch = e => {
         e.preventDefault();
+        const regexp = /^\S*$/;
+
         if (searchTerm === "") {
-            return Swal.fire("에러", "검색어를 입력해 주세요", "error");
+            return Swal.fire("에러", "검색어를 입력해주세요.😉", "error");
+        }
+        if (!regexp.test(searchTerm)) {
+            return Swal.fire("에러", "검색어를 입력해주세요.😉", "error");
         }
         history.push(`/util/search/${searchTerm}`);
         setSearchTerm("");
@@ -35,7 +40,7 @@ const MainSearch = props => {
                     onChange={handleSearchTermChange}
                     onFocus={handleFocus}
                     onBlur={handleBlur}
-                    placeholder="UFO 게시글 찾아줘!"
+                    placeholder="🔍 UFO에게 무엇이든 검색해보세요."
                 />
             </SearchForm>
         </React.Fragment>

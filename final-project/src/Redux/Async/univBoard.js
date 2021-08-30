@@ -91,16 +91,13 @@ export const editUnivBoardPostDB = createAsyncThunk(
             const response = await univBoardApi.editPost(data);
             if (response.data.ok) {
                 //성공시 수정된 게시물 정보 반환
+                Swal.fire("성공", "수정되었어요.", "success");
                 return response.data.result;
             } else if (!response.data.ok) {
                 return thunkAPI.rejectWithValue(response.data.message);
             }
         } catch (error) {
-            Swal.fire(
-                "에러",
-                "게시글 수정에 실패하였습니다. 다시 시도해주세요!",
-                "error",
-            );
+            Swal.fire("에러", "수정하지 못했어요! 다시 시도해주세요!", "error");
 
             return thunkAPI.rejectWithValue(error.response.data.message);
         }
@@ -146,6 +143,7 @@ export const deleteUnivBoardPostDB = createAsyncThunk(
             const response = await univBoardApi.deletePost(data);
             if (response.data.ok) {
                 // 요청 성공시 redux 게시글 리스트 최신화
+                Swal.fire("성공", "삭제되었어요.", "success");
                 history.push("/univboard");
             } else if (!response.data.ok) {
                 // 삭제 실패시  에러 메세지 반환
@@ -153,11 +151,7 @@ export const deleteUnivBoardPostDB = createAsyncThunk(
             }
         } catch (error) {
             // 요청 및 서버 에러 반환
-            Swal.fire(
-                "에러",
-                "게시글 삭제에 실패하였습니다. 다시 시도해주세요!",
-                "error",
-            );
+            Swal.fire("에러", "삭제하지 못했어요! 다시 시도해주세요.", "error");
 
             return thunkAPI.rejectWithValue(error.response.data.message);
         }

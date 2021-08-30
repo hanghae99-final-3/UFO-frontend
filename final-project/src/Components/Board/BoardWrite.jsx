@@ -26,6 +26,7 @@ import Editor from "./Editor";
 import DefaultButton from "../../Elements/Buttons/DefaultButton";
 import DefaultSelector from "../../Elements/Buttons/DefaultSelector";
 import AnnounceSelector from "../../Elements/Buttons/AnnounceSelector";
+import Message from "../Shared/Message";
 
 /**
  * @author jiyeong
@@ -37,12 +38,13 @@ import AnnounceSelector from "../../Elements/Buttons/AnnounceSelector";
 
 const BoardWrite = ({ boardName }) => {
     const dispatch = useDispatch();
-    const user = useSelector(state => state.user.user);
-    const [post, setPost] = useState(null); //이 state는 입력값들이 들어갈 공간입니다!
     const { id: postId } = useParams();
     const isEdit = postId ? true : false; //수정모드인지 아닌지 판별 state
+    const isAdmin = useSelector(state => state.user.isAdmin); //관리자인지 아닌지에 대한 판별 state
+    const isLoggedIn = useSelector(state => state.user.isLoggedIn); //로그인했는지 안했는지 판별 state
+    const user = useSelector(state => state.user.user); //유저정보
+    const [post, setPost] = useState(null); //이 state는 입력값들이 들어갈 곳입니다!
     const [isAnnouncement, setIsAnnouncement] = useState(false); // 게시물 공지 설정 값
-    const isAdmin = useSelector(state => state.user.isAdmin);
 
     const getContentFromEditor = content => {
         //에디터로부터 content 값 가져오기
@@ -88,14 +90,14 @@ const BoardWrite = ({ boardName }) => {
             return Swal.fire("에러", "로그인을 해주세요!", "error");
         if (user.user_id && user.user_id !== post.user_id)
             return Swal.fire("에러", "일치하는 사용자가 아니예요!", "error");
-        if (user.user_id && !post.title)
+        if (user.user_id && !post?.title)
             return Swal.fire("에러", "제목을 적어주세요!", "error");
-        if (user.user_id && typeof post.content === "object")
+        if (user.user_id && typeof post?.content === "object")
             //CKEditor 특성상 입력값 없음은 객체다.
             return Swal.fire("에러", "내용을 적어주세요!", "error");
 
         //----본문에서 유저가 실제로 사용하는 이미지 url목록들을 솎아냅니다.
-const imgList = getImgList(post.content);
+        const imgList = getImgList(post.content);
 
         if (boardName === "freeboard") {
             const req = {
@@ -149,10 +151,10 @@ const imgList = getImgList(post.content);
         });
     };
 
-    const getImgList = (content) => {
+    const getImgList = content => {
         //에디터에서 받아온 컨텐츠 내용을 파싱하여 유저가 실제로 사용하는 이미지만을 솎아내는 함수입니다.
         const apiUrl = "https://yzkim9501.site";
-        if (content.includes(apiUrl)){
+        if (content.includes(apiUrl)) {
             let result = [];
             let _imgList = content.split(apiUrl).slice(1);
             for (let i = 0; i < _imgList.length; i++) {
@@ -161,26 +163,35 @@ const imgList = getImgList(post.content);
                 const imgSrc = _imgList[i].slice(startIdx, endIdx);
                 result.push(imgSrc);
             }
-            return result;}
-        };
+            return result;
+        }
+    };
 
     const addPost = () => {
         //서버에 필요한 정보를 정리하고, 포스트를 추가하는 미들웨어 함수로 보낸다.
         if (!user.user_id)
             return Swal.fire("에러", "로그인을 해주세요!", "error");
         if (user.user_id && !post.category)
-            return Swal.fire("에러", "카테고리를 설정해주세요!", "error");
+            return Swal.fire(
+                "에러",
+                "게시글의 카테고리 태그를 설정해주세요.",
+                "error",
+            );
         if (user.user_id && !post.title)
-            return Swal.fire("에러", "제목을 적어주세요!", "error");
+            return Swal.fire("에러", "제목을 작성해주세요.", "error");
         if (user.user_id && !post.content)
-            return Swal.fire("에러", "내용을 적어주세요!", "error");
+            return Swal.fire("에러", "내용을 작성해주세요.", "error");
 
         //----본문에서 유저가 실제로 사용하는 이미지 url목록들을 솎아냅니다.
         const imgList = getImgList(post.content);
 
         if (boardName === "freeboard") {
             if (user.user_id && !post.country_id)
-                return Swal.fire("에러", "국가를 설정해주세요!", "error");
+                return Swal.fire(
+                    "에러",
+                    "게시글의 국가 태그를 설정해주세요.",
+                    "error",
+                );
 
             const req = {
                 title: post.title,
@@ -205,8 +216,31 @@ const imgList = getImgList(post.content);
             history.push("/univboard");
         }
     };
-    //┗-----------------게시글 작성파트-----------------┛
+
+    //로그인안한 유저 핸들링
+    if (!isLoggedIn)
+        return (
+            <Message
+                strong="로그인"
+                message="을 해야만 글을 작성할 수 있어요!"
+                link="/login"
+                buttonValue="로그인하러가기"
+            />
+        );
+
+    //학교인증안한 유저 핸들링
+    if (boardName === "univboard" && !user.school_auth)
+        return (
+            <Message
+                strong="대학인증"
+                message="을 해야만 글을 작성할 수 있어요!"
+                link="/mypage"
+                buttonValue="대학인증하러가기"
+            />
+        );
+
     if (isEdit && post) {
+        //┗-----------------게시글 작성파트-----------------┛
         return (
             //게시글 수정모드
             <>
