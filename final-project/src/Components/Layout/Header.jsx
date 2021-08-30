@@ -5,6 +5,7 @@ import { useLocation } from "react-router";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { history } from "../../Redux/configureStore";
+import theme from "../../Styles/theme";
 
 //통신
 import { onLogout } from "../../Redux/Modules/univBoardSlice";
@@ -37,7 +38,7 @@ import DefaultButton from "../../Elements/Buttons/DefaultButton";
  * @필수값
  */
 
-const Header = () => {
+const Header = ({ isDarkTheme }) => {
     const dispatch = useDispatch();
     const isLoggedIn = useSelector(state => state.user.isLoggedIn);
     const userName = useSelector(state => state.user.user.nickname);
@@ -66,7 +67,7 @@ const Header = () => {
     };
 
     return (
-        <HeaderContainer>
+        <HeaderContainer isDarkTheme={isDarkTheme}>
             <Inner>
                 <LeftColumn>
                     <Logo onClick={LogoClick}>
@@ -95,7 +96,7 @@ const Header = () => {
                         {/* 메뉴버튼 on&off 토글설정 */}
                         {menuOn ? <ClearIcon /> : <MenuIcon />}
                     </MenuBtn>
-                    <MenuContainer menuOn={menuOn}>
+                    <MenuContainer isDarkTheme={isDarkTheme} menuOn={menuOn}>
                         <Menu menuOn={menuOn}>
                             <Controls>
                                 <SelecterBox>
@@ -250,6 +251,7 @@ const HeaderContainer = styled.header`
     box-shadow: 0px 4px 7px 0px #e4ddff;
     background: ${({ theme }) => theme.color.white};
     z-index: 99;
+    ${props => props.isDarkTheme && `background:${theme.color.black}`}
 `;
 
 const Inner = styled.div`
@@ -330,6 +332,7 @@ const MenuContainer = styled.div`
         height: 100%;
         background: rgba(255, 255, 255, 0.7);
         box-shadow: inset -13px 3px 7px 0px #e4ddff;
+        ${props => props.isDarkTheme && `background:rgba(0, 0, 0, 0.7)`}
     }
     @media ${({ theme }) => theme.mobile} {
         height: calc(100vh - 48px);

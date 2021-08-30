@@ -34,6 +34,7 @@ body{
   &::-webkit-scrollbar {
     display: none;
   }
+
 }
 
 /* CKEditor css설정 */
