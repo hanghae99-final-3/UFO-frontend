@@ -109,6 +109,8 @@ const BoardWrite = ({ boardName }) => {
                 post_id: post.post_id,
                 img_list: imgList,
             };
+            console.log(imgList);
+
             history.push(`/freeboard/detail/${postId}`);
             dispatch(editFreePostDB(req));
         }
@@ -201,6 +203,7 @@ const BoardWrite = ({ boardName }) => {
                 country_id: post.country_id,
                 img_list: imgList,
             };
+            console.log(imgList);
             dispatch(addFreePostDB(req));
             history.push("/freeboard");
         }
@@ -538,7 +541,12 @@ const InputTitle = styled.input`
 
     @media ${({ theme }) => theme.mobile} {
         padding: ${theme.calRem(16)} 0;
-        ${mixin.textProps(22, "extraBold", "black")};
+        ${props =>
+            mixin.textProps(
+                22,
+                "extraBold",
+                props.isDarkTheme ? "white" : "black",
+            )};
     }
 `;
 

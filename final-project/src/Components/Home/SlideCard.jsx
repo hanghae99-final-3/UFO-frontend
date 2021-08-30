@@ -43,6 +43,7 @@ const CardContainer = styled.div`
     padding: 2.3em;
     position: relative;
     cursor: pointer;
+    margin-bottom: 10px;
     ${mixin.boxShadow()}
     ${mixin.flexBox("space-between", "center")};
     ${props =>
