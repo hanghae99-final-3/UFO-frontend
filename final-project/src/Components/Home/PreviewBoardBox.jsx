@@ -67,9 +67,12 @@ const PreviewBoardBox = ({
 
     return (
         <BoardContainer>
-            <Header>
+            <Header isDarkTheme={isDarkTheme}>
                 {tag && (
-                    <LargeTag isDarkTheme={isDarkTheme}>
+                    <LargeTag
+                        isDarkTheme={isDarkTheme}
+                        onClick={onToMoreClicked}
+                    >
                         {tag.categoryName} 💬
                     </LargeTag>
                 )}
@@ -100,7 +103,9 @@ const PreviewBoardBox = ({
                             <SmallAnnounceTag rightGap={theme.calRem(10)}>
                                 공지
                             </SmallAnnounceTag>
-                            <AnnounceTitle>{post.title}</AnnounceTitle>
+                            <AnnounceTitle isDarkTheme={isDarkTheme}>
+                                {post.title}
+                            </AnnounceTitle>
                             <IconContainer>
                                 {/* 데스크탑일때만 좋아요와 댓글수가 보입니다. */}
                                 {isDesktop && (
@@ -231,7 +236,12 @@ const IconSpan = styled.span`
 const Header = styled.div`
     margin-bottom: ${({ theme }) => theme.calRem(10)};
     padding-bottom: ${({ theme }) => theme.calRem(10)};
-    ${mixin.outline("1.5px solid", "gray4", "bottom")}
+    ${props =>
+        mixin.outline(
+            "1.5px solid",
+            props.isDarkTheme ? "gray1" : "gray4",
+            "bottom",
+        )}
     ${mixin.flexBox("space-between", "flex-end", null, null)}
 
     @media ${({ theme }) => theme.mobile} {
@@ -338,6 +348,7 @@ const Icon = styled.div`
         }
     }
     svg {
+        color: white;
         margin-right: ${({ theme }) => theme.calRem(2)};
         font-size: ${({ theme }) => theme.fontSize["16"]};
         @media ${({ theme }) => theme.mobile} {

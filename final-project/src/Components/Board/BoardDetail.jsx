@@ -53,8 +53,7 @@ const BoardDetail = ({ page }) => {
     const { id: postId } = useParams(); // 게시물 아이디
     const userId = useSelector(state => state.user.user.user_id); // 유저 아이디
     const isLoggedIn = useSelector(state => state.user.isLoggedIn); // 로그인 상태
-    const isDarkTheme = useSelector(state=>state.user.isDarkTheme); //다크모드
-    
+    const isDarkTheme = useSelector(state => state.user.isDarkTheme); //다크모드
 
     let now = new Date(); // 게시물 조회 최초 시간
     let after20m = new Date(); // 최초 조회후 20분이후 시간
@@ -194,12 +193,12 @@ const BoardDetail = ({ page }) => {
 
     return (
         <MainContentContainer>
-            <Page onClick={handleGoToList}>
+            <Page isDarkTheme={isDarkTheme} onClick={handleGoToList}>
                 {page === "freeboard" ? "자유 게시판" : "대학 게시판"}
             </Page>
             <ContentHeaderContainer isDarkTheme={isDarkTheme}>
                 {page === "freeboard" ? (
-                    <DefaultTag >
+                    <DefaultTag>
                         #{post && categories.freeBoardTags[post.category]}
                     </DefaultTag>
                 ) : (
@@ -211,7 +210,7 @@ const BoardDetail = ({ page }) => {
                 <Title isDarkTheme={isDarkTheme}>{post && post.title}</Title>
                 <NicknameIconContainer>
                     <IconContainer>
-                        <Nickname>
+                        <Nickname isDarkTheme={isDarkTheme}>
                             {post && post.user && post.user.nickname}
                         </Nickname>
                     </IconContainer>
@@ -249,7 +248,6 @@ const BoardDetail = ({ page }) => {
             <ContentBodyContainer isDarkTheme={isDarkTheme}>
                 {post && (
                     <ContentBody
-                    
                         className="ck-content"
                         dangerouslySetInnerHTML={{ __html: post.content }}
                     ></ContentBody>
@@ -306,12 +304,22 @@ const MainContentContainer = styled.div`
 const Title = styled.h3`
     display: block;
     margin: 20px 0 0 0;
-    ${props=> mixin.textProps(30, "extraBlack", props.isDarkTheme?"white":"black")};
+    ${props =>
+        mixin.textProps(
+            30,
+            "extraBlack",
+            props.isDarkTheme ? "white" : "black",
+        )};
 
     //모바일 사이즈
     @media ${({ theme }) => theme.mobile} {
         margin-top: ${({ theme }) => theme.calRem(13)};
-        ${props=>mixin.textProps(22, "extraBold", props.isDarkTheme?"white":"black")};
+        ${props =>
+            mixin.textProps(
+                22,
+                "extraBold",
+                props.isDarkTheme ? "white" : "black",
+            )};
     }
 `;
 
@@ -324,12 +332,18 @@ const CountSpan = styled.span`
     }
 `;
 const Nickname = styled.span`
-    ${mixin.textProps(14, "semiBold", "gray2")}
+    ${props =>
+        mixin.textProps(14, "semiBold", props.isDarkTheme ? "gray3" : "gray2")}
 
     //모바일 사이즈
     @media ${({ theme }) => theme.mobile} {
         margin-top: ${({ theme }) => theme.calRem(8)};
-        ${mixin.textProps(12, "semiBold", "gray2")}
+        ${props =>
+            mixin.textProps(
+                12,
+                "semiBold",
+                props.isDarkTheme ? "gray3" : "gray2",
+            )}
     }
 `;
 const NicknameIconContainer = styled.div`
@@ -344,6 +358,7 @@ const Icon = styled.div`
     svg {
         font-size: 20px;
         margin: 0 5px 0 10px;
+        color: white;
     }
     margin-top: 10px;
 
@@ -364,7 +379,12 @@ const IconContainer = styled.div`
 `;
 
 const ContentHeaderContainer = styled.div`
-    ${props=>mixin.outline("1.5px solid", props.isDarkTheme?"gray1":"gray4", "bottom")}
+    ${props =>
+        mixin.outline(
+            "1.5px solid",
+            props.isDarkTheme ? "gray1" : "gray4",
+            "bottom",
+        )}
 `;
 const ContentBody = styled.div`
     padding: 30px 0;
@@ -377,7 +397,12 @@ const ContentBody = styled.div`
 const ContentBodyContainer = styled.div`
     min-height: 100px;
     ${mixin.flexBox(null, "center")}
-    ${props=>mixin.outline("1.5px solid", props.isDarkTheme?"gray1":"gray4", "bottom")}
+    ${props =>
+        mixin.outline(
+            "1.5px solid",
+            props.isDarkTheme ? "gray1" : "gray4",
+            "bottom",
+        )}
 `;
 
 const ButtonContainer = styled.div`
@@ -396,9 +421,21 @@ const Page = styled.span`
     display: inline-block;
     margin-bottom: 20px;
     cursor: pointer;
-    ${mixin.textProps(40, "extraBold", "back", "center")}
+    ${props =>
+        mixin.textProps(
+            40,
+            "extraBold",
+            props.isDarkTheme ? "white" : "back",
+            "center",
+        )}
     @media ${({ theme }) => theme.mobile} {
-        ${mixin.textProps(22, "extraBold", "back", "center")}
+        ${props =>
+            mixin.textProps(
+                22,
+                "extraBold",
+                props.isDarkTheme ? "white" : "back",
+                "center",
+            )}
     }
 `;
 
