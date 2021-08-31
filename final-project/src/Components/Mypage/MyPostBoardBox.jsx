@@ -25,7 +25,6 @@ const MyPostBoardBox = ({
     size,
     isLoading,
 }) => {
-    const isDarkTheme = useSelector(state => state.user.isDarkTheme);
     // 게시물 클릭시 이벤틀 헨들러
     const _onClick = (postId, board) => {
         //자유게시판일때,
@@ -39,6 +38,7 @@ const MyPostBoardBox = ({
     // 데스크탑 사이즈인지 아닌지 판별하는 변수
     const isMobile =
         document.documentElement.clientWidth <= 1080 ? true : false;
+    const isDarkTheme = useSelector(state => state.user.isDarkTheme);
 
     const timeOption = {
         lang: "ko",
@@ -62,6 +62,7 @@ const MyPostBoardBox = ({
                         postList.map((post, idx) => (
                             <React.Fragment key={idx}>
                                 <PostContainer
+                                    isDarkTheme={isDarkTheme}
                                     key={idx}
                                     onClick={() => {
                                         _onClick(post.post_id, post.board);
@@ -83,7 +84,9 @@ const MyPostBoardBox = ({
                                         {post.title}
                                     </PostTitle>
                                     {Comment ? null : isMobile ? null : (
-                                        <IconContainer>
+                                        <IconContainer
+                                            isDarkTheme={isDarkTheme}
+                                        >
                                             <>
                                                 <Icon>
                                                     <MdComment />
@@ -122,7 +125,7 @@ const MyPostBoardBox = ({
                                     )}
                                 </PostContainer>
                                 {!Comment && isMobile && (
-                                    <IconContainer>
+                                    <IconContainer isDarkTheme={isDarkTheme}>
                                         <>
                                             <Icon>
                                                 <MdComment />
@@ -158,7 +161,7 @@ const MyPostBoardBox = ({
                                 )}
 
                                 {Comment && (
-                                    <CommentContent>
+                                    <CommentContent isDarkTheme={isDarkTheme}>
                                         <MyComment isDarkTheme={isDarkTheme}>
                                             {post.comment.content}
                                         </MyComment>
@@ -178,7 +181,12 @@ const CommentContent = styled.div`
     margin-bottom: 20px;
     @media ${({ theme }) => theme.mobile} {
         padding-bottom: ${({ theme }) => theme.calRem(13)};
-        ${mixin.outline("1px solid", "mainGray", "bottom")};
+        ${props =>
+            mixin.outline(
+                "1px solid",
+                props.isDarkTheme ? "gray1" : "mainGray",
+                "bottom",
+            )};
     }
 `;
 const IconSpan = styled.span`
@@ -188,7 +196,7 @@ const IconSpan = styled.span`
     @media ${({ theme }) => theme.mobile} {
         ${props =>
             mixin.textProps(
-                11,
+                111,
                 "semiBold",
                 props.isDarkTheme ? "gray2" : "gray3",
             )};
@@ -230,7 +238,12 @@ const IconContainer = styled.div`
     grid-template-columns: repeat(3, 50px);
     @media ${({ theme }) => theme.mobile} {
         padding-bottom: ${({ theme }) => theme.calRem(16)};
-        ${mixin.outline("1px solid", "mainGray", "bottom")};
+        ${props =>
+            mixin.outline(
+                "1px solid",
+                props.isDarkTheme ? "gray1" : "mainGray",
+                "bottom",
+            )};
         margin-bottom: ${({ theme }) => theme.calRem(16)};
         display: flex;
         div {
@@ -248,6 +261,7 @@ const Icon = styled.div`
         font-size: ${({ theme }) => theme.fontSize["12"]};
     }
     svg {
+        color: white;
         font-size: ${props => (props.title || props.tag ? "17px" : "20px")};
     }
     @media ${({ theme }) => theme.mobile} {

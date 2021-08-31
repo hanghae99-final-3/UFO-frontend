@@ -20,7 +20,8 @@ const Tag = styled.span`
     height: 22px;
     min-width: 74px;
     border-radius: 16px;
-    ${mixin.boxShadow()}
+    ${props => (props.isDarkTheme ? mixin.darkBoxShadow() : mixin.boxShadow())};
+
     background-color: ${props =>
         props.isDarkTheme ? props.theme.color.black : props.theme.color.white};
     ${props =>

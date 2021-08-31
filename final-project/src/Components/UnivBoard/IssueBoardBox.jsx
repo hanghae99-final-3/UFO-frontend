@@ -7,8 +7,10 @@ import categories from "../../Shared/categories";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 
 import DefaultTag from "../../Elements/Tag/DefaultTag";
+import { useSelector } from "react-redux";
 
 const IssueBoardBox = ({ issueList, boardName }) => {
+    const isDarkTheme = useSelector(state => state.user.isDarkTheme); //다크모드
     // 게시물 클릭시 이벤틀 헨들러
     const _onClick = postId => {
         //자유게시판일때,
@@ -38,13 +40,15 @@ const IssueBoardBox = ({ issueList, boardName }) => {
                                     categories.univCategory[post.category]
                                         ?.categoryName}
                             </DefaultTag>
-                            <PostTitle>{post.free_board.title}</PostTitle>
+                            <PostTitle isDarkTheme={isDarkTheme}>
+                                {post.free_board.title}
+                            </PostTitle>
                         </Title>
 
                         <IconContainer>
                             <Icon>
                                 <VisibilityIcon />
-                                <ViewCount>
+                                <ViewCount isDarkTheme={isDarkTheme}>
                                     {post.free_board.view_count}
                                 </ViewCount>
                             </Icon>
@@ -68,11 +72,17 @@ const SmallTag = styled.span`
     ${mixin.textProps(18, "semiBold", "gray1", "center")}
 `;
 const PostTitle = styled.p`
-    ${mixin.textProps(20, "semiBold", "gray2")}
+    ${props =>
+        mixin.textProps(20, "semiBold", props.isDarkTheme ? "gray3" : "gray2")}
 
     //모바일 사이즈
      @media ${({ theme }) => theme.mobile} {
-        ${mixin.textProps(12, "semiBold", "gray2")}
+        ${props =>
+            mixin.textProps(
+                12,
+                "semiBold",
+                props.isDarkTheme ? "gray3" : "gray2",
+            )}
     }
 `;
 
@@ -109,6 +119,7 @@ const Icon = styled.div`
         line-height: 1;
     }
     svg {
+        color: white;
         font-size: 20px;
         margin-right: 10px;
     }

@@ -282,8 +282,10 @@ const ElectionWrite = () => {
             </WriteElectionDurationBox>
 
             {/* 선거 후보자의 이름, 학과, 소개, 사진을 입력하는 곳입니다. */}
-            <WriteCandidateBox>
-                <Title bottomGap isDarkTheme={isDarkTheme}>후보자 정보</Title>
+            <WriteCandidateBox isDarkTheme={isDarkTheme}>
+                <Title bottomGap isDarkTheme={isDarkTheme}>
+                    후보자 정보
+                </Title>
                 <CandidateAccordian
                     candidates={post?.candidates}
                     getData={setCandidateInfo}
@@ -302,12 +304,27 @@ const ElectionWrite = () => {
 const ElectionWriteContainer = styled.div``;
 
 const Title = styled.h5`
-    ${props=>mixin.textProps(30, "extraBold", props.isDarkTheme?"white":"black")};
-    ${props=>mixin.outline("1px solid", props.isDarkTheme?"gray1":"gray4", "bottom")}
+    ${props =>
+        mixin.textProps(
+            30,
+            "extraBold",
+            props.isDarkTheme ? "white" : "black",
+        )};
+    ${props =>
+        mixin.outline(
+            "1px solid",
+            props.isDarkTheme ? "gray1" : "gray4",
+            "bottom",
+        )}
     padding-bottom: ${({ theme }) => theme.calRem(10)};
 
     @media ${({ theme }) => theme.mobile} {
-        ${props=>mixin.textProps(22, "extraBold", props.isDarkTheme?"white":"black")};
+        ${props =>
+            mixin.textProps(
+                22,
+                "extraBold",
+                props.isDarkTheme ? "white" : "black",
+            )};
         padding-bottom: ${({ theme }) => theme.calRem(8)};
     }
 `;
@@ -324,13 +341,33 @@ const InputTitle = styled.input`
     border: none;
     padding: ${({ theme }) => theme.calRem(20)} 0;
     transition: border-bottom 1s ease;
-    background:none;
-    ${props=>mixin.outline("1px solid", props.isDarkTheme?"gray1":"gray4", "bottom")}
-    ${mixin.textProps(40, "extraBold", "gray2")};
+    background: none;
+    ${props =>
+        mixin.outline(
+            "1px solid",
+            props.isDarkTheme ? "gray1" : "gray4",
+            "bottom",
+        )}
+    ${props =>
+        mixin.textProps(
+            40,
+            "extraBold",
+            props.isDarkTheme ? "mainGray" : "gray2",
+        )};
     ::placeholder {
-        ${props=>mixin.textProps(40, "extraBold", props.isDarkTheme?"mainGray":"gray4")};
+        ${props =>
+            mixin.textProps(
+                40,
+                "extraBold",
+                props.isDarkTheme ? "gray2" : "gray4",
+            )};
         @media ${({ theme }) => theme.mobile} {
-            ${props=>mixin.textProps(22, "extraBold", props.isDarkTheme?"mainGray":"gray4")};
+            ${props =>
+                mixin.textProps(
+                    22,
+                    "extraBold",
+                    props.isDarkTheme ? "gray2" : "gray4",
+                )};
         }
     }
     :focus {
@@ -344,10 +381,15 @@ const InputTitle = styled.input`
 `;
 const InputContent = styled.textarea`
     border: none;
-    background : none;
+    background: none;
     padding: ${({ theme }) => theme.calRem(30)} 0;
     transition: border-bottom 1s ease;
-    ${props=>mixin.outline("1px solid", props.isDarkTheme?"gray1":"gray4", "bottom")}
+    ${props =>
+        mixin.outline(
+            "1px solid",
+            props.isDarkTheme ? "gray1" : "gray4",
+            "bottom",
+        )}
     ${mixin.textProps(20, "regular", "gray2")};
     ::placeholder {
         ${mixin.textProps(20, "regular", "gray4")};

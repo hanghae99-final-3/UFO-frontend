@@ -13,7 +13,7 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore"; // 더보기 펼치�
 //통신
 import { setCountryReducer } from "../..//Redux/Modules/freeBoardSlice.js"; // 나라 선택 리듀서
 
-export default function SelectCountry() {
+export default function SelectCountry({ isDarkTheme }) {
     const dispatch = useDispatch();
     // const [selectedData, setSelectedData] = useState({ id: 0, name: "전체" }); //셀렉터 데이터 값입니다.
     const [cookies, setCookie] = useCookies(["rememberCountry"]); // 쿠키 훅스
@@ -110,6 +110,7 @@ export default function SelectCountry() {
             <CountrySelector isSelectOpen={isSelectOpen}>
                 {categories.countrySelectorList.map(ele => (
                     <Option
+                        isDarkTheme={isDarkTheme}
                         key={ele.id}
                         id={ele.id}
                         isSelected={selectedData.id == ele.id}
@@ -127,7 +128,6 @@ export default function SelectCountry() {
 const Container = styled.div`
     ${mixin.flexBox(null, null, "column", null)};
     ${mixin.floatBox("relative")}
-    cursor: pointer;
     width: ${({ theme }) => theme.calRem(60)};
     @media ${({ theme }) => theme.mobile} {
         width: ${({ theme }) => theme.calRem(48)};
@@ -184,13 +184,12 @@ const CountrySelector = styled.div`
 `;
 
 const Option = styled.div`
+    cursor: pointer;
+    padding: ${({ theme }) => theme.calRem(5)} 0;
     ${props =>
         props.isSelected
             ? mixin.textProps(18, "semiBold", "mainMint")
             : mixin.textProps(18, "semiBold", "blue3")};
-    :not(:last-child) {
-        margin-bottom: ${({ theme }) => theme.calRem(10)};
-    }
     @media ${({ theme }) => theme.mobile} {
         ${props =>
             props.isSelected

@@ -20,6 +20,7 @@ function Modal({
     extend,
     width,
     height,
+    isDarkTheme,
 }) {
     const onMaskClick = e => {
         if (e.target === e.currentTarget) {
@@ -40,7 +41,7 @@ function Modal({
         document.body.style.cssText = `overflow:hidden;`;
     }, []);
 
-    const styles = { extend, width, height };
+    const styles = { extend, width, height, isDarkTheme };
 
     return (
         <Portal elementId="modal-root">
@@ -50,6 +51,7 @@ function Modal({
                 onClick={maskClosable ? onMaskClick : null}
                 tabIndex={-1}
                 visible={visible}
+                {...styles}
             >
                 <ModalInner tabIndex={0} className="modal-inner" {...styles}>
                     {closable && (
@@ -66,6 +68,7 @@ function Modal({
                         //버전2
                         <CloseBox>
                             <CloseButton
+                                {...styles}
                                 className="modal-close"
                                 onClick={close}
                             >
@@ -132,6 +135,7 @@ const ModalInner = styled.div`
     ${props => (props.height ? `width:${props.height};` : "")}
     margin: 0 auto;
     padding: 20px;
+    ${props => props.isDarkTheme && `background:${props.theme.color.black};`};
 `;
 
 const CloseBox = styled.div`
@@ -141,6 +145,17 @@ const CloseBox = styled.div`
 
 const CloseButton = styled.div`
     cursor: pointer;
+    color: ${props =>
+        props.isDarkTheme
+            ? props.theme.color.mainGray
+            : props.theme.color.gray1};
+
+    :hover {
+        ${props =>
+            props.isDarkTheme
+                ? props.theme.color.white
+                : props.theme.color.black};
+    }
 `;
 
 export default Modal;

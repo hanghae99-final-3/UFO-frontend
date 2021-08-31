@@ -95,6 +95,7 @@ const MainSlider = ({ postList }) => {
                     postList.map((post, idx) => (
                         <CardContainer key={idx} active={idx === imageIndex}>
                             <SlideCard
+                                isDarkTheme={isDarkTheme}
                                 post={post.free_board}
                                 rank={idx + 1}
                                 active={idx === imageIndex}

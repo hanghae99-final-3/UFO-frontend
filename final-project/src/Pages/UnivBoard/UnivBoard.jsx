@@ -127,7 +127,7 @@ const UnivBoard = () => {
             <BoardContentContainer>
                 {announcement && announcement.length > 0 && (
                     <BoardBox
-                        postList={announcement && announcement.slice(0, 3)}
+                        fixedList={announcement && announcement.slice(0, 3)}
                         preview={true}
                         boardName="univboard"
                         announcement={true}

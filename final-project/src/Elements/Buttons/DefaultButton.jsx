@@ -20,7 +20,8 @@ const Button = styled.button`
     min-width: 80px;
     border-radius: 20px;
     background: ${({ theme }) => theme.color.blue1};
-    ${mixin.boxShadow()}
+    ${props => (props.isDarkTheme ? mixin.darkBoxShadow() : mixin.boxShadow())};
+
     ${props =>
         mixin.textProps(18, "semiBold", props.isDarkTheme ? "black" : "white")};
     ${props => props.rightGap && `margin-right: ${props.rightGap};`};

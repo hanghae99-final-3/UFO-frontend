@@ -33,7 +33,7 @@ const BoardComment = ({ boardName }) => {
     const dispatch = useDispatch();
     const { id: postId } = useParams();
     const user = useSelector(state => state.user.user); //유저정보
-    const isDarkTheme = useSelector(state=>state.user.isDarkTheme); //다크모드
+    const isDarkTheme = useSelector(state => state.user.isDarkTheme); //다크모드
     const commentList = useSelector(state =>
         boardName === "freeboard"
             ? state.freeBoard.commentList
@@ -100,7 +100,7 @@ const BoardComment = ({ boardName }) => {
                 <>
                     <CommentBox>
                         {/* 댓글의 목록을 나타내는 컴포넌트입니다. */}
-                        <CommentCnt>
+                        <CommentCnt isDarkTheme={isDarkTheme}>
                             <span>댓글 {commentList.length}개</span>
                         </CommentCnt>
                         {commentList &&
@@ -127,7 +127,12 @@ const CommentWrite = styled.div`
     padding-bottom: 10px;
     transition: border-bottom 0.3s ease;
     ${mixin.flexBox("space-between")};
-    ${props=>mixin.outline("2px solid", props.isDarkTheme?"gray2":"mainGray", "bottom")};
+    ${props =>
+        mixin.outline(
+            "2px solid",
+            props.isDarkTheme ? "gray2" : "mainGray",
+            "bottom",
+        )};
     :hover {
         ${mixin.outline("2px solid", "gray1", "bottom")};
     }
@@ -142,7 +147,8 @@ const CommentWrite = styled.div`
 const CommentBox = styled.div``;
 
 const CommentCnt = styled.div`
-    ${mixin.textProps(14, "semiBold", "gray2")}
+    ${props =>
+        mixin.textProps(14, "semiBold", props.isDarkTheme ? "gray3" : "gray2")}
     margin-bottom: 20px;
 
     @media ${({ theme }) => theme.mobile} {
@@ -160,6 +166,7 @@ const CommentCnt = styled.div`
 
 const Comment = ({ comment, boardName, postId }) => {
     const dispatch = useDispatch();
+    const isDarkTheme = useSelector(state => state.user.isDarkTheme); //다크모드
     const [isEdit, setIsEdit] = useState(false); //수정모드인지 아닌지 판별해주는 스위치입니다.
     const [content, setContent] = useState(comment.content); //댓글 입력값을 저장할 곳입니다.
     const user = useSelector(state => state.user.user); //유저정보
@@ -251,17 +258,19 @@ const Comment = ({ comment, boardName, postId }) => {
                     />
 
                     {/* 유저닉네임 */}
-                    <UserName>{comment.user.nickname}</UserName>
+                    <UserName isDarkTheme={isDarkTheme}>
+                        {comment.user.nickname}
+                    </UserName>
 
                     {/* 현재시간과 댓글생성시간과 비교한 시간 (지금은 댓글생성시간으로 표기됨) */}
-                    <Time>
+                    <Time isDarkTheme={isDarkTheme}>
                         {TimeCounting(
                             comment.createdAt.replace(/-/g, "/"),
                             timeOption,
                         )}
                     </Time>
 
-                    <Controls>
+                    <Controls isDarkTheme={isDarkTheme}>
                         {/* 댓글의 작성자가 아니면 답글버튼이 나타납니다. */}
                         {/* {!isAuthor && <button onClick={() => {}}>답글</button>} */}
                         {/* 댓글의 작성자가 맞으면 아래의 버튼들이 나타납니다. */}
@@ -301,7 +310,9 @@ const Comment = ({ comment, boardName, postId }) => {
                             onChange={e => setContent(e.target.value)}
                         />
                     ) : (
-                        <CommentContent>{comment.content}</CommentContent>
+                        <CommentContent isDarkTheme={isDarkTheme}>
+                            {comment.content}
+                        </CommentContent>
                     )}
                 </Content>
             </CommentContainer>
@@ -335,9 +346,17 @@ const UserImage = styled.img`
 const Controls = styled.div`
     line-height: 1;
     button {
-        ${mixin.textProps(14, "semiBold", "gray1")}
+        ${props =>
+            mixin.textProps(
+                14,
+                "semiBold",
+                props.isDarkTheme ? "gray2" : "gray1",
+            )};
         border-radius: 10px;
-        background: white;
+        background: ${props =>
+            props.isDarkTheme
+                ? props.theme.color.black
+                : props.theme.color.white};
     }
     button:not(:last-child) {
         margin-right: 10px;
@@ -345,9 +364,17 @@ const Controls = styled.div`
 
     @media ${({ theme }) => theme.mobile} {
         button {
-            ${mixin.textProps(12, "semiBold", "gray1")}
+            ${props =>
+                mixin.textProps(
+                    12,
+                    "semiBold",
+                    props.isDarkTheme ? "gray2" : "gray1",
+                )};
             border-radius: 8px;
-            background: white;
+            background: ${props =>
+                props.isDarkTheme
+                    ? props.theme.color.black
+                    : props.theme.color.white};
         }
         button:not(:last-child) {
             margin-right: 6px;
@@ -366,18 +393,30 @@ const Content = styled.div`
 `;
 
 const UserName = styled.span`
-    ${mixin.textProps(14, "semiBold", "gray2")}
+    ${props =>
+        mixin.textProps(14, "semiBold", props.isDarkTheme ? "gray3" : "gray2")}
 
     @media ${({ theme }) => theme.mobile} {
-        ${mixin.textProps(12, "semiBold", "gray2")}
+        ${props =>
+            mixin.textProps(
+                12,
+                "semiBold",
+                props.isDarkTheme ? "gray3" : "gray2",
+            )}
     }
 `;
 const Time = styled.span`
-    ${mixin.textProps(14, "semiBold", "gray2")};
+    ${props =>
+        mixin.textProps(14, "semiBold", props.isDarkTheme ? "gray3" : "gray2")};
 
     @media ${({ theme }) => theme.mobile} {
         margin-left: 10px;
-        ${mixin.textProps(12, "semiBold", "gray2")};
+        ${props =>
+            mixin.textProps(
+                12,
+                "semiBold",
+                props.isDarkTheme ? "gray3" : "gray2",
+            )};
     }
 `;
 
@@ -412,10 +451,20 @@ const EditInput = styled.input`
 `;
 
 const CommentContent = styled.span`
-    ${mixin.textProps(20, "regular", "black")};
+    ${props =>
+        mixin.textProps(
+            20,
+            "regular",
+            props.isDarkTheme ? "mainGray" : "black",
+        )};
 
     @media ${({ theme }) => theme.mobile} {
-        ${mixin.textProps(16, "regular", "black")};
+        ${props =>
+            mixin.textProps(
+                16,
+                "regular",
+                props.isDarkTheme ? "mainGray" : "black",
+            )};
     }
 `;
 

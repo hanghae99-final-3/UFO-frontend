@@ -1,10 +1,12 @@
 import React from "react";
 import styled from "styled-components";
 import mixin from "../../Styles/Mixin";
+import { useSelector } from "react-redux";
 
 const SmallAnnounceTag = ({ children, announcement, ...props }) => {
+    const isDarkTheme = useSelector(state => state.user.isDarkTheme); //다크모드인지 아닌지 판별 state
     return (
-        <Tag announcement={announcement} {...props}>
+        <Tag announcement={announcement} isDarkTheme={isDarkTheme} {...props}>
             {children}
         </Tag>
     );
@@ -17,7 +19,8 @@ const Tag = styled.span`
     height: 22px;
     min-width: 74px;
     border-radius: 16px;
-    ${mixin.boxShadow()}
+    ${props => (props.isDarkTheme ? mixin.darkBoxShadow() : mixin.boxShadow())};
+
     background-color: ${props => props.theme.color.mainMint};
     ${mixin.textProps(12, "semiBold", "black", "center")};
     ${mixin.outline("2px solid", "mainMint")}

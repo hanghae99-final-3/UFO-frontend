@@ -19,7 +19,7 @@ const Layout = ({ children }) => {
         <StyledLayout isDarkTheme={isDarkTheme}>
             <Header isDarkTheme={isDarkTheme} />
             <Main>{children}</Main>
-            <Float />
+            <Float isDarkTheme={isDarkTheme} />
         </StyledLayout>
     );
 };

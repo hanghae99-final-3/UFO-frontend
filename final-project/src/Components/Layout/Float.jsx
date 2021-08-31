@@ -16,12 +16,11 @@ import { FaRegMoon, FaRegSun } from "react-icons/fa";
 //컴포넌트
 import FloatSelectCountry from "../Shared/FloatSelectCountry";
 
-const Float = () => {
+const Float = ({ isDarkTheme }) => {
     const dispatch = useDispatch();
     const { pathname } = useLocation();
     const [isWriteBntOn, setIsWriteBntOn] = useState(false); //작성버튼을 보여줄지 말지에 대한 판별값, 자유게시판, 국가게시판이면 글쓰기버튼이 생긴다.
     const [isScrollTopBtnOn, setIsScrollTopBtnOn] = useState(false); //위로가기 버튼을 보여줄지 말지에 대한 판별값
-    const isDarkTheme = useSelector(state => state.user.isDarkTheme);
 
     const isDesktop =
         document.documentElement.clientWidth >= 1080 ? true : false;
@@ -77,22 +76,29 @@ const Float = () => {
         <FloatContainer>
             <FloatBox>
                 {/* 국가 선택 */}
-                <FloatSelectCountry />
+                <FloatSelectCountry isDarkTheme={isDarkTheme} />
                 {!isDesktop && isWriteBntOn && (
-                    <Button onClick={goToWrite}>
-                        <GrEdit />
+                    <Button isDarkTheme={isDarkTheme} onClick={goToWrite}>
+                        ✍{/* <GrEdit /> */}
                     </Button>
                 )}
 
                 {/* 다크모드 */}
-                <Button onClick={switchDarkTheme}>
-                    {isDarkTheme ? <FaRegMoon /> : <FaRegSun />}
+                <Button isDarkTheme={isDarkTheme} onClick={switchDarkTheme}>
+                    {
+                        isDarkTheme
+                            ? // <FaRegMoon />
+                              "🌛"
+                            : "🌞"
+                        // <FaRegSun />
+                    }
                 </Button>
 
                 {/* 위로가기 */}
                 {isScrollTopBtnOn && (
-                    <Button onClick={scrollToTop}>
-                        <BiArrowToTop />
+                    <Button isDarkTheme={isDarkTheme} onClick={scrollToTop}>
+                        {/* <BiArrowToTop /> */}
+                        🚀
                     </Button>
                 )}
             </FloatBox>

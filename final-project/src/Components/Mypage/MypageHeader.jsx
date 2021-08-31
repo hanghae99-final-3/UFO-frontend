@@ -48,7 +48,7 @@ const MypageHeader = props => {
                         로그아웃
                     </LogoutButton>
                 </UnivNameBox>
-                <MyActivityContainer>
+                <MyActivityContainer isDarkTheme={isDarkTheme}>
                     <ActivityTitle isDarkTheme={isDarkTheme}>
                         UFO와 함께한 순간들
                     </ActivityTitle>
@@ -149,7 +149,12 @@ const Greeting = styled.span`
 // 내 활동 보기 버튼들을 감싸는 div 컨테이너
 const MyActivityContainer = styled.div`
     padding-bottom: 5px;
-    ${mixin.outline("1.5px solid", "gray4", "bottom")};
+    ${props =>
+        mixin.outline(
+            "1.5px solid",
+            props.isDarkTheme ? "gray1" : "gray4",
+            "bottom",
+        )};
 `;
 // "내 활동 보기" 문구
 const ActivityTitle = styled.span`

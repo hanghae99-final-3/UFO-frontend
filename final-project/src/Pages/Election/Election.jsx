@@ -203,7 +203,7 @@ const OngoingPost = styled.div`
     overflow: hidden;
     border-radius: 50px;
     cursor: pointer;
-    ${props => (props.isDarkTheme ? null : mixin.boxShadow())}
+    ${props => (props.isDarkTheme ? mixin.darkBoxShadow() : mixin.boxShadow())};
     padding: ${({ theme }) => `${theme.calRem(20)} ${theme.calRem(25)}`};
     ${mixin.outline("3px solid", "blue2")}
     ${mixin.flexBox("center", "center", null, `${theme.calRem(100)}`)};
@@ -215,6 +215,11 @@ const OngoingPost = styled.div`
 
     @media ${({ theme }) => theme.mobile} {
         height: ${theme.calRem(60)};
+    }
+
+    :hover {
+        ${props =>
+            props.isDarkTheme ? "" : mixin.outline("3px solid", "gray1")};
     }
 
     span {
@@ -242,30 +247,61 @@ const FinishedPost = styled.div`
     overflow: hidden;
     border-radius: 50px;
     cursor: pointer;
-    ${mixin.boxShadow()}
+    ${props => (props.isDarkTheme ? mixin.darkBoxShadow() : mixin.boxShadow())};
     padding: ${({ theme }) => `${theme.calRem(20)} ${theme.calRem(25)}`};
-    background: ${({ theme }) => theme.color.mainGray};
+    background: ${props =>
+        props.isDarkTheme
+            ? props.theme.color.gray1
+            : props.theme.color.mainGray};
     ${mixin.outline("3px solid", "gray3")}
     ${mixin.flexBox("center", "center", null, `${theme.calRem(100)}`)};
     ${mixin.floatBox("relative")}
     ${props => (props.isVoted ? mixin.outline("3px solid", "gray2") : "")}
-
-    :hover {
-        background: ${({ theme }) => theme.color.white};
-        span {
-            ${mixin.textProps(20, "regular", "gray1")}
-        }
-    }
-    @media ${({ theme }) => theme.mobile} {
+        @media ${({ theme }) => theme.mobile} {
         height: ${theme.calRem(60)};
     }
 
     span {
-        ${mixin.textboxOverflow(2)}
-        ${mixin.textProps(20, "regular", "gray2")}
+        ${mixin.textboxOverflow(2)};
+        ${props =>
+            mixin.textProps(
+                20,
+                "regular",
+                props.isDarkTheme ? "mainGray" : "gray2",
+            )};
         @media ${({ theme }) => theme.mobile} {
-            ${mixin.textProps(16, "regular", "gray2")}
-            ${mixin.textboxOverflow(1)}
+            ${props =>
+                mixin.textProps(
+                    16,
+                    "regular",
+                    props.isDarkTheme ? "mainGray" : "gray2",
+                )};
+            ${mixin.textboxOverflow(1)};
+        }
+    }
+
+    :hover {
+        background: ${props =>
+            props.isDarkTheme
+                ? props.theme.color.black
+                : props.theme.color.white};
+        ${mixin.outline("3px solid", "danger")};
+        span {
+            ${props =>
+                mixin.textProps(
+                    20,
+                    "regular",
+                    props.isDarkTheme ? "mainGray" : "gray1",
+                )};
+            @media ${({ theme }) => theme.mobile} {
+                ${props =>
+                    mixin.textProps(
+                        16,
+                        "regular",
+                        props.isDarkTheme ? "mainGray" : "gray1",
+                    )};
+                ${mixin.textboxOverflow(1)};
+            }
         }
     }
 `;
@@ -273,13 +309,7 @@ const FinishedPost = styled.div`
 const VotingComplete = styled.div`
     ${mixin.floatBox("absolute")}
     width: 100%;
-    background: ${props => {
-        if (props.isDarkTheme) {
-            return "transparent";
-        } else {
-            return "rgba(0, 0, 0, 0.55)";
-        }
-    }};
+    background: rgba(0, 0, 0, 0.55);
     ${mixin.textProps(20, "regular", "mainMint")}
     ${mixin.flexBox("center", "center")};
     :hover {

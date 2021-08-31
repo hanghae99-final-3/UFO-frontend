@@ -1,4 +1,10 @@
-import { flexBox, floatBox, outline, boxShadow } from "./boxStyle";
+import {
+    flexBox,
+    floatBox,
+    outline,
+    boxShadow,
+    darkBoxShadow,
+} from "./boxStyle";
 import { textProps, textOverflow, textboxOverflow } from "./textStyle";
 
 const mixin = {
@@ -6,6 +12,7 @@ const mixin = {
     floatBox,
     outline,
     boxShadow,
+    darkBoxShadow,
     textProps,
     textOverflow,
     textboxOverflow,

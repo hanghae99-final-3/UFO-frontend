@@ -294,8 +294,8 @@ const MypageAccount = props => {
 
     return (
         <>
-            <TitleWrapper>
-                <Title>계정관리</Title>
+            <TitleWrapper isDarkTheme={isDarkTheme}>
+                <Title isDarkTheme={isDarkTheme}>계정관리</Title>
             </TitleWrapper>
             <ControlContainer>
                 <ButtonWrapper>
@@ -588,8 +588,8 @@ const MypageAccount = props => {
                     )}
                 </ButtonWrapper>
             </ControlContainer>
-            <TitleWrapper>
-                <Title>기타</Title>
+            <TitleWrapper isDarkTheme={isDarkTheme}>
+                <Title isDarkTheme={isDarkTheme}>기타</Title>
             </TitleWrapper>
             <ControlButton
                 isDarkTheme={isDarkTheme}
@@ -606,16 +606,31 @@ const MypageAccount = props => {
 const TitleWrapper = styled.div`
     padding-bottom: 10px;
     margin-bottom: 10px;
-    ${mixin.outline("1.5px solid", "gray4", "bottom")};
+    ${props =>
+        mixin.outline(
+            "1.5px solid",
+            props.isDarkTheme ? "gray1" : "gray4",
+            "bottom",
+        )};
 `;
 // 계정관리 타이틀
 const Title = styled.span`
     display: block;
-    ${mixin.textProps(30, "extraBold", "black")};
+    ${props =>
+        mixin.textProps(
+            30,
+            "extraBold",
+            props.isDarkTheme ? "white" : "black",
+        )};
 
     //모바일 사이즈
     @media ${({ theme }) => theme.mobile} {
-        ${mixin.textProps(22, "extraBold", "black")};
+        ${props =>
+            mixin.textProps(
+                22,
+                "extraBold",
+                props.isDarkTheme ? "white" : "black",
+            )};
     }
 `;
 // 학교 인증 닉네임 설정 등, 계정관리 버튼 감싸는 div
