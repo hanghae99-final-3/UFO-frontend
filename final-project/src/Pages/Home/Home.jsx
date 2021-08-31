@@ -12,12 +12,12 @@ import { getUnivBoardDB } from "../../Redux/Async/univBoard"; // 대학 게시�
 import { getFreeListDB, getIssuePostListDB } from "../../Redux/Async/freeBoard"; // 자유 게시판 thunks
 
 //배너
-import bnr1_mobile from "../../Assets/event1_mobile.png";
-import bnr1_pc from "../../Assets/event1_pc.png";
-import bnr2_pc from "../../Assets/event2_pc.png";
-import bnr2_mobile from "../../Assets/event2_mobile.png";
-import bnr3_pc from "../../Assets/event3_pc.png";
-import bnr3_mobile from "../../Assets/event3_mobile.png";
+import bnr1_mobile from "../../Assets/Banner/event1_mobile.png";
+import bnr1_pc from "../../Assets/Banner/event1_pc.png";
+import bnr2_pc from "../../Assets/Banner/event2_pc.png";
+import bnr2_mobile from "../../Assets/Banner/event2_mobile.png";
+import bnr3_pc from "../../Assets/Banner/event3_pc.png";
+import bnr3_mobile from "../../Assets/Banner/event3_mobile.png";
 
 //컴포넌트
 import MainSlider from "../../Components/Home/MainSlider"; // 메인 페이지 슬라이더 컴포넌트

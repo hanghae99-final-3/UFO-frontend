@@ -2,11 +2,12 @@
  * @역할 카테고리에 사용할 목록
  */
 
-import ausFlag from "../Assets/ausFlag.svg";
-import vietFlag from "../Assets/vietFlag.svg";
-import usFlag from "../Assets/usFlag.svg";
-import canFlag from "../Assets/canFlag.svg";
-import ukFlag from "../Assets/ukFlag.svg";
+import globFlag from "../Assets/Icon/globFlag.svg";
+import ausFlag from "../Assets/Icon/ausFlag.svg";
+import vietFlag from "../Assets/Icon/vietFlag.svg";
+import usFlag from "../Assets/Icon/usFlag.svg";
+import canFlag from "../Assets/Icon/canFlag.svg";
+import ukFlag from "../Assets/Icon/ukFlag.svg";
 
 const country = [
     { countryId: 1, countryName: "베트남" },
@@ -17,18 +18,12 @@ const country = [
 ];
 
 const countrySelectorList = [
-    // { id: 0, name: "전체", icon: "🌍" },
-    // { id: 3, name: "미국", icon: "🍔" },
-    // { id: 5, name: "영국", icon: "🍟" },
-    // { id: 2, name: "호주", icon: "🍕" },
-    // { id: 1, name: "베트남", icon: "🌭" },
-    // { id: 4, name: "캐나다", icon: "🌮" },
-    { id: 0, name: "전체", icon: "🌍", engName: "All" },
-    { id: 3, name: "미국", icon: "🍔", engName: "the United States" },
-    { id: 5, name: "영국", icon: "🍟", engName: "the United Kingdom" },
-    { id: 2, name: "호주", icon: "🍕", engName: "Australia" },
-    { id: 1, name: "베트남", icon: "🌭", engName: "Vietnam" },
-    { id: 4, name: "캐나다", icon: "🌮", engName: "Canada" },
+    { id: 0, name: "전체", icon: globFlag, engName: "All" },
+    { id: 3, name: "미국", icon: usFlag, engName: "the United States" },
+    { id: 5, name: "영국", icon: ukFlag, engName: "the United Kingdom" },
+    { id: 2, name: "호주", icon: ausFlag, engName: "Australia" },
+    { id: 1, name: "베트남", icon: vietFlag, engName: "Vietnam" },
+    { id: 4, name: "캐나다", icon: canFlag, engName: "Canada" },
 ];
 
 const countrySelectorFlagList = [

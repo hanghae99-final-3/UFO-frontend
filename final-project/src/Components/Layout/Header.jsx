@@ -16,6 +16,8 @@ import MenuIcon from "@material-ui/icons/Menu";
 import ClearIcon from "@material-ui/icons/Clear";
 import desktopLogo from "../../Assets/desktop_logo.svg";
 import mobileLogo from "../../Assets/mobile_logo.svg";
+import desktopLogoDark from "../../Assets/desktop_logo_dark.svg";
+import mobileLogoDark from "../../Assets/mobile_logo_dark.svg";
 
 //사운드
 import clicked from "../../Assets/Sound/click2.wav";
@@ -72,9 +74,17 @@ const Header = ({ isDarkTheme }) => {
                 <LeftColumn>
                     <Logo onClick={LogoClick}>
                         {isDesktop ? (
-                            <Boop rotation={20} timing={200} x={0} y={0}>
-                                <img src={desktopLogo} alt="logo" />
-                            </Boop>
+                            isDarkTheme ? (
+                                <Boop rotation={20} timing={200} x={0} y={0}>
+                                    <img src={desktopLogoDark} alt="logo" />
+                                </Boop>
+                            ) : (
+                                <Boop rotation={20} timing={200} x={0} y={0}>
+                                    <img src={desktopLogo} alt="logo" />
+                                </Boop>
+                            )
+                        ) : isDarkTheme ? (
+                            <img src={mobileLogoDark} alt="logo" />
                         ) : (
                             <img src={mobileLogo} alt="logo" />
                         )}
