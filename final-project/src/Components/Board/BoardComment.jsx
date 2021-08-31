@@ -88,6 +88,7 @@ const BoardComment = ({ boardName }) => {
             <CommentWrite isDarkTheme={isDarkTheme}>
                 <CommentInput
                     type="text"
+                    isDarkTheme={isDarkTheme}
                     onChange={e => setContent(e.target.value)}
                     onKeyPress={e => e.key === "Enter" && addComment()} //엔터키를 눌렀을 때, 코멘트가 추가되도록 설정!
                     value={content} //나중에 댓글을 추가하고 value 값을 지울 때, state를 활용하여 지우기 위해 value props를 설정!
@@ -423,11 +424,26 @@ const Time = styled.span`
 const CommentInput = styled.input`
     all: unset;
     width: 95%;
-
+    ${props =>
+        props.isDarkTheme
+            ? mixin.textProps(18, "semiBold", "white")
+            : mixin.textProps(18, "semiBold", "black")};
+    ::placeholder {
+        ${props =>
+            props.isDarkTheme
+                ? mixin.textProps(18, "semiBold", "gray2")
+                : mixin.textProps(18, "semiBold", "gray3")}
+    }
     @media ${({ theme }) => theme.mobile} {
-        ${mixin.textProps(14, "semiBold", "gray1")};
+        ${props =>
+            props.isDarkTheme
+                ? mixin.textProps(14, "semiBold", "white")
+                : mixin.textProps(14, "semiBold", "black")};
         ::placeholder {
-            ${mixin.textProps(14, "semiBold", "gray3")}
+            ${props =>
+                props.isDarkTheme
+                    ? mixin.textProps(14, "semiBold", "gray2")
+                    : mixin.textProps(14, "semiBold", "gray3")}
         }
     }
 `;
