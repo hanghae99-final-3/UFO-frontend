@@ -139,7 +139,7 @@ const Home = () => {
                 )}
                 {isAuthenticated === null && (
                     <Content>
-                        <Header>
+                        <Header isDarkTheme={isDarkTheme}>
                             <TitleHeading isDarkTheme={isDarkTheme}>
                                 대학 게시판 🎓
                             </TitleHeading>
@@ -165,10 +165,15 @@ const Home = () => {
                                             maskClosable={true}
                                             onClose={closeModal}
                                             extend
+                                            isDarkTheme={isDarkTheme}
+
                                             //버전2
                                             // width="70vw"
                                         >
-                                            <SupportUniv ref={supportUnivRef} />
+                                            <SupportUniv
+                                                isDarkTheme={isDarkTheme}
+                                                ref={supportUnivRef}
+                                            />
                                         </Modal>
                                     )}
                                 </DefaultButton>
@@ -178,7 +183,7 @@ const Home = () => {
                 )}
                 {isLoggedIn === false && (
                     <Content>
-                        <Header>
+                        <Header isDarkTheme={isDarkTheme}>
                             <TitleHeading isDarkTheme={isDarkTheme}>
                                 대학 게시판 🎓
                             </TitleHeading>
@@ -206,11 +211,15 @@ const Home = () => {
                                         closable={true}
                                         maskClosable={true}
                                         onClose={closeModal}
+                                        isDarkTheme={isDarkTheme}
                                         extend
                                         //버전2
                                         // width="70vw"
                                     >
-                                        <SupportUniv ref={supportUnivRef} />
+                                        <SupportUniv
+                                            isDarkTheme={isDarkTheme}
+                                            ref={supportUnivRef}
+                                        />
                                     </Modal>
                                 )}
                             </UnivBoardMessageControls>
@@ -309,8 +318,13 @@ const BoardContainer = styled.div`
 const Header = styled.div`
     margin-bottom: ${({ theme }) => theme.calRem(10)};
     padding-bottom: ${({ theme }) => theme.calRem(8)};
-    ${mixin.outline("1.5px solid", "gray4", "bottom")}
-    ${mixin.flexBox("space-between", "flex-end", null, null)}
+    ${props =>
+        mixin.outline(
+            "1.5px solid",
+            props.isDarkTheme ? "gray1" : "gray4",
+            "bottom",
+        )};
+    ${mixin.flexBox("space-between", "flex-end", null, null)};
 `;
 
 const Content = styled.div``;

@@ -79,19 +79,26 @@ const Float = ({ isDarkTheme }) => {
                 <FloatSelectCountry isDarkTheme={isDarkTheme} />
                 {!isDesktop && isWriteBntOn && (
                     <Button isDarkTheme={isDarkTheme} onClick={goToWrite}>
-                        <GrEdit />
+                        ✍{/* <GrEdit /> */}
                     </Button>
                 )}
 
                 {/* 다크모드 */}
                 <Button isDarkTheme={isDarkTheme} onClick={switchDarkTheme}>
-                    {isDarkTheme ? <FaRegMoon /> : <FaRegSun />}
+                    {
+                        isDarkTheme
+                            ? // <FaRegMoon />
+                              "🌛"
+                            : "🌞"
+                        // <FaRegSun />
+                    }
                 </Button>
 
                 {/* 위로가기 */}
                 {isScrollTopBtnOn && (
                     <Button isDarkTheme={isDarkTheme} onClick={scrollToTop}>
-                        <BiArrowToTop />
+                        {/* <BiArrowToTop /> */}
+                        🚀
                     </Button>
                 )}
             </FloatBox>
