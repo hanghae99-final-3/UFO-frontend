@@ -5,6 +5,7 @@ import Swal from "sweetalert2";
 // Axios 인스턴스 설정
 const instance = axios.create({
     baseURL: "https://yzkim9501.site/",
+    // baseURL: "https://api.ufo.town/",
 });
 
 //┏----------interceptor를 통한 header 설정----------┓
@@ -253,7 +254,7 @@ export const searchApi = {
             params: {
                 pageSize: data.pageSize,
                 pageNum: data.pageNum,
-                category: data?.category,
+                category: data.category,
                 country_id: data?.country_id,
                 keyword: data?.keyword,
                 sort: data?.sort,

@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 import TimeCounting from "time-counting";
 import moment from "moment";
+import Swal from "sweetalert2";
 
 //통신
 import {
@@ -32,6 +33,7 @@ const BoardComment = ({ boardName }) => {
     const dispatch = useDispatch();
     const { id: postId } = useParams();
     const user = useSelector(state => state.user.user); //유저정보
+    const isDarkTheme = useSelector(state => state.user.isDarkTheme); //다크모드
     const commentList = useSelector(state =>
         boardName === "freeboard"
             ? state.freeBoard.commentList
@@ -43,12 +45,19 @@ const BoardComment = ({ boardName }) => {
         if (boardName === "freeboard")
             return dispatch(getFreeCommentListDB(postId));
         dispatch(getUnivBoardCommentDB(postId));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const addComment = () => {
         //서버에 필요한 정보를 정리하고, 댓글을 추가하는 미들웨어 함수로 보내줍니다.
-        if (user.user_id === undefined) return alert("로그인을 해주세요!"); //유저정보가 없으면 return 합니다.
-        if (user.user_id && !content) return alert("댓글을 입력해주세요!");
+        if (user.user_id === undefined)
+            return Swal.fire(
+                "에러",
+                "로그인을 해야만 작성할 수 있어요.",
+                "error",
+            ); //유저정보가 없으면 return 합니다.
+        if (user.user_id && !content)
+            return Swal.fire("에러", "내용을 작성해주세요.", "error");
 
         const req = {
             post_id: postId,
@@ -63,7 +72,11 @@ const BoardComment = ({ boardName }) => {
         if (boardName === "univboard") {
             //대학게시판과 연결되는 미들웨어함수로 보내줍니다.
             if (!user.univ_id)
-                return alert("마이페이지에서 대학 인증을 해주세요!");
+                return Swal.fire(
+                    "에러",
+                    "마이페이지에서 대학인증을 해주세요!",
+                    "error",
+                );
             dispatch(addUnivBoardCommentDB(req));
         }
 
@@ -72,22 +85,22 @@ const BoardComment = ({ boardName }) => {
 
     return (
         <BoardCommentContainer>
-            <CommentWrite>
+            <CommentWrite isDarkTheme={isDarkTheme}>
                 <CommentInput
                     type="text"
                     onChange={e => setContent(e.target.value)}
                     onKeyPress={e => e.key === "Enter" && addComment()} //엔터키를 눌렀을 때, 코멘트가 추가되도록 설정!
                     value={content} //나중에 댓글을 추가하고 value 값을 지울 때, state를 활용하여 지우기 위해 value props를 설정!
-                    placeholder="댓글을 적어주세요"
+                    placeholder="여러분의 의견을 남겨주세요:)"
                 />
-                <button onClick={addComment}>등록</button>
+                <AddButton onClick={addComment}>등록</AddButton>
             </CommentWrite>
             {/* 자유게시판일 때 렌더링 */}
             {commentList && (
                 <>
                     <CommentBox>
                         {/* 댓글의 목록을 나타내는 컴포넌트입니다. */}
-                        <CommentCnt>
+                        <CommentCnt isDarkTheme={isDarkTheme}>
                             <span>댓글 {commentList.length}개</span>
                         </CommentCnt>
                         {commentList &&
@@ -113,23 +126,34 @@ const CommentWrite = styled.div`
     margin: 20px 0;
     padding-bottom: 10px;
     transition: border-bottom 0.3s ease;
-    ${mixin.flexBox("space-between")}
-    ${mixin.outline("2px solid", "mainGray", "bottom")}
+    ${mixin.flexBox("space-between")};
+    ${props =>
+        mixin.outline(
+            "2px solid",
+            props.isDarkTheme ? "gray2" : "mainGray",
+            "bottom",
+        )};
     :hover {
-        ${mixin.outline("2px solid", "gray1", "bottom")}
+        ${mixin.outline("2px solid", "gray1", "bottom")};
     }
-    button {
-        background: white;
-        padding: 0 10px;
-        border-radius: 10px;
+
+    @media ${({ theme }) => theme.mobile} {
+        margin-top: 33px;
+        margin-bottom: 30px;
+        padding-bottom: 8px;
     }
 `;
 
 const CommentBox = styled.div``;
 
 const CommentCnt = styled.div`
-    ${mixin.textProps(16, "semiBold", "gray2")}
+    ${props =>
+        mixin.textProps(14, "semiBold", props.isDarkTheme ? "gray3" : "gray2")}
     margin-bottom: 20px;
+
+    @media ${({ theme }) => theme.mobile} {
+        margin-bottom: 16px;
+    }
 `;
 
 /**
@@ -142,6 +166,7 @@ const CommentCnt = styled.div`
 
 const Comment = ({ comment, boardName, postId }) => {
     const dispatch = useDispatch();
+    const isDarkTheme = useSelector(state => state.user.isDarkTheme); //다크모드
     const [isEdit, setIsEdit] = useState(false); //수정모드인지 아닌지 판별해주는 스위치입니다.
     const [content, setContent] = useState(comment.content); //댓글 입력값을 저장할 곳입니다.
     const user = useSelector(state => state.user.user); //유저정보
@@ -151,7 +176,7 @@ const Comment = ({ comment, boardName, postId }) => {
     const timeOption = {
         lang: "ko",
         // objectTime: "2020-08-10 06:00:00",
-        objectTime: moment().format(`YYYY-MM-DD HH:mm:ss`),
+        objectTime: moment().format(`YYYY/MM/DD HH:mm:ss`),
         calculate: {
             justNow: 61,
         },
@@ -184,7 +209,11 @@ const Comment = ({ comment, boardName, postId }) => {
         if (boardName === "univboard") {
             //대학게시판과 연결되는 미들웨어함수로 보내줍니다.
             if (!user.univ_id)
-                return alert("마이페이지에서 대학 인증을 해주세요!");
+                return Swal.fire(
+                    "에러",
+                    "마이페이지에서 대학 인증을 해주세요!",
+                    "error",
+                );
             dispatch(editUnivBoardCommentDB(req));
         }
 
@@ -207,7 +236,11 @@ const Comment = ({ comment, boardName, postId }) => {
         if (boardName === "univboard") {
             //대학게시판과 연결되는 미들웨어함수로 보내줍니다.
             if (!user.univ_id)
-                return alert("마이페이지에서 대학 인증을 해주세요!");
+                return Swal.fire(
+                    "에러",
+                    "마이페이지에서 대학 인증을 해주세요!",
+                    "error",
+                );
             dispatch(deleteUnivBoardCommentDB(req));
         }
 
@@ -225,15 +258,21 @@ const Comment = ({ comment, boardName, postId }) => {
                     />
 
                     {/* 유저닉네임 */}
-                    <UserName>{comment.user.nickname}</UserName>
+                    <UserName isDarkTheme={isDarkTheme}>
+                        {comment.user.nickname}
+                    </UserName>
 
                     {/* 현재시간과 댓글생성시간과 비교한 시간 (지금은 댓글생성시간으로 표기됨) */}
-                    <Time>{TimeCounting(comment.createdAt, timeOption)}</Time>
+                    <Time isDarkTheme={isDarkTheme}>
+                        {TimeCounting(
+                            comment.createdAt.replace(/-/g, "/"),
+                            timeOption,
+                        )}
+                    </Time>
 
-                    <Controls>
+                    <Controls isDarkTheme={isDarkTheme}>
                         {/* 댓글의 작성자가 아니면 답글버튼이 나타납니다. */}
-                        {!isAuthor && <button onClick={() => {}}>답글</button>}
-
+                        {/* {!isAuthor && <button onClick={() => {}}>답글</button>} */}
                         {/* 댓글의 작성자가 맞으면 아래의 버튼들이 나타납니다. */}
                         {isAuthor && (
                             <>
@@ -267,11 +306,13 @@ const Comment = ({ comment, boardName, postId }) => {
                         <EditInput
                             type="text"
                             value={content}
-                            placeholder="댓글을 적어주세요"
+                            placeholder="여러분의 의견을 남겨주세요:)"
                             onChange={e => setContent(e.target.value)}
                         />
                     ) : (
-                        <CommentContent>{comment.content}</CommentContent>
+                        <CommentContent isDarkTheme={isDarkTheme}>
+                            {comment.content}
+                        </CommentContent>
                     )}
                 </Content>
             </CommentContainer>
@@ -281,6 +322,10 @@ const Comment = ({ comment, boardName, postId }) => {
 
 const CommentContainer = styled.div`
     padding-bottom: 20px;
+
+    @media ${({ theme }) => theme.mobile} {
+        padding-bottom: 0;
+    }
 `;
 
 const Header = styled.div`
@@ -301,29 +346,90 @@ const UserImage = styled.img`
 const Controls = styled.div`
     line-height: 1;
     button {
-        ${mixin.textProps(14, "semiBod", "gray1")}
+        ${props =>
+            mixin.textProps(
+                14,
+                "semiBold",
+                props.isDarkTheme ? "gray2" : "gray1",
+            )};
         border-radius: 10px;
-        background: white;
+        background: ${props =>
+            props.isDarkTheme
+                ? props.theme.color.black
+                : props.theme.color.white};
     }
     button:not(:last-child) {
         margin-right: 10px;
+    }
+
+    @media ${({ theme }) => theme.mobile} {
+        button {
+            ${props =>
+                mixin.textProps(
+                    12,
+                    "semiBold",
+                    props.isDarkTheme ? "gray2" : "gray1",
+                )};
+            border-radius: 8px;
+            background: ${props =>
+                props.isDarkTheme
+                    ? props.theme.color.black
+                    : props.theme.color.white};
+        }
+        button:not(:last-child) {
+            margin-right: 6px;
+        }
     }
 `;
 const Content = styled.div`
     ${mixin.textProps(20, "regular", "black")}
     margin-top: 3px;
+
+    @media ${({ theme }) => theme.mobile} {
+        margin: 8px 0;
+
+        ${mixin.textProps(16, "regular", "black")};
+    }
 `;
 
 const UserName = styled.span`
-    ${mixin.textProps(14, "semiBod", "gray2")}
+    ${props =>
+        mixin.textProps(14, "semiBold", props.isDarkTheme ? "gray3" : "gray2")}
+
+    @media ${({ theme }) => theme.mobile} {
+        ${props =>
+            mixin.textProps(
+                12,
+                "semiBold",
+                props.isDarkTheme ? "gray3" : "gray2",
+            )}
+    }
 `;
 const Time = styled.span`
-    ${mixin.textProps(14, "semiBod", "gray2")}
+    ${props =>
+        mixin.textProps(14, "semiBold", props.isDarkTheme ? "gray3" : "gray2")};
+
+    @media ${({ theme }) => theme.mobile} {
+        margin-left: 10px;
+        ${props =>
+            mixin.textProps(
+                12,
+                "semiBold",
+                props.isDarkTheme ? "gray3" : "gray2",
+            )};
+    }
 `;
 
 const CommentInput = styled.input`
     all: unset;
     width: 95%;
+
+    @media ${({ theme }) => theme.mobile} {
+        ${mixin.textProps(14, "semiBold", "gray1")};
+        ::placeholder {
+            ${mixin.textProps(14, "semiBold", "gray3")}
+        }
+    }
 `;
 
 const EditInput = styled.input`
@@ -337,10 +443,39 @@ const EditInput = styled.input`
     ::placeholder {
         ${mixin.textProps(20, "regular", "gray4")}
     }
+
+    @media ${({ theme }) => theme.mobile} {
+        width: 100%;
+        padding-bottom: 8px;
+    }
 `;
 
 const CommentContent = styled.span`
-    ${mixin.textProps(20, "regular", "black")}
+    ${props =>
+        mixin.textProps(
+            20,
+            "regular",
+            props.isDarkTheme ? "mainGray" : "black",
+        )};
+
+    @media ${({ theme }) => theme.mobile} {
+        ${props =>
+            mixin.textProps(
+                16,
+                "regular",
+                props.isDarkTheme ? "mainGray" : "black",
+            )};
+    }
+`;
+
+const AddButton = styled.button`
+    background: none;
+    padding: 0 10px;
+    @media ${({ theme }) => theme.mobile} {
+        width: ${({ theme }) => theme.calRem(30)};
+        ${mixin.textProps(14, "gray1", "gray3")}
+        padding: 0 0
+    }
 `;
 
 export default BoardComment;

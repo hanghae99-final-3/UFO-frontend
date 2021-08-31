@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import mixin from "../../Styles/Mixin";
+import theme from "../../Styles/theme";
+import { useSelector } from "react-redux";
 
 //컴포넌트
 import DefaultButton from "../../Elements/Buttons/DefaultButton";
@@ -21,7 +23,7 @@ const CandidateAccordian = ({
     deleteCard,
 }) => {
     const [focusCardList, setFocusCardList] = useState([]);
-
+    const isDarkTheme = useSelector(state => state.user.isDarkTheme);
     const setFocusList = idx => {
         //---- 포커스가 된 아코디언카드의 idx를 가져와서 focusCardList에 저장한다. 이미 focusCardList에 있는 값이라면 삭제한다.
         if (focusCardList.includes(idx)) {
@@ -34,7 +36,7 @@ const CandidateAccordian = ({
 
     return (
         <Container>
-            <CandidateControls>
+            <CandidateControls isDarkTheme={isDarkTheme}>
                 <span>현재 후보자 인원: {candidates?.length}명</span>
                 <DefaultButton onClick={addCard}>후보자 추가</DefaultButton>
             </CandidateControls>
@@ -42,6 +44,7 @@ const CandidateAccordian = ({
                 // 머테리얼 ui의 Accordion을 적용한 부분입니다.
                 <StyledAccordion
                     key={idx}
+                    isDarkTheme={isDarkTheme}
                     isFocus={focusCardList.includes(`${idx}`)}
                 >
                     <Accordion>
@@ -52,7 +55,10 @@ const CandidateAccordian = ({
                             id="panel1a-header"
                             onClick={() => setFocusList(`${idx}`)}
                         >
-                            <CandidateTitle>기호 {idx + 1}번</CandidateTitle>
+                            <CandidateTitle isDarkTheme={isDarkTheme}>
+                                <span>기호 {idx + 1}번</span>
+                                <span>{ele?.name}</span>
+                            </CandidateTitle>
                             <DefaultButton onClick={() => deleteCard(idx)}>
                                 삭제
                             </DefaultButton>
@@ -63,11 +69,11 @@ const CandidateAccordian = ({
                                 {/* 후보자의 사진에 관련된 작업을 하는 공간입니다. */}
                                 <CandidateImage>
                                     {/* 후보자의 사진을 미리보기 할 수 있는 곳입니다. */}
-                                    <Freeview>
+                                    <Freeview isDarkTheme={isDarkTheme}>
                                         {/* 후보자의 이미지가 있으면 보여주고, 아니면 기본문자열을 보여줍니다. */}
                                         {ele.photo ? (
                                             <img
-                                                src={`http://3.36.90.60/${ele.photo}`}
+                                                src={`https://yzkim9501.site/${ele.photo}`}
                                                 alt={ele.name}
                                             />
                                         ) : (
@@ -82,7 +88,7 @@ const CandidateAccordian = ({
                                     {/* Uploader은 type이 file인 input입니다. 브라우저 상에서는 보이지 않게 숨겨두었습니다. */}
                                 </CandidateImage>
                                 {/* 후보자의 상세 내용이 담길 곳입니다. */}
-                                <CandidateContent>
+                                <CandidateContent isDarkTheme={isDarkTheme}>
                                     {/* 후보자의 이름 */}
                                     <span>이름</span>
                                     <input
@@ -122,15 +128,13 @@ const Container = styled.div``;
 const StyledAccordion = styled.div`
     margin-bottom: 1px;
     position: relative;
-
     /* 아코디언의 border설정 */
     ${props =>
         props.isFocus
             ? mixin.outline("4px solid", "mainMint", "top")
             : mixin.outline("4px solid", "blue2", "top")}
-
     /* 아코디언을 접고펴는 아이콘 스타일링 */
-    ${props =>
+        ${props =>
         props.isFocus
             ? `.MuiAccordionSummary-expandIcon {
         color: ${props.theme.color.mainMint};
@@ -138,7 +142,20 @@ const StyledAccordion = styled.div`
             : `.MuiAccordionSummary-expandIcon {
         color: ${props.theme.color.gray2};
     }`}
-    
+
+    .MuiPaper-root {
+        transition: all 0.5s ease;
+        ${props =>
+            props.isDarkTheme &&
+            `background-color: ${props.theme.color.black};`};
+    }
+    .MuiPaper-root.MuiAccordion-root.Mui-expanded.MuiAccordion-rounded.MuiPaper-elevation1.MuiPaper-rounded {
+        transition: all 0.5s ease;
+        ${props =>
+            props.isDarkTheme &&
+            `background-color: ${props.theme.color.black};`};
+    }
+
     .MuiAccordionSummary-content {
         ${mixin.flexBox("space-between", "center")}
     }
@@ -150,35 +167,60 @@ const StyledAccordion = styled.div`
 
 const CandidateTitle = styled.span`
     ${mixin.textProps(30, "extraBold", "gray2")}
-    margin-right: 10px;
+    span:first-child {
+        ${props =>
+            mixin.textProps(
+                30,
+                "extraBold",
+                props.isDarkTheme ? "white" : "gray2",
+            )}
+        margin-right: ${({ theme }) => theme.calRem(10)};
+    }
 `;
 
 const CandidateControls = styled.div`
-    margin: 10px 0;
+    margin: ${({ theme }) => theme.calRem(10)} 0;
     ${mixin.flexBox("space-between", "center")}
+    span {
+        ${props =>
+            props.isDarkTheme
+                ? mixin.textProps(20, "extraBold", "mainGray")
+                : mixin.textProps(20, "extraBold", "gray1")};
+        @media ${({ theme }) => theme.mobile} {
+            ${props =>
+                props.isDarkTheme
+                    ? mixin.textProps(16, "extraBold", "mainGray")
+                    : mixin.textProps(16, "extraBold", "gray1")};
+        }
+    }
 `;
 
 const Freeview = styled.div`
     ${mixin.floatBox("relative")}
-    width: 210px;
+    width: ${({ theme }) => theme.calRem(210)};
     border-radius: 25px;
-    ${mixin.flexBox("center", "center", null, "250px")}
-    ${mixin.boxShadow()};
-    margin-right: 80px;
+    ${mixin.flexBox("center", "center", null, `${theme.calRem(250)}`)}
+    ${props => (props.isDarkTheme ? mixin.darkBoxShadow() : mixin.boxShadow())};
+    margin-right: ${theme.calRem(80)};
     img {
         width: 100%;
         height: 100%;
         object-fit: cover;
     }
     span {
-        ${mixin.textProps(20, "regular", "gray1")}
+        ${props =>
+            mixin.textProps(
+                20,
+                "regular",
+                props.isDarkTheme ? "gray3" : "gray1",
+            )}
     }
 `;
 const CandidateWriteBox = styled.div`
     display: flex;
     justify-content: space-between;
     width: 100%;
-    padding: 30px 70px;
+    padding: ${({ theme }) => `${theme.calRem(30)} ${theme.calRem(70)}`};
 `;
 const CandidateImage = styled.div``;
 
@@ -193,29 +235,44 @@ const Uploader = styled.input`
 const CandidateContent = styled.div`
     display: grid;
     grid-template-columns: 50px 1fr;
-    gap: 40px 10px;
+    gap: ${({ theme }) => `${theme.calRem(40)} ${theme.calRem(10)}`};
     width: 100%;
     align-items: flex-start;
     span {
-        ${mixin.textProps(20, "semiBold", "gray1")}
+        ${props =>
+            mixin.textProps(
+                20,
+                "semiBold",
+                props.isDarkTheme ? "white" : "gray1",
+            )}//이름,전공,소개를 작성해주세요
     }
     input,
     textarea {
         width: 100%;
         all: unset;
-        padding-bottom: 10px;
-        ${mixin.outline("1px solid", "gray4", "bottom")}
+        padding-bottom: ${({ theme }) => theme.calRem(10)};
+        ${props =>
+            mixin.outline(
+                "1px solid",
+                props.isDarkTheme ? "gray2" : "gray4",
+                "bottom",
+            )}
         ${mixin.textProps(20, "regular", "gray2")}
         transition: border-bottom 1s ease;
         ::placeholder {
-            ${mixin.textProps(20, "regular", "gray4")}
+            ${props =>
+                mixin.textProps(
+                    20,
+                    "regular",
+                    props.isDarkTheme ? "gray3" : "gray4",
+                )}
         }
         :focus {
             ${mixin.outline("1px solid", "gray1", "bottom")}
         }
     }
     textarea {
-        height: 100px;
+        height: ${({ theme }) => theme.calRem(100)};
     }
 `;
 

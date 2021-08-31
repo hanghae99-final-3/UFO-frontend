@@ -17,7 +17,6 @@ import moment from "moment";
 
 //alert
 import confirm from "../../Shared/confirm";
-import Swal from "sweetalert2";
 
 //컴포넌트
 import DefaultButton from "../../Elements/Buttons/DefaultButton";
@@ -34,7 +33,8 @@ const CongratulationMessageBox = ({ electionPostId }) => {
             };
             dispatch(getCongratulationDB(req));
         }
-    }, []);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [dispatch]);
 
     const addComment = () => {
         //필요한 정보들을 정리하고, 당선축하메세지를 불러오는 api를 연결합니다.
@@ -42,7 +42,7 @@ const CongratulationMessageBox = ({ electionPostId }) => {
             election_id: electionPostId,
             content: content,
         };
-        confirm.addConfirm(() => dispatch(addCongratulationDB(req)));
+        confirm.addEditConfirm(() => dispatch(addCongratulationDB(req)));
 
         setContent("");
     };
@@ -175,9 +175,7 @@ const Comment = ({ comment }) => {
                                 </>
                             ) : (
                                 <>
-                                    <button onClick={() => setIsEdit(true)}>
-                                        수정
-                                    </button>
+                                    <button onClick={clickEditBtn}>수정</button>
                                     <button onClick={deleteComment}>
                                         삭제
                                     </button>
@@ -217,10 +215,10 @@ const Header = styled.div`
     margin-bottom: 2px;
 `;
 const Time = styled.span`
-    ${mixin.textProps(14, "semiBod", "blue2")}
+    ${mixin.textProps(14, "semiBold", "blue2")}
 `;
 const UserName = styled.span`
-    ${mixin.textProps(14, "semiBod", "blue2")}
+    ${mixin.textProps(14, "semiBold", "blue2")}
 `;
 
 const UserImage = styled.img`
@@ -246,7 +244,7 @@ const CommentContent = styled.p``;
 const Controls = styled.div`
     line-height: 1;
     button {
-        ${mixin.textProps(14, "semiBod", "blue2")}
+        ${mixin.textProps(14, "semiBold", "blue2")}
         border-radius: 10px;
         background: transparent;
     }

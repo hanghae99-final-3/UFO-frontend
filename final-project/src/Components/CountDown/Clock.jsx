@@ -1,6 +1,4 @@
 import React, { Component } from "react";
-import styled from "styled-components";
-import mixin from "../../Styles/Mixin";
 
 class Clock extends Component {
     constructor(props) {
@@ -19,10 +17,15 @@ class Clock extends Component {
             1000,
         );
     }
-    return;
+
     leading0(num) {
         return num < 10 ? "0" + num : num;
     }
+
+    componentWillUnmount() {
+        clearInterval(this.timer);
+    }
+
     getTimeUntil(deadline) {
         const time = Date.parse(deadline) - Date.parse(new Date());
         if (time < 0) {

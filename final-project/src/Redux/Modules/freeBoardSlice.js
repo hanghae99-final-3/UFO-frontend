@@ -11,6 +11,8 @@ import {
     deleteFreeCommentDB,
     getIssuePostListDB,
     postLikeToggleDB,
+    getSearchResult,
+    getFreeListDBInfinity,
 } from "../Async/freeBoard";
 
 /**
@@ -25,7 +27,8 @@ const initialState = {
     commentList: null,
     isFetching: false,
     errorMessage: null,
-    selectedCountry: 0,
+    selectedCountryId: 0,
+    selectedCountry: null,
     selectedTag: null,
     pageCount: null,
 };
@@ -35,8 +38,9 @@ const freeBoardSlice = createSlice({
     name: "freeBoard",
     initialState: initialState,
     reducers: {
-        setCountryReducer: (state, { payload: countryId }) => {
-            state.selectedCountry = countryId;
+        setCountryReducer: (state, { payload }) => {
+            state.selectedCountryId = payload.id;
+            state.selectedCountry = payload;
         },
         setTagReducer: (state, { payload }) => {
             state.selectedTag = payload;
@@ -64,6 +68,9 @@ const freeBoardSlice = createSlice({
             state.post.all_like -= 1;
             state.post.is_like = false;
         },
+        infinityPostCall: (state, { payload }) => {
+            state.list = [...state.list, ...payload];
+        },
     },
 
     //extraReducers 외부 작업을 참조(e.g 비동기 처리)
@@ -82,7 +89,30 @@ const freeBoardSlice = createSlice({
             state.isFetching = false;
             state.errorMessage = errorMessage;
         },
+        [getFreeListDBInfinity.fulfilled]: (state, { payload }) => {
+            state.list = [...state.list, ...payload?.result.rows];
+            state.pageCount = payload.result.countPage;
+            state.isFetching = false;
+            state.errorMessage = null;
+        },
+        [getFreeListDBInfinity.pending]: (state, { payload }) => {
+            state.isFetching = true;
+        },
+        [getFreeListDBInfinity.rejected]: (
+            state,
+            { payload: errorMessage },
+        ) => {
+            state.isFetching = false;
+            state.errorMessage = errorMessage;
+        },
         //----
+
+        [getSearchResult.fulfilled]: (state, { payload }) => {
+            state.list = payload?.rows;
+            state.pageCount = payload.countPage;
+            state.isFetching = false;
+            state.errorMessage = null;
+        },
 
         //----자유게시판 특정 게시물 불러오는 리듀서
         [getFreePostDB.fulfilled]: (state, { payload }) => {
@@ -167,7 +197,7 @@ const freeBoardSlice = createSlice({
         //----자유게시판 특정댓글 추가하는 리듀서
         [addFreeCommentDB.fulfilled]: (state, { payload }) => {
             //payload에는 추가된 댓글정보가 들어있습니다.
-            state.commentList.push(payload);
+            state.commentList.unshift(payload);
             state.isFetching = false;
             state.errorMessage = null;
         },
@@ -254,6 +284,7 @@ export const {
     decreaseLike,
     setSearchOrder,
     resetSearchOrder,
+    infinityPostCall,
 } = freeBoardSlice.actions;
 
 export default freeBoardSlice;

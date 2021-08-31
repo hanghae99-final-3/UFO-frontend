@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import mixin from "../../Styles/Mixin";
+import theme from "../../Styles/theme";
 
 // selectCandidate는 유저가 투표를 할때, 후보자를 클릭하면 후보자의 id값을 넘겨주는 함수입니다.
 // getCandidateIdx는 유저가 후보자의 정보를 보고 싶어서 카드를 클릭했을때 idx값을 넘겨주는 함수입니다.
@@ -9,6 +10,7 @@ import mixin from "../../Styles/Mixin";
 // cursor는 카드에 마우스를 올리면 포인터가 필요한지 아닌지에 대한 판별값입니다.
 
 const CandidateCard = ({
+    isDarkTheme,
     candidate,
     idx,
     getCandidateIdx,
@@ -17,8 +19,9 @@ const CandidateCard = ({
     isContact,
     isSelected,
     cursor,
+    isVoteCard, //모바일때 투표용카드는 사이즈가 작아져서 사용하는 props 입니다.
 }) => {
-    const voteProps = { isVote, isSelected };
+    const voteProps = { isVote, isSelected, isVoteCard };
 
     return (
         <Container
@@ -30,10 +33,12 @@ const CandidateCard = ({
             }}
         >
             <CandidateImage
-                src={`http://3.36.90.60/${candidate.photo}`}
+                isVoteCard={isVoteCard}
+                src={`https://yzkim9501.site/${candidate.photo}`}
                 alt={candidate.name}
             />
-            <CandidateName>
+
+            <CandidateName isDarkTheme={isDarkTheme} isVoteCard={isVoteCard}>
                 <span>{candidate.name}</span>
             </CandidateName>
         </Container>
@@ -41,8 +46,8 @@ const CandidateCard = ({
 };
 
 const Container = styled.div`
-    height: 300px;
-    width: 210px;
+    width: ${({ theme }) => theme.calRem(210)};
+    height: ${({ theme }) => theme.calRem(300)};
     border-radius: 25px;
     ${mixin.boxShadow()}
     ${props =>
@@ -50,23 +55,52 @@ const Container = styled.div`
         props.isSelected &&
         mixin.boxShadow("0", "0", "2px", "5px", "#83ffca")};
     ${props => props.cursor && `cursor:pointer;`};
+
+    @media ${({ theme }) => theme.mobile} {
+        width: ${props =>
+            props.isVoteCard ? `${theme.calRem(110)}` : `${theme.calRem(140)}`};
+        height: ${props =>
+            props.isVoteCard ? `${theme.calRem(160)}` : `${theme.calRem(200)}`};
+    }
 `;
 
 const CandidateImage = styled.img`
     width: 100%;
-    height: 83%;
+    height: ${({ theme }) => theme.calRem(250)};
     object-fit: cover;
     border-radius: 25px 25px 0 0;
+    @media ${({ theme }) => theme.mobile} {
+        height: ${props =>
+            props.isVoteCard ? `${theme.calRem(130)}` : `${theme.calRem(160)}`};
+    }
 `;
 const CandidateName = styled.div`
     width: 100%;
-    ${mixin.flexBox("center", "center", null, "16%")}
-    background: ${({ theme }) => theme.color.white};
+    ${mixin.flexBox("center", "center", null, `${theme.calRem(40)}`)}
+    background: ${props =>
+        props.isDarkTheme ? props.theme.color.gray1 : props.theme.color.white};
     text-align: center;
     border-radius: 0 0 25px 25px;
+    @media ${({ theme }) => theme.mobile} {
+        height: ${props =>
+            props.isVoteCard ? `${theme.calRem(20)}` : `${theme.calRem(30)}`};
+    }
     span {
         line-height: 1;
-        ${mixin.textProps(18, "semiBold", "gray2")}
+        ${props =>
+            mixin.textProps(
+                18,
+                "semiBold",
+                props.isDarkTheme ? "white" : "gray2",
+            )}
+        @media ${({ theme }) => theme.mobile} {
+            ${props =>
+                mixin.textProps(
+                    12,
+                    "semiBold",
+                    props.isDarkTheme ? "white" : "gray2",
+                )}
+        }
     }
 `;
 

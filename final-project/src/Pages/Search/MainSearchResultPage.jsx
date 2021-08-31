@@ -10,8 +10,10 @@ import instance from "../../Shared/api";
 import MainSearch from "../../Components/Search/MainSearch";
 import SearchBoardBox from "../../Components/Search/SearchBoardBox"; //메인검색창 전용 검색결과 리스트
 import InfinityScroll from "../../Components/Shared/InfinityScroll"; // 인피니트 스크롤 컴포넌트
+import { useSelector } from "react-redux";
 
 const MainSearchResultPage = () => {
+    const isDarkTheme = useSelector(state => state.user.isDarkTheme);
     const Keyword = history.location.pathname.split("/")[3]; //검색한 keyword값
     const [searchResult, setSearchResult] = useState([]); // 게시물 리스트 배열
     const [currentPage, setCurrentPage] = useState(1); //초기 페이지 값
@@ -39,8 +41,8 @@ const MainSearchResultPage = () => {
             })
             .then(res => {
                 if (res.data.ok) {
-                    console.log("main search response", res.data);
                     setSearchResult(prev => [...prev, ...res.data.result]);
+                    setSearchResult(res.data.result);
                     setTotalPage(res.data.totalPage);
                     setNextPage(currentPage + 1);
                     setCurrentPage(prev => prev + 1);
@@ -51,14 +53,38 @@ const MainSearchResultPage = () => {
     const nextCall = () => {
         MainSearchApi(MainSearchQueryDB);
     };
+    const initialCall = async ({ keyword, pageSize, pageNum }) => {
+        setIsLoading(true);
+        await instance
+            .get("util/search", {
+                params: {
+                    keyword,
+                    pageSize,
+                    pageNum,
+                },
+            })
+            .then(res => {
+                if (res.data.ok) {
+                    setSearchResult(res.data.result);
+                    setTotalPage(res.data.totalPage);
+                }
+            });
+        setIsLoading(false);
+    };
     useEffect(() => {
-        MainSearchApi(MainSearchQueryDB);
+        initialCall(MainSearchQueryDB);
     }, [Keyword]);
     return (
         <React.Fragment>
             <MainSearch handleSearch />
-            <SearchKeyword>"{Keyword}" 검색 결과</SearchKeyword>
-            <DivideLine />
+            {Keyword ? (
+                <SearchKeyword isDarkTheme={isDarkTheme}>
+                    "{Keyword}" 검색 결과
+                </SearchKeyword>
+            ) : (
+                ""
+            )}
+            {Keyword ? <DivideLine /> : ""}
             <InfinityScroll
                 nextCall={nextCall}
                 is_next={nextPage <= totalPage ? true : false}
@@ -73,7 +99,18 @@ const MainSearchResultPage = () => {
 
 const SearchKeyword = styled.div`
     margin-top: 76px;
-    ${mixin.textProps(30, "extraBold", "black")}
+    ${props =>
+        mixin.textProps(30, "extraBold", props.isDarkTheme ? "white" : "black")}
+
+    @media ${({ theme }) => theme.mobile} {
+        margin-top: 40px;
+        ${props =>
+            mixin.textProps(
+                22,
+                "extraBold",
+                props.isDarkTheme ? "white" : "black",
+            )}
+    }
 `;
 
 const DivideLine = styled.hr`

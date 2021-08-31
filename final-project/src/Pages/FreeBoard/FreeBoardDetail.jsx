@@ -1,5 +1,4 @@
 import React from "react";
-import categories from "../../Shared/categories";
 
 //컴포넌트
 import SearchBox from "../../Components/Board/SearchBox";
@@ -18,8 +17,12 @@ import RecommendList from "../../Components/UnivBoard/RecommendList";
 const FreeBoardDetail = () => {
     return (
         <>
-            <SearchBox searchTag={categories.freeBoardTags} page="freeboard" />
-            <BoardDetail page="freeboard" />
+            {/* <SearchBox
+                searchTag={categories.freeBoardTags}
+                // deactivateSearch={true}
+                page="freeboard"
+            /> */}
+            <BoardDetail page="freeboard"/>
             <BoardComment boardName="freeboard" />
             <RecommendList />
         </>

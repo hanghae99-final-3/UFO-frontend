@@ -5,6 +5,7 @@ import { history } from "../../Redux/configureStore";
 import { useSelector, useDispatch } from "react-redux";
 import moment from "moment";
 import mixin from "../../Styles/Mixin";
+import theme from "../../Styles/theme";
 
 //통신
 import {
@@ -13,6 +14,9 @@ import {
     deleteElectionDB,
     addVoteDB,
 } from "../../Redux/Async/election";
+
+//아이콘
+import { GrEdit } from "react-icons/gr";
 
 //alert
 import confirm from "../../Shared/confirm";
@@ -29,6 +33,7 @@ import CandidateBox from "../../Components/Election/CandidateBox";
 import CandidateCard from "../../Components/Election/CandidateCard";
 import UnvotedBox from "../../Components/Election/UnvotedBox";
 import ElectedCard from "../../Components/Election/ElectedCard";
+import CustomSlider from "../../Components/Election/CustomSlider";
 
 const ElectionDetail = () => {
     const dispatch = useDispatch();
@@ -38,6 +43,7 @@ const ElectionDetail = () => {
     const isAdmin = useSelector(state => state.user.isAdmin); //관리자인지 아닌지에 대한 판별값
     const electionList = useSelector(state => state.election.list); // 모든 선거게시물의 리스트입니다.
     const post = useSelector(state => state.election.post); //선거게시물의 데이터가 들어있습니다.
+    const isDarkTheme = useSelector(state => state.user.isDarkTheme); //다크모드인지 아닌지 판별 state
     const [selectCandidateId, setSelectCandidateId] = useState(null); //선택한 후보자의 번호를 담는 state입니다.
     const unvotedElectionList = electionList.filter(
         post => post.votes.length < 1 && moment().isBefore(post.end_date),
@@ -51,6 +57,10 @@ const ElectionDetail = () => {
         !moment().isSame(post?.start_date)
             ? true
             : false; //선거가 시작되기 전인지에 대한 판별값
+
+    //데스크탑 사이즈인지 아닌지에 대한 판별값입니다.
+    const isDesktop =
+        document.documentElement.clientWidth >= 1080 ? true : false;
 
     useEffect(() => {
         if (isLogin) {
@@ -87,7 +97,19 @@ const ElectionDetail = () => {
             candidate_id: selectCandidateId,
         };
 
-        confirm.addConfirm(() => dispatch(addVoteDB(req)));
+        confirm.addEditConfirm(() => dispatch(addVoteDB(req)));
+    };
+
+    const goEditPage = () => {
+        //수정페이지로 보내는 역할을 합니다.
+        history.push(`/election/edit/${post.election_id}`);
+    };
+
+    const controlOnMobile = () => {
+        confirm.mobileEditConfirm(
+            () => goEditPage(),
+            () => deleteElection(),
+        );
     };
 
     const deleteElection = () => {
@@ -104,9 +126,10 @@ const ElectionDetail = () => {
     if (!userInfo.user_id)
         return (
             <Message
-                message="로그인을 한 사람만 선거게시글을 볼 수 있어요"
+                strong="로그인"
+                message="을 해야만 선거함을 볼 수 있어요!"
                 link="/login"
-                buttonValue="로그인 하러가기"
+                buttonValue="로그인하러가기"
             />
         );
 
@@ -114,7 +137,8 @@ const ElectionDetail = () => {
     if (!userInfo.univ_id || !userInfo.country_id)
         return (
             <Message
-                message="대학인증을 한 사람만 선거게시글을 볼 수 있어요"
+                strong="대학인증"
+                message="을 해야만 선거함을 볼 수 있어요"
                 link="/mypage"
                 buttonValue="대학인증하러가기"
             />
@@ -124,30 +148,39 @@ const ElectionDetail = () => {
         <ElectionDetailContainer>
             <UnvotedContainer>
                 {/* 현재 진행중이지만, 투표를 하지 않은 게시글을 보여줍니다. */}
-                <Title>선택을 기다리는 투표함이 있어요</Title>
-                <UnvotedBox list={unvotedElectionList} />
+                <Title isDarkTheme={isDarkTheme}>
+                    선택을 기다리는 투표함이 있어요
+                </Title>
+                <UnvotedBox
+                    isDarkTheme={isDarkTheme}
+                    list={unvotedElectionList}
+                />
             </UnvotedContainer>
-            <ElectionInfoContainer>
-                <ElectionTitle>
+            <ElectionInfoContainer isDarkTheme={isDarkTheme}>
+                <ElectionTitle isDarkTheme={isDarkTheme}>
                     <h5>{post?.name}</h5>
                     <TitleControls>
-                        {/* 선거시작일이 현재보다 이전이거나 같지 않고, 관리자면 수정하기 버튼을 볼 수 있습니다.  */}
-                        {isBefore && isAdmin && (
-                            <DangerButton
-                                rightGap="15px"
-                                onClick={() =>
-                                    history.push(
-                                        `/election/edit/${post.election_id}`,
-                                    )
-                                }
-                            >
-                                수정하기
-                            </DangerButton>
-                        )}
-                        {/* 관리자면 삭제하기 버튼을 볼 수 있습니다. */}
-                        {isAdmin && (
-                            <DangerButton onClick={deleteElection}>
-                                삭제하기
+                        {isDesktop ? (
+                            <>
+                                {/* 선거시작일이 현재보다 이전이거나 같지 않고, 관리자면 수정하기 버튼을 볼 수 있습니다.  */}
+                                {isBefore && isAdmin && (
+                                    <DangerButton
+                                        rightGap={theme.calRem(8)}
+                                        onClick={goEditPage}
+                                    >
+                                        수정하기
+                                    </DangerButton>
+                                )}
+                                {/* 관리자면 삭제하기 버튼을 볼 수 있습니다. */}
+                                {isAdmin && (
+                                    <DangerButton onClick={deleteElection}>
+                                        삭제하기
+                                    </DangerButton>
+                                )}
+                            </>
+                        ) : (
+                            <DangerButton onClick={controlOnMobile}>
+                                <GrEdit />
                             </DangerButton>
                         )}
                     </TitleControls>
@@ -155,7 +188,7 @@ const ElectionDetail = () => {
                 <p>{post?.content}</p>
             </ElectionInfoContainer>
             <CountdownContainer>
-                <Title>투표까지 남은 시간</Title>
+                <Title isDarkTheme={isDarkTheme}>투표까지 남은 시간</Title>
                 {/* 투표진행기간이면 카운트다운을 실행시키고, 진행전이면 투표 시작 전 문구를 렌더링, 끝났으면 투표 종료 문구를 렌더링합니다. */}
                 <TimeBox
                     isCountdown={!isBefore && !isFinished}
@@ -174,26 +207,32 @@ const ElectionDetail = () => {
                     start={post?.start_date && post.start_date}
                     end={post?.end_date && post.end_date}
                 />
-                <ElectionDate>
+                <ElectionDate isDarkTheme={isDarkTheme}>
                     <span>{post?.start_date}</span>
                     <span>{post?.end_date}</span>
                 </ElectionDate>
             </CountdownContainer>
             <CandidatesContainer>
-                <Title>후보자</Title>
+                <Title isDarkTheme={isDarkTheme}>후보자</Title>
                 {/* 후보자가 3명 이하면, CandidateBox를 렌더링, 아니면 CandidateSlider을 렌더링한다. */}
                 {post && post.candidates.length <= 3 && (
-                    <CandidateBox candidateList={post.candidates} />
+                    <CandidateBox
+                        isDarkTheme={isDarkTheme}
+                        candidateList={post.candidates}
+                    />
                 )}
                 {post && post.candidates.length > 3 && (
-                    <CandidateSlider candidateList={post && post.candidates} />
+                    <CandidateSlider
+                        isDarkTheme={isDarkTheme}
+                        candidateList={post && post.candidates}
+                    />
                 )}
             </CandidatesContainer>
             {/* 투표 종료 전이면 투표할 수 있는 컴포넌트를 렌더링하고 아니면 결과페이지를 보여줍니다. */}
             {!isFinished ? (
                 <>
                     <VoteContainer>
-                        <VoteTitle>
+                        <VoteTitle isDarkTheme={isDarkTheme}>
                             <h5>투표하기</h5>
                             <p>
                                 비밀 투표이며, 투표 완료시, 변경이 불가합니다.
@@ -211,21 +250,27 @@ const ElectionDetail = () => {
                                             selectCandidateId ===
                                             candidate.candidate_id
                                         }
+                                        isDarkTheme={isDarkTheme}
                                         cursor
+                                        isVoteCard
                                     />
                                 ))}
                         </VoteBox>
                     </VoteContainer>
                     <Controls>
-                        <DefaultButton rightGap="15px" onClick={addVote}>
-                            투표하기
+                        <DefaultButton
+                            rightGap={theme.calRem(8)}
+                            onClick={addVote}
+                        >
+                            제출하기
                         </DefaultButton>
                     </Controls>
                 </>
             ) : (
                 <ElectedContainer>
-                    <Title>당선자</Title>
+                    <Title isDarkTheme={isDarkTheme}>당선자</Title>
                     <ElectedCard
+                        isDarkTheme={isDarkTheme}
                         candidates={post?.candidates}
                         electionPostId={electionPostId}
                     />
@@ -242,33 +287,95 @@ const ElectionDetailContainer = styled.div`
 
 const UnvotedContainer = styled.div`
     width: 100%;
-    margin-bottom: 80px;
+    margin-bottom: ${({ theme }) => theme.calRem(80)};
+    @media ${({ theme }) => theme.mobile} {
+        margin-bottom: ${({ theme }) => theme.calRem(48)};
+    }
 `;
 
 const Title = styled.h5`
-    ${mixin.textProps(30, "extraBold", "black")};
     ${props =>
-        !props.borderNone && mixin.outline("1px solid", "gray4", "bottom")}
-    padding-bottom: 10px;
-    margin-bottom: 15px;
+        mixin.textProps(
+            30,
+            "extraBold",
+            props.isDarkTheme ? "white" : "black",
+        )};
+    ${props =>
+        !props.borderNone &&
+        mixin.outline(
+            "1px solid",
+            props.isDarkTheme ? "gray1" : "gray4",
+            "bottom",
+        )}
+    padding-bottom: ${({ theme }) => theme.calRem(10)};
+    margin-bottom: ${({ theme }) => theme.calRem(15)};
+
+    @media ${({ theme }) => theme.mobile} {
+        padding-bottom: ${({ theme }) => theme.calRem(8)};
+        margin-bottom: ${({ theme }) => theme.calRem(16)};
+        ${props =>
+            mixin.textProps(
+                22,
+                "extraBold",
+                props.isDarkTheme ? "white" : "black",
+            )};
+    }
 `;
 
 const ElectionInfoContainer = styled.div`
-    margin-bottom: 80px;
+    margin-bottom: ${({ theme }) => theme.calRem(80)};
+    @media ${({ theme }) => theme.mobile} {
+        margin-bottom: ${({ theme }) => theme.calRem(48)};
+    }
+    p {
+        ${props =>
+            mixin.textProps(
+                20,
+                "regular",
+                props.isDarkTheme ? "mainGray" : "black",
+            )};
+        @media ${({ theme }) => theme.mobile} {
+            ${props =>
+                mixin.textProps(
+                    16,
+                    "regular",
+                    props.isDarkTheme ? "mainGray" : "black",
+                )};
+        }
+    }
 `;
 
 const ElectionTitle = styled.div`
-    ${mixin.outline("1px solid", "gray4", "bottom")};
+    ${props =>
+        mixin.outline(
+            "1px solid",
+            props.isDarkTheme ? "gray1" : "gray4",
+            "bottom",
+        )};
     ${mixin.flexBox("space-between", "center")};
-    padding-bottom: 10px;
-    margin-bottom: 15px;
-    h5 {
-        ${mixin.textProps(30, "extraBold", "black")};
-        line-height: 1.5;
-        width: 80%;
+    padding-bottom: ${({ theme }) => theme.calRem(10)};
+    margin-bottom: ${({ theme }) => theme.calRem(15)};
+    @media ${({ theme }) => theme.mobile} {
+        padding-bottom: ${({ theme }) => theme.calRem(8)};
+        margin-bottom: ${({ theme }) => theme.calRem(16)};
     }
-    p {
-        ${mixin.textProps(20, "regular", "black")};
+
+    h5 {
+        ${props =>
+            mixin.textProps(
+                30,
+                "extraBold",
+                props.isDarkTheme ? "white" : "black",
+            )};
+        line-height: 1.5;
+        @media ${({ theme }) => theme.mobile} {
+            ${props =>
+                mixin.textProps(
+                    22,
+                    "extraBold",
+                    props.isDarkTheme ? "white" : "black",
+                )};
+        }
     }
 `;
 
@@ -277,49 +384,94 @@ const TitleControls = styled.div`
 `;
 
 const CountdownContainer = styled.div`
-    margin-bottom: 80px;
-`;
-
-const ElectionDate = styled.div`
-    margin-top: 5px;
-    ${mixin.flexBox("space-between", "flex-end")};
-    span {
-        ${mixin.textProps(20, "extraBold", "black")};
+    margin-bottom: ${({ theme }) => theme.calRem(80)};
+    @media ${({ theme }) => theme.mobile} {
+        margin-bottom: ${({ theme }) => theme.calRem(48)};
     }
 `;
 
 const TimeBox = styled.div`
     text-align: center;
-    padding: 10px 0;
     span {
         font-size: 100px;
         ${props =>
             props.isCountdown || props.isFinished
                 ? mixin.textProps(null, "extraBold", "mainBlue")
-                : mixin.textProps(null, "extraBold", "gray3")}
+                : mixin.textProps(null, "extraBold", "gray3")};
+
+        @media ${({ theme }) => theme.mobile} {
+            font-size: ${({ theme }) => theme.fontSize["40"]};
+        }
+    }
+`;
+
+const ElectionDate = styled.div`
+    ${mixin.flexBox("space-between", "flex-end")};
+    span {
+        ${props =>
+            mixin.textProps(
+                20,
+                "extraBold",
+                props.isDarkTheme ? "white" : "black",
+            )};
+
+        @media ${({ theme }) => theme.mobile} {
+            font-size: ${({ theme }) => theme.fontSize["14"]};
+        }
     }
 `;
 
 const CandidatesContainer = styled.div`
-    margin-bottom: 80px;
+    margin-bottom: ${({ theme }) => theme.calRem(80)};
+    @media ${({ theme }) => theme.mobile} {
+        margin-bottom: ${({ theme }) => theme.calRem(48)};
+    }
 `;
 
 const VoteContainer = styled.div`
-    margin-bottom: 30px;
+    margin-bottom: ${({ theme }) => theme.calRem(30)};
+    @media ${({ theme }) => theme.mobile} {
+        margin-bottom: ${({ theme }) => theme.calRem(24)};
+    }
 `;
 
 const VoteTitle = styled.div`
-    ${mixin.outline("1px solid", "gray4", "bottom")};
+    ${props =>
+        mixin.outline(
+            "1px solid",
+            props.isDarkTheme ? "gray1" : "gray4",
+            "bottom",
+        )};
     ${mixin.flexBox("space-between", "flex-end")};
-    padding-bottom: 10px;
-    margin-bottom: 15px;
+    padding-bottom: ${({ theme }) => theme.calRem(10)};
+    margin-bottom: ${({ theme }) => theme.calRem(15)};
+    @media ${({ theme }) => theme.mobile} {
+        padding-bottom: ${({ theme }) => theme.calRem(8)};
+        margin-bottom: ${({ theme }) => theme.calRem(16)};
+    }
 
     h5 {
-        ${mixin.textProps(30, "extraBold", "black")};
+        ${props =>
+            mixin.textProps(
+                30,
+                "extraBold",
+                props.isDarkTheme ? "white" : "black",
+            )};
         line-height: 1;
+        @media ${({ theme }) => theme.mobile} {
+            ${props =>
+                mixin.textProps(
+                    22,
+                    "extraBold",
+                    props.isDarkTheme ? "white" : "black",
+                )};
+        }
     }
     p {
         ${mixin.textProps(14, "semiBold", "danger")}
+        @media ${({ theme }) => theme.mobile} {
+            ${mixin.textProps(11, "semiBold", "danger")}
+        }
     }
 `;
 
@@ -327,7 +479,11 @@ const VoteBox = styled.div`
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     flex-wrap: wrap;
-    gap: 10px;
+    gap: ${({ theme }) => theme.calRem(12)};
+
+    @media ${({ theme }) => theme.mobile} {
+        display: flex;
+    }
 `;
 
 const Controls = styled.div`

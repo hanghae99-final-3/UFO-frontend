@@ -8,6 +8,8 @@ import {
     checkAdminDB,
 } from "../Async/user";
 
+import { getDarkTheme } from "../../Shared/utils";
+
 /**
  * @initialState 사용자 정보
  * @역할 로그인 / 회원가입시  유저 상태 업데이트
@@ -20,6 +22,7 @@ const initialState = {
     errorMessage: "",
     isSignupSuccess: "",
     isAdmin: false,
+    isDarkTheme: getDarkTheme() === "true" ? true : false,
 };
 
 const userSlice = createSlice({
@@ -36,6 +39,9 @@ const userSlice = createSlice({
         },
         updateUsername: (state, action) => {
             state.user.nickname = action.payload;
+        },
+        setDarkTheme: (state, action) => {
+            state.isDarkTheme = action.payload;
         },
     },
     extraReducers: {
@@ -109,7 +115,7 @@ const userSlice = createSlice({
     },
 });
 
-export const { resetSignupSuccess, logoutUser, updateUsername } =
+export const { resetSignupSuccess, logoutUser, updateUsername, setDarkTheme } =
     userSlice.actions;
 
 export default userSlice;

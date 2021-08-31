@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { history } from "../../Redux/configureStore";
 import mixin from "../../Styles/Mixin";
 
-export default function SlideCard({ post, rank, active }) {
+export default function SlideCard({ post, rank, active, isDarkTheme }) {
     // 디테일 페이지 바로가기 버튼 이벤트 헨들러
     const onDetailButtonClick = () => {
         history.push(`/freeboard/detail/${post.post_id}`);
@@ -19,7 +19,11 @@ export default function SlideCard({ post, rank, active }) {
         post.img_list[0] === "";
 
     return (
-        <CardContainer active={active} onClick={onDetailButtonClick}>
+        <CardContainer
+            active={active}
+            onClick={onDetailButtonClick}
+            isDarkTheme={isDarkTheme}
+        >
             <Preview imageNone={imageNone}>
                 <PreviewTitle active={active}>{post.title}</PreviewTitle>
                 <PreviewContent active={active}>
@@ -28,7 +32,7 @@ export default function SlideCard({ post, rank, active }) {
             </Preview>
             {!imageNone && (
                 <PreviewImage
-                    src={`http://3.36.90.60/${post.img_list[0]}`}
+                    src={`https://yzkim9501.site/${post.img_list[0]}`}
                     alt={post.title}
                 />
             )}
@@ -39,19 +43,26 @@ export default function SlideCard({ post, rank, active }) {
 //------스타일 컴포넌트------
 const CardContainer = styled.div`
     ${mixin.outline("4px solid", "blue2")};
-    width: 372px;
-    min-height: 192px;
     border-radius: 96px;
     padding: 2.3em;
     position: relative;
     cursor: pointer;
+    margin-bottom: 10px;
+    ${props => (props.isDarkTheme ? mixin.darkBoxShadow() : mixin.boxShadow())};
     ${mixin.flexBox("space-between", "center")};
     ${props =>
         props.active &&
         `
             background:${props.theme.color.mainBlue};
-            border:none;
         `};
+    ${props =>
+        props.active
+            ? mixin.outline("4px solid", "mainBlue")
+            : mixin.outline("4px solid", "blue2")};
+
+    @media ${({ theme }) => theme.mobile} {
+        padding: ${({ theme }) => theme.calRem(20)};
+    }
 `;
 
 const PreviewTitle = styled.div`
@@ -61,6 +72,14 @@ const PreviewTitle = styled.div`
         props.active
             ? mixin.textProps(20, "extraBold", "white")
             : mixin.textProps(20, "extraBold", "gray2")}
+
+    @media ${({ theme }) => theme.mobile} {
+        ${mixin.textOverflow()}
+        ${props =>
+            props.active
+                ? mixin.textProps(16, "extraBold", "white")
+                : mixin.textProps(16, "extraBold", "gray2")}
+    }
 `;
 
 const Preview = styled.div`
@@ -68,8 +87,8 @@ const Preview = styled.div`
 `;
 
 const PreviewImage = styled.img`
-    width: 6.5em;
-    height: 6.5em;
+    width: 4rem;
+    height: 4rem;
     object-fit: cover;
     border-radius: 50%;
 `;
@@ -77,9 +96,16 @@ const PreviewImage = styled.img`
 const PreviewContent = styled.p`
     font-size: 14px;
     ${mixin.textProps(14, "semiBold", "gray2")};
-    ${mixin.textOverflow()}
+    ${mixin.textboxOverflow(2)}
     ${props =>
         props.active
             ? mixin.textProps(20, "regular", "blue3")
             : mixin.textProps(20, "regular", "gray3")}
+
+@media ${({ theme }) => theme.mobile} {
+        ${props =>
+            props.active
+                ? mixin.textProps(12, "regular", "blue3")
+                : mixin.textProps(12, "regular", "gray3")}
+    }
 `;

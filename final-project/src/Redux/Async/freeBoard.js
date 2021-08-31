@@ -1,8 +1,10 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { history } from "../configureStore";
-import { freeBoardApi, freeCommentApi } from "../../Shared/api";
+import { freeBoardApi, freeCommentApi, searchApi } from "../../Shared/api";
 import moment from "moment";
 import { increaseLike, decreaseLike } from "../Modules/freeBoardSlice";
+import Swal from "sweetalert2";
+
 /**
  * @author kwonjiyeong
  * @param 없음
@@ -19,6 +21,22 @@ export const getFreeListDB = createAsyncThunk(
                 return response.data;
             }
         } catch (err) {
+            Swal.fire("에러", "네트워크 연결 상태를 확인해주세요.!", "error");
+            return thunkAPI.rejectWithValue(err.response.message);
+        }
+    },
+);
+
+export const getFreeListDBInfinity = createAsyncThunk(
+    "freeBoard/getList/infinity",
+    async (data, thunkAPI) => {
+        try {
+            const response = await freeBoardApi.getList(data);
+            if (response.data.ok) {
+                return response.data;
+            }
+        } catch (err) {
+            Swal.fire("에러", "네트워크 연결 상태를 확인해주세요.!", "error");
             return thunkAPI.rejectWithValue(err.response.message);
         }
     },
@@ -39,6 +57,7 @@ export const getFreePostDB = createAsyncThunk(
             if (response.data.ok)
                 return { ...response.data.like, ...response.data.result };
         } catch (err) {
+            Swal.fire("에러", "네트워크 연결 상태를 확인해주세요.!", "error");
             return thunkAPI.rejectWithValue(err.response.message);
         }
     },
@@ -60,6 +79,11 @@ export const addFreePostDB = createAsyncThunk(
 
             if (response.data.ok) return response.data.result;
         } catch (err) {
+            Swal.fire(
+                "에러",
+                "게시글 등록에 실패하였습니다. 다시 시도해주세요!",
+                "error",
+            );
             return thunkAPI.rejectWithValue(err.response.message);
         }
     },
@@ -78,9 +102,11 @@ export const editFreePostDB = createAsyncThunk(
         try {
             const response = await freeBoardApi.editPost(data);
             if (response.data.ok) {
+                Swal.fire("성공", "수정되었어요.", "success");
                 return response.data.result[0]; //서버에서 온 값이 배열로 묶여져서 들어와서 인덱스 처리했음.
             }
         } catch (err) {
+            Swal.fire("에러", "수정하지 못했어요! 다시 시도해주세요!", "error");
             return thunkAPI.rejectWithValue(err.response.message);
         }
     },
@@ -99,10 +125,12 @@ export const deleteFreePostDB = createAsyncThunk(
         try {
             const response = await freeBoardApi.deletePost(data);
             if (response.data.ok) {
+                Swal.fire("성공", "삭제되었어요.", "success");
                 history.push("/freeboard");
                 return data.post_id;
             }
         } catch (err) {
+            Swal.fire("에러", "삭제하지 못했어요! 다시 시도해주세요.", "error");
             return thunkAPI.rejectWithValue(err.response.message);
         }
     },
@@ -122,6 +150,7 @@ export const getFreeCommentListDB = createAsyncThunk(
             const response = await freeCommentApi.getPostCommentList(data);
             if (response.data.ok) return response.data.result;
         } catch (err) {
+            Swal.fire("에러", "네트워크 연결 상태를 확인해주세요.!", "error");
             return thunkAPI.rejectWithValue(err.response.message);
         }
     },
@@ -147,6 +176,11 @@ export const addFreeCommentDB = createAsyncThunk(
                     createdAt: moment().format(`YYYY-MM-DD HH:mm:ss`),
                 };
         } catch (err) {
+            Swal.fire(
+                "에러",
+                "댓글 등록에 실패하였습니다. 다시 시도해주세요!",
+                "error",
+            );
             return thunkAPI.rejectWithValue(err.response.message);
         }
     },
@@ -168,6 +202,11 @@ export const editFreeCommentDB = createAsyncThunk(
                 return response.data.result;
             }
         } catch (err) {
+            Swal.fire(
+                "에러",
+                "댓글 수정에 실패하였습니다. 다시 시도해주세요!",
+                "error",
+            );
             return thunkAPI.rejectWithValue(err.response.message);
         }
     },
@@ -190,6 +229,11 @@ export const deleteFreeCommentDB = createAsyncThunk(
                 return data.comment_id;
             }
         } catch (err) {
+            Swal.fire(
+                "에러",
+                "댓글 삭제에 실패하였습니다. 다시 시도해주세요!",
+                "error",
+            );
             return thunkAPI.rejectWithValue(err.response.message);
         }
     },
@@ -210,6 +254,11 @@ export const postLikeToggleDB = createAsyncThunk(
                 }
             }
         } catch (err) {
+            Swal.fire(
+                "에러",
+                "좋아요 등록에 실패하였습니다. 다시 시도해주세요!",
+                "error",
+            );
             return thunkAPI.rejectWithValue(err.response.message);
         }
     },
@@ -232,7 +281,22 @@ export const getIssuePostListDB = createAsyncThunk(
                 return response.data.result;
             }
         } catch (err) {
+            Swal.fire("에러", "네트워크 연결 상태를 확인해주세요.!", "error");
             return thunkAPI.rejectWithValue(err.response.message);
+        }
+    },
+);
+
+export const getSearchResult = createAsyncThunk(
+    "freeBoard/getSearchResult",
+    async (data, thunkAPI) => {
+        try {
+            const response = await searchApi.searchBySearchTerm(data);
+            if (response.data.ok) {
+                return response.data.result;
+            }
+        } catch (error) {
+            thunkAPI.rejectWithValue(error.response.data.errorMessage);
         }
     },
 );

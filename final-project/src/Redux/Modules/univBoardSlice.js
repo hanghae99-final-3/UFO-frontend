@@ -10,6 +10,8 @@ import {
     editUnivBoardCommentDB,
     deleteUnivBoardCommentDB,
     univLikeToggleDB,
+    getUnivSearchResult,
+    getUnivBoardDBInfinity,
 } from "../Async/univBoard";
 
 const initialState = {
@@ -51,6 +53,9 @@ const univBoardSlice = createSlice({
             state.post.all_like -= 1;
             state.post.is_like = false;
         },
+        infinityPostCall: (state, { payload }) => {
+            state.list = [...state.list, ...payload];
+        },
     },
     extraReducers: {
         //┏---------------대학교 게시판 게시글 불러오기 reducer------------┓
@@ -67,7 +72,31 @@ const univBoardSlice = createSlice({
         [getUnivBoardDB.rejected]: (state, { payload: errorMessage }) => {
             state.getUnivBoardErrorMessage = errorMessage;
         },
+        [getUnivBoardDBInfinity.pending]: (state, { payload }) => {
+            state.isFetching = true;
+        },
+        [getUnivBoardDBInfinity.fulfilled]: (state, { payload }) => {
+            state.list = [...state.list, ...payload.result.rows];
+            state.fixedList = payload.fixed_post.rows;
+            state.pageCount = payload.result.countPage;
+            state.isFetching = false;
+            state.getUnivBoardErrorMessage = "";
+        },
+        [getUnivBoardDBInfinity.rejected]: (
+            state,
+            { payload: errorMessage },
+        ) => {
+            state.getUnivBoardErrorMessage = errorMessage;
+        },
+
         //------------------------------------------------------------------
+
+        [getUnivSearchResult.fulfilled]: (state, { payload }) => {
+            state.list = payload.rows;
+            state.pageCount = payload.countPage;
+            state.isFetching = false;
+            state.getUnivBoardErrorMessage = "";
+        },
 
         //┏----------대학교 게시판 게시글 상세정보 불러오기 reducer-----------┓
         [detailUnivBoardPostDB.pending]: (state, action) => {
@@ -205,7 +234,12 @@ const univBoardSlice = createSlice({
     },
 });
 
-export const { onLogout, setUnivViewReducer, increaseLike, decreaseLike } =
-    univBoardSlice.actions;
+export const {
+    infinityPostCall,
+    onLogout,
+    setUnivViewReducer,
+    increaseLike,
+    decreaseLike,
+} = univBoardSlice.actions;
 
 export default univBoardSlice;

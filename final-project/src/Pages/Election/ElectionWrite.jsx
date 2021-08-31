@@ -25,6 +25,7 @@ const ElectionWrite = () => {
     const dispatch = useDispatch();
     const [isLoading, setIsLoading] = useState(false); //이미지가 업로드중인지 아닌지 판별하는 state (이미 이미지가 업로드 중이면(true면) 이미지 업로드를 막는 역할)
     const userInfo = useSelector(state => state.user.user);
+    const isDarkTheme = useSelector(state => state.user.isDarkTheme); // 다크모드
     const { id: electionPostId } = useParams(); //선거게시글의 포스트아이디입니다.
     const isEdit = electionPostId ? true : false; //수정모드인지 아닌지 판별해주는 값
     const isAdmin = useSelector(state => state.user.isAdmin); //관리자인지 아닌지 판별해주는 값
@@ -51,11 +52,6 @@ const ElectionWrite = () => {
     });
 
     useEffect(() => {
-        if (!isAdmin) {
-            Swal.fire("에러", "관리자만 선거를 열 수 있어요!", "error");
-            return history.goBack();
-        }
-
         //선거게시글ID와 state로부터 원본 게시글 정보를 불러올 수 있으면 입력값 통합 state에 저장한다.
         if (electionPostId && electionPostFromState)
             return setPost(electionPostFromState);
@@ -136,7 +132,7 @@ const ElectionWrite = () => {
                 const {
                     data: { result: photo },
                 } = await axios.post(
-                    "http://3.36.90.60/util/image",
+                    "https://yzkim9501.site/util/image",
                     formData,
                     config,
                 );
@@ -163,7 +159,7 @@ const ElectionWrite = () => {
         if (!post.name || !post.content || !post.start_date || !post.end_date)
             return Swal.fire(
                 "에러",
-                "선거게시글에 대한 내용을 입력해주세요.",
+                "선거에 대한 내용을 입력해주세요.",
                 "error",
             );
         //----
@@ -238,22 +234,25 @@ const ElectionWrite = () => {
         //----
     };
 
-    //대학 인증을 한 사람만 볼 수 있도록 예외처리를 합니다.
-    if (!userInfo.univ_id || !userInfo.country_id)
+    //관리자가 아닌 유저 핸들링
+    if (!isAdmin) {
         return (
             <Message
-                message="대학인증을 한 사람만 선거게시글을 볼 수 있어요"
-                link="/mypage"
-                buttonValue="대학인증하러가기"
+                strong="관리자"
+                message="만 선거를 열 수 있어요!"
+                link="/"
+                buttonValue="홈으로가기"
             />
         );
+    }
     return (
         <ElectionWriteContainer>
             {/* 선거 게시글의 제목, 내용을 입력하는 곳입니다. */}
             <WriteElectionInfoBox>
-                <Title>투표 정보</Title>
+                <Title isDarkTheme={isDarkTheme}>투표 정보</Title>
                 {/* 선거게시글 제목입력란 */}
                 <InputTitle
+                    isDarkTheme={isDarkTheme}
                     name="name"
                     type="text"
                     placeholder="투표 제목을 입력해주세요."
@@ -262,6 +261,7 @@ const ElectionWrite = () => {
                 />
                 {/* 선거게시글 내용입력란 */}
                 <InputContent
+                    isDarkTheme={isDarkTheme}
                     name="content"
                     type="text"
                     placeholder="투표 내용을 입력해주세요."
@@ -272,7 +272,7 @@ const ElectionWrite = () => {
 
             {/* 투표기간을 입력하는 공간입니다. */}
             <WriteElectionDurationBox>
-                <Title>투표 기간</Title>
+                <Title isDarkTheme={isDarkTheme}>투표 기간</Title>
                 <DateTimePicker
                     defaultDate={defaultDate}
                     originStartDate={post?.start_date}
@@ -282,8 +282,10 @@ const ElectionWrite = () => {
             </WriteElectionDurationBox>
 
             {/* 선거 후보자의 이름, 학과, 소개, 사진을 입력하는 곳입니다. */}
-            <WriteCandidateBox>
-                <Title bottomGap>후보자 정보</Title>
+            <WriteCandidateBox isDarkTheme={isDarkTheme}>
+                <Title bottomGap isDarkTheme={isDarkTheme}>
+                    후보자 정보
+                </Title>
                 <CandidateAccordian
                     candidates={post?.candidates}
                     getData={setCandidateInfo}
@@ -302,40 +304,101 @@ const ElectionWrite = () => {
 const ElectionWriteContainer = styled.div``;
 
 const Title = styled.h5`
-    ${mixin.textProps(30, "extraBold", "black")};
-    ${mixin.outline("1px solid", "gray4", "bottom")}
-    padding-bottom: 10px;
+    ${props =>
+        mixin.textProps(
+            30,
+            "extraBold",
+            props.isDarkTheme ? "white" : "black",
+        )};
+    ${props =>
+        mixin.outline(
+            "1px solid",
+            props.isDarkTheme ? "gray1" : "gray4",
+            "bottom",
+        )}
+    padding-bottom: ${({ theme }) => theme.calRem(10)};
+
+    @media ${({ theme }) => theme.mobile} {
+        ${props =>
+            mixin.textProps(
+                22,
+                "extraBold",
+                props.isDarkTheme ? "white" : "black",
+            )};
+        padding-bottom: ${({ theme }) => theme.calRem(8)};
+    }
 `;
 
 const WriteElectionInfoBox = styled.div`
     ${mixin.flexBox(null, null, "column")};
-    margin-bottom: 70px;
+    margin-bottom: ${({ theme }) => theme.calRem(70)};
+    @media ${({ theme }) => theme.mobile} {
+        margin-bottom: ${({ theme }) => theme.calRem(48)};
+    }
 `;
 
 const InputTitle = styled.input`
     border: none;
-    padding: 15px 0;
+    padding: ${({ theme }) => theme.calRem(20)} 0;
     transition: border-bottom 1s ease;
-    ${mixin.outline("1px solid", "gray4", "bottom")}
-    ${mixin.textProps(40, "extraBold", "gray2")};
+    background: none;
+    ${props =>
+        mixin.outline(
+            "1px solid",
+            props.isDarkTheme ? "gray1" : "gray4",
+            "bottom",
+        )}
+    ${props =>
+        mixin.textProps(
+            40,
+            "extraBold",
+            props.isDarkTheme ? "mainGray" : "gray2",
+        )};
     ::placeholder {
-        ${mixin.textProps(40, "extraBold", "gray4")};
+        ${props =>
+            mixin.textProps(
+                40,
+                "extraBold",
+                props.isDarkTheme ? "gray2" : "gray4",
+            )};
+        @media ${({ theme }) => theme.mobile} {
+            ${props =>
+                mixin.textProps(
+                    22,
+                    "extraBold",
+                    props.isDarkTheme ? "gray2" : "gray4",
+                )};
+        }
     }
     :focus {
         ${mixin.outline("1px solid", "black", "bottom")};
     }
+
+    @media ${({ theme }) => theme.mobile} {
+        padding: ${({ theme }) => theme.calRem(16)} 0;
+        ${mixin.textProps(22, "extraBold", "gray2")};
+    }
 `;
 const InputContent = styled.textarea`
     border: none;
-    padding: 30px 0;
+    background: none;
+    padding: ${({ theme }) => theme.calRem(30)} 0;
     transition: border-bottom 1s ease;
-    ${mixin.outline("1px solid", "gray4", "bottom")}
+    ${props =>
+        mixin.outline(
+            "1px solid",
+            props.isDarkTheme ? "gray1" : "gray4",
+            "bottom",
+        )}
     ${mixin.textProps(20, "regular", "gray2")};
     ::placeholder {
         ${mixin.textProps(20, "regular", "gray4")};
     }
     :focus {
         ${mixin.outline("1px solid", "black", "bottom")};
+    }
+    @media ${({ theme }) => theme.mobile} {
+        padding: ${({ theme }) => theme.calRem(24)} 0;
     }
 `;
 
@@ -344,7 +407,7 @@ const WriteElectionDurationBox = styled.div``;
 const WriteCandidateBox = styled.div``;
 
 const Controls = styled.div`
-    margin-top: 30px;
+    margin-top: ${({ theme }) => theme.calRem(30)};
     text-align: center;
 `;
 

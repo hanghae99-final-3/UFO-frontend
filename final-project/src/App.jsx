@@ -3,7 +3,6 @@ import { Redirect, Route, Switch } from "react-router-dom";
 import { ConnectedRouter } from "connected-react-router";
 import { history } from "./Redux/configureStore";
 import { useDispatch, useSelector } from "react-redux";
-import ReactGA from "react-ga";
 
 //컴포넌트
 import ProtectedRoute from "./Shared/ProtectedRoute";
@@ -26,13 +25,13 @@ import Election from "./Pages/Election/Election"; //선거게시판
 import ElectionDetail from "./Pages/Election/ElectionDetail"; //선거게시판 게시글상세페이지
 import ElectionWrite from "./Pages/Election/ElectionWrite"; //선거게시글 작성페이지 or 수정페이지
 import MainSearchResultPage from "./Pages/Search/MainSearchResultPage"; //메인검색결과페이지
-import SearchResult from "./Pages/Search/SearchResult"; // 자유 게시판 검색 결과 페이지
-import SocialLogin from "./Components/Login/SocialLogin"; // 소셜로그인 페이지
-import ToggleLogin from "./Components/Login/ToggleLogin";
+
 import KakaoLogin from "./KakaoLogin";
 
 //utils
 import { checkAdminDB, checkLoggedInUser } from "./Redux/Async/user"; // 로그인 체크
+import { setDarkTheme } from "./Redux/Modules/userSlice"; //다크모드 주입 함수
+import { getDarkTheme } from "./Shared/utils";
 
 function App() {
     // redux dispatch
@@ -48,13 +47,17 @@ function App() {
             dispatch(checkAdminDB());
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-
-        ReactGA.initialize("G-VJ5Q646DKW", { debug: true });
-        history.listen(location => {
-            ReactGA.set({ page: location.pathname }); // Update the user's current page
-            ReactGA.pageview(location.pathname); // Record a pageview for the given page
-        });
     }, [dispatch, isLoggedIn]);
+
+    useEffect(() => {
+        const LSDarkTheme = getDarkTheme(); //로컬스토리지에 있는 dark모드 값입니다.
+        if (LSDarkTheme === "true") {
+            return setDarkTheme(true);
+        }
+        if (!LSDarkTheme || LSDarkTheme === "false") {
+            setDarkTheme(false);
+        }
+    }, []);
 
     return (
         <>
@@ -104,17 +107,7 @@ function App() {
                             exact
                             component={FreeBoardWrite}
                         />
-                        <Route
-                            path="/freeboard/search/:param"
-                            exact
-                            component={SearchResult}
-                        />
 
-                        <Route
-                            path="/univboard/search/:param"
-                            exact
-                            component={SearchResult}
-                        />
                         <Route path="/mypage" exact component={MyPage} />
 
                         {/* ------대학 게시판 관련 route은 인증된 회원만 접근 가능-------- */}

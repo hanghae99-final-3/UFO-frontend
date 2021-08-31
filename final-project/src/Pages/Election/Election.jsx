@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import mixin from "../../Styles/Mixin";
+import theme from "../../Styles/theme";
 import { history } from "../../Redux/configureStore";
 import { Helmet } from "react-helmet";
 import moment from "moment";
@@ -16,6 +17,7 @@ import DefaultSelector from "../../Elements/Buttons/DefaultSelector";
 
 const Election = () => {
     const dispatch = useDispatch();
+    const isDarkTheme = useSelector(state => state.user.isDarkTheme);
     const electionList = useSelector(state => state.election.list);
     const user = useSelector(state => state.user.user);
     const isLogin = useSelector(state => state.user.isLoggedIn); //login을 했는지 안했는지 판별값으로 사용합니다.
@@ -37,9 +39,10 @@ const Election = () => {
     if (!user.user_id)
         return (
             <Message
-                message="로그인을 한 사람만 선거게시글을 볼 수 있어요"
+                strong="로그인"
+                message="을 해야만 선거함을 볼 수 있어요!"
                 link="/login"
-                buttonValue="로그인 하러가기"
+                buttonValue="로그인하러가기"
             />
         );
 
@@ -47,9 +50,10 @@ const Election = () => {
     if (!user.univ_id || !user.country_id)
         return (
             <Message
-                message="대학인증을 한 사람만 선거게시글을 볼 수 있어요"
+                strong="대학인증"
+                message="을 해야만 선거함을 볼 수 있어요!"
                 link="/mypage"
-                buttonValue="대학인증 하러가기"
+                buttonValue="대학인증하러가기"
             />
         );
 
@@ -58,12 +62,12 @@ const Election = () => {
             <Helmet>
                 <title>UFO - 투표함</title>
             </Helmet>
-            <Title>투표함</Title>
-            <Controls>
+            <Title isDarkTheme={isDarkTheme}>투표함</Title>
+            <Controls isDarkTheme={isDarkTheme}>
                 <Selecter>
                     <DefaultSelector
                         isSelected={isOngoing}
-                        rightGap="10px"
+                        rightGap={theme.calRem(8)}
                         onClick={() => setIsOngoing(true)}
                     >
                         진행중선거
@@ -81,7 +85,7 @@ const Election = () => {
             </Controls>
             {currentList && currentList.length < 1 ? (
                 <Message
-                    message="아직 투표가 없습니다"
+                    message="아직 선거가 없습니다"
                     link="/"
                     buttonValue="홈으로"
                 />
@@ -91,6 +95,7 @@ const Election = () => {
                         {currentListName === "ongoing"
                             ? currentList.map(ele => (
                                   <OngoingPost
+                                      isDarkTheme={isDarkTheme}
                                       key={ele.election_id}
                                       isVoted={ele.votes.length > 0}
                                       onClick={() =>
@@ -101,7 +106,9 @@ const Election = () => {
                                   >
                                       <span>{ele.name}</span>
                                       {ele.votes.length > 0 && (
-                                          <VotingComplete>
+                                          <VotingComplete
+                                              isDarkTheme={isDarkTheme}
+                                          >
                                               투표 완료!
                                           </VotingComplete>
                                       )}
@@ -109,6 +116,7 @@ const Election = () => {
                               ))
                             : currentList.map(ele => (
                                   <FinishedPost
+                                      isDarkTheme={isDarkTheme}
                                       key={ele.election_id}
                                       isVoted={ele.votes.length > 0}
                                       onClick={() =>
@@ -119,7 +127,9 @@ const Election = () => {
                                   >
                                       <span>{ele.name}</span>
                                       {ele.votes.length > 0 && (
-                                          <VotingComplete>
+                                          <VotingComplete
+                                              isDarkTheme={isDarkTheme}
+                                          >
                                               투표 완료!
                                           </VotingComplete>
                                       )}
@@ -135,43 +145,101 @@ const Election = () => {
 const ElectionContainer = styled.div``;
 
 const Title = styled.div`
-    ${mixin.outline("1px solid", "gray4", "bottom")};
-    padding-bottom: 10px;
-    margin-bottom: 10px;
-    ${mixin.textProps(30, "extraBold", "black")};
+    ${props =>
+        mixin.outline(
+            "1px solid",
+            props.isDarkTheme ? "gray1" : "gray4",
+            "bottom",
+        )};
+    padding-bottom: ${({ theme }) => theme.calRem(10)};
+    margin-bottom: ${({ theme }) => theme.calRem(10)};
+    ${props =>
+        mixin.textProps(
+            30,
+            "extraBold",
+            props.isDarkTheme ? "white" : "black",
+        )};
+    @media ${({ theme }) => theme.mobile} {
+        ${props =>
+            mixin.textProps(
+                22,
+                "extraBold",
+                props.isDarkTheme ? "white" : "black",
+            )};
+        padding-bottom: ${({ theme }) => theme.calRem(8)};
+        margin-bottom: ${({ theme }) => theme.calRem(8)};
+    }
 `;
 
 const Controls = styled.div`
     ${mixin.flexBox("space-between", "flex-end")};
-    padding-bottom: 10px;
-    ${mixin.outline("1px solid", "gray4", "bottom")};
+    padding-bottom: ${({ theme }) => theme.calRem(10)};
+    ${props =>
+        mixin.outline(
+            "1px solid",
+            props.isDarkTheme ? "gray1" : "gray4",
+            "bottom",
+        )};
+    @media ${({ theme }) => theme.mobile} {
+        padding-bottom: ${({ theme }) => theme.calRem(8)};
+    }
 `;
 
 const Selecter = styled.div``;
 
 const GridContainer = styled.div`
-    padding: 15px 0;
+    padding: ${({ theme }) => theme.calRem(16)} 0;
     width: 100%;
     display: grid;
     grid-template-columns: repeat(6, 1fr);
-    gap: 30px 25px;
+    gap: ${({ theme }) => theme.calRem(30)} ${({ theme }) => theme.calRem(25)};
+    @media ${({ theme }) => theme.mobile} {
+        grid-template-columns: repeat(2, 1fr);
+        gap: ${({ theme }) => theme.calRem(16)};
+    }
 `;
 
 const OngoingPost = styled.div`
     overflow: hidden;
     border-radius: 50px;
     cursor: pointer;
-    padding: 20px 25px;
+    ${props => (props.isDarkTheme ? mixin.darkBoxShadow() : mixin.boxShadow())};
+    padding: ${({ theme }) => `${theme.calRem(20)} ${theme.calRem(25)}`};
     ${mixin.outline("3px solid", "blue2")}
-    ${mixin.flexBox("center", "center", null, "100px")};
+    ${mixin.flexBox("center", "center", null, `${theme.calRem(100)}`)};
     ${mixin.floatBox("relative")}
     ${props =>
         props.isVoted
             ? mixin.outline("3px solid", "gray1")
             : mixin.outline("3px solid", "blue2")};
+
+    @media ${({ theme }) => theme.mobile} {
+        height: ${theme.calRem(60)};
+    }
+
+    :hover {
+        ${props =>
+            props.isDarkTheme ? "" : mixin.outline("3px solid", "gray1")};
+    }
+
     span {
-        ${mixin.textProps(20, "regular", "gray1")}
+        ${props =>
+            mixin.textProps(
+                20,
+                "extraBold",
+                props.isDarkTheme ? "mainGray" : "gray1",
+            )}
         ${mixin.textboxOverflow(2)}
+
+        @media ${({ theme }) => theme.mobile} {
+            ${props =>
+                mixin.textProps(
+                    16,
+                    "extraBold",
+                    props.isDarkTheme ? "mainGray" : "gray1",
+                )}
+            ${mixin.textboxOverflow(1)}
+        }
     }
 `;
 
@@ -179,22 +247,62 @@ const FinishedPost = styled.div`
     overflow: hidden;
     border-radius: 50px;
     cursor: pointer;
-    padding: 20px 25px;
-    background: ${({ theme }) => theme.color.mainGray};
+    ${props => (props.isDarkTheme ? mixin.darkBoxShadow() : mixin.boxShadow())};
+    padding: ${({ theme }) => `${theme.calRem(20)} ${theme.calRem(25)}`};
+    background: ${props =>
+        props.isDarkTheme
+            ? props.theme.color.gray1
+            : props.theme.color.mainGray};
     ${mixin.outline("3px solid", "gray3")}
-    ${mixin.flexBox("center", "center", null, "100px")};
+    ${mixin.flexBox("center", "center", null, `${theme.calRem(100)}`)};
     ${mixin.floatBox("relative")}
     ${props => (props.isVoted ? mixin.outline("3px solid", "gray2") : "")}
+        @media ${({ theme }) => theme.mobile} {
+        height: ${theme.calRem(60)};
+    }
 
-    :hover {
-        background: ${({ theme }) => theme.color.white};
-        span {
-            ${mixin.textProps(20, "regular", "gray1")}
+    span {
+        ${mixin.textboxOverflow(2)};
+        ${props =>
+            mixin.textProps(
+                20,
+                "regular",
+                props.isDarkTheme ? "mainGray" : "gray2",
+            )};
+        @media ${({ theme }) => theme.mobile} {
+            ${props =>
+                mixin.textProps(
+                    16,
+                    "regular",
+                    props.isDarkTheme ? "mainGray" : "gray2",
+                )};
+            ${mixin.textboxOverflow(1)};
         }
     }
-    span {
-        ${mixin.textboxOverflow(2)}
-        ${mixin.textProps(20, "regular", "gray2")}
+
+    :hover {
+        background: ${props =>
+            props.isDarkTheme
+                ? props.theme.color.black
+                : props.theme.color.white};
+        ${mixin.outline("3px solid", "danger")};
+        span {
+            ${props =>
+                mixin.textProps(
+                    20,
+                    "regular",
+                    props.isDarkTheme ? "mainGray" : "gray1",
+                )};
+            @media ${({ theme }) => theme.mobile} {
+                ${props =>
+                    mixin.textProps(
+                        16,
+                        "regular",
+                        props.isDarkTheme ? "mainGray" : "gray1",
+                    )};
+                ${mixin.textboxOverflow(1)};
+            }
+        }
     }
 `;
 
@@ -206,6 +314,10 @@ const VotingComplete = styled.div`
     ${mixin.flexBox("center", "center")};
     :hover {
         opacity: 0;
+    }
+
+    @media ${({ theme }) => theme.mobile} {
+        ${mixin.textProps(16, "regular", "mainMint")}
     }
 `;
 

@@ -14,3 +14,5 @@ export const getToken = async () => {
         return null;
     }
 };
+
+export const getDarkTheme = () => localStorage.getItem("ufo_dark_theme");

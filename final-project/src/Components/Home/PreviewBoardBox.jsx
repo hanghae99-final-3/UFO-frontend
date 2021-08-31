@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components"; // 스타일 컴포넌트 라이브러리
 import mixin from "../../Styles/Mixin"; // 믹스인 css 객체
+import theme from "../../Styles/theme";
 import categories from "../../Shared/categories"; // 게시물 태그 객체
 import { history } from "../../Redux/configureStore"; // 히스토리 객체
 import { useSelector } from "react-redux";
@@ -21,6 +22,7 @@ import { makeStyles } from "@material-ui/core"; // material ui 스타일링 훅�
 import SmallTag from "../../Elements/Tag/SmallTag";
 import SmallAnnounceTag from "../../Elements/Tag/SmallAnnounceTag";
 
+//국기
 const useStyles = makeStyles({
     heart: {
         fill: "#FF5372",
@@ -37,6 +39,7 @@ const PreviewBoardBox = ({
     announcement,
 }) => {
     const classes = useStyles();
+    const isDarkTheme = useSelector(state => state.user.isDarkTheme);
 
     // 로그인 유무
     const isLoggedIn = useSelector(state => state.user.isLoggedIn);
@@ -58,14 +61,34 @@ const PreviewBoardBox = ({
         }
     };
 
+    //데스크탑 사이즈인지 아닌지 판별하는 값입니다.
+    const isDesktop =
+        document.documentElement.clientWidth >= 1080 ? true : false;
+
     return (
         <BoardContainer>
-            <Header>
-                {tag && <LargeTag>#{tag.categoryName}</LargeTag>}
-                {title && <TitleHeading>{title}</TitleHeading>}
+            <Header isDarkTheme={isDarkTheme}>
+                {tag && (
+                    <LargeTag
+                        isDarkTheme={isDarkTheme}
+                        onClick={onToMoreClicked}
+                    >
+                        {tag.categoryName} 💬
+                    </LargeTag>
+                )}
+                {title && (
+                    <TitleHeading
+                        isDarkTheme={isDarkTheme}
+                        onClick={onToMoreClicked}
+                    >
+                        {title}
+                    </TitleHeading>
+                )}
                 {myPostTitle && <TitleHeading>{myPostTitle}</TitleHeading>}
                 <Boop rotation={15} timing={200}>
-                    <More onClick={onToMoreClicked}>더보기</More>
+                    <More isDarkTheme={isDarkTheme} onClick={onToMoreClicked}>
+                        더보기
+                    </More>
                 </Boop>
             </Header>
             <Content>
@@ -77,34 +100,42 @@ const PreviewBoardBox = ({
                                 handleOnClick(post.post_id);
                             }}
                         >
-                            <SmallAnnounceTag rightGap="10px">
+                            <SmallAnnounceTag rightGap={theme.calRem(10)}>
                                 공지
                             </SmallAnnounceTag>
-                            <AnnounceTitle>{post.title}</AnnounceTitle>
+                            <AnnounceTitle isDarkTheme={isDarkTheme}>
+                                {post.title}
+                            </AnnounceTitle>
                             <IconContainer>
-                                <>
-                                    <Icon>
-                                        {post?.like?.is_like === false ? (
-                                            <FavoriteBorder />
-                                        ) : (
-                                            <FavoriteIcon
-                                                className={classes.heart}
-                                            />
-                                        )}
-                                        <IconSpan>
-                                            {post.like && post.like.all_like}
-                                        </IconSpan>
-                                    </Icon>
-                                    <Icon>
-                                        <MdComment />
-                                        <IconSpan>
-                                            {post.comment_count}
-                                        </IconSpan>
-                                    </Icon>
-                                </>
+                                {/* 데스크탑일때만 좋아요와 댓글수가 보입니다. */}
+                                {isDesktop && (
+                                    <>
+                                        <Icon>
+                                            {post?.like?.is_like === false ? (
+                                                <FavoriteBorder />
+                                            ) : (
+                                                <FavoriteIcon
+                                                    className={classes.heart}
+                                                />
+                                            )}
+                                            <IconSpan isDarkTheme={isDarkTheme}>
+                                                {post.like &&
+                                                    post.like.all_like}
+                                            </IconSpan>
+                                        </Icon>
+                                        <Icon>
+                                            <MdComment />
+                                            <IconSpan isDarkTheme={isDarkTheme}>
+                                                {post.comment_count}
+                                            </IconSpan>
+                                        </Icon>
+                                    </>
+                                )}
                                 <Icon>
                                     <VisibilityIcon />
-                                    <IconSpan>{post.view_count}</IconSpan>
+                                    <IconSpan isDarkTheme={isDarkTheme}>
+                                        {post.view_count}
+                                    </IconSpan>
                                 </Icon>
                             </IconContainer>
                         </PostContainer>
@@ -119,9 +150,22 @@ const PreviewBoardBox = ({
                         >
                             <SmallTag
                                 announcement={announcement}
-                                rightGap="10px"
+                                rightGap={theme.calRem(10)}
                             >
-                                {!announcement && "#"}
+                                {!announcement && boardName === "freeboard" && (
+                                    <img
+                                        style={{
+                                            width: "15px",
+                                            marginRight: "1px",
+                                        }}
+                                        src={
+                                            categories.countrySelectorFlagList[
+                                                post.country_id - 1
+                                            ]?.icon
+                                        }
+                                        alt=""
+                                    />
+                                )}
                                 {boardName === "freeboard" &&
                                     !announcement &&
                                     categories.freeCategory[post.category]
@@ -135,29 +179,41 @@ const PreviewBoardBox = ({
                                     announcement &&
                                     "공지"}
                             </SmallTag>
-                            <PostTitle>{post.title}</PostTitle>
+                            <PostTitle isDarkTheme={isDarkTheme}>
+                                {post.title}
+                            </PostTitle>
 
                             <IconContainer>
-                                <Icon>
-                                    {post?.like?.is_like === false ? (
-                                        <FavoriteBorder />
-                                    ) : (
-                                        <FavoriteIcon
-                                            className={classes.heart}
-                                        />
-                                    )}
-                                    <IconSpan>
-                                        {post.like && post.like.all_like}
-                                    </IconSpan>
-                                </Icon>
-                                <Icon title={title} tag={tag}>
-                                    <MdComment />
-                                    <IconSpan>{post.comment_count}</IconSpan>
-                                </Icon>
+                                {/* 데스크탑일때만 좋아요와 댓글수가 보입니다. */}
+                                {isDesktop && (
+                                    <>
+                                        <Icon>
+                                            {post?.like?.is_like === false ? (
+                                                <FavoriteBorder />
+                                            ) : (
+                                                <FavoriteIcon
+                                                    className={classes.heart}
+                                                />
+                                            )}
+                                            <IconSpan isDarkTheme={isDarkTheme}>
+                                                {post.like &&
+                                                    post.like.all_like}
+                                            </IconSpan>
+                                        </Icon>
+                                        <Icon title={title} tag={tag}>
+                                            <MdComment />
+                                            <IconSpan isDarkTheme={isDarkTheme}>
+                                                {post.comment_count}
+                                            </IconSpan>
+                                        </Icon>
+                                    </>
+                                )}
 
                                 <Icon title={title} tag={tag}>
                                     <VisibilityIcon />
-                                    <IconSpan>{post.view_count}</IconSpan>
+                                    <IconSpan isDarkTheme={isDarkTheme}>
+                                        {post.view_count}
+                                    </IconSpan>
                                 </Icon>
                             </IconContainer>
                         </PostContainer>
@@ -174,33 +230,90 @@ const BoardContainer = styled.div`
 `;
 
 const IconSpan = styled.span`
-    ${mixin.textProps(12, "semiBold", "gray3")}
+    ${props =>
+        mixin.textProps(12, "semiBold", props.isDarkTheme ? "gray2" : "gray3")}
 `;
 const Header = styled.div`
-    margin-bottom: 10px;
-    padding-bottom: 8px;
-    ${mixin.outline("1.5px solid", "gray4", "bottom")}
+    margin-bottom: ${({ theme }) => theme.calRem(10)};
+    padding-bottom: ${({ theme }) => theme.calRem(10)};
+    ${props =>
+        mixin.outline(
+            "1.5px solid",
+            props.isDarkTheme ? "gray1" : "gray4",
+            "bottom",
+        )}
     ${mixin.flexBox("space-between", "flex-end", null, null)}
+
+    @media ${({ theme }) => theme.mobile} {
+        margin-bottom: ${({ theme }) => theme.calRem(8)};
+        padding-bottom: ${({ theme }) => theme.calRem(8)};
+    }
 `;
 
 const LargeTag = styled.span`
-    ${mixin.textProps(30, "extraBold", "black")}
+    ${props =>
+        mixin.textProps(30, "extraBold", props.isDarkTheme ? "white" : "black")}
+    @media ${({ theme }) => theme.mobile} {
+        ${props =>
+            mixin.textProps(
+                22,
+                "extraBold",
+                props.isDarkTheme ? "white" : "black",
+            )}
+    }
 `;
 const TitleHeading = styled.span`
-    ${mixin.textProps(30, "extraBold", "black")}
+    cursor: pointer;
+    ${props =>
+        mixin.textProps(30, "extraBold", props.isDarkTheme ? "white" : "black")}
+    @media ${({ theme }) => theme.mobile} {
+        ${props =>
+            mixin.textProps(
+                22,
+                "extraBold",
+                props.isDarkTheme ? "white" : "black",
+            )}
+    }
 `;
 const PostTitle = styled.p`
-    ${mixin.textProps(14, "semiBold", "gray2")}
+    ${props =>
+        mixin.textProps(14, "semiBold", props.isDarkTheme ? "gray3" : "gray2")}
+    ${mixin.textOverflow()}
+    @media ${({ theme }) => theme.mobile} {
+        ${props =>
+            mixin.textProps(
+                12,
+                "semiBold",
+                props.isDarkTheme ? "gray3" : "gray2",
+            )}
+    }
 `;
 const AnnounceTitle = styled.p`
-    ${mixin.textProps(14, "semiBold", "gray2")}
+    ${props =>
+        mixin.textProps(14, "semiBold", props.isDarkTheme ? "gray3" : "gray2")}
+    ${mixin.textOverflow()}
+    @media ${({ theme }) => theme.mobile} {
+        ${props =>
+            mixin.textProps(
+                12,
+                "semiBold",
+                props.isDarkTheme ? "gray3" : "gray2",
+            )}
+    }
 `;
 
 // 더보기 버튼
 const More = styled.span`
-    ${mixin.textProps(14, "semiBold", "gray3")}
-    :hover {
-        cursor: pointer;
+    ${props =>
+        mixin.textProps(14, "semiBold", props.isDarkTheme ? "gray2" : "gray3")}
+    cursor: pointer;
+    @media ${({ theme }) => theme.mobile} {
+        ${props =>
+            mixin.textProps(
+                12,
+                "semiBold",
+                props.isDarkTheme ? "gray2" : "gray3",
+            )}
     }
 `;
 
@@ -209,13 +322,19 @@ const Content = styled.div``;
 const PostContainer = styled.div`
     display: grid;
     cursor: pointer;
-    margin-bottom: 12px;
+    margin-bottom: ${({ theme }) => theme.calRem(12)};
     grid-template-columns: max-content 1fr max-content;
+    align-items: center;
 `;
 
 const IconContainer = styled.div`
     display: grid;
     grid-template-columns: repeat(3, 40px);
+    align-items: center;
+    @media ${({ theme }) => theme.mobile} {
+        display: block;
+        width: 40px;
+    }
 `;
 
 const Icon = styled.div`
@@ -224,10 +343,17 @@ const Icon = styled.div`
     span {
         line-height: 1;
         font-size: ${({ theme }) => theme.fontSize["12"]};
+        @media ${({ theme }) => theme.mobile} {
+            font-size: ${({ theme }) => theme.fontSize["11"]};
+        }
     }
     svg {
-        margin-right: 2px;
-        font-size: 17px;
+        color: white;
+        margin-right: ${({ theme }) => theme.calRem(2)};
+        font-size: ${({ theme }) => theme.fontSize["16"]};
+        @media ${({ theme }) => theme.mobile} {
+            font-size: ${({ theme }) => theme.fontSize["14"]};
+        }
     }
 `;
 

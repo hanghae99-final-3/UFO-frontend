@@ -1,7 +1,9 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { univBoardApi } from "../../Shared/api";
+import { searchApi, univBoardApi } from "../../Shared/api";
 import { history } from "../configureStore";
 import { increaseLike, decreaseLike } from "../Modules/univBoardSlice";
+import Swal from "sweetalert2";
+
 /**
  * @author heesung & junghoo
  * @param none
@@ -21,7 +23,26 @@ export const getUnivBoardDB = createAsyncThunk(
                 return thunkAPI.rejectWithValue(response.data.message);
             }
         } catch (error) {
-            alert("앗..네트워크 오류가 발생했습니다. 다시 시도해주세요😓 ");
+            Swal.fire("에러", "네트워크 연결 상태를 확인해주세요.", "error");
+            history.push("/");
+            return thunkAPI.rejectWithValue(error.response.data.message);
+        }
+    },
+);
+
+export const getUnivBoardDBInfinity = createAsyncThunk(
+    "univBoard/getUnivList/infinity",
+    async (data, thunkAPI) => {
+        try {
+            // 게시물 조회 요청
+            const response = await univBoardApi.getList(data);
+            if (response.data.ok) {
+                return response.data;
+            } else if (!response.data.ok) {
+                return thunkAPI.rejectWithValue(response.data.message);
+            }
+        } catch (error) {
+            Swal.fire("에러", "네트워크 연결 상태를 확인해주세요.", "error");
             history.push("/");
             return thunkAPI.rejectWithValue(error.response.data.message);
         }
@@ -49,7 +70,7 @@ export const addUnivBoardPostDB = createAsyncThunk(
                 return thunkAPI.rejectWithValue(response.data.message);
             }
         } catch (error) {
-            alert("인증된 회원만 사용 가능합니다.");
+            Swal.fire("에러", "인증된 회원만 사용 가능합니다.", "error");
             return thunkAPI.rejectWithValue(error.response.data.message);
         }
     },
@@ -70,12 +91,14 @@ export const editUnivBoardPostDB = createAsyncThunk(
             const response = await univBoardApi.editPost(data);
             if (response.data.ok) {
                 //성공시 수정된 게시물 정보 반환
+                Swal.fire("성공", "수정되었어요.", "success");
                 return response.data.result;
             } else if (!response.data.ok) {
                 return thunkAPI.rejectWithValue(response.data.message);
             }
         } catch (error) {
-            alert("게시글 수정 실패😭 다시 시도해주세요.");
+            Swal.fire("에러", "수정하지 못했어요! 다시 시도해주세요!", "error");
+
             return thunkAPI.rejectWithValue(error.response.data.message);
         }
     },
@@ -98,7 +121,7 @@ export const detailUnivBoardPostDB = createAsyncThunk(
                 return { ...response.data.like, ...response.data.result };
             }
         } catch (error) {
-            alert("앗..네트워크 오류가 발생했습니다. 다시 시도해주세요😓 ");
+            Swal.fire("에러", "네트워크 연결 상태를 확인해주세요.!", "error");
             history.push("/univboard");
             return thunkAPI.rejectWithValue(error.response.data.message);
         }
@@ -120,6 +143,7 @@ export const deleteUnivBoardPostDB = createAsyncThunk(
             const response = await univBoardApi.deletePost(data);
             if (response.data.ok) {
                 // 요청 성공시 redux 게시글 리스트 최신화
+                Swal.fire("성공", "삭제되었어요.", "success");
                 history.push("/univboard");
             } else if (!response.data.ok) {
                 // 삭제 실패시  에러 메세지 반환
@@ -127,7 +151,8 @@ export const deleteUnivBoardPostDB = createAsyncThunk(
             }
         } catch (error) {
             // 요청 및 서버 에러 반환
-            alert("게시글 삭제 실패😭 다시 시도해주세요.");
+            Swal.fire("에러", "삭제하지 못했어요! 다시 시도해주세요.", "error");
+
             return thunkAPI.rejectWithValue(error.response.data.message);
         }
     },
@@ -151,6 +176,7 @@ export const getUnivBoardCommentDB = createAsyncThunk(
                 return response.data.result;
             }
         } catch (error) {
+            Swal.fire("에러", "네트워크 연결 상태를 확인해주세요.!", "error");
             return thunkAPI.rejectWithValue(error.response.data.message);
         }
     },
@@ -178,7 +204,11 @@ export const addUnivBoardCommentDB = createAsyncThunk(
                 return thunkAPI.rejectWithValue(response.data.message);
             }
         } catch (error) {
-            alert(error.response.data.errorMessage);
+            Swal.fire(
+                "에러",
+                "게시글 등록에 실패하였습니다. 다시 시도해주세요!",
+                "error",
+            );
             return thunkAPI.rejectWithValue(error.response.data.errorMessage);
         }
     },
@@ -202,7 +232,11 @@ export const editUnivBoardCommentDB = createAsyncThunk(
                 return thunkAPI.rejectWithValue(response.data.message);
             }
         } catch (error) {
-            alert("댓글 수정 실패😭 다시 시도해주세요.");
+            return Swal.fire(
+                "에러",
+                "댓글 수정에 실패하였습니다. 다시 시도해주세요.",
+                "error",
+            );
             return thunkAPI.rejectWithValue(error.response.data.message);
         }
     },
@@ -228,7 +262,11 @@ export const deleteUnivBoardCommentDB = createAsyncThunk(
                 return thunkAPI.rejectWithValue(response.data.message);
             }
         } catch (error) {
-            alert("댓글 삭제 실패😭 다시 시도해주세요.");
+            Swal.fire(
+                "에러",
+                "댓글 삭제에 실패하였습니다. 다시 시도해주세요",
+                "error",
+            );
             return thunkAPI.rejectWithValue(error.response.data.message);
         }
     },
@@ -248,7 +286,26 @@ export const univLikeToggleDB = createAsyncThunk(
                 }
             }
         } catch (err) {
+            Swal.fire(
+                "에러",
+                "좋아요 등록에 실패하였습니다. 다시 시도해주세요",
+                "error",
+            );
             return thunkAPI.rejectWithValue(err.response.message);
+        }
+    },
+);
+
+export const getUnivSearchResult = createAsyncThunk(
+    "univBoard/getUnivSearchResult",
+    async (data, thunkAPI) => {
+        try {
+            const response = await searchApi.searchUnivBySearchTerm(data);
+            if (response.data.ok) {
+                return response.data.result;
+            }
+        } catch (error) {
+            thunkAPI.rejectWithValue(error.response.data.errorMessage);
         }
     },
 );

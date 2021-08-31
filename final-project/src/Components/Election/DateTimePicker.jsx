@@ -2,12 +2,15 @@ import React from "react";
 import styled from "styled-components";
 import mixin from "../../Styles/Mixin";
 import moment from "moment";
+import theme from "../../Styles/theme";
+import { useSelector } from "react-redux";
 
 //머테리얼 ui
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 
 const useStyles = makeStyles(theme => {
+    
     return {
         textField: {
             fontSize: `${18 / 16}rem`, //폰트크기
@@ -27,14 +30,16 @@ const DateTimePicker = ({
     defaultDate,
     getDateInfo,
 }) => {
+    const isDarkTheme = useSelector(state=>state.user.isDarkTheme)
     const classes = useStyles();
     return (
         <Container>
             {/* 선거시작일 입력란 */}
-            <DateBox>
+            <DateBox isDarkTheme={isDarkTheme}>
                 <span>선거시작일</span>
 
                 <TextField
+                
                     name="start_date"
                     id="datetime-local"
                     type="datetime-local"
@@ -51,7 +56,7 @@ const DateTimePicker = ({
             </DateBox>
 
             {/* 선거종료일 입력란 */}
-            <DateBox>
+            <DateBox isDarkTheme={isDarkTheme}>
                 <span>선거종료일</span>
                 <TextField
                     name="end_date"
@@ -70,34 +75,44 @@ const DateTimePicker = ({
     );
 };
 
+
+
 const Container = styled.div`
-    ${mixin.flexBox("center", "center", "column")}
+    ${mixin.flexBox("center", "center", "column")};
 `;
 
 const DateBox = styled.div`
-    ${mixin.flexBox("center", "center")}
+    ${mixin.flexBox("center", "center")};
     width: max-content;
-    margin: 10px 0 40px 0;
+    margin: ${theme.calRem(10)} 0 ${theme.calRem(40)} 0;
+    @media ${({ theme }) => theme.mobile} {
+        margin: ${theme.calRem(8)} 0;
+    }
     span {
-        ${mixin.textProps(20, "extraBold", "gray1")}
-        margin-right: 10px;
+        ${props=>mixin.textProps(20, "extraBold", props.isDarkTheme?"mainGray":"gray1")};
+        margin-right: ${theme.calRem(10)};
+        @media ${({ theme }) => theme.mobile} {
+            ${props=>mixin.textProps(16, "extraBold", props.isDarkTheme?"mainGray":"gray1")};
+        }
     }
 
-    /* Mui input에 cursor 주기 */
+    /* Mui input에 cursor 주기 / 색깔넣기 */
     .MuiInputBase-input {
         cursor: pointer;
+        color: ${props => props.isDarkTheme ? 'white' : 'black'}
     }
 
     /* Mui input 창에서 안쪽 여백주기 */
     input[type="datetime-local" i] {
-        padding-inline-start: 10px;
-        padding-inline-end: 10px;
+        padding-inline-start: ${theme.calRem(10)};
+        padding-inline-end: ${theme.calRem(10)};
     }
 
     /* 기존 Mui의 border 효과 제거 */
     .MuiInput-underline:before,
     .MuiInput-underline:after {
         display: none;
+        
     }
 `;
 

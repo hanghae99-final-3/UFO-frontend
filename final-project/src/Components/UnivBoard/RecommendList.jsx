@@ -11,6 +11,7 @@ import IssueBoardBox from "./IssueBoardBox";
 
 const RecommendList = () => {
     const issuePostList = useSelector(state => state.freeBoard.issueList);
+    const isDarkTheme = useSelector(state => state.user.isDarkTheme); //다크모드
     const dispatch = useDispatch();
     useEffect(() => {
         dispatch(getIssuePostListDB());
@@ -18,11 +19,11 @@ const RecommendList = () => {
 
     return (
         <>
-            <HeadingWrapper>
-                <Heading>오늘의 추천글</Heading>
+            <HeadingWrapper isDarkTheme={isDarkTheme}>
+                <Heading isDarkTheme={isDarkTheme}>오늘의 추천글</Heading>
             </HeadingWrapper>
             <IssueBoardBox
-                issueList={issuePostList && issuePostList.slice(0, 5)}
+                issueList={issuePostList && issuePostList.slice(0, 6)}
                 preview={true}
                 boardName="freeboard"
             />
@@ -34,9 +35,31 @@ const HeadingWrapper = styled.div`
     margin-top: 57px;
     margin-bottom: 10px;
     padding-bottom: 10px;
-    ${mixin.outline("1px solid", "mainGray", "bottom")}
+    ${props =>
+        mixin.outline(
+            "1px solid",
+            props.isDarkTheme ? "gray1" : "mainGray",
+            "bottom",
+        )}
+
+    //모바일 사이즈
+     @media ${({ theme }) => theme.mobile} {
+        margin-top: 48px;
+        padding-bottom: 8px;
+    }
 `;
 const Heading = styled.span`
-    ${mixin.textProps(30, "extraBold", "black")}
+    ${props =>
+        mixin.textProps(30, "extraBold", props.isDarkTheme ? "white" : "black")}
+
+    //모바일 사이즈
+    @media ${({ theme }) => theme.mobile} {
+        ${props =>
+            mixin.textProps(
+                22,
+                "extraBold",
+                props.isDarkTheme ? "white" : "black",
+            )}
+    }
 `;
 export default RecommendList;

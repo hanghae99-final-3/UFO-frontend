@@ -13,8 +13,18 @@ import { FaArrowRight, FaArrowLeft } from "react-icons/fa";
 
 //컴포넌트
 import SlideCard from "./SlideCard";
+import { useSelector } from "react-redux";
 
 const MainSlider = ({ postList }) => {
+    const isMobile = document.documentElement.clientWidth < 798 ? true : false;
+    const isDarkTheme = useSelector(state => state.user.isDarkTheme);
+
+    const isTablet =
+        document.documentElement.clientWidth >= 798 &&
+        document.documentElement.clientWidth < 1080
+            ? true
+            : false;
+
     //슬라이더 우측 방향으로 이동
     const NextArrow = ({ onClick }) => {
         return (
@@ -41,7 +51,7 @@ const MainSlider = ({ postList }) => {
     const [imageIndex, setImageIndex] = useState(0);
 
     //  슬라이더 작동 환경 설정
-    const settings = {
+    let settings = {
         infinite: true,
         lazyLoad: true,
         speed: 230,
@@ -53,14 +63,39 @@ const MainSlider = ({ postList }) => {
         beforeChange: (current, next) => setImageIndex(next),
     };
 
+    //모바일
+    if (isMobile) {
+        settings = {
+            infinite: true,
+            lazyLoad: true,
+            speed: 230,
+            slidesToShow: 1,
+            centerMode: true,
+            beforeChange: (current, next) => setImageIndex(next),
+        };
+    }
+
+    //태블릿
+    if (isTablet) {
+        settings = {
+            infinite: true,
+            lazyLoad: true,
+            speed: 230,
+            slidesToShow: 3,
+            centerMode: true,
+            beforeChange: (current, next) => setImageIndex(next),
+        };
+    }
+
     return (
         <SlideContainer>
-            <PageTitle>인기 게시글</PageTitle>
+            <PageTitle isDarkTheme={isDarkTheme}>인기 게시글 🔥</PageTitle>
             <Slider {...settings}>
                 {postList &&
                     postList.map((post, idx) => (
                         <CardContainer key={idx} active={idx === imageIndex}>
                             <SlideCard
+                                isDarkTheme={isDarkTheme}
                                 post={post.free_board}
                                 rank={idx + 1}
                                 active={idx === imageIndex}
@@ -73,13 +108,30 @@ const MainSlider = ({ postList }) => {
 };
 
 //---------스타일 컴포넌트---------
-const PageTitle = styled.span`
-    margin-bottom: 20px;
-    ${mixin.textProps(30, "extraBold", "black")}
-`;
 
 const SlideContainer = styled.div`
-    margin: 70px 0;
+    margin: ${({ theme }) => theme.calRem(70)} 0;
+    @media ${({ theme }) => theme.mobile} {
+        margin: ${({ theme }) => theme.calRem(40)} 0;
+        .slick-slide {
+            margin-top: ${({ theme }) => theme.calRem(16)};
+            width: 10rem;
+        }
+    }
+`;
+
+const PageTitle = styled.span`
+    ${props =>
+        mixin.textProps(30, "extraBold", props.isDarkTheme ? "white" : "black")}
+
+    @media ${({ theme }) => theme.mobile} {
+        ${props =>
+            mixin.textProps(
+                22,
+                "extraBold",
+                props.isDarkTheme ? "white" : "black",
+            )}
+    }
 `;
 
 // 슬라이더 카드 컨테이너
@@ -90,11 +142,15 @@ const CardContainer = styled.div`
             ? `opacity: 1`
             : `    opacity: 0.5;
     `};
-
     transition: ${props => !props.active && "transform 300ms"};
     img {
         width: ${props => !props.active && "width:20rem"};
         margin: ${props => !props.active && "margin: 0 auto"};
+    }
+
+    @media ${({ theme }) => theme.mobile} {
+        transform: none;
+        padding: 0 1em;
     }
 `;
 
@@ -116,6 +172,10 @@ const ArrowContainer = styled.div`
     ${props =>
         props.direction === "prev" &&
         mixin.floatBox("absolute", "50%", null, null, "0")};
+
+    @media ${({ theme }) => theme.mobile} {
+        display: none;
+    }
 `;
 
 export default MainSlider;

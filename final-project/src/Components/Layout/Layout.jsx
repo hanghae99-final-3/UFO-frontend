@@ -1,7 +1,10 @@
 import React from "react";
 import Header from "./Header";
 import Main from "./Main";
-import FloatBox from "./FloatBox";
+import Float from "./Float";
+import styled from "styled-components";
+import { useSelector } from "react-redux";
+import theme from "../../Styles/theme";
 
 /**
  * @author jiyeong
@@ -11,13 +14,18 @@ import FloatBox from "./FloatBox";
  * @필수값
  */
 const Layout = ({ children }) => {
+    const isDarkTheme = useSelector(state => state.user.isDarkTheme);
     return (
-        <>
-            <Header />
+        <StyledLayout isDarkTheme={isDarkTheme}>
+            <Header isDarkTheme={isDarkTheme} />
             <Main>{children}</Main>
-            <FloatBox />
-        </>
+            <Float isDarkTheme={isDarkTheme} />
+        </StyledLayout>
     );
 };
+
+const StyledLayout = styled.div`
+    /* ${props => props.isDarkTheme && `background:${theme.color.black}`} */
+`;
 
 export default Layout;

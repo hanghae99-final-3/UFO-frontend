@@ -3,14 +3,14 @@ import styled from "styled-components";
 import { history } from "../../Redux/configureStore";
 import mixin from "../../Styles/Mixin";
 import categories from "../../Shared/categories";
-import { MdComment } from "react-icons/md";
+
 import VisibilityIcon from "@material-ui/icons/Visibility";
-import moment from "moment";
-import FavoriteIcon from "@material-ui/icons/Favorite";
-import FavoriteBorder from "@material-ui/icons/FavoriteBorder";
+
 import DefaultTag from "../../Elements/Tag/DefaultTag";
+import { useSelector } from "react-redux";
 
 const IssueBoardBox = ({ issueList, boardName }) => {
+    const isDarkTheme = useSelector(state => state.user.isDarkTheme); //다크모드
     // 게시물 클릭시 이벤틀 헨들러
     const _onClick = postId => {
         //자유게시판일때,
@@ -40,20 +40,17 @@ const IssueBoardBox = ({ issueList, boardName }) => {
                                     categories.univCategory[post.category]
                                         ?.categoryName}
                             </DefaultTag>
-                            <PostTitle>{post.free_board.title}</PostTitle>
+                            <PostTitle isDarkTheme={isDarkTheme}>
+                                {post.free_board.title}
+                            </PostTitle>
                         </Title>
 
                         <IconContainer>
-                            <>
-                                <Icon>
-                                    <MdComment />
-                                    <span>{post.free_board.coment_count}</span>
-                                </Icon>
-                            </>
-
                             <Icon>
                                 <VisibilityIcon />
-                                <span>{post.free_board.view_count}</span>
+                                <ViewCount isDarkTheme={isDarkTheme}>
+                                    {post.free_board.view_count}
+                                </ViewCount>
                             </Icon>
                         </IconContainer>
                     </PostContainer>
@@ -75,7 +72,18 @@ const SmallTag = styled.span`
     ${mixin.textProps(18, "semiBold", "gray1", "center")}
 `;
 const PostTitle = styled.p`
-    ${mixin.textProps(20, "semiBold", "gray2")}
+    ${props =>
+        mixin.textProps(20, "semiBold", props.isDarkTheme ? "gray3" : "gray2")}
+
+    //모바일 사이즈
+     @media ${({ theme }) => theme.mobile} {
+        ${props =>
+            mixin.textProps(
+                12,
+                "semiBold",
+                props.isDarkTheme ? "gray3" : "gray2",
+            )}
+    }
 `;
 
 const PostContainer = styled.div`
@@ -83,6 +91,10 @@ const PostContainer = styled.div`
     margin-bottom: 12px;
     justify-content: space-between;
     cursor: pointer;
+
+    @media ${({ theme }) => theme.mobile} {
+        margin-bottom: 8px;
+    }
 `;
 
 const Title = styled.div`
@@ -91,21 +103,42 @@ const Title = styled.div`
 `;
 
 const IconContainer = styled.div`
-    width: 10%;
+    width: 45px;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
+    @media ${({ theme }) => theme.mobile} {
+        width: 40px;
+    }
 `;
 
 const Icon = styled.div`
     display: flex;
-    justify-content: flex-start;
+    justify-content: flex-end;
     align-items: center;
     span {
         line-height: 1;
     }
     svg {
+        color: white;
         font-size: 20px;
-        margin: 0 5px 0 10px;
+        margin-right: 10px;
+    }
+
+    //모바일 사이즈
+    @media ${({ theme }) => theme.mobile} {
+        svg {
+            font-size: 15px;
+            margin-right: 5px;
+        }
+    }
+`;
+
+const ViewCount = styled.span`
+    ${mixin.textProps(12, "semiBold", "gray2")}
+
+    //모바일 사이즈
+ @media ${({ theme }) => theme.mobile} {
+        ${mixin.textProps(11, "semiBold", "gray2")}
     }
 `;
 

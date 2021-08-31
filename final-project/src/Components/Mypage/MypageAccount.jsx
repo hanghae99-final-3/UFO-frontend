@@ -15,6 +15,8 @@ import confirm from "../../Shared/confirm";
 
 const MypageAccount = props => {
     const dispatch = useDispatch();
+    const isDarkTheme = useSelector(state => state.user.isDarkTheme);
+
     const user = useSelector(state => state.user.user); // 로그인 유저 정보
 
     // 서버에서 유저에게 발송하는 이메일 인증 코드 저장
@@ -107,6 +109,7 @@ const MypageAccount = props => {
                     setAuthCode(res.data.authCode);
                     setInputEmail(email);
                     setEmailAuthMsg("인증번호가 전송되었습니다.");
+                    console.log(res.data.authCode);
                     actions.resetForm(authCodeFormik.initialValues);
                 })
                 .catch(error => {
@@ -162,7 +165,7 @@ const MypageAccount = props => {
         },
         validationSchema: Yup.object({
             nickname: Yup.string()
-                .max(12, "닉네임은 12자리 미만으로 입력해주세요.")
+                .max(10, "닉네임은 10자리 미만으로 입력해주세요.")
                 .required("닉네임을 입력해주세요"),
 
             password: Yup.string().required("비밀번호를 입력하세요"),
@@ -291,13 +294,14 @@ const MypageAccount = props => {
 
     return (
         <>
-            <TitleWrapper>
-                <Title>계정관리</Title>
+            <TitleWrapper isDarkTheme={isDarkTheme}>
+                <Title isDarkTheme={isDarkTheme}>계정관리</Title>
             </TitleWrapper>
             <ControlContainer>
                 <ButtonWrapper>
                     {/* 이메일 인증  모드 핸들러 버튼 */}
                     <ControlButton
+                        isDarkTheme={isDarkTheme}
                         name="schoolButton"
                         onClick={e => {
                             handleButtonClick(e);
@@ -315,14 +319,18 @@ const MypageAccount = props => {
                             <FirstInputWrapper>
                                 <FirstButtonContainer>
                                     <Input
+                                        isDarkTheme={isDarkTheme}
                                         id="email"
-                                        placeholder="학교 메일을 입력해주세요"
+                                        placeholder="대학 이메일을 입력해주세요"
                                         {...emailAuthFormik.getFieldProps(
                                             "email",
                                         )}
                                         onBlur={emailAuthFormik.handleBlur}
                                     />
-                                    <InputButton type="submit">
+                                    <InputButton
+                                        isDarkTheme={isDarkTheme}
+                                        type="submit"
+                                    >
                                         확인
                                     </InputButton>
                                 </FirstButtonContainer>
@@ -343,13 +351,17 @@ const MypageAccount = props => {
                             <InputWrapper>
                                 <ButtonContainer>
                                     <Input
+                                        isDarkTheme={isDarkTheme}
                                         id="inputAuthCode"
                                         placeholder="인증번호를 입력해주세요"
                                         {...authCodeFormik.getFieldProps(
                                             "inputAuthCode",
                                         )}
                                     />
-                                    <FirstInputButton type="submit">
+                                    <FirstInputButton
+                                        isDarkTheme={isDarkTheme}
+                                        type="submit"
+                                    >
                                         인증
                                     </FirstInputButton>
                                 </ButtonContainer>
@@ -370,6 +382,7 @@ const MypageAccount = props => {
                 )}
                 {/* 닉네임 변경 모드 핸들러 버튼 */}
                 <ControlButton
+                    isDarkTheme={isDarkTheme}
                     name="nicknameButton"
                     onClick={e => {
                         handleButtonClick(e);
@@ -385,6 +398,7 @@ const MypageAccount = props => {
                         <InputForm onSubmit={nicknameChangeFormik.handleSubmit}>
                             <InputWrapper>
                                 <Input
+                                    isDarkTheme={isDarkTheme}
                                     id="password"
                                     type="password"
                                     placeholder="비밀번호를 입력해주세요."
@@ -400,6 +414,7 @@ const MypageAccount = props => {
                                 ) : null}
                                 <ButtonContainer>
                                     <Input
+                                        isDarkTheme={isDarkTheme}
                                         id="nickname"
                                         placeholder="변경할 닉네임을 입력해주세요."
                                         {...nicknameChangeFormik.getFieldProps(
@@ -407,7 +422,10 @@ const MypageAccount = props => {
                                         )}
                                     />
 
-                                    <InputButton type="submit">
+                                    <InputButton
+                                        isDarkTheme={isDarkTheme}
+                                        type="submit"
+                                    >
                                         확인
                                     </InputButton>
                                 </ButtonContainer>
@@ -423,6 +441,7 @@ const MypageAccount = props => {
                 )}
                 <ButtonWrapper>
                     <ControlButton
+                        isDarkTheme={isDarkTheme}
                         name="emailButton"
                         onClick={e => {
                             handleLoginEmailEditMode(e);
@@ -437,6 +456,7 @@ const MypageAccount = props => {
                             <InputForm onSubmit={loginEmailFormik.handleSubmit}>
                                 <InputWrapper>
                                     <Input
+                                        isDarkTheme={isDarkTheme}
                                         id="password"
                                         type="password"
                                         autoComplete="new-password"
@@ -454,6 +474,7 @@ const MypageAccount = props => {
                                     ) : null}
                                     <ButtonContainer>
                                         <Input
+                                            isDarkTheme={isDarkTheme}
                                             id="newEmail"
                                             autoComplete="new-password"
                                             placeholder="새로운 로그인 이메일을 입력해주세요."
@@ -461,7 +482,10 @@ const MypageAccount = props => {
                                                 "newEmail",
                                             )}
                                         />
-                                        <InputButton type="submit">
+                                        <InputButton
+                                            isDarkTheme={isDarkTheme}
+                                            type="submit"
+                                        >
                                             확인
                                         </InputButton>
                                     </ButtonContainer>
@@ -478,6 +502,7 @@ const MypageAccount = props => {
                 </ButtonWrapper>
                 <ButtonWrapper>
                     <ControlButton
+                        isDarkTheme={isDarkTheme}
                         name="passwordButton"
                         onClick={e => {
                             handleButtonClick(e);
@@ -494,6 +519,7 @@ const MypageAccount = props => {
                             >
                                 <InputWrapper>
                                     <Input
+                                        isDarkTheme={isDarkTheme}
                                         placeholder="현재 비밀번호"
                                         type="password"
                                         {...passwordResetFormik.getFieldProps(
@@ -512,6 +538,7 @@ const MypageAccount = props => {
                                         </ErrorBox>
                                     ) : null}
                                     <Input
+                                        isDarkTheme={isDarkTheme}
                                         placeholder="새로운 비빌번호"
                                         type="password"
                                         {...passwordResetFormik.getFieldProps(
@@ -529,6 +556,7 @@ const MypageAccount = props => {
                                     ) : null}
                                     <LastButtonContainer>
                                         <Input
+                                            isDarkTheme={isDarkTheme}
                                             type="password"
                                             placeholder="새로운 비밀번호 확인"
                                             {...passwordResetFormik.getFieldProps(
@@ -536,7 +564,10 @@ const MypageAccount = props => {
                                             )}
                                         />
 
-                                        <InputButton type="submit">
+                                        <InputButton
+                                            isDarkTheme={isDarkTheme}
+                                            type="submit"
+                                        >
                                             설정
                                         </InputButton>
                                     </LastButtonContainer>
@@ -557,10 +588,14 @@ const MypageAccount = props => {
                     )}
                 </ButtonWrapper>
             </ControlContainer>
-            <TitleWrapper>
-                <Title>기타</Title>
+            <TitleWrapper isDarkTheme={isDarkTheme}>
+                <Title isDarkTheme={isDarkTheme}>기타</Title>
             </TitleWrapper>
-            <ControlButton name="dropAccount" onClick={handleDeleteAccount}>
+            <ControlButton
+                isDarkTheme={isDarkTheme}
+                name="dropAccount"
+                onClick={handleDeleteAccount}
+            >
                 탈퇴하기
             </ControlButton>
         </>
@@ -571,16 +606,42 @@ const MypageAccount = props => {
 const TitleWrapper = styled.div`
     padding-bottom: 10px;
     margin-bottom: 10px;
-    ${mixin.outline("1.5px solid", "gray4", "bottom")}
+    ${props =>
+        mixin.outline(
+            "1.5px solid",
+            props.isDarkTheme ? "gray1" : "gray4",
+            "bottom",
+        )};
 `;
 // 계정관리 타이틀
 const Title = styled.span`
     display: block;
-    ${mixin.textProps(30, "extraBold", "black")}
+    ${props =>
+        mixin.textProps(
+            30,
+            "extraBold",
+            props.isDarkTheme ? "white" : "black",
+        )};
+
+    //모바일 사이즈
+    @media ${({ theme }) => theme.mobile} {
+        ${props =>
+            mixin.textProps(
+                22,
+                "extraBold",
+                props.isDarkTheme ? "white" : "black",
+            )};
+    }
 `;
 // 학교 인증 닉네임 설정 등, 계정관리 버튼 감싸는 div
 const ControlContainer = styled.div`
-    ${mixin.flexBox("space-between", null, "column", "40%")}
+    margin-bottom: 52px;
+    ${mixin.flexBox("space-between", null, "column", "40%")};
+
+    //모바일 사이즈
+    @media ${({ theme }) => theme.mobile} {
+        margin-bottom: ${({ theme }) => theme.calRem(40)};
+    }
 `;
 // 버튼 감싸는 div
 const ButtonWrapper = styled.div``;
@@ -591,18 +652,48 @@ const ControlButton = styled.button`
     margin-bottom: 15px;
     width: fit-content;
     border-radius: 20px;
-    background-color: white;
+    background-color: transparent;
+    ${props => (props.isDarkTheme ? null : mixin.boxShadow())};
     ${props =>
         mixin.outline(
             "2px solid",
             props.selected === props.name ? "mainMint" : "blue3",
-        )}
-    ${props =>
-        mixin.textProps(
-            18,
-            "semiBold",
-            props.selected === props.name ? "black" : "gray3",
-        )}
+        )};
+    ${props => {
+        if (props.isDarkTheme) {
+            return mixin.textProps(
+                18,
+                "semiBold",
+                props.selected === props.name ? "white" : "gray2",
+            );
+        } else {
+            return mixin.textProps(
+                18,
+                "semiBold",
+                props.selected === props.name ? "black" : "gray3",
+            );
+        }
+    }};
+
+    @media ${({ theme }) => theme.mobile} {
+        margin-bottom: 10px;
+        height: ${({ theme }) => theme.calRem(24)};
+        ${props => {
+            if (props.isDarkTheme) {
+                return mixin.textProps(
+                    11,
+                    "semiBold",
+                    props.selected === props.name ? "white" : "gray2",
+                );
+            } else {
+                return mixin.textProps(
+                    11,
+                    "semiBold",
+                    props.selected === props.name ? "black" : "gray3",
+                );
+            }
+        }};
+    }
 `;
 // 인풋창 컨테이너
 const InputContainer = styled.div`
@@ -612,27 +703,73 @@ const InputContainer = styled.div`
 // 이메일 인증부분 인풋 form
 const FirstInputForm = styled.form`
     width: 100%;
-    ${mixin.flexBox(null, "flex-end")}
+    ${mixin.flexBox(null, "flex-end")};
 `;
 // 이메일 인증부분 제외 다른 계정관리 인풋 폼
 const InputForm = styled.form`
     width: 100%;
     margin-bottom: 21px;
-    ${mixin.flexBox(null, "flex-end")}
+    ${mixin.flexBox(null, "flex-end")};
+
+    //모바일 사이즈
+    @media ${({ theme }) => theme.mobile} {
+        margin-bottom: 0px;
+    } ;
 `;
 // 인풋 입력 창
 const Input = styled.input`
     height: 25px;
     width: 90%;
     border: none;
-    ${props => mixin.outline("1px solid", "gray2", "bottom")};
+    border-radius: 0px;
+    background: transparent;
+    ${props =>
+        mixin.outline(
+            "1px solid",
+            props.isDarkTheme ? "gray1" : "gray2",
+            "bottom",
+        )};
     :focus {
-        ${props => mixin.outline("1px solid", "mainBlue", "bottom")};
+        ${props =>
+            mixin.outline(
+                "1px solid",
+                props.isDarkTheme ? "gray1" : "mainBlue",
+                "bottom",
+            )};
     }
     transition: border-color 1s ease;
-    ${mixin.textProps(18, "semiBold", "gray1")};
+    ${props =>
+        mixin.textProps(
+            18,
+            "semiBold",
+            props.isDarkTheme ? "mainGray" : "gray1",
+        )};
     ::placeholder {
-        ${mixin.textProps(18, "semiBold", "gray3")};
+        ${props =>
+            mixin.textProps(
+                18,
+                "semiBold",
+                props.isDarkTheme ? "gray2" : "gray3",
+            )};
+    }
+
+    //모바일 사이즈
+    @media ${({ theme }) => theme.mobile} {
+        width: 100%;
+        ${props =>
+            mixin.textProps(
+                14,
+                "semiBold",
+                props.isDarkTheme ? "mainGray" : "gray1",
+            )};
+        ::placeholder {
+            ${props =>
+                mixin.textProps(
+                    14,
+                    "semiBold",
+                    props.isDarkTheme ? "gray2" : "gray3",
+                )};
+        }
     }
 `;
 // 인풋 입력후 확인 / 설정 등 submit 버튼
@@ -641,8 +778,21 @@ const InputButton = styled.button`
     height: 32px;
     border-radius: 40px;
     margin-left: 10px;
-    ${mixin.textProps(18, "semiBold", "white")};
+    ${props =>
+        mixin.textProps(18, "semiBold", props.isDarkTheme ? "black" : "white")};
     background-color: ${props => props.theme.color.blue1};
+
+    //모바일 사이즈
+    @media ${({ theme }) => theme.mobile} {
+        ${props =>
+            mixin.textProps(
+                11,
+                "semiBold",
+                props.isDarkTheme ? "black" : "white",
+            )};
+        width: ${({ theme }) => theme.calRem(56)};
+        height: ${({ theme }) => theme.calRem(24)};
+    }
 `;
 // 이메일 인증부분 submit 버튼
 const FirstInputButton = styled.button`
@@ -650,8 +800,21 @@ const FirstInputButton = styled.button`
     height: 32px;
     border-radius: 40px;
     margin-left: 10px;
-    ${mixin.textProps(18, "semiBold", "white")};
+    ${props =>
+        mixin.textProps(18, "semiBold", props.isDarkTheme ? "black" : "white")};
     background-color: ${props => props.theme.color.blue1};
+
+    //모바일 사이즈
+    @media ${({ theme }) => theme.mobile} {
+        ${props =>
+            mixin.textProps(
+                11,
+                "semiBold",
+                props.isDarkTheme ? "black" : "white",
+            )};
+        width: ${({ theme }) => theme.calRem(56)};
+        height: ${({ theme }) => theme.calRem(24)};
+    }
 `;
 // 이메일 인증부분 인풋 컨테이너
 const FirstInputWrapper = styled.div`
@@ -673,17 +836,26 @@ const ButtonContainer = styled.div`
     Input {
         margin-top: 17px;
     }
-    ${mixin.flexBox(null, "flex-end")}
+    ${mixin.flexBox(null, "flex-end")};
 `;
 
 const FirstButtonContainer = styled.div`
-    ${mixin.flexBox(null, "flex-end")}
+    ${mixin.flexBox(null, "flex-end")};
 `;
 
-const LastButtonContainer = styled.div``;
+const LastButtonContainer = styled.div`
+    @media ${({ theme }) => theme.mobile} {
+        display: flex;
+    }
+`;
 // 에러 메세지 div
 const ErrorBox = styled.div`
     margin-top: 4px;
-    ${mixin.textProps(12, "semiBold", "danger")}
+    ${mixin.textProps(12, "semiBold", "danger")};
+
+    //모바일 사이즈
+    @media ${({ theme }) => theme.mobile} {
+        ${mixin.textProps(11, "semiBold", "danger")};
+    }
 `;
 export default MypageAccount;

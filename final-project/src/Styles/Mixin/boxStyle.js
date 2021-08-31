@@ -69,4 +69,18 @@ const boxShadow = (x, y, blur, spread, color, inset = false) => {
     `;
 };
 
-export { flexBox, floatBox, outline, boxShadow };
+const darkBoxShadow = (x, y, blur, spread, color, inset = false) => {
+    if (inset)
+        return css`
+            box-shadow: inset ${x ? x : "0px"} ${y ? y : "4px"}
+                ${blur ? blur : "7px"} ${spread ? spread : "0px"}
+                ${color ? color : "rgba(0,0,0,.6)"};
+        `;
+
+    return css`
+        box-shadow: ${x ? x : "0px"} ${y ? y : "4px"} ${blur ? blur : "7px"}
+            ${spread ? spread : "0px"} ${color ? color : "rgba(0,0,0,.6)"};
+    `;
+};
+
+export { flexBox, floatBox, outline, boxShadow, darkBoxShadow };
