@@ -282,7 +282,7 @@ const ElectionWrite = () => {
             </WriteElectionDurationBox>
 
             {/* 선거 후보자의 이름, 학과, 소개, 사진을 입력하는 곳입니다. */}
-            <WriteCandidateBox>
+            <WriteCandidateBox isDarkTheme={isDarkTheme}>
                 <Title bottomGap isDarkTheme={isDarkTheme}>
                     후보자 정보
                 </Title>
