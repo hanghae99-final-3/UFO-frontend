@@ -185,12 +185,12 @@ const CountrySelector = styled.div`
 
 const Option = styled.div`
     cursor: pointer;
+    padding: ${({ theme }) => theme.calRem(5)} 0;
+    ${props =>
+        props.isSelected
+            ? mixin.textProps(18, "semiBold", "mainMint")
+            : mixin.textProps(18, "semiBold", "blue3")};
     @media ${({ theme }) => theme.mobile} {
-        ${props =>
-            props.isSelected
-                ? mixin.textProps(18, "semiBold", "mainMint")
-                : mixin.textProps(18, "semiBold", "blue3")};
-        padding: ${({ theme }) => theme.calRem(5)} 0;
         ${props =>
             props.isSelected
                 ? mixin.textProps(12, "semiBold", "mainMint")
