@@ -16,7 +16,13 @@ import { FaRegMoon, FaRegSun } from "react-icons/fa";
 //컴포넌트
 import FloatSelectCountry from "../Shared/FloatSelectCountry";
 
+//useSound hooks
+import useSound from "use-sound";
+import boopSfx from "../../Assets/Sound/darkModeSwitch.mp3";
+
 const Float = ({ isDarkTheme }) => {
+    const [play] = useSound(boopSfx);
+
     const dispatch = useDispatch();
     const { pathname } = useLocation();
     const [isWriteBntOn, setIsWriteBntOn] = useState(false); //작성버튼을 보여줄지 말지에 대한 판별값, 자유게시판, 국가게시판이면 글쓰기버튼이 생긴다.
@@ -41,6 +47,7 @@ const Float = ({ isDarkTheme }) => {
 
     const switchDarkTheme = () => {
         //다크모드를 켜고 끄는 함수입니다.
+        play(); // 스위치 사운드 플레이
         const LSDarkTheme = getDarkTheme(); //로컬스토리지에 있는 dark모드 값입니다.
         if (LSDarkTheme === "true") {
             dispatch(setDarkTheme(false));
