@@ -247,7 +247,7 @@ const Header = styled.div`
     ${props =>
         mixin.outline(
             "1.5px solid",
-            props.isDarkTheme ? "gray1" : "gray4",
+            props.isDarkTheme ? "darkLine" : "gray4",
             "bottom",
         )}
     ${mixin.flexBox("space-between", "flex-end", null, null)}
@@ -358,8 +358,8 @@ const Icon = styled.div`
     svg {
         color: ${props =>
             props.isDarkTheme
-                ? props.theme.color.white
-                : props.theme.color.black};
+                ? props.theme.color.gray2
+                : props.theme.color.blue2};
         margin-right: ${({ theme }) => theme.calRem(2)};
         font-size: ${({ theme }) => theme.fontSize["16"]};
         @media ${({ theme }) => theme.mobile} {
