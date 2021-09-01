@@ -4,6 +4,9 @@ import { useSelector } from "react-redux";
 import mixin from "../../Styles/Mixin";
 import theme from "../../Styles/theme";
 
+//통신
+import { voteApi } from "../../Shared/api";
+
 //아이콘
 import { GrEdit } from "react-icons/gr";
 
@@ -68,6 +71,10 @@ const post = {
 const ElectionTestDetail = () => {
     const isDarkTheme = useSelector(state => state.user.isDarkTheme); //다크모드인지 아닌지 판별 state
     const [selectCandidateId, setSelectCandidateId] = useState(null); //유저가 선택한 후보자의 번호를 담는 state입니다.
+    const isSampleLikeUnlikeSuccess =
+        useSelector(state => state.user.user.sample_vote_id) !== 0
+            ? true
+            : false; //유저가 이미 샘플투표(사용팁이 좋았는지 싫었는지)를 했는지 안했는지에 대한 판별값입니다.
     const [isVoted, setIsVoted] = useState(false); //유저가 투표를 했는지 안했는지 판별state
     const [testResult, setTestResult] = useState(null); //체험용 당선자의 정보가 들어있는 state
 
@@ -82,6 +89,10 @@ const ElectionTestDetail = () => {
 
     const addVote = () => {
         //투표를 처리하는 함수입니다.
+        if (isSampleLikeUnlikeSuccess) {
+            //이미 샘플투표를 완료한 사람은 서버요청을 할 수 없게 막는다.
+            return Swal.fire("에러", "이미 샘플투표를 완료했어요!", "error");
+        }
         if (!selectCandidateId)
             return Swal.fire("에러", "후보자를 선택해주세요!", "error");
         setIsVoted(true);
@@ -96,6 +107,23 @@ const ElectionTestDetail = () => {
     const forAdminControl = value => {
         //관리자용 버튼을 누르면 유저에게 알림을 띄웁니다.
         Swal.fire("잠깐!", `관리자만 ${value}할 수 있어요!`, "error");
+    };
+
+    const addLikeUnlike = value => {
+        //서버에게 사용팁 후기를 넘겨준다. (1이면 like, 2면 unlike)
+
+        if (value === "like") {
+            const req = {
+                vote_num: 1,
+            };
+            voteApi.addLikeUnlike(req).then(res => console.log(res));
+        }
+        if (value === "unlike") {
+            const req = {
+                vote_num: 2,
+            };
+            voteApi.addLikeUnlike(req).then(res => console.log(res));
+        }
     };
 
     return (
@@ -225,11 +253,13 @@ const ElectionTestDetail = () => {
                         <Controls>
                             <DefaultButton
                                 rightGap={theme.calRem(8)}
-                                onClick={() => {}}
+                                onClick={() => addLikeUnlike("like")}
                             >
                                 좋아요
                             </DefaultButton>
-                            <DefaultButton onClick={() => {}}>
+                            <DefaultButton
+                                onClick={() => addLikeUnlike("unlike")}
+                            >
                                 싫어요
                             </DefaultButton>
                         </Controls>

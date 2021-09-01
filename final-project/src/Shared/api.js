@@ -325,6 +325,12 @@ export const voteApi = {
         instance.get(`election/${election_id}/result`, {
             params: { election_id },
         }),
+
+    //사용팁을 본 유저의 호응도 측정
+    addLikeUnlike: ({ vote_num }) =>
+        instance.post("util/vote", {
+            vote_num,
+        }),
 };
 
 export const imageApi = {

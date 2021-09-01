@@ -26,6 +26,7 @@ const ElectionUseTips = props => {
                         key={idx}
                         src={imgSrc}
                         alt={`선거사용팁${idx + 1}`}
+                        isDarkTheme={isDarkTheme}
                     />
                 ))}
             </GridContainer>
@@ -67,14 +68,22 @@ const Title = styled.span`
 
 const GridContainer = styled.div`
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
     justify-content: center;
     gap: ${({ theme }) => theme.calRem(16)};
+    ${props =>
+        props.isDesktop
+            ? `grid-template-columns: repeat(2, 1fr);`
+            : `grid-template-columns: repeat(1, 1fr);`}
 `;
 
 const UseTipsImage = styled.img`
     width: 100%;
     height: 100%;
+    border-radius: 25px;
+    padding: ${({ theme }) => theme.calRem(16)};
+    background: ${({ theme }) => theme.color.white};
+    ${mixin.outline("4px solid", "blue2")};
+    ${props => (props.isDarkTheme ? mixin.darkBoxShadow() : mixin.boxShadow())};
 `;
 
 export default ElectionUseTips;

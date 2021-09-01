@@ -271,7 +271,7 @@ const ElectionWrite = () => {
             </WriteElectionInfoBox>
 
             {/* 투표기간을 입력하는 공간입니다. */}
-            <WriteElectionDurationBox>
+            <WriteElectionDurationBox isDarkTheme={isDarkTheme}>
                 <Title isDarkTheme={isDarkTheme}>투표 기간</Title>
                 <DateTimePicker
                     defaultDate={defaultDate}
@@ -296,7 +296,9 @@ const ElectionWrite = () => {
                 />
             </WriteCandidateBox>
             <Controls>
-                <DefaultButton onClick={addElection}>등록</DefaultButton>
+                <DefaultButton onClick={addElection}>
+                    선거 작성완료
+                </DefaultButton>
             </Controls>
         </ElectionWriteContainer>
     );
@@ -402,7 +404,18 @@ const InputContent = styled.textarea`
     }
 `;
 
-const WriteElectionDurationBox = styled.div``;
+const WriteElectionDurationBox = styled.div`
+    @media ${({ theme }) => theme.mobile} {
+        ${props =>
+            mixin.outline(
+                "1px solid",
+                props.isDarkTheme ? "gray1" : "gray4",
+                "bottom",
+            )}
+        margin-bottom: ${({ theme }) => theme.calRem(48)};
+    }
+    margin-bottom: ${({ theme }) => theme.calRem(28)};
+`;
 
 const WriteCandidateBox = styled.div``;
 

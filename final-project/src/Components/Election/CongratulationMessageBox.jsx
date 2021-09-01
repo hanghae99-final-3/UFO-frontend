@@ -22,6 +22,7 @@ import confirm from "../../Shared/confirm";
 //컴포넌트
 import DefaultButton from "../../Elements/Buttons/DefaultButton";
 
+//체험용 더미데이터입니다.
 const testCommentList = [
     {
         comment_id: 1,
@@ -49,13 +50,14 @@ const testCommentList = [
     },
 ];
 
+//isTest는 테스트용인지 아닌지 알 수 있는 판별값입니다.
 const CongratulationMessageBox = ({ electionPostId, isTest }) => {
     const dispatch = useDispatch();
     const commentList = useSelector(state => state.election.congratulationList);
-    console.log(commentList);
     const [content, setContent] = useState("");
+
     useEffect(() => {
-        if (electionPostId) {
+        if (!isTest && electionPostId) {
             //필요한 정보들을 정리하고, 당선축하메세지를 불러오는 api를 연결합니다.
             const req = {
                 election_id: electionPostId,
