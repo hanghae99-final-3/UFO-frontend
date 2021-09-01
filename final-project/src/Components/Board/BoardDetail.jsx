@@ -32,7 +32,6 @@ import TimeCounting from "time-counting"; // 작성일 표시 라이브러리
 
 //alert
 import confirm from "../../Shared/confirm";
-import "react-toastify/dist/ReactToastify.css"; // 토스티파이 css
 
 //아이콘
 import LinkIcon from "@material-ui/icons/Link"; // 링크 공유 아이콘
@@ -48,7 +47,6 @@ import DefaultButton from "../../Elements/Buttons/DefaultButton";
 
 const BoardDetail = ({ page }) => {
     // const [play] = useSound(boopSfx);
-
     const dispatch = useDispatch();
     const { id: postId } = useParams(); // 게시물 아이디
     const userId = useSelector(state => state.user.user.user_id); // 유저 아이디

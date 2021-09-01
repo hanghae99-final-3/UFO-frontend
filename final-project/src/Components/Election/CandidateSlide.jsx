@@ -6,7 +6,7 @@ const CandidateSlide = ({ candidate }) => {
     return (
         <Container>
             <CandidateImage
-                src={`https://yzkim9501.site/${candidate.photo}`}
+                src={process.env.REACT_APP_API_URL + candidate.photo}
                 alt={candidate.name}
             />
             <CandidateName>

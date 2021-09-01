@@ -12,7 +12,7 @@ const CandidateIntroBox = ({ candidates, idx, isDarkTheme }) => {
                 <CandidateImage
                     src={
                         candidates[idx]?.photo
-                            ? `https://yzkim9501.site/${candidates[idx].photo}`
+                            ? `${process.env.REACT_APP_API_URL}${candidates[idx].photo}`
                             : "https://cdn.pixabay.com/photo/2016/04/01/12/07/alien-1300540__340.png"
                     }
                     alt={candidates[idx]?.name}
