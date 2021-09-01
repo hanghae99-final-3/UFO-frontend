@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { useSelector } from "react-redux";
 import mixin from "../../Styles/Mixin";
 import theme from "../../Styles/theme";
+import { history } from "../../Redux/configureStore";
 
 //통신
 import { voteApi } from "../../Shared/api";
@@ -90,10 +91,7 @@ const ElectionTestDetail = () => {
 
     const addVote = () => {
         //투표를 처리하는 함수입니다.
-        if (isSampleLikeUnlikeSuccess) {
-            //이미 샘플투표를 완료한 사람은 서버요청을 할 수 없게 막는다.
-            return Swal.fire("에러", "이미 샘플투표를 완료했어요!", "error");
-        }
+
         if (!selectCandidateId)
             return Swal.fire("에러", "후보자를 선택해주세요!", "error");
         setIsVoted(true);
@@ -113,17 +111,40 @@ const ElectionTestDetail = () => {
     const addLikeUnlike = value => {
         //서버에게 사용팁 후기를 넘겨준다. (1이면 like, 2면 unlike)
 
+        if (isSampleLikeUnlikeSuccess) {
+            //이미 샘플투표를 완료한 사람은 서버요청을 할 수 없게 막는다.
+            return Swal.fire("에러", "피드백은 한 번만 가능해요!", "error");
+        }
+
         if (value === "like") {
             const req = {
                 vote_num: 1,
             };
-            voteApi.addLikeUnlike(req).then(res => console.log(res));
+            voteApi.addLikeUnlike(req).then(res => {
+                if (res.data.ok) {
+                    Swal.fire(
+                        "완료",
+                        "피드백을 남겨주셔서 감사합니다!",
+                        "success",
+                    );
+                    history.replace("/");
+                } else Swal.fire("에러", "피드백을 처리하지 못했어요", "error");
+            });
         }
         if (value === "unlike") {
             const req = {
                 vote_num: 2,
             };
-            voteApi.addLikeUnlike(req).then(res => console.log(res));
+            voteApi.addLikeUnlike(req).then(res => {
+                if (res.data.ok) {
+                    Swal.fire(
+                        "완료",
+                        "피드백을 남겨주셔서 감사합니다!",
+                        "success",
+                    );
+                    history.replace("/");
+                } else Swal.fire("에러", "피드백을 처리하지 못했어요", "error");
+            });
         }
     };
 
@@ -245,29 +266,33 @@ const ElectionTestDetail = () => {
                     {/* 데스크탑이 아니면 축하메세지댓글을 밖으로 빼서 보여준다. */}
                     {!isDesktop && <CongratulationMessageBox isTest />}
                     {isVoted && (
-                        <Controls>
-                            <DefaultButton
-                                rightGap={theme.calRem(8)}
-                                onClick={() => addLikeUnlike("like")}
-                            >
-                                좋아요
-                            </DefaultButton>
-                            <DefaultButton
-                                onClick={() => addLikeUnlike("unlike")}
-                            >
-                                싫어요
-                            </DefaultButton>
-                        </Controls>
+                        <>
+                            <Title isDarkTheme={isDarkTheme}>
+                                체험용 선거에 대한 피드백을 남겨주세요
+                            </Title>
+                            <Controls>
+                                <DefaultButton
+                                    rightGap={theme.calRem(8)}
+                                    onClick={() => addLikeUnlike("like")}
+                                >
+                                    좋아요
+                                </DefaultButton>
+                                <DefaultButton
+                                    onClick={() => addLikeUnlike("unlike")}
+                                >
+                                    싫어요
+                                </DefaultButton>
+                            </Controls>
+                        </>
                     )}
                 </ElectedContainer>
             )}
-            <UnvotedContainer>
-                {/* 현재 진행중이지만, 투표를 하지 않은 게시글을 보여줍니다. */}
+            {/* <UnvotedContainer>
                 <Title isDarkTheme={isDarkTheme}>
                     선택을 기다리는 투표함이 있어요
                 </Title>
                 <UnvotedBox isDarkTheme={isDarkTheme} list={[post]} isTest />
-            </UnvotedContainer>
+            </UnvotedContainer> */}
         </ElectionTestDetailContainer>
     );
 };
@@ -286,6 +311,10 @@ const UnvotedContainer = styled.div`
 `;
 
 const Title = styled.h5`
+    margin-top: ${({ theme }) => theme.calRem(80)};
+    @media ${({ theme }) => theme.mobile} {
+        margin-top: ${({ theme }) => theme.calRem(48)};
+    }
     ${props =>
         mixin.textProps(
             30,
