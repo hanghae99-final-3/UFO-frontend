@@ -139,7 +139,6 @@ const Button = styled.button`
     width: ${({ theme }) => theme.calRem(60)};
     height: ${({ theme }) => theme.calRem(60)};
     ${mixin.flexBox("center", "center", null, null)};
-    ${mixin.outline("1px solid", "gray3")}
     ${mixin.textProps(40, "regular", "mainMint")}
     border-radius: 50%;
     line-height: 1;
