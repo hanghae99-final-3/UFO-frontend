@@ -66,8 +66,12 @@ body{
     } 
 }
 
+
 /* swal css 설정 */
-/* swal 주의 */
+#root{
+    width:100vw;
+}
+
 .swal2-popup{
   border-radius:50px;
   border: solid 3px;
