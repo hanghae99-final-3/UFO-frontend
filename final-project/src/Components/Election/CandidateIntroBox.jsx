@@ -124,6 +124,23 @@ const CandidateName = styled.div`
     }
 `;
 const CandidateIntro = styled.div`
+    > p:first-child {
+        margin-bottom: 8px;
+        ${props =>
+            mixin.textProps(
+                20,
+                "extraBold",
+                props.isDarkTheme ? "mainGray" : "gray1",
+            )}
+        @media ${({ theme }) => theme.mobile} {
+            ${props =>
+                mixin.textProps(
+                    16,
+                    "extraBold",
+                    props.isDarkTheme ? "mainGray" : "gray1",
+                )}
+        }
+    }
     ${props =>
         mixin.textProps(
             20,
@@ -132,7 +149,9 @@ const CandidateIntro = styled.div`
         )}
     @media ${({ theme }) => theme.mobile} {
         ${props =>
-            mixin.textProps(16, "regular", props =>
+            mixin.textProps(
+                16,
+                "regular",
                 props.isDarkTheme ? "mainGray" : "gray1",
             )}
     }

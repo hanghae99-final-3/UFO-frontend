@@ -81,7 +81,7 @@ const CandidateImage = styled.img`
 `;
 const CandidateName = styled.div`
     width: 100%;
-    ${mixin.flexBox("center", "center", null, `${theme.calRem(40)}`)}
+    ${mixin.flexBox("center", "center", null, `${theme.calRem(44)}`)}
     background: ${props =>
         props.isDarkTheme ? props.theme.color.gray1 : props.theme.color.white};
     text-align: center;

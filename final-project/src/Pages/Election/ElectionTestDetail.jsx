@@ -129,13 +129,6 @@ const ElectionTestDetail = () => {
 
     return (
         <ElectionTestDetailContainer>
-            <UnvotedContainer>
-                {/* 현재 진행중이지만, 투표를 하지 않은 게시글을 보여줍니다. */}
-                <Title isDarkTheme={isDarkTheme}>
-                    선택을 기다리는 투표함이 있어요
-                </Title>
-                <UnvotedBox isDarkTheme={isDarkTheme} list={[post]} isTest />
-            </UnvotedContainer>
             <ElectionInfoContainer isDarkTheme={isDarkTheme}>
                 {/* 선거 제목 */}
                 <ElectionTitle isDarkTheme={isDarkTheme}>
@@ -176,7 +169,7 @@ const ElectionTestDetail = () => {
 
             {/* 카운트다운 */}
             <CountdownContainer>
-                <Title isDarkTheme={isDarkTheme}>투표까지 남은 시간</Title>
+                <Title isDarkTheme={isDarkTheme}>선거 종료까지 남은 시간</Title>
                 {/* 투표진행기간이면 카운트다운을 실행시키고, 진행전이면 투표 시작 전 문구를 렌더링, 끝났으면 투표 종료 문구를 렌더링합니다. */}
                 <TimeBox isCountdown={true}>
                     <Count deadline={post.end_date && post.end_date} />
@@ -237,7 +230,7 @@ const ElectionTestDetail = () => {
                             rightGap={theme.calRem(8)}
                             onClick={addVote}
                         >
-                            제출하기
+                            투표제출
                         </DefaultButton>
                     </Controls>
                 </>
@@ -268,6 +261,13 @@ const ElectionTestDetail = () => {
                     )}
                 </ElectedContainer>
             )}
+            <UnvotedContainer>
+                {/* 현재 진행중이지만, 투표를 하지 않은 게시글을 보여줍니다. */}
+                <Title isDarkTheme={isDarkTheme}>
+                    선택을 기다리는 투표함이 있어요
+                </Title>
+                <UnvotedBox isDarkTheme={isDarkTheme} list={[post]} isTest />
+            </UnvotedContainer>
         </ElectionTestDetailContainer>
     );
 };
@@ -279,9 +279,9 @@ const ElectionTestDetailContainer = styled.div`
 
 const UnvotedContainer = styled.div`
     width: 100%;
-    margin-bottom: ${({ theme }) => theme.calRem(80)};
+    margin-top: ${({ theme }) => theme.calRem(80)};
     @media ${({ theme }) => theme.mobile} {
-        margin-bottom: ${({ theme }) => theme.calRem(48)};
+        margin-top: ${({ theme }) => theme.calRem(48)};
     }
 `;
 
@@ -482,44 +482,5 @@ const Controls = styled.div`
 `;
 
 const ElectedContainer = styled.div``;
-
-const ElectedTestContainer = styled.div`
-    ${mixin.floatBox("relative")}
-    background: ${({ theme }) => theme.color.mainBlue};
-    min-height: 480px;
-    border-radius: 25px;
-`;
-
-const NotElected = styled.div`
-    ${mixin.floatBox("absolute", "50%", "50%")}
-    transform: translate(50%,-50%);
-    ${mixin.textProps(20, "regular", "white")}
-`;
-const ElectedBox = styled.div`
-    ${mixin.flexBox("space-between")}
-    padding: 15px;
-    gap: 40px;
-`;
-const ElectedImage = styled.div`
-    ${mixin.flexBox("center", "center", null, null)}
-    ${mixin.textProps(20, "regular", "white")}
-    width: 380px;
-    img {
-        width: 380px;
-        height: 450px;
-        object-fit: cover;
-        border-radius: 25px;
-    }
-`;
-const ElectedInfo = styled.div`
-    width: 100%;
-`;
-const ElectedName = styled.h5`
-    ${mixin.textProps(30, "extraBold", "white")}
-    padding: 5px 0;
-`;
-const ElectedMajor = styled.p`
-    ${mixin.textProps(20, "regular", "white")}
-`;
 
 export default ElectionTestDetail;

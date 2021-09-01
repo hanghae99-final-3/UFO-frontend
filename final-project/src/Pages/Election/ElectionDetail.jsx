@@ -179,7 +179,7 @@ const ElectionDetail = () => {
                 <p>{post?.content}</p>
             </ElectionInfoContainer>
             <CountdownContainer>
-                <Title isDarkTheme={isDarkTheme}>선거까지 남은 시간</Title>
+                <Title isDarkTheme={isDarkTheme}>선거 종료까지 남은 시간</Title>
                 {/* 투표진행기간이면 카운트다운을 실행시키고, 진행전이면 투표 시작 전 문구를 렌더링, 끝났으면 투표 종료 문구를 렌더링합니다. */}
                 <TimeBox
                     isCountdown={!isBefore && !isFinished}
