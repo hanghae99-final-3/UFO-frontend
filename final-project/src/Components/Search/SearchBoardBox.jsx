@@ -32,16 +32,14 @@ const SearchBoardBox = ({ postList, fixedList, boardName, announcement }) => {
         //학교게시판일때,
         return history.push(`/univboard/detail/${postId}`);
     };
-    // 게시물 국가
-    const postCountry = useSelector(state=>boardName === "freeboard" ? state.freeBoard.post?.country_id : state.univBoard.post?.country_id)
-    
+
 
     const isDesktop =
         document.documentElement.clientWidth >= 1080 ? true : false;
 
     return (
         <BoardContainer>
-            <Content>{console.log(postCountry)}
+            <Content>
                 {postList &&
                     postList.map((post, idx) => (
                         <PostContainer
