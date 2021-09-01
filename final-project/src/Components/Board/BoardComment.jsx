@@ -305,6 +305,7 @@ const Comment = ({ comment, boardName, postId }) => {
                     {/* 수정모드면 input이 나타나고, 아니면 text가 나타납니다. */}
                     {isEdit ? (
                         <EditInput
+                            isDarkTheme={isDarkTheme}
                             type="text"
                             value={content}
                             placeholder="여러분의 의견을 남겨주세요:)"
@@ -452,12 +453,24 @@ const EditInput = styled.input`
     transition: border-bottom 0.5s ease;
     all: unset;
     width: 40%;
-    ${mixin.outline("2px solid", "mainGray", "bottom")}
+    ${props =>
+        props.isDarkTheme
+            ? mixin.textProps(18, "semiBold", "white")
+            : mixin.textProps(18, "semiBold", "black")};
+    ${props =>
+        mixin.outline(
+            "2px solid",
+            props.isDarkTheme ? "gray1" : "mainGray",
+            "bottom",
+        )}
     :hover {
         ${mixin.outline("2px solid", "gray1", "bottom")}
     }
     ::placeholder {
-        ${mixin.textProps(20, "regular", "gray4")}
+        ${props =>
+            props.isDarkTheme
+                ? mixin.textProps(18, "semiBold", "gray2")
+                : mixin.textProps(18, "semiBold", "gray3")}
     }
 
     @media ${({ theme }) => theme.mobile} {
