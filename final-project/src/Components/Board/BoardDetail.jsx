@@ -270,9 +270,13 @@ const BoardDetail = ({ page }) => {
 
             <ButtonContainer>
                 <ButtonWrapper>
-                    <DefaultButton onClick={handleLikeButton}>
-                        좋아요
-                    </DefaultButton>
+                    <LikeBtn onClick={handleLikeButton} isDarkTheme={isDarkTheme}>
+                        {isLike ? (
+                                <FavoriteIcon style={{ fill: "#FF5372" }} />
+                            ) : (
+                                <FavoriteBorder />
+                            )}
+                    </LikeBtn>
                 </ButtonWrapper>
                 <ButtonWrapper>
                     <DefaultButton onClick={handleGoToList}>목록</DefaultButton>
@@ -314,6 +318,10 @@ const MainContentContainer = styled.div`
         margin-top: 10px;
     }
 `;
+
+const LikeBtn = styled.button`
+    background-color: ${(props) =>props.isDarkTheme?theme.color.black:theme.color.white};
+`
 
 const Title = styled.h3`
     display: block;
