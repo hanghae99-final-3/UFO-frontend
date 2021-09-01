@@ -22,6 +22,7 @@ import CandidateBox from "../../Components/Election/CandidateBox";
 import CandidateCard from "../../Components/Election/CandidateCard";
 import UnvotedBox from "../../Components/Election/UnvotedBox";
 import ElectedCard from "../../Components/Election/ElectedCard";
+import CongratulationMessageBox from "../../Components/Election/CongratulationMessageBox";
 
 //체험용 더미데이터
 const post = {
@@ -245,10 +246,11 @@ const ElectionTestDetail = () => {
                 <ElectedContainer>
                     <Title isDarkTheme={isDarkTheme}>당선자</Title>
                     <ElectedCard
-                        isDarkTheme={isDarkTheme}
                         candidates={post.candidates}
                         testResult={testResult}
                     />
+                    {/* 데스크탑이 아니면 축하메세지댓글을 밖으로 빼서 보여준다. */}
+                    {!isDesktop && <CongratulationMessageBox isTest />}
                     {isVoted && (
                         <Controls>
                             <DefaultButton

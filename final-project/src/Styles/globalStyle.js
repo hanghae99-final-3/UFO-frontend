@@ -104,7 +104,11 @@ body{
   border-color: ${({ theme }) => theme.color.mainMint};
 }
 
-
-
+.swal2-popup.swal2-modal.swal2-icon-warning.swal2-show .swal2-title{
+      ${mixin.textProps(22, "semiBold", "black")};
+ @media ${({ theme }) => theme.mobile} {
+      ${mixin.textProps(16, "semiBold", "black")};
+ }
+}
 }
 `;

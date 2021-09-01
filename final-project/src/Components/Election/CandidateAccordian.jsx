@@ -190,14 +190,17 @@ const StyledAccordion = styled.div`
 `;
 
 const CandidateTitle = styled.span`
-    span:first-child {
+    span {
         ${props =>
             mixin.textProps(
                 30,
                 "extraBold",
                 props.isDarkTheme ? "white" : "gray2",
-            )}
-        margin-right: ${({ theme }) => theme.calRem(10)};
+            )};
+        &:first-child {
+            margin-right: ${({ theme }) => theme.calRem(10)};
+        }
+
         @media ${({ theme }) => theme.mobile} {
             ${props =>
                 mixin.textProps(

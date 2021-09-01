@@ -55,6 +55,7 @@ const CongratulationMessageBox = ({ electionPostId, isTest }) => {
     const dispatch = useDispatch();
     const commentList = useSelector(state => state.election.congratulationList);
     const [content, setContent] = useState("");
+    const isDarkTheme = useSelector(state => state.user.isDarkTheme); //다크모드인지 아닌지 판별 state
 
     useEffect(() => {
         if (!isTest && electionPostId) {
@@ -88,8 +89,8 @@ const CongratulationMessageBox = ({ electionPostId, isTest }) => {
 
     return (
         <Container>
-            <Title>축하 한마디</Title>
-            <InputCongratulation>
+            <Title isDarkTheme={isDarkTheme}>축하 한마디</Title>
+            <InputCongratulation isDarkTheme={isDarkTheme}>
                 <input
                     placeholder="당선자에게 축하와 응원 메시지를 남겨주세요"
                     type="text"
@@ -105,6 +106,7 @@ const CongratulationMessageBox = ({ electionPostId, isTest }) => {
                             key={comment.comment_id}
                             comment={comment}
                             electionPostId={electionPostId}
+                            isDarkTheme={isDarkTheme}
                         />
                     ))}
                 {commentList &&
@@ -114,6 +116,7 @@ const CongratulationMessageBox = ({ electionPostId, isTest }) => {
                             key={comment.comment_id}
                             comment={comment}
                             electionPostId={electionPostId}
+                            isDarkTheme={isDarkTheme}
                         />
                     ))}
             </CommentBox>
@@ -125,6 +128,13 @@ const Container = styled.div``;
 const Title = styled.h5`
     ${mixin.textProps(18, "extraBold", "white")}
     margin: 30px 0 20px 0;
+    @media ${({ theme }) => theme.mobile} {
+        margin: 24px 0 16px 0;
+        ${props =>
+            props.isDarkTheme
+                ? mixin.textProps(16, "extraBold", "white")
+                : mixin.textProps(16, "extraBold", "black")}
+    }
 `;
 
 const InputCongratulation = styled.div`
@@ -132,12 +142,31 @@ const InputCongratulation = styled.div`
     padding-bottom: 5px;
     ${mixin.flexBox("space-between")}
     ${mixin.outline("1px solid", "blue3", "bottom")}
+     @media ${({ theme }) => theme.mobile} {
+        margin-bottom: ${({ theme }) => theme.calRem(16)};
+        ${props =>
+            props.isDarkTheme
+                ? mixin.textProps(16, "extraBold", "white")
+                : mixin.textProps(16, "extraBold", "black")}
+    }
     input {
         all: unset;
         width: 100%;
         ${mixin.textProps(18, "semiBold", "white")}
+        @media ${({ theme }) => theme.mobile} {
+            ${props =>
+                props.isDarkTheme
+                    ? mixin.textProps(14, "semiBold", "white")
+                    : mixin.textProps(14, "semiBold", "black")};
+        }
         ::placeholder {
             ${mixin.textProps(18, "semiBold", "blue2")};
+            @media ${({ theme }) => theme.mobile} {
+                ${props =>
+                    props.isDarkTheme
+                        ? mixin.textProps(14, "semiBold", "gray2")
+                        : mixin.textProps(14, "semiBold", "gray3")};
+            }
         }
     }
 `;
@@ -158,7 +187,7 @@ const CommentBox = styled.div`
     }
 `;
 
-const Comment = ({ comment }) => {
+const Comment = ({ comment, isDarkTheme }) => {
     const dispatch = useDispatch();
     const [content, setContent] = useState(comment.content); //댓글 입력값을 저장할 곳입니다.
     const user = useSelector(state => state.user.user); //유저정보
@@ -210,9 +239,13 @@ const Comment = ({ comment }) => {
                     src={require("../../Assets/pngegg2.webp").default}
                     alt="user"
                 />
-                <UserName>{comment.user?.nickname}</UserName>
-                <Time>{TimeCounting(comment.createdAt, timeOption)}</Time>
-                <Controls>
+                <UserName isDarkTheme={isDarkTheme}>
+                    {comment.user?.nickname}
+                </UserName>
+                <Time isDarkTheme={isDarkTheme}>
+                    {TimeCounting(comment.createdAt, timeOption)}
+                </Time>
+                <Controls isDarkTheme={isDarkTheme}>
                     {isAuthor && (
                         <>
                             {isEdit ? (
@@ -236,13 +269,16 @@ const Comment = ({ comment }) => {
                 {/* 수정모드면 input이 나타나고, 아니면 text가 나타납니다. */}
                 {isEdit ? (
                     <EditInput
+                        isDarkTheme={isDarkTheme}
                         type="text"
                         value={content}
                         placeholder="댓글을 적어주세요"
                         onChange={e => setContent(e.target.value)}
                     />
                 ) : (
-                    <CommentContent>{comment.content}</CommentContent>
+                    <CommentContent isDarkTheme={isDarkTheme}>
+                        {comment.content}
+                    </CommentContent>
                 )}
             </Content>
         </CommentContainer>
@@ -251,49 +287,115 @@ const Comment = ({ comment }) => {
 const CommentContainer = styled.div`
     :not(:last-child) {
         margin-bottom: 20px;
+        @media ${({ theme }) => theme.mobile} {
+            margin-bottom: 16px;
+        }
     }
 `;
 
 const Header = styled.div`
     ${mixin.flexBox(null, "center")}
-    > :not(:last-child) {
-        margin-right: 10px;
+    > :first-child {
+        margin-right: 8px;
     }
-    margin-bottom: 2px;
-`;
-const Time = styled.span`
-    ${mixin.textProps(14, "semiBold", "blue2")}
-`;
-const UserName = styled.span`
-    ${mixin.textProps(14, "semiBold", "blue2")}
+    > :not(:first-child, :last-child) {
+        margin-right: 16px;
+    }
+    margin-bottom: 8px;
 `;
 
 const UserImage = styled.img`
-    height: 25px;
-    width: 25px;
+    height: 24px;
+    width: 24px;
 `;
+
+const UserName = styled.span`
+    ${mixin.textProps(14, "semiBold", "blue2")}
+    @media ${({ theme }) => theme.mobile} {
+        ${props =>
+            props.isDarkTheme
+                ? mixin.textProps(12, "semiBold", "gray3")
+                : mixin.textProps(12, "semiBold", "gray2")}
+    }
+`;
+
+const Time = styled.span`
+    ${mixin.textProps(14, "semiBold", "blue2")}
+    @media ${({ theme }) => theme.mobile} {
+        ${props =>
+            props.isDarkTheme
+                ? mixin.textProps(12, "semiBold", "gray3")
+                : mixin.textProps(12, "semiBold", "gray2")}
+    }
+`;
+
 const Content = styled.div`
     ${mixin.textProps(20, "regular", "white")}
+    @media ${({ theme }) => theme.mobile} {
+        ${props =>
+            props.isDarkTheme
+                ? mixin.textProps(16, "semiBold", "mainGray")
+                : mixin.textProps(16, "semiBold", "black")}
+    }
 `;
+
 const EditInput = styled.input`
-    transition: border-bottom 0.5s ease;
-    width: 40%;
     all: unset;
+    width: 70%;
     ${mixin.outline("1px solid", "blue3", "bottom")}
+    transition: border-bottom .5s ease;
+    ${mixin.textProps(20, "regular", "white")}
+
+    @media ${({ theme }) => theme.mobile} {
+        ${props =>
+            props.isDarkTheme
+                ? mixin.textProps(16, "regular", "white")
+                : mixin.textProps(16, "regular", "black")};
+
+        ${props =>
+            props.isDarkTheme
+                ? mixin.outline("1px solid", "gray3", "bottom")
+                : mixin.outline("1px solid", "gray2", "bottom")};
+    }
     :focus {
         ${mixin.outline("1px solid", "white", "bottom")}
+        @media ${({ theme }) => theme.mobile} {
+            ${props =>
+                props.isDarkTheme
+                    ? mixin.outline("1px solid", "white", "bottom")
+                    : mixin.outline("1px solid", "black", "bottom")}
+        }
     }
     ::placeholder {
         ${mixin.textProps(20, "regular", "gray4")}
+        @media ${({ theme }) => theme.mobile} {
+            ${props =>
+                props.isDarkTheme
+                    ? mixin.textProps(16, "semiBold", "gray3")
+                    : mixin.textProps(16, "semiBold", "gray2")}
+        }
     }
 `;
-const CommentContent = styled.p``;
+const CommentContent = styled.p`
+    @media ${({ theme }) => theme.mobile} {
+        ${props =>
+            props.isDarkTheme
+                ? mixin.textProps(16, "semiBold", "mainGray")
+                : mixin.textProps(16, "semiBold", "black")}
+    }
+`;
 const Controls = styled.div`
-    line-height: 1;
+    ${mixin.flexBox(null, "center")}
     button {
         ${mixin.textProps(14, "semiBold", "blue2")}
         border-radius: 10px;
         background: transparent;
+        @media ${({ theme }) => theme.mobile} {
+            ${props =>
+                props.isDarkTheme
+                    ? mixin.textProps(12, "semiBold", "gray3")
+                    : mixin.textProps(12, "semiBold", "gray2")}
+        }
     }
     button:not(:last-child) {
         margin-right: 10px;
