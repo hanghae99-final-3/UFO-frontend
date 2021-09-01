@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components"; // 스타일 컴포넌트 라이브러기
 
 import desktopLogo from "../../Assets/desktop_logo.svg"; // ufo 로고
+import desktopLogoDark from "../../Assets/desktop_logo_dark.svg"; // ufo 로고
 import mixin from "../../Styles/Mixin"; // 믹스인 객체
 import { history } from "../../Redux/configureStore"; // 히스토리 객체
 import { useFormik } from "formik"; // formik 훅스
@@ -11,7 +12,7 @@ import { useSelector } from "react-redux";
 
 const SignupPresenter = ({ validate, onSignupSubmit }) => {
     const [isValidNickname, setIsValidNickname] = useState(false);
-    const isDarkTheme=useSelector(state=>state.user.isDarkTheme)
+    const isDarkTheme = useSelector(state => state.user.isDarkTheme);
 
     // formik 훅스 + validationSchema
     const signupFormik = useFormik({
@@ -31,12 +32,15 @@ const SignupPresenter = ({ validate, onSignupSubmit }) => {
         <MainContainer>
             <LogoContainer>
                 <Slogan isDarkTheme={isDarkTheme}>U학생들의 FREE한 O늘!</Slogan>
-                <LogoImg src={desktopLogo} />
+                <LogoImg src={isDarkTheme ? desktopLogoDark : desktopLogo} />
             </LogoContainer>
             <Form onSubmit={signupFormik.handleSubmit}>
                 <InputWrapper>
-                    <InputBoxName isDarkTheme={isDarkTheme}>이메일</InputBoxName>
-                    <Input isDarkTheme={isDarkTheme}
+                    <InputBoxName isDarkTheme={isDarkTheme}>
+                        이메일
+                    </InputBoxName>
+                    <Input
+                        isDarkTheme={isDarkTheme}
                         placeholder="이메일을 입력해주세요"
                         name="email"
                         type="email"
@@ -48,8 +52,11 @@ const SignupPresenter = ({ validate, onSignupSubmit }) => {
                     ) : null}
                 </InputWrapper>
                 <InputWrapper>
-                    <InputBoxName isDarkTheme={isDarkTheme}>비밀번호</InputBoxName>
-                    <Input isDarkTheme={isDarkTheme}
+                    <InputBoxName isDarkTheme={isDarkTheme}>
+                        비밀번호
+                    </InputBoxName>
+                    <Input
+                        isDarkTheme={isDarkTheme}
                         placeholder="비밀번호를 입력해주세요"
                         name="password"
                         autocomplete="off"
@@ -62,8 +69,11 @@ const SignupPresenter = ({ validate, onSignupSubmit }) => {
                     ) : null}
                 </InputWrapper>
                 <InputWrapper>
-                    <InputBoxName isDarkTheme={isDarkTheme}>비밀번호 확인</InputBoxName>
-                    <Input isDarkTheme={isDarkTheme}
+                    <InputBoxName isDarkTheme={isDarkTheme}>
+                        비밀번호 확인
+                    </InputBoxName>
+                    <Input
+                        isDarkTheme={isDarkTheme}
                         placeholder="확인"
                         name="confirmPassword"
                         type="password"
@@ -78,9 +88,12 @@ const SignupPresenter = ({ validate, onSignupSubmit }) => {
                     ) : null}
                 </InputWrapper>
                 <InputWrapper>
-                    <InputBoxName isDarkTheme={isDarkTheme}>닉네임</InputBoxName>
+                    <InputBoxName isDarkTheme={isDarkTheme}>
+                        닉네임
+                    </InputBoxName>
 
-                    <Input isDarkTheme={isDarkTheme}
+                    <Input
+                        isDarkTheme={isDarkTheme}
                         placeholder="닉네임을 입력해주세요"
                         name="nickname"
                         type="text"
@@ -107,7 +120,10 @@ const SignupPresenter = ({ validate, onSignupSubmit }) => {
                     ) : null}
                 </InputWrapper>
                 <ButtonContainer>
-                    <CancelButtonBox onClick={() => history.push("/login")} isDarkTheme={isDarkTheme}>
+                    <CancelButtonBox
+                        onClick={() => history.push("/login")}
+                        isDarkTheme={isDarkTheme}
+                    >
                         취소
                     </CancelButtonBox>
                     <SignUpButtonBox type="submit" variant="contained">
@@ -137,12 +153,18 @@ const LogoContainer = styled.div`
 
 // 회원가입창 최상단 슬로건
 const Slogan = styled.span`
-    ${props=>mixin.textProps(20, "extraBold", props.isDarkTheme?"white":"gray3")}
+    ${props =>
+        mixin.textProps(20, "extraBold", props.isDarkTheme ? "white" : "gray3")}
     margin-bottom: 20px;
 
     //모바일 사이즈
     @media ${({ theme }) => theme.mobile} {
-        ${props=>mixin.textProps(16, "extraBold", props.isDarkTheme?"white":"gray3")}
+        ${props =>
+            mixin.textProps(
+                16,
+                "extraBold",
+                props.isDarkTheme ? "white" : "gray3",
+            )}
         margin-bottom: 17px;
     }
 `;
@@ -173,9 +195,19 @@ const Form = styled.form`
 const InputBoxName = styled.span`
     display: block;
     margin-bottom: 20px;
-    ${props=>mixin.textProps(18, "extraBold", props.isDarkTheme?"white":"black")};
+    ${props =>
+        mixin.textProps(
+            18,
+            "extraBold",
+            props.isDarkTheme ? "white" : "black",
+        )};
     @media ${({ theme }) => theme.mobile} {
-        ${props=>mixin.textProps(16, "extraBold", props.isDarkTheme?"white":"black")};
+        ${props =>
+            mixin.textProps(
+                16,
+                "extraBold",
+                props.isDarkTheme ? "white" : "black",
+            )};
         margin-bottom: 16px;
     }
 `;
@@ -189,16 +221,21 @@ const ButtonContainer = styled.div`
     }
 `;
 
-const CancelButtonBox = styled.button` 
-    background-color : ${props => props.isDarkTheme ? 'gray1' : 'mainGray'};
-    ${mixin.textProps(20, "extraBold", "white")}
+const CancelButtonBox = styled.button`
     width: 164px;
     height: 46px;
     border-radius: 23px;
+    background-color: ${props =>
+        props.isDarkTheme
+            ? props.theme.color.gray1
+            : props.theme.color.mainGray};
+    ${({ theme, isDarkTheme }) =>
+        mixin.textProps(20, "extraBold", isDarkTheme ? "black" : "white")};
     @media ${({ theme }) => theme.mobile} {
         width: 118px;
         height: 32px;
-        ${mixin.textProps(16, "extraBold", "white")}
+        ${({ theme, isDarkTheme }) =>
+            mixin.textProps(16, "extraBold", isDarkTheme ? "black" : "white")};
     }
 `;
 const SignUpButtonBox = styled.button`
@@ -224,17 +261,32 @@ const Input = styled.input`
     border-radius: 0px;
     background: none;
     ::placeholder {
-        ${ props=>mixin.textProps(18, "semiBold", props.isDarkTheme?"gray2":"gray4")}
+        ${props =>
+            mixin.textProps(
+                18,
+                "semiBold",
+                props.isDarkTheme ? "gray2" : "gray4",
+            )}
     }
     ${mixin.textProps(18, "semiBold", "gray3")}
-    ${props => mixin.outline("1px solid", props.isDarkTheme?"gray1":"mainGray", "bottom")};
+    ${props =>
+        mixin.outline(
+            "1px solid",
+            props.isDarkTheme ? "gray1" : "mainGray",
+            "bottom",
+        )};
     :focus {
         ${props => mixin.outline("1px solid", "gray1", "bottom")};
     }
 
     @media ${({ theme }) => theme.mobile} {
         ::placeholder {
-            ${ props=>mixin.textProps(14, "semiBold", props.isDarkTheme?"gray2":"gray4")}
+            ${props =>
+                mixin.textProps(
+                    14,
+                    "semiBold",
+                    props.isDarkTheme ? "gray2" : "gray4",
+                )}
         }
         ${mixin.textProps(14, "semiBold", "gray3")}
     }
