@@ -115,7 +115,7 @@ const SearchKeyword = styled.div`
 
 const DivideLine = styled.hr`
     opacity: 0.35;
-    color: #dedfe0;
+    color: #3f4448;
     margin-top: 9px;
     margin-bottom: 15px;
 `;
