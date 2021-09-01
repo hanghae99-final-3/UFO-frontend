@@ -8,15 +8,20 @@ import { history } from "../../Redux/configureStore";
 
 import mixin from "../../Styles/Mixin";
 
+import Swal from "sweetalert2";
+
+
 const MypageHeader = props => {
     const isDarkTheme = useSelector(state => state.user.isDarkTheme);
     const dispatch = useDispatch();
     const user = useSelector(state => state.user.user);
 
     const handleLogout = () => {
+        Swal.fire("🛸","로그아웃 되었습니다!","success")
         dispatch(logoutUser());
         dispatch(onLogout());
         localStorage.removeItem("token");
+        
         history.replace("/");
     };
 

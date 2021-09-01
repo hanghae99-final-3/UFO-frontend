@@ -19,6 +19,7 @@ const useStyles = makeStyles({
 });
 
 const SearchBoardBox = ({ postList, fixedList, boardName, announcement }) => {
+    
     const isDarkTheme = useSelector(state => state.user.isDarkTheme);
 
     // material ui css class
@@ -31,6 +32,7 @@ const SearchBoardBox = ({ postList, fixedList, boardName, announcement }) => {
         //학교게시판일때,
         return history.push(`/univboard/detail/${postId}`);
     };
+
 
     const isDesktop =
         document.documentElement.clientWidth >= 1080 ? true : false;
@@ -50,7 +52,19 @@ const SearchBoardBox = ({ postList, fixedList, boardName, announcement }) => {
                                 rightGap={isDesktop ? "20px" : "8px"}
                                 announcement={announcement}
                             >
-                                #
+                                {<img
+                            style={{
+                                width: "20px",
+                                marginRight: "1px",
+                            }}
+                            src={
+                                categories
+                                .countrySelectorFlagList[
+                                post.country_id-1
+                                ]?.icon
+                            }
+                            alt=""
+                        />}
                                 {post.board === "free" &&
                                     categories.freeCategory[post.category]
                                         ?.categoryName}

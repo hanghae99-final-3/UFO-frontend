@@ -9,7 +9,7 @@ import VisibilityIcon from "@material-ui/icons/Visibility";
 import DefaultTag from "../../Elements/Tag/DefaultTag";
 import { useSelector } from "react-redux";
 
-const IssueBoardBox = ({ issueList, boardName }) => {
+const IssueBoardBox = ({ issueList, boardName, page }) => {
     const isDarkTheme = useSelector(state => state.user.isDarkTheme); //다크모드
     // 게시물 클릭시 이벤틀 헨들러
     const _onClick = postId => {
@@ -19,6 +19,7 @@ const IssueBoardBox = ({ issueList, boardName }) => {
         //학교게시판일때,
         return history.push(`/univboard/detail/${postId}`);
     };
+
     return (
         <React.Fragment>
             {issueList &&
@@ -31,7 +32,20 @@ const IssueBoardBox = ({ issueList, boardName }) => {
                     >
                         <Title>
                             <DefaultTag rightGap="20px">
-                                #
+                                {
+                                    <img
+                                        style={{
+                                            width: "20px",
+                                            marginRight: "1px",
+                                        }}
+                                        src={
+                                            categories.countrySelectorFlagList[
+                                                post.free_board.country_id - 1
+                                            ]?.icon
+                                        }
+                                        alt=""
+                                    />
+                                }
                                 {boardName === "freeboard" &&
                                     categories.freeCategory[
                                         post.free_board.category

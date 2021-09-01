@@ -64,7 +64,7 @@ const BoardBox = ({ postList, fixedList, boardName, announcement }) => {
                                             src={
                                                 categories
                                                     .countrySelectorFlagList[
-                                                    post.country_id - 1
+                                                    post.country_id-1
                                                 ]?.icon
                                             }
                                             alt=""

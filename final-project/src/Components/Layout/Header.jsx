@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { history } from "../../Redux/configureStore";
 import theme from "../../Styles/theme";
+import Swal from "sweetalert2"; 
 
 //통신
 import { onLogout } from "../../Redux/Modules/univBoardSlice";
@@ -201,6 +202,7 @@ const Header = ({ isDarkTheme }) => {
                                             <Link
                                                 to=""
                                                 onClick={() => {
+                                                    Swal.fire("🛸","로그아웃 되었습니다!","success")
                                                     dispatch(logoutUser());
                                                     dispatch(onLogout());
                                                     localStorage.removeItem(
