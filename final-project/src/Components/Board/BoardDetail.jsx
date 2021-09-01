@@ -64,7 +64,11 @@ const BoardDetail = ({ page }) => {
         page === "freeboard" ? state.freeBoard.post : state.univBoard.post,
     );
     // 게시물 국가
-    const postCountry = useSelector(state=>page === "freeboard" ? state.freeBoard.post?.country_id : state.univBoard.post?.country_id)
+    const postCountry = useSelector(state =>
+        page === "freeboard"
+            ? state.freeBoard.post?.country_id
+            : state.univBoard.post?.country_id,
+    );
     // 좋아요 유무
     const isLike = useSelector(state =>
         page === "freeboard"
@@ -199,19 +203,21 @@ const BoardDetail = ({ page }) => {
             <ContentHeaderContainer isDarkTheme={isDarkTheme}>
                 {page === "freeboard" ? (
                     <DefaultTag>
-                        {<img
-                            style={{
-                                width: "20px",
-                                marginRight: "1px",
-                            }}
-                            src={
-                                categories
-                                .countrySelectorFlagList[
-                                postCountry-1
-                                ]?.icon
-                            }
-                            alt=""
-                        />}{post && categories.freeBoardTags[post.category]}
+                        {
+                            <img
+                                style={{
+                                    width: "20px",
+                                    marginRight: "1px",
+                                }}
+                                src={
+                                    categories.countrySelectorFlagList[
+                                        postCountry - 1
+                                    ]?.icon
+                                }
+                                alt=""
+                            />
+                        }
+                        {post && categories.freeBoardTags[post.category]}
                     </DefaultTag>
                 ) : (
                     <DefaultTag>
@@ -268,12 +274,15 @@ const BoardDetail = ({ page }) => {
 
             <ButtonContainer>
                 <ButtonWrapper>
-                    <LikeBtn onClick={handleLikeButton} isDarkTheme={isDarkTheme}>
+                    <LikeBtn
+                        onClick={handleLikeButton}
+                        isDarkTheme={isDarkTheme}
+                    >
                         {isLike ? (
-                                <FavoriteIcon style={{ fill: "#FF5372" }} />
-                            ) : (
-                                <FavoriteBorder />
-                            )}
+                            <FavoriteIcon style={{ fill: "#FF5372" }} />
+                        ) : (
+                            <FavoriteBorder />
+                        )}
                     </LikeBtn>
                 </ButtonWrapper>
                 <ButtonWrapper>
@@ -318,8 +327,9 @@ const MainContentContainer = styled.div`
 `;
 
 const LikeBtn = styled.button`
-    background-color: ${(props) =>props.isDarkTheme?theme.color.black:theme.color.white};
-`
+    background-color: ${props =>
+        props.isDarkTheme ? theme.color.black : theme.color.white};
+`;
 
 const Title = styled.h3`
     display: block;
@@ -411,7 +421,9 @@ const ContentHeaderContainer = styled.div`
 `;
 const ContentBody = styled.div`
     padding: 30px 0;
-
+    img {
+        max-width: 100% !important;
+    }
     //모바일 사이즈
     @media ${({ theme }) => theme.mobile} {
         padding: 24px 0;
