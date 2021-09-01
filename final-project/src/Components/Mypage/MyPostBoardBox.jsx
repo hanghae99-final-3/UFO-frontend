@@ -11,6 +11,7 @@ import TimeCounting from "time-counting"; // 타임 카운팅(게시물 작성�
 //아이콘
 import { MdComment } from "react-icons/md"; // 댓글 아이콘
 import VisibilityIcon from "@material-ui/icons/Visibility"; // 조회수 아이콘
+import AccessTimeIcon from "@material-ui/icons/AccessTime"; // 작성일 아이콘
 
 //컴포넌트
 import InfinityScroll from "../Shared/InfinityScroll"; // 무한 스크롤 컴포넌트
@@ -88,7 +89,7 @@ const MyPostBoardBox = ({
                                             isDarkTheme={isDarkTheme}
                                         >
                                             <>
-                                                <Icon>
+                                                <Icon isDarkTheme={isDarkTheme}>
                                                     <MdComment />
                                                     <IconSpan
                                                         isDarkTheme={
@@ -98,7 +99,7 @@ const MyPostBoardBox = ({
                                                         {post.comment_count}
                                                     </IconSpan>
                                                 </Icon>
-                                                <Icon>
+                                                <Icon isDarkTheme={isDarkTheme}>
                                                     <VisibilityIcon />
                                                     <IconSpan
                                                         isDarkTheme={
@@ -108,7 +109,8 @@ const MyPostBoardBox = ({
                                                         {post.view_count}
                                                     </IconSpan>
                                                 </Icon>
-                                                <Icon>
+                                                <Icon isDarkTheme={isDarkTheme}>
+                                                    <AccessTimeIcon />
                                                     <IconSpan
                                                         isDarkTheme={
                                                             isDarkTheme
@@ -127,7 +129,7 @@ const MyPostBoardBox = ({
                                 {!Comment && isMobile && (
                                     <IconContainer isDarkTheme={isDarkTheme}>
                                         <>
-                                            <Icon>
+                                            <Icon isDarkTheme={isDarkTheme}>
                                                 <MdComment />
                                                 <IconSpan
                                                     isDarkTheme={isDarkTheme}
@@ -135,7 +137,7 @@ const MyPostBoardBox = ({
                                                     {post.comment_count}
                                                 </IconSpan>
                                             </Icon>
-                                            <Icon>
+                                            <Icon isDarkTheme={isDarkTheme}>
                                                 <VisibilityIcon />
                                                 <IconSpan
                                                     isDarkTheme={isDarkTheme}
@@ -143,7 +145,8 @@ const MyPostBoardBox = ({
                                                     {post.view_count}
                                                 </IconSpan>
                                             </Icon>
-                                            <Icon>
+                                            <Icon isDarkTheme={isDarkTheme}>
+                                                <AccessTimeIcon />
                                                 <IconSpan
                                                     isDarkTheme={isDarkTheme}
                                                 >
@@ -261,7 +264,10 @@ const Icon = styled.div`
         font-size: ${({ theme }) => theme.fontSize["12"]};
     }
     svg {
-        color: white;
+        color: ${props =>
+            props.isDarkTheme
+                ? props.theme.color.white
+                : props.theme.color.black};
         font-size: ${props => (props.title || props.tag ? "17px" : "20px")};
     }
     @media ${({ theme }) => theme.mobile} {

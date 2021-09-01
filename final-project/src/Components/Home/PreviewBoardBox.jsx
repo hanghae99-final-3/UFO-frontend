@@ -110,7 +110,7 @@ const PreviewBoardBox = ({
                                 {/* 데스크탑일때만 좋아요와 댓글수가 보입니다. */}
                                 {isDesktop && (
                                     <>
-                                        <Icon>
+                                        <Icon isDarkTheme={isDarkTheme}>
                                             {post?.like?.is_like === false ? (
                                                 <FavoriteBorder />
                                             ) : (
@@ -123,7 +123,7 @@ const PreviewBoardBox = ({
                                                     post.like.all_like}
                                             </IconSpan>
                                         </Icon>
-                                        <Icon>
+                                        <Icon isDarkTheme={isDarkTheme}>
                                             <MdComment />
                                             <IconSpan isDarkTheme={isDarkTheme}>
                                                 {post.comment_count}
@@ -131,7 +131,7 @@ const PreviewBoardBox = ({
                                         </Icon>
                                     </>
                                 )}
-                                <Icon>
+                                <Icon isDarkTheme={isDarkTheme}>
                                     <VisibilityIcon />
                                     <IconSpan isDarkTheme={isDarkTheme}>
                                         {post.view_count}
@@ -187,7 +187,7 @@ const PreviewBoardBox = ({
                                 {/* 데스크탑일때만 좋아요와 댓글수가 보입니다. */}
                                 {isDesktop && (
                                     <>
-                                        <Icon>
+                                        <Icon isDarkTheme={isDarkTheme}>
                                             {post?.like?.is_like === false ? (
                                                 <FavoriteBorder />
                                             ) : (
@@ -200,7 +200,11 @@ const PreviewBoardBox = ({
                                                     post.like.all_like}
                                             </IconSpan>
                                         </Icon>
-                                        <Icon title={title} tag={tag}>
+                                        <Icon
+                                            isDarkTheme={isDarkTheme}
+                                            title={title}
+                                            tag={tag}
+                                        >
                                             <MdComment />
                                             <IconSpan isDarkTheme={isDarkTheme}>
                                                 {post.comment_count}
@@ -209,7 +213,11 @@ const PreviewBoardBox = ({
                                     </>
                                 )}
 
-                                <Icon title={title} tag={tag}>
+                                <Icon
+                                    isDarkTheme={isDarkTheme}
+                                    title={title}
+                                    tag={tag}
+                                >
                                     <VisibilityIcon />
                                     <IconSpan isDarkTheme={isDarkTheme}>
                                         {post.view_count}
@@ -348,7 +356,10 @@ const Icon = styled.div`
         }
     }
     svg {
-        color: white;
+        color: ${props =>
+            props.isDarkTheme
+                ? props.theme.color.white
+                : props.theme.color.black};
         margin-right: ${({ theme }) => theme.calRem(2)};
         font-size: ${({ theme }) => theme.fontSize["16"]};
         @media ${({ theme }) => theme.mobile} {

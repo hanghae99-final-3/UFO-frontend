@@ -64,7 +64,7 @@ const SearchBoardBox = ({ postList, fixedList, boardName, announcement }) => {
                             <IconContainer>
                                 <>
                                     {isDesktop ? (
-                                        <Icon>
+                                        <Icon isDarkTheme={isDarkTheme}>
                                             {post?.like?.is_like === false ? (
                                                 <FavoriteBorder />
                                             ) : (
@@ -79,7 +79,7 @@ const SearchBoardBox = ({ postList, fixedList, boardName, announcement }) => {
                                         </Icon>
                                     ) : null}
                                     {isDesktop ? (
-                                        <Icon>
+                                        <Icon isDarkTheme={isDarkTheme}>
                                             <MdComment />
                                             <IconSpan isDarkTheme={isDarkTheme}>
                                                 {post.comment_count}
@@ -87,7 +87,7 @@ const SearchBoardBox = ({ postList, fixedList, boardName, announcement }) => {
                                         </Icon>
                                     ) : null}
                                 </>
-                                <Icon>
+                                <Icon isDarkTheme={isDarkTheme}>
                                     <VisibilityIcon />
                                     <IconSpan isDarkTheme={isDarkTheme}>
                                         {post.view_count}
@@ -166,6 +166,10 @@ const Icon = styled.div`
         font-size: ${({ theme }) => theme.fontSize["12"]};
     }
     svg {
+        color: ${props =>
+            props.isDarkTheme
+                ? props.theme.color.white
+                : props.theme.color.black};
         margin-right: 2px;
         font-size: 20px;
     }

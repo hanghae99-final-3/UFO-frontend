@@ -9,10 +9,15 @@ const SocialLogin = ({ toggleLoginMode }) => {
     const isDarkTheme = useSelector(state => state.user.isDarkTheme);
     return (
         <React.Fragment>
-            <ButtonBox variant="outlined" onClick={toggleLoginMode}>
+            <ButtonBox
+                isDarkTheme={isDarkTheme}
+                variant="outlined"
+                onClick={toggleLoginMode}
+            >
                 이메일로 로그인
             </ButtonBox>
             <KakaoButtonBox
+                isDarkTheme={isDarkTheme}
                 variant="outlined"
                 onClick={() => Swal.fire("서비스 준비중입니다!")}
             >
@@ -47,7 +52,8 @@ const ButtonBox = styled.button`
     border-radius: 50px;
     ${mixin.textProps(20, "extraBold", "white")}
     background-color : ${({ theme }) => theme.color.mainBlue};
-    box-shadow: 0px 1px 1px 1px #ececec;
+    ${props =>
+        props.isDarkTheme ? null : "box-shadow: 0px 1px 1px 1px #ececec"};
 
     @media ${({ theme }) => theme.mobile} {
         ${mixin.textProps(16, "extraBold", "white")}
@@ -62,7 +68,8 @@ const KakaoButtonBox = styled.button`
     height: 46px;
     border-radius: 50px;
     background-color: #fee500;
-    box-shadow: 0px 1px 1px 1px #ececec;
+    ${props =>
+        props.isDarkTheme ? null : "box-shadow: 0px 1px 1px 1px #ececec"};
     @media ${({ theme }) => theme.mobile} {
         ${props =>
             mixin.textProps(
@@ -117,7 +124,7 @@ const GoSignUp = styled.button`
         mixin.textProps(
             20,
             "semiBold",
-            props.isDarkTheme ? "mainMint" : "mainBlue",
+            props.isDarkTheme ? "mint" : "mainBlue",
         )}
     //모바일 사이즈
      @media ${({ theme }) => theme.mobile} {
@@ -125,7 +132,7 @@ const GoSignUp = styled.button`
             mixin.textProps(
                 16,
                 "semiBold",
-                props.isDarkTheme ? "mainMint" : "mainBlue",
+                props.isDarkTheme ? "mint" : "mainBlue",
             )}
     }
 `;

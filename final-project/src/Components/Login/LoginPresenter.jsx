@@ -25,7 +25,7 @@ const LoginPresenter = ({
 }) => {
     const dispatch = useDispatch();
     const [cookies, setCookie, removeCookie] = useCookies(["rememberEmail"]);
-    const isDarkTheme = useSelector(state=>state.user.isDarkTheme)
+    const isDarkTheme = useSelector(state => state.user.isDarkTheme);
     const [email, setEmail] = useState("");
     useEffect(() => {
         if (cookies.rememberEmail !== undefined) {
@@ -59,7 +59,9 @@ const LoginPresenter = ({
     return (
         <MainContainer>
             <div>
-                <LoginText variant="h4" isDarkTheme={isDarkTheme}>로그인</LoginText>
+                <LoginText variant="h4" isDarkTheme={isDarkTheme}>
+                    로그인
+                </LoginText>
             </div>
             {socialLoginMode ? (
                 <SocialLogin toggleLoginMode={toggleLoginMode} />
@@ -110,7 +112,9 @@ const LoginPresenter = ({
                         로그인
                     </LoginBtn>
                     <MemberCheckBox>
-                        <DoYouHaveID isDarkTheme={isDarkTheme}>UFO와 함께하실래요?</DoYouHaveID>
+                        <DoYouHaveID isDarkTheme={isDarkTheme}>
+                            UFO와 함께하실래요?
+                        </DoYouHaveID>
                         <GoSignUp
                             isDarkTheme={isDarkTheme}
                             onClick={() => {
@@ -175,10 +179,16 @@ const Form = styled.form`
 // 로그인 타이틀
 const LoginText = styled.span`
     width: ${({ theme }) => theme.calRem(120)};
-    ${props=>mixin.textProps(40, "extraBold", props.isDarkTheme?"white":"black")}
+    ${props =>
+        mixin.textProps(40, "extraBold", props.isDarkTheme ? "white" : "black")}
 
     @media ${({ theme }) => theme.mobile} {
-        ${props=>mixin.textProps(22, "extraBold", props.isDarkTheme?"white":"black")}
+        ${props =>
+            mixin.textProps(
+                22,
+                "extraBold",
+                props.isDarkTheme ? "white" : "black",
+            )}
     }
 `;
 const AutoLogin = styled.div`
@@ -215,20 +225,35 @@ const Input = styled.input`
     padding: ${({ theme }) => theme.calRem(10)};
     width: 100%;
     border: none;
-    background:none;
+    background: none;
     border-radius: 0px;
     ::placeholder {
-        ${props=>mixin.textProps(18, "semiBold", props.isDarkTheme?"gray2":"gray4")}
+        ${props =>
+            mixin.textProps(
+                18,
+                "semiBold",
+                props.isDarkTheme ? "gray2" : "gray4",
+            )}
     }
     ${mixin.textProps(18, "semiBold", "gray3")}
-    ${props => mixin.outline("1px solid", props.isDarkTheme?"gray1":"mainGray", "bottom")};
+    ${props =>
+        mixin.outline(
+            "1px solid",
+            props.isDarkTheme ? "gray1" : "mainGray",
+            "bottom",
+        )};
     :focus {
         ${props => mixin.outline("1px solid", "gray1", "bottom")};
     }
 
     @media ${({ theme }) => theme.mobile} {
         ::placeholder {
-            ${props=>mixin.textProps(14, "semiBold", props.isDarkTheme?"gray2":"gray4")}
+            ${props =>
+                mixin.textProps(
+                    14,
+                    "semiBold",
+                    props.isDarkTheme ? "gray2" : "gray4",
+                )}
         }
         ${mixin.textProps(14, "semiBold", "gray3")}
     }
@@ -248,20 +273,36 @@ const MemberCheckBox = styled.div`
 
 // 회원가입 문구
 const DoYouHaveID = styled.p`
-    ${props=>mixin.textProps(20, "semiBold", props.isDarkTheme?"gray2":"gray3")}
+    ${props =>
+        mixin.textProps(20, "semiBold", props.isDarkTheme ? "gray2" : "gray3")}
     //모바일 사이즈
     @media ${({ theme }) => theme.mobile} {
-        ${props=>mixin.textProps(16, "semiBold", props.isDarkTheme?"gray2":"gray3")}
+        ${props =>
+            mixin.textProps(
+                16,
+                "semiBold",
+                props.isDarkTheme ? "gray2" : "gray3",
+            )}
     }
 `;
 
 // 회원가입 하러가기 버튼
 const GoSignUp = styled.button`
     background: none;
-    ${props=>mixin.textProps(20, "semiBold", props.isDarkTheme?"mainMint":"mainBlue")}
+    ${props =>
+        mixin.textProps(
+            20,
+            "semiBold",
+            props.isDarkTheme ? "mint" : "mainBlue",
+        )}
     //모바일 사이즈
     @media ${({ theme }) => theme.mobile} {
-        ${props=>mixin.textProps(16, "semiBold", props.isDarkTheme?"mainMint":"mainBlue")}
+        ${props =>
+            mixin.textProps(
+                16,
+                "semiBold",
+                props.isDarkTheme ? "mint" : "mainBlue",
+            )}
     }
 `;
 

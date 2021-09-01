@@ -46,7 +46,7 @@ const IssueBoardBox = ({ issueList, boardName }) => {
                         </Title>
 
                         <IconContainer>
-                            <Icon>
+                            <Icon isDarkTheme={isDarkTheme}>
                                 <VisibilityIcon />
                                 <ViewCount isDarkTheme={isDarkTheme}>
                                     {post.free_board.view_count}
@@ -119,7 +119,10 @@ const Icon = styled.div`
         line-height: 1;
     }
     svg {
-        color: white;
+        color: ${props =>
+            props.isDarkTheme
+                ? props.theme.color.white
+                : props.theme.color.black};
         font-size: 20px;
         margin-right: 10px;
     }

@@ -214,11 +214,11 @@ const BoardDetail = ({ page }) => {
                     </IconContainer>
 
                     <IconContainer>
-                        <Icon>
+                        <Icon isDarkTheme={isDarkTheme}>
                             <LinkIcon id="link" onClick={handleCopyUrl} />
                         </Icon>
 
-                        <Icon>
+                        <Icon isDarkTheme={isDarkTheme}>
                             {isLike ? (
                                 <FavoriteIcon style={{ fill: "#FF5372" }} />
                             ) : (
@@ -226,12 +226,12 @@ const BoardDetail = ({ page }) => {
                             )}
                             <CountSpan>{post && post.all_like}</CountSpan>
                         </Icon>
-                        <Icon>
+                        <Icon isDarkTheme={isDarkTheme}>
                             <VisibilityIcon />
                             <CountSpan>{post && post.view_count}</CountSpan>
                         </Icon>
 
-                        <Icon>
+                        <Icon isDarkTheme={isDarkTheme}>
                             <AccessTimeIcon />
                             <CountSpan>
                                 {TimeCounting(
@@ -356,7 +356,10 @@ const Icon = styled.div`
     svg {
         font-size: 20px;
         margin: 0 5px 0 10px;
-        color: white;
+        color: ${props =>
+            props.isDarkTheme
+                ? props.theme.color.white
+                : props.theme.color.black};
     }
     margin-top: 10px;
 

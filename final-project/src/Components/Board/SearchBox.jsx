@@ -298,17 +298,13 @@ const SubTitle = styled.span`
     margin-bottom: 10px;
     width: 100%;
     ${props =>
-        mixin.textProps(
-            20,
-            "semiBold",
-            props.isDarkTheme ? "mainGray" : "gray2",
-        )};
+        mixin.textProps(20, "semiBold", props.isDarkTheme ? "gray3" : "gray2")};
     @media ${({ theme }) => theme.mobile} {
         ${props =>
             mixin.textProps(
                 12,
                 "semiBold",
-                props.isDarkTheme ? "mainGray" : "gray2",
+                props.isDarkTheme ? "gray3" : "gray2",
             )};
     }
 `;

@@ -28,7 +28,11 @@ const MainSlider = ({ postList }) => {
     //슬라이더 우측 방향으로 이동
     const NextArrow = ({ onClick }) => {
         return (
-            <ArrowContainer direction="next" onClick={onClick}>
+            <ArrowContainer
+                isDarkTheme={isDarkTheme}
+                direction="next"
+                onClick={onClick}
+            >
                 <Boop rotation={0} timing={200} x={5} y={0}>
                     <FaArrowRight />
                 </Boop>
@@ -39,7 +43,11 @@ const MainSlider = ({ postList }) => {
     //슬라이더 좌측 방향으로 이동
     const PrevArrow = ({ onClick }) => {
         return (
-            <ArrowContainer direction="prev" onClick={onClick}>
+            <ArrowContainer
+                isDarkTheme={isDarkTheme}
+                direction="prev"
+                onClick={onClick}
+            >
                 <Boop rotation={0} timing={200} x={-5} y={0}>
                     <FaArrowLeft />
                 </Boop>
@@ -165,6 +173,10 @@ const ArrowContainer = styled.div`
         }
     }
     svg {
+        color: ${props =>
+            props.isDarkTheme
+                ? props.theme.color.white
+                : props.theme.color.black};
         transition: color 300ms;
     }
     ${props =>

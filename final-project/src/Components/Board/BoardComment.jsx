@@ -135,7 +135,12 @@ const CommentWrite = styled.div`
             "bottom",
         )};
     :hover {
-        ${mixin.outline("2px solid", "gray1", "bottom")};
+        ${props =>
+            mixin.outline(
+                "2px solid",
+                props.isDarkTheme ? "mainGray" : "gray1",
+                "bottom",
+            )};
     }
 
     @media ${({ theme }) => theme.mobile} {
