@@ -19,12 +19,12 @@ const Election = () => {
     const dispatch = useDispatch();
     const isDarkTheme = useSelector(state => state.user.isDarkTheme);
     const electionList = useSelector(state => state.election.list);
-    const user = useSelector(state => state.user.user); //유저정보
     const isLogin = useSelector(state => state.user.isLoggedIn); //login을 했는지 안했는지 판별값으로 사용합니다.
     const isSchoolAuth = useSelector(state => state.user.user.school_auth)
         ? true
         : false; //학교인증을 했는지 안했는지 판별값
     const [isOngoing, setIsOngoing] = useState(true);
+
     useEffect(() => {
         if (isLogin) dispatch(getElectionListDB());
     }, [isLogin]);
@@ -37,28 +37,6 @@ const Election = () => {
     );
     const currentList = isOngoing ? ongoingElectionList : finishedElectionList;
     const currentListName = isOngoing ? "ongoing" : "finished";
-
-    //로그인한 유저만 볼 수 있도록 예외처리를 합니다.
-    // if (!user.user_id)
-    //     return (
-    //         <Message
-    //             strong="로그인"
-    //             message="을 해야만 선거함을 볼 수 있어요!"
-    //             link="/login"
-    //             buttonValue="로그인하러가기"
-    //         />
-    //     );
-
-    // //대학 인증을 한 사람만 볼 수 있도록 예외처리를 합니다.
-    // if (!user.univ_id || !user.country_id)
-    //     return (
-    //         <Message
-    //             strong="대학인증"
-    //             message="을 해야만 선거함을 볼 수 있어요!"
-    //             link="/mypage"
-    //             buttonValue="대학인증하러가기"
-    //         />
-    //     );
 
     return (
         <ElectionContainer>

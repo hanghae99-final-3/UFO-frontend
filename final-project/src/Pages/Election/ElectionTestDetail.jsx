@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { useParams } from "react-router";
 import { useSelector } from "react-redux";
-import moment from "moment";
 import mixin from "../../Styles/Mixin";
 import theme from "../../Styles/theme";
 
@@ -10,12 +8,9 @@ import theme from "../../Styles/theme";
 import { GrEdit } from "react-icons/gr";
 
 //alert
-import confirm from "../../Shared/confirm";
 import Swal from "sweetalert2";
 
 //컴포넌트
-import CandidateSlider from "../../Components/Election/CandidateSlider";
-import Message from "../../Components/Shared/Message";
 import DefaultButton from "../../Elements/Buttons/DefaultButton";
 import DangerButton from "../../Elements/Buttons/DangerButton";
 import Count from "../../Components/CountDown/Count";
@@ -24,9 +19,8 @@ import CandidateBox from "../../Components/Election/CandidateBox";
 import CandidateCard from "../../Components/Election/CandidateCard";
 import UnvotedBox from "../../Components/Election/UnvotedBox";
 import ElectedCard from "../../Components/Election/ElectedCard";
-import CustomSlider from "../../Components/Election/CustomSlider";
-import CongratulationMessageBox from "../../Components/Election/CongratulationMessageBox";
 
+//체험용 더미데이터
 const post = {
     election_id: "",
     country_id: 2,
@@ -73,9 +67,9 @@ const post = {
 
 const ElectionTestDetail = () => {
     const isDarkTheme = useSelector(state => state.user.isDarkTheme); //다크모드인지 아닌지 판별 state
-    const [selectCandidateId, setSelectCandidateId] = useState(null); //선택한 후보자의 번호를 담는 state입니다.
-    const [isVoted, setIsVoted] = useState(false); //투표를 했는지 안했는지 판별state
-    const [testResult, setTestResult] = useState(null); //당선자의 정보가 들어있는 state
+    const [selectCandidateId, setSelectCandidateId] = useState(null); //유저가 선택한 후보자의 번호를 담는 state입니다.
+    const [isVoted, setIsVoted] = useState(false); //유저가 투표를 했는지 안했는지 판별state
+    const [testResult, setTestResult] = useState(null); //체험용 당선자의 정보가 들어있는 state
 
     //데스크탑 사이즈인지 아닌지에 대한 판별값입니다.
     const isDesktop =
@@ -99,6 +93,11 @@ const ElectionTestDetail = () => {
         );
     };
 
+    const forAdminControl = value => {
+        //관리자용 버튼을 누르면 유저에게 알림을 띄웁니다.
+        Swal.fire("잠깐!", `관리자만 ${value}할 수 있어요!`, "error");
+    };
+
     return (
         <ElectionTestDetailContainer>
             <UnvotedContainer>
@@ -109,20 +108,17 @@ const ElectionTestDetail = () => {
                 <UnvotedBox isDarkTheme={isDarkTheme} list={[post]} isTest />
             </UnvotedContainer>
             <ElectionInfoContainer isDarkTheme={isDarkTheme}>
+                {/* 선거 제목 */}
                 <ElectionTitle isDarkTheme={isDarkTheme}>
-                    <h5>{post?.name}</h5>
+                    <h5>{post.name}</h5>
+
                     <TitleControls>
+                        {/* 데스크탑인 경우, 상세페이지 컨트롤 부분 */}
                         {isDesktop ? (
                             <>
                                 <DangerButton
                                     rightGap={theme.calRem(8)}
-                                    onClick={() =>
-                                        Swal.fire(
-                                            "잠깐!",
-                                            "관리자만 수정할 수 있어요!",
-                                            "error",
-                                        )
-                                    }
+                                    onClick={() => forAdminControl("수정")}
                                 >
                                     수정하기
                                 </DangerButton>
@@ -130,34 +126,25 @@ const ElectionTestDetail = () => {
                                 {/* 관리자면 삭제하기 버튼을 볼 수 있습니다. */}
 
                                 <DangerButton
-                                    onClick={() =>
-                                        Swal.fire(
-                                            "잠깐!",
-                                            "관리자만 삭제할 수 있어요!",
-                                            "error",
-                                        )
-                                    }
+                                    onClick={() => forAdminControl("삭제")}
                                 >
                                     삭제하기
                                 </DangerButton>
                             </>
                         ) : (
+                            //모바일인 경우, 상세페이지 컨트롤 부분
                             <DangerButton
-                                onClick={() =>
-                                    Swal.fire(
-                                        "잠깐!",
-                                        "관리자만 게시글을 관리할 수 있어요!",
-                                        "error",
-                                    )
-                                }
+                                onClick={() => forAdminControl("관리")}
                             >
                                 <GrEdit />
                             </DangerButton>
                         )}
                     </TitleControls>
                 </ElectionTitle>
+                {/* 선거 내용 */}
                 <p>{post.content}</p>
             </ElectionInfoContainer>
+
             {/* 카운트다운 */}
             <CountdownContainer>
                 <Title isDarkTheme={isDarkTheme}>투표까지 남은 시간</Title>
@@ -165,10 +152,12 @@ const ElectionTestDetail = () => {
                 <TimeBox isCountdown={true}>
                     <Count deadline={post.end_date && post.end_date} />
                 </TimeBox>
+                {/* 선거 진행 바 */}
                 <ProgressBar
                     start={post.start_date && post.start_date}
                     end={post.end_date && post.end_date}
                 />
+                {/* 선거 일정 */}
                 <ElectionDate isDarkTheme={isDarkTheme}>
                     <span>{post.start_date}</span>
                     <span>{post.end_date}</span>
@@ -186,6 +175,7 @@ const ElectionTestDetail = () => {
             {/* 체험용 투표를 안했으면 투표를 보여주고, 했으면 결과를 보여줍니다. */}
             {!isVoted ? (
                 <>
+                    {/* 투표 보여주기 */}
                     <VoteContainer>
                         <VoteTitle isDarkTheme={isDarkTheme}>
                             <h5>투표하기</h5>
@@ -223,6 +213,7 @@ const ElectionTestDetail = () => {
                     </Controls>
                 </>
             ) : (
+                // 투표 결과 보여주기
                 <ElectedContainer>
                     <Title isDarkTheme={isDarkTheme}>당선자</Title>
                     <ElectedCard
