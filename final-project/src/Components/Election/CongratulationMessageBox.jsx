@@ -16,14 +16,43 @@ import TimeCounting from "time-counting";
 import moment from "moment";
 
 //alert
+import Swal from "sweetalert2";
 import confirm from "../../Shared/confirm";
 
 //컴포넌트
 import DefaultButton from "../../Elements/Buttons/DefaultButton";
 
-const CongratulationMessageBox = ({ electionPostId }) => {
+const testCommentList = [
+    {
+        comment_id: 1,
+        user_id: "",
+        post_id: "",
+        content: "너무 아름다워요!!",
+        createdAt: "2021-09-02 00:21:21",
+        updatedAt: "2021-09-02 00:21:21",
+        user: {
+            user_id: "",
+            nickname: "UFO대장",
+        },
+    },
+    {
+        comment_id: 2,
+        user_id: 1,
+        post_id: "",
+        content: "눈부셔!",
+        createdAt: "2021-09-02 00:22:38",
+        updatedAt: "2021-09-02 00:22:38",
+        user: {
+            user_id: "",
+            nickname: "UFOUFO",
+        },
+    },
+];
+
+const CongratulationMessageBox = ({ electionPostId, isTest }) => {
     const dispatch = useDispatch();
     const commentList = useSelector(state => state.election.congratulationList);
+    console.log(commentList);
     const [content, setContent] = useState("");
     useEffect(() => {
         if (electionPostId) {
@@ -38,6 +67,14 @@ const CongratulationMessageBox = ({ electionPostId }) => {
 
     const addComment = () => {
         //필요한 정보들을 정리하고, 당선축하메세지를 불러오는 api를 연결합니다.
+
+        if (isTest)
+            return Swal.fire(
+                "잠깐!",
+                "체험용 선거에서는 댓글기능을 사용할 수 없어요!",
+                "error",
+            );
+
         const req = {
             election_id: electionPostId,
             content: content,
@@ -60,6 +97,14 @@ const CongratulationMessageBox = ({ electionPostId }) => {
                 <DefaultButton onClick={addComment}>등록</DefaultButton>
             </InputCongratulation>
             <CommentBox>
+                {isTest &&
+                    testCommentList.map(comment => (
+                        <Comment
+                            key={comment.comment_id}
+                            comment={comment}
+                            electionPostId={electionPostId}
+                        />
+                    ))}
                 {commentList &&
                     commentList.map(comment => (
                         // 각 댓글의 데이터들이 들어가는 공간입니다.

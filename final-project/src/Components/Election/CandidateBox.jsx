@@ -6,7 +6,7 @@ import mixin from "../../Styles/Mixin";
 import CandidateCard from "./CandidateCard";
 import CandidateIntroBox from "./CandidateIntroBox";
 
-const CandidateBox = ({ candidateList, isDarkTheme }) => {
+const CandidateBox = ({ candidateList, isDarkTheme, isTest }) => {
     const [candidateIdx, setCandidateIdx] = useState(0); //상세페이지에서 보여줄 후보자의 id값
     const getCandidateIdx = idx => {
         setCandidateIdx(idx);
@@ -25,6 +25,7 @@ const CandidateBox = ({ candidateList, isDarkTheme }) => {
                             cursor
                             isContact
                             getCandidateIdx={getCandidateIdx}
+                            isTest={isTest ? true : false}
                         />
                     ))}
             </CandidateCardBox>
@@ -32,6 +33,7 @@ const CandidateBox = ({ candidateList, isDarkTheme }) => {
                 isDarkTheme={isDarkTheme}
                 candidates={candidateList}
                 idx={candidateIdx}
+                isTest={isTest ? true : false}
             />
         </CandidateBoxContainer>
     );

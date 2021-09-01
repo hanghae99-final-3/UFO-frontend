@@ -4,64 +4,20 @@ import mixin from "../../Styles/Mixin";
 import theme from "../../Styles/theme";
 import { history } from "../../Redux/configureStore";
 import { Helmet } from "react-helmet";
-import moment from "moment";
-
-//통신
-import { useSelector, useDispatch } from "react-redux";
-import { getElectionListDB } from "../../Redux/Async/election";
+import Swal from "sweetalert2";
+import { useSelector } from "react-redux";
 
 //컴포넌트
 import Message from "../../Components/Shared/Message";
 import DefaultButton from "../../Elements/Buttons/DefaultButton";
 import DefaultSelector from "../../Elements/Buttons/DefaultSelector";
 
-const Election = () => {
-    const dispatch = useDispatch();
+const ElectionTest = () => {
     const isDarkTheme = useSelector(state => state.user.isDarkTheme);
-    const electionList = useSelector(state => state.election.list);
-    const user = useSelector(state => state.user.user); //유저정보
-    const isLogin = useSelector(state => state.user.isLoggedIn); //login을 했는지 안했는지 판별값으로 사용합니다.
-    const isSchoolAuth = useSelector(state => state.user.user.school_auth)
-        ? true
-        : false; //학교인증을 했는지 안했는지 판별값
     const [isOngoing, setIsOngoing] = useState(true);
-    useEffect(() => {
-        if (isLogin) dispatch(getElectionListDB());
-    }, [isLogin]);
-
-    const ongoingElectionList = electionList.filter(post =>
-        moment().isBefore(post.end_date),
-    );
-    const finishedElectionList = electionList.filter(post =>
-        moment().isAfter(post.end_date),
-    );
-    const currentList = isOngoing ? ongoingElectionList : finishedElectionList;
-    const currentListName = isOngoing ? "ongoing" : "finished";
-
-    //로그인한 유저만 볼 수 있도록 예외처리를 합니다.
-    // if (!user.user_id)
-    //     return (
-    //         <Message
-    //             strong="로그인"
-    //             message="을 해야만 선거함을 볼 수 있어요!"
-    //             link="/login"
-    //             buttonValue="로그인하러가기"
-    //         />
-    //     );
-
-    // //대학 인증을 한 사람만 볼 수 있도록 예외처리를 합니다.
-    // if (!user.univ_id || !user.country_id)
-    //     return (
-    //         <Message
-    //             strong="대학인증"
-    //             message="을 해야만 선거함을 볼 수 있어요!"
-    //             link="/mypage"
-    //             buttonValue="대학인증하러가기"
-    //         />
-    //     );
-
+    const [isVoted, setIsVoted] = useState(false);
     return (
-        <ElectionContainer>
+        <ElectionTestContainer>
             <Helmet>
                 <title>UFO - 투표함</title>
             </Helmet>
@@ -82,95 +38,49 @@ const Election = () => {
                         종료된선거
                     </DefaultSelector>
                 </Selecter>
-                <DefaultButton onClick={() => history.push(`/election/write`)}>
+                <DefaultButton
+                    onClick={() =>
+                        Swal.fire(
+                            "잠깐!",
+                            "관리자만 선거를 추가할 수 있어요!",
+                            "error",
+                        )
+                    }
+                >
                     추가하기
                 </DefaultButton>
             </Controls>
+            <GridContainer>
+                {/* 진행중 선거 */}
+                {isOngoing && !isVoted && (
+                    <OngoingPost
+                        isDarkTheme={isDarkTheme}
+                        isVoted={isVoted}
+                        onClick={() => history.push(`/election/test/detail`)}
+                    >
+                        <span>체험용선거</span>
+                        {isVoted && (
+                            <VotingComplete isDarkTheme={isDarkTheme}>
+                                투표 완료!
+                            </VotingComplete>
+                        )}
+                    </OngoingPost>
+                )}
 
-            {/* 비로그인 회원의 경우에는 체험하기를 하게한다. */}
-            {!isLogin && (
-                <Message
-                    message="로그인 후, 대학 인증을 하면
-                    선거함을 이용할 수 있어요."
-                    link="election/test"
-                    buttonValue="체험하기"
-                />
-            )}
-
-            {/* 비학교인증 회원의 경우에는 체험하기를 하게한다. */}
-            {isLogin && !isSchoolAuth && (
-                <Message
-                    message="대학 인증을 하면
-                    선거함을 이용할 수 있어요."
-                    link="election/test"
-                    buttonValue="체험하기"
-                />
-            )}
-
-            {/* 로그인회원, 학교인증 회원, 선거게시글이 있는 경우에는 선거목록을 보여준다. */}
-            {isLogin &&
-            isSchoolAuth &&
-            currentList &&
-            currentList.length < 1 ? (
-                <Message
-                    message="아직 선거가 없습니다"
-                    link="election/test"
-                    buttonValue="체험하기"
-                />
-            ) : (
-                <>
-                    <GridContainer>
-                        {currentListName === "ongoing"
-                            ? currentList.map(ele => (
-                                  <OngoingPost
-                                      isDarkTheme={isDarkTheme}
-                                      key={ele.election_id}
-                                      isVoted={ele.votes.length > 0}
-                                      onClick={() =>
-                                          history.push(
-                                              `/election/detail/${ele.election_id}`,
-                                          )
-                                      }
-                                  >
-                                      <span>{ele.name}</span>
-                                      {ele.votes.length > 0 && (
-                                          <VotingComplete
-                                              isDarkTheme={isDarkTheme}
-                                          >
-                                              투표 완료!
-                                          </VotingComplete>
-                                      )}
-                                  </OngoingPost>
-                              ))
-                            : currentList.map(ele => (
-                                  <FinishedPost
-                                      isDarkTheme={isDarkTheme}
-                                      key={ele.election_id}
-                                      isVoted={ele.votes.length > 0}
-                                      onClick={() =>
-                                          history.push(
-                                              `/election/detail/${ele.election_id}`,
-                                          )
-                                      }
-                                  >
-                                      <span>{ele.name}</span>
-                                      {ele.votes.length > 0 && (
-                                          <VotingComplete
-                                              isDarkTheme={isDarkTheme}
-                                          >
-                                              투표 완료!
-                                          </VotingComplete>
-                                      )}
-                                  </FinishedPost>
-                              ))}
-                    </GridContainer>
-                </>
-            )}
-        </ElectionContainer>
+                {/* 종료된 선거에서는 항상 선거가 없도록 합니다. */}
+                {!isOngoing && (
+                    <Message
+                        message="아직 선거가 없습니다"
+                        link="/"
+                        buttonValue="홈으로가기"
+                    />
+                )}
+            </GridContainer>
+        </ElectionTestContainer>
     );
 };
 
-const ElectionContainer = styled.div``;
+const ElectionTestContainer = styled.div``;
 
 const Title = styled.div`
     ${props =>
@@ -349,4 +259,4 @@ const VotingComplete = styled.div`
     }
 `;
 
-export default Election;
+export default ElectionTest;

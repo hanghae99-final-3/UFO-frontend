@@ -20,9 +20,9 @@ const CandidateCard = ({
     isSelected,
     cursor,
     isVoteCard, //모바일때 투표용카드는 사이즈가 작아져서 사용하는 props 입니다.
+    isTest, //체험용선거이면 true, 아니면 false입니다. true면 로컬에 있는 체험용 사진을 사용할 것입니다.
 }) => {
     const voteProps = { isVote, isSelected, isVoteCard };
-
     return (
         <Container
             {...voteProps}
@@ -34,7 +34,11 @@ const CandidateCard = ({
         >
             <CandidateImage
                 isVoteCard={isVoteCard}
-                src={process.env.REACT_APP_API_URL + candidate.photo}
+                src={
+                    isTest
+                        ? candidate.photo
+                        : process.env.REACT_APP_API_URL + candidate.photo
+                }
                 alt={candidate.name}
             />
 
