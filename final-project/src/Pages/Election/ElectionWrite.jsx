@@ -315,7 +315,7 @@ const Title = styled.h5`
     ${props =>
         mixin.outline(
             "1px solid",
-            props.isDarkTheme ? "gray1" : "gray4",
+            props.isDarkTheme ? "darkline" : "gray4",
             "bottom",
         )}
     padding-bottom: ${({ theme }) => theme.calRem(10)};

@@ -113,7 +113,6 @@ const SlideContainer = styled.div`
 // 슬라이더 방향표 버튼 스타일 컴포넌트
 const ArrowContainer = styled.div`
     cursor: pointer;
-    z-index: 99;
     ${props =>
         mixin.textProps(20, "regular", props.isDarkTheme ? "white" : "black")}
     :hover {
@@ -128,7 +127,7 @@ const ArrowContainer = styled.div`
         props.direction === "next" && mixin.floatBox("absolute", "50%", "0")};
     ${props =>
         props.direction === "prev" &&
-        mixin.floatBox("absolute", "50%", null, null, "0")};
+        mixin.floatBox("absolute", "50%", null, null)};
 `;
 
 const Slide = styled.div`

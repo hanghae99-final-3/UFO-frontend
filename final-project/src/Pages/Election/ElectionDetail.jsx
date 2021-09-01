@@ -147,16 +147,6 @@ const ElectionDetail = () => {
 
     return (
         <ElectionDetailContainer>
-            <UnvotedContainer>
-                {/* 현재 진행중이지만, 선거를 하지 않은 게시글을 보여줍니다. */}
-                <Title isDarkTheme={isDarkTheme}>
-                    선택을 기다리는 선거함이 있어요
-                </Title>
-                <UnvotedBox
-                    isDarkTheme={isDarkTheme}
-                    list={unvotedElectionList}
-                />
-            </UnvotedContainer>
             <ElectionInfoContainer isDarkTheme={isDarkTheme}>
                 <ElectionTitle isDarkTheme={isDarkTheme}>
                     <h5>{post?.name}</h5>
@@ -263,7 +253,7 @@ const ElectionDetail = () => {
                             rightGap={theme.calRem(8)}
                             onClick={addVote}
                         >
-                            제출하기
+                            투표제출
                         </DefaultButton>
                     </Controls>
                 </>
@@ -277,6 +267,16 @@ const ElectionDetail = () => {
                     />
                 </ElectedContainer>
             )}
+            <UnvotedContainer>
+                {/* 현재 진행중이지만, 선거를 하지 않은 게시글을 보여줍니다. */}
+                <Title isDarkTheme={isDarkTheme}>
+                    선택을 기다리는 선거함이 있어요
+                </Title>
+                <UnvotedBox
+                    isDarkTheme={isDarkTheme}
+                    list={unvotedElectionList}
+                />
+            </UnvotedContainer>
         </ElectionDetailContainer>
     );
 };
@@ -288,9 +288,9 @@ const ElectionDetailContainer = styled.div`
 
 const UnvotedContainer = styled.div`
     width: 100%;
-    margin-bottom: ${({ theme }) => theme.calRem(80)};
+    margin-top: ${({ theme }) => theme.calRem(80)};
     @media ${({ theme }) => theme.mobile} {
-        margin-bottom: ${({ theme }) => theme.calRem(48)};
+        margin-top: ${({ theme }) => theme.calRem(48)};
     }
 `;
 
@@ -305,7 +305,7 @@ const Title = styled.h5`
         !props.borderNone &&
         mixin.outline(
             "1px solid",
-            props.isDarkTheme ? "gray1" : "gray4",
+            props.isDarkTheme ? "darkline" : "gray4",
             "bottom",
         )}
     padding-bottom: ${({ theme }) => theme.calRem(10)};
@@ -350,7 +350,7 @@ const ElectionTitle = styled.div`
     ${props =>
         mixin.outline(
             "1px solid",
-            props.isDarkTheme ? "gray1" : "gray4",
+            props.isDarkTheme ? "darkline" : "gray4",
             "bottom",
         )};
     ${mixin.flexBox("space-between", "center")};
@@ -481,6 +481,7 @@ const VoteBox = styled.div`
     grid-template-columns: repeat(5, 1fr);
     flex-wrap: wrap;
     gap: ${({ theme }) => theme.calRem(12)};
+    justify-content: center;
 
     @media ${({ theme }) => theme.mobile} {
         display: flex;
