@@ -94,7 +94,7 @@ const BoardComment = ({ boardName }) => {
                     value={content} //나중에 댓글을 추가하고 value 값을 지울 때, state를 활용하여 지우기 위해 value props를 설정!
                     placeholder="여러분의 의견을 남겨주세요:)"
                 />
-                <AddButton onClick={addComment}>등록</AddButton>
+                <AddButton onClick={addComment} isDarkTheme={isDarkTheme}>등록</AddButton>
             </CommentWrite>
             {/* 자유게시판일 때 렌더링 */}
             {commentList && (
@@ -135,7 +135,12 @@ const CommentWrite = styled.div`
             "bottom",
         )};
     :hover {
-        ${mixin.outline("2px solid", "gray1", "bottom")};
+        ${props =>
+            mixin.outline(
+                "2px solid",
+                props.isDarkTheme ? "mainGray" : "gray1",
+                "bottom",
+            )};
     }
 
     @media ${({ theme }) => theme.mobile} {
@@ -500,6 +505,12 @@ const CommentContent = styled.span`
 const AddButton = styled.button`
     background: none;
     padding: 0 10px;
+    ${props =>
+        mixin.textProps(
+            16,
+            "regular",
+            props.isDarkTheme ? "mainGray" : "black",
+        )};
     @media ${({ theme }) => theme.mobile} {
         width: ${({ theme }) => theme.calRem(30)};
         ${mixin.textProps(14, "gray1", "gray3")}

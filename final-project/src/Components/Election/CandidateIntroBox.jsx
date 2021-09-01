@@ -3,7 +3,7 @@ import styled from "styled-components";
 import mixin from "../../Styles/Mixin";
 import theme from "../../Styles/theme";
 
-const CandidateIntroBox = ({ candidates, idx, isDarkTheme }) => {
+const CandidateIntroBox = ({ candidates, idx, isDarkTheme, isTest }) => {
     const isDesktop =
         document.documentElement.clientWidth >= 1080 ? true : false;
     return (
@@ -11,8 +11,10 @@ const CandidateIntroBox = ({ candidates, idx, isDarkTheme }) => {
             <Top>
                 <CandidateImage
                     src={
-                        candidates[idx]?.photo
-                            ? `https://yzkim9501.site/${candidates[idx].photo}`
+                        isTest
+                            ? candidates[idx].photo
+                            : candidates[idx]?.photo
+                            ? `${process.env.REACT_APP_API_URL}${candidates[idx].photo}`
                             : "https://cdn.pixabay.com/photo/2016/04/01/12/07/alien-1300540__340.png"
                     }
                     alt={candidates[idx]?.name}
@@ -84,7 +86,7 @@ const CandidateImage = styled.img`
 
 const CandidateInfo = styled.div`
     height: 100%;
-    width: 100%;
+    width: 60%;
 `;
 
 const CandidateName = styled.div`

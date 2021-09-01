@@ -73,7 +73,11 @@ const CandidateAccordian = ({
                                         {/* 후보자의 이미지가 있으면 보여주고, 아니면 기본문자열을 보여줍니다. */}
                                         {ele.photo ? (
                                             <img
-                                                src={`https://yzkim9501.site/${ele.photo}`}
+                                                src={
+                                                    process.env
+                                                        .REACT_APP_API_URL +
+                                                    ele.photo
+                                                }
                                                 alt={ele.name}
                                             />
                                         ) : (

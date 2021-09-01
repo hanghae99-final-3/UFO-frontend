@@ -4,7 +4,7 @@ import Swal from "sweetalert2";
 
 // Axios 인스턴스 설정
 const instance = axios.create({
-    baseURL: "https://yzkim9501.site/",
+    baseURL: process.env.REACT_APP_API_URL,
     // baseURL: "https://api.ufo.town/",
 });
 

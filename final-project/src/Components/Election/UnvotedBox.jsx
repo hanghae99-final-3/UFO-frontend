@@ -8,7 +8,7 @@ import { useParams } from "react-router";
 //애니메이션
 import Boop from "../../Elements/Animations/Boop";
 
-const UnvotedBox = ({ list, isDarkTheme }) => {
+const UnvotedBox = ({ list, isDarkTheme, isTest }) => {
     // 현재 진행중이지만, 투표를 하지 않은 게시글을 보여줍니다.
 
     const { id: postId } = useParams(); //게시글아이디
@@ -16,6 +16,11 @@ const UnvotedBox = ({ list, isDarkTheme }) => {
     //데스크탑 사이즈인지 아닌지에 대한 판별값입니다.
     const isDesktop =
         document.documentElement.clientWidth >= 1080 ? true : false;
+
+    const onClickUnVotedCard = postId => {
+        if (isTest) return history.push("/election/test/detail");
+        history.push(`/election/detail/${postId}`);
+    };
 
     return (
         <Container isDesktop={isDesktop}>
@@ -33,9 +38,7 @@ const UnvotedBox = ({ list, isDarkTheme }) => {
                                         post.election_id === Number(postId)
                                     }
                                     onClick={() =>
-                                        history.push(
-                                            `/election/detail/${post.election_id}`,
-                                        )
+                                        onClickUnVotedCard(post.election_id)
                                     }
                                 >
                                     <span>{post.name}</span>

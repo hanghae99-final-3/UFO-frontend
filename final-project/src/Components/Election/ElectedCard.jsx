@@ -9,7 +9,8 @@ import { getElectionResultDB } from "../../Redux/Async/election";
 //컴포넌트
 import CongratulationMessageBox from "./CongratulationMessageBox";
 
-const ElectedCard = ({ electionPostId, candidates }) => {
+//testResult는 체험용 투표결과를 담은 정보입니다.
+const ElectedCard = ({ electionPostId, candidates, testResult }) => {
     const dispatch = useDispatch();
     const result = useSelector(state => state.election.resultList); //result안에는 투표에 대한 정보가 들어있고, 투표를 한 사람이 없으면 result는 빈 배열입니다.
 
@@ -53,6 +54,35 @@ const ElectedCard = ({ electionPostId, candidates }) => {
         dispatch(getElectionResultDB(req));
     }, [dispatch]);
 
+    //테스트용 결과페이지입니다.
+    if (testResult) {
+        return (
+            <Container>
+                <ElectedBox>
+                    <ElectedImage>
+                        <img
+                            src={testResult[0].photo}
+                            alt={testResult[0].name}
+                        />
+                    </ElectedImage>
+                    <ElectedInfo>
+                        <ElectedName>
+                            기호 {testResult[0].candidate_id}번{" "}
+                            {testResult[0].name}
+                        </ElectedName>
+                        <ElectedMajor>{testResult[0].major}</ElectedMajor>
+
+                        {/* 당선축하메세지 박스 */}
+                        <CongratulationMessageBox
+                            electionPostId={electionPostId}
+                            isTest
+                        />
+                    </ElectedInfo>
+                </ElectedBox>
+            </Container>
+        );
+    }
+
     return (
         <Container>
             {notElected && <NotElected>당선자가 없습니다</NotElected>}
@@ -61,7 +91,10 @@ const ElectedCard = ({ electionPostId, candidates }) => {
                     <ElectedImage>
                         {electedInfo.photo ? (
                             <img
-                                src={`https://yzkim9501.site/${electedInfo?.photo}`}
+                                src={
+                                    process.env.REACT_APP_API_URL +
+                                    electedInfo?.photo
+                                }
                                 alt={electedInfo?.name}
                             />
                         ) : (

@@ -23,7 +23,7 @@ const Tag = styled.span`
     ${props => props.leftGap && `margin-left:${props.leftGap};`};
     ${props => (props.isDarkTheme ? mixin.darkBoxShadow() : mixin.boxShadow())};
     ${mixin.textProps(18, "semiBold", "gray1")};
-    background-color: ${props => props.theme.color.mint};
+    background-color: ${props => props.theme.color.mainMint};
     ${mixin.outline("2px solid", "mainMint")};
 
     @media ${({ theme }) => theme.mobile} {

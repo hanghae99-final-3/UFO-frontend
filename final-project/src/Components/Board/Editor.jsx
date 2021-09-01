@@ -61,12 +61,12 @@ class MyUploadAdapter {
                         //서버에 파일 객체를 보내서 imgUrl을 얻어온다.
                         try {
                             const response = await axios.post(
-                                "https://yzkim9501.site/util/image",
+                                `${process.env.REACT_APP_API_URL}util/image`,
                                 formData,
                                 config,
                             );
                             if (response.data.ok) {
-                                const downloadURL = `https://yzkim9501.site/${response.data.result}`;
+                                const downloadURL = `${process.env.REACT_APP_API_URL}${response.data.result}`;
                                 resolve({
                                     default: downloadURL,
                                 });

@@ -32,7 +32,7 @@ export default function SlideCard({ post, rank, active, isDarkTheme }) {
             </Preview>
             {!imageNone && (
                 <PreviewImage
-                    src={`https://yzkim9501.site/${post.img_list[0]}`}
+                    src={process.env.REACT_APP_API_URL + post.img_list[0]}
                     alt={post.title}
                 />
             )}
