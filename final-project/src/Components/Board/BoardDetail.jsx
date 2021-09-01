@@ -65,6 +65,8 @@ const BoardDetail = ({ page }) => {
     const post = useSelector(state =>
         page === "freeboard" ? state.freeBoard.post : state.univBoard.post,
     );
+    // 게시물 국가
+    const postCountry = useSelector(state=>page === "freeboard" ? state.freeBoard.post?.country_id : state.univBoard.post?.country_id)
     // 좋아요 유무
     const isLike = useSelector(state =>
         page === "freeboard"
@@ -199,7 +201,19 @@ const BoardDetail = ({ page }) => {
             <ContentHeaderContainer isDarkTheme={isDarkTheme}>
                 {page === "freeboard" ? (
                     <DefaultTag>
-                        #{post && categories.freeBoardTags[post.category]}
+                        {<img
+                            style={{
+                                width: "20px",
+                                marginRight: "1px",
+                            }}
+                            src={
+                                categories
+                                .countrySelectorFlagList[
+                                postCountry-1
+                                ]?.icon
+                            }
+                            alt=""
+                        />}{post && categories.freeBoardTags[post.category]}
                     </DefaultTag>
                 ) : (
                     <DefaultTag>
