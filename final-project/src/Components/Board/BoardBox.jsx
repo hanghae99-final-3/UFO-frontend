@@ -335,7 +335,7 @@ const IconContainer = styled.div`
         ${props =>
             mixin.outline(
                 "1px solid",
-                props.isDarkTheme ? "gray1" : "gray4",
+                props.isDarkTheme ? "darkLine" : "gray4",
                 "bottom",
             )};
         padding-bottom: 16px;
@@ -351,7 +351,10 @@ const Icon = styled.div`
         font-size: ${({ theme }) => theme.fontSize["12"]};
     }
     svg {
-        color: white;
+        color: ${props =>
+            props.isDarkTheme
+                ? props.theme.color.gray2
+                : props.theme.color.gray3};
         margin-right: 2px;
         font-size: 20px;
     }

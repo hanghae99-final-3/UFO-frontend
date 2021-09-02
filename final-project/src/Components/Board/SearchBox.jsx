@@ -18,10 +18,7 @@ import Boop from "../../Elements/Animations/Boop";
 import { history } from "../../Redux/configureStore";
 
 //머테리얼 ui
-import Input from "@material-ui/core/Input";
 import CloseIcon from "@material-ui/icons/Close";
-import { MuiTheme } from "../../Styles/MuiTheme";
-import { makeStyles, MuiThemeProvider } from "@material-ui/core";
 import { Select as MuiSelect } from "@material-ui/core";
 import DefaultSelector from "../../Elements/Buttons/DefaultSelector";
 import { getFreeListDB, getSearchResult } from "../../Redux/Async/freeBoard";
@@ -39,14 +36,6 @@ import Swal from "sweetalert2";
  * @필수값  searchTag 검색창 위에 보여지는 tag 배열
  */
 
-const useStyles = makeStyles(theme => ({
-    MuiOutlinedInput: {
-        fontSize: 18,
-        fontWeight: 600,
-        color: "#757b80",
-    },
-}));
-
 const SearchBox = ({
     searchTag,
     deactivateSearch,
@@ -54,7 +43,6 @@ const SearchBox = ({
     handleResetInfinity,
     queryData,
 }) => {
-    const classes = useStyles();
     const isDarkTheme = useSelector(state => state.user.isDarkTheme);
     const dispatch = useDispatch();
     // 현재 선택되어있는 태그의 index값을 selectedTag 배열에 저장한다.
@@ -247,14 +235,12 @@ const SearchBox = ({
                             <option value={"relative"}>관련순</option>
                         </Select>
                         <SearchForm onSubmit={handleSearch}>
-                            <MuiThemeProvider theme={MuiTheme}>
-                                <InputBox
-                                    isDarkTheme={isDarkTheme}
-                                    placeholder="UFO에게 무엇이든 검색해보세요 "
-                                    value={searchTerm}
-                                    onChange={onSearchTermChange}
-                                />
-                            </MuiThemeProvider>
+                            <InputBox
+                                isDarkTheme={isDarkTheme}
+                                placeholder="UFO에게 무엇이든 검색해보세요 "
+                                value={searchTerm}
+                                onChange={onSearchTermChange}
+                            />
                         </SearchForm>
                     </InputContainer>
                 )}
@@ -283,7 +269,7 @@ const TitleContainer = styled.div`
     ${props =>
         mixin.outline(
             "1.5px solid",
-            props.isDarkTheme ? "gray1" : "gray4",
+            props.isDarkTheme ? "darkLine" : "gray4",
             "bottom",
         )}
 
@@ -298,17 +284,13 @@ const SubTitle = styled.span`
     margin-bottom: 10px;
     width: 100%;
     ${props =>
-        mixin.textProps(
-            20,
-            "semiBold",
-            props.isDarkTheme ? "mainGray" : "gray2",
-        )};
+        mixin.textProps(20, "semiBold", props.isDarkTheme ? "gray3" : "gray2")};
     @media ${({ theme }) => theme.mobile} {
         ${props =>
             mixin.textProps(
                 12,
                 "semiBold",
-                props.isDarkTheme ? "mainGray" : "gray2",
+                props.isDarkTheme ? "gray3" : "gray2",
             )};
     }
 `;

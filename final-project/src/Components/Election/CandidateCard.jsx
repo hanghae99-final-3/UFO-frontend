@@ -20,9 +20,9 @@ const CandidateCard = ({
     isSelected,
     cursor,
     isVoteCard, //모바일때 투표용카드는 사이즈가 작아져서 사용하는 props 입니다.
+    isTest, //체험용선거이면 true, 아니면 false입니다. true면 로컬에 있는 체험용 사진을 사용할 것입니다.
 }) => {
-    const voteProps = { isVote, isSelected, isVoteCard };
-
+    const voteProps = { isVote, isSelected, isVoteCard, isDarkTheme };
     return (
         <Container
             {...voteProps}
@@ -34,7 +34,11 @@ const CandidateCard = ({
         >
             <CandidateImage
                 isVoteCard={isVoteCard}
-                src={`https://yzkim9501.site/${candidate.photo}`}
+                src={
+                    isTest
+                        ? candidate.photo
+                        : process.env.REACT_APP_API_URL + candidate.photo
+                }
                 alt={candidate.name}
             />
 
@@ -49,7 +53,7 @@ const Container = styled.div`
     width: ${({ theme }) => theme.calRem(210)};
     height: ${({ theme }) => theme.calRem(300)};
     border-radius: 25px;
-    ${mixin.boxShadow()}
+    ${props => (props.isDarkTheme ? mixin.darkBoxShadow() : mixin.boxShadow())};
     ${props =>
         props.isVote &&
         props.isSelected &&
@@ -76,14 +80,14 @@ const CandidateImage = styled.img`
 `;
 const CandidateName = styled.div`
     width: 100%;
-    ${mixin.flexBox("center", "center", null, `${theme.calRem(40)}`)}
+    ${mixin.flexBox("center", "center", null, `${theme.calRem(44)}`)}
     background: ${props =>
         props.isDarkTheme ? props.theme.color.gray1 : props.theme.color.white};
     text-align: center;
     border-radius: 0 0 25px 25px;
     @media ${({ theme }) => theme.mobile} {
         height: ${props =>
-            props.isVoteCard ? `${theme.calRem(20)}` : `${theme.calRem(30)}`};
+            props.isVoteCard ? `${theme.calRem(24)}` : `${theme.calRem(34)}`};
     }
     span {
         line-height: 1;

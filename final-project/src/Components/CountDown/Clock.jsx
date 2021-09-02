@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import moment from "moment";
 
 class Clock extends Component {
     constructor(props) {
@@ -11,11 +12,11 @@ class Clock extends Component {
         };
     }
 
+    //데드라인 재가공
+    _deadline = moment(this.props.deadline).format("YYYY/MM/DD HH:mm:ss");
+
     componentDidMount() {
-        this.timer = setInterval(
-            () => this.getTimeUntil(this.props.deadline),
-            1000,
-        );
+        this.timer = setInterval(() => this.getTimeUntil(this._deadline), 1000);
     }
 
     leading0(num) {
@@ -45,6 +46,7 @@ class Clock extends Component {
         }
         return;
     }
+
     render() {
         return (
             <span>

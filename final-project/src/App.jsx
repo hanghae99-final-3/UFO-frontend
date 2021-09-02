@@ -24,6 +24,7 @@ import UnivboardWrite from "./Pages/UnivBoard/UnivBoardWrite";
 import Election from "./Pages/Election/Election"; //선거게시판
 import ElectionDetail from "./Pages/Election/ElectionDetail"; //선거게시판 게시글상세페이지
 import ElectionWrite from "./Pages/Election/ElectionWrite"; //선거게시글 작성페이지 or 수정페이지
+import ElectionTest from "./Pages/Election/ElectionTest"; //선거게시글 체험페이지
 import MainSearchResultPage from "./Pages/Search/MainSearchResultPage"; //메인검색결과페이지
 
 import KakaoLogin from "./KakaoLogin";
@@ -32,6 +33,7 @@ import KakaoLogin from "./KakaoLogin";
 import { checkAdminDB, checkLoggedInUser } from "./Redux/Async/user"; // 로그인 체크
 import { setDarkTheme } from "./Redux/Modules/userSlice"; //다크모드 주입 함수
 import { getDarkTheme } from "./Shared/utils";
+import ElectionTestDetail from "./Pages/Election/ElectionTestDetail";
 
 function App() {
     // redux dispatch
@@ -158,6 +160,16 @@ function App() {
                             path="/election/edit/:id"
                             exact
                             component={ElectionWrite}
+                        />
+                        <Route
+                            path="/election/test"
+                            exact
+                            component={ElectionTest}
+                        />
+                        <Route
+                            path="/election/test/detail"
+                            exact
+                            component={ElectionTestDetail}
                         />
 
                         <Redirect from="*" to="/" />

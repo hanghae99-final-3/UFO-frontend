@@ -3,16 +3,19 @@ import styled from "styled-components";
 import mixin from "../../Styles/Mixin";
 import theme from "../../Styles/theme";
 
-const CandidateIntroBox = ({ candidates, idx, isDarkTheme }) => {
+const CandidateIntroBox = ({ candidates, idx, isDarkTheme, isTest }) => {
     const isDesktop =
         document.documentElement.clientWidth >= 1080 ? true : false;
     return (
         <Container>
             <Top>
                 <CandidateImage
+                    isDarkTheme={isDarkTheme}
                     src={
-                        candidates[idx]?.photo
-                            ? `https://yzkim9501.site/${candidates[idx].photo}`
+                        isTest
+                            ? candidates[idx].photo
+                            : candidates[idx]?.photo
+                            ? `${process.env.REACT_APP_API_URL}${candidates[idx].photo}`
                             : "https://cdn.pixabay.com/photo/2016/04/01/12/07/alien-1300540__340.png"
                     }
                     alt={candidates[idx]?.name}
@@ -74,7 +77,7 @@ const CandidateImage = styled.img`
     object-fit: cover;
     margin-right: ${({ theme }) => theme.calRem(30)};
     border-radius: 50%;
-    ${mixin.boxShadow()}
+    ${props => (props.isDarkTheme ? mixin.darkBoxShadow() : mixin.boxShadow())}
     @media ${({ theme }) => theme.mobile} {
         width: ${({ theme }) => theme.calRem(100)};
         height: ${({ theme }) => theme.calRem(100)};
@@ -84,7 +87,7 @@ const CandidateImage = styled.img`
 
 const CandidateInfo = styled.div`
     height: 100%;
-    width: 100%;
+    width: 60%;
 `;
 
 const CandidateName = styled.div`
@@ -121,6 +124,23 @@ const CandidateName = styled.div`
     }
 `;
 const CandidateIntro = styled.div`
+    > p:first-child {
+        margin-bottom: 8px;
+        ${props =>
+            mixin.textProps(
+                20,
+                "extraBold",
+                props.isDarkTheme ? "mainGray" : "gray1",
+            )}
+        @media ${({ theme }) => theme.mobile} {
+            ${props =>
+                mixin.textProps(
+                    16,
+                    "extraBold",
+                    props.isDarkTheme ? "mainGray" : "gray1",
+                )}
+        }
+    }
     ${props =>
         mixin.textProps(
             20,
@@ -129,7 +149,9 @@ const CandidateIntro = styled.div`
         )}
     @media ${({ theme }) => theme.mobile} {
         ${props =>
-            mixin.textProps(16, "regular", props =>
+            mixin.textProps(
+                16,
+                "regular",
                 props.isDarkTheme ? "mainGray" : "gray1",
             )}
     }

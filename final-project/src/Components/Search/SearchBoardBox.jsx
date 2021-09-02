@@ -50,7 +50,20 @@ const SearchBoardBox = ({ postList, fixedList, boardName, announcement }) => {
                                 rightGap={isDesktop ? "20px" : "8px"}
                                 announcement={announcement}
                             >
-                                #
+                                {
+                                    <img
+                                        style={{
+                                            width: "20px",
+                                            marginRight: "1px",
+                                        }}
+                                        src={
+                                            categories.countrySelectorFlagList[
+                                                post.country_id - 1
+                                            ]?.icon
+                                        }
+                                        alt=""
+                                    />
+                                }
                                 {post.board === "free" &&
                                     categories.freeCategory[post.category]
                                         ?.categoryName}
@@ -64,7 +77,7 @@ const SearchBoardBox = ({ postList, fixedList, boardName, announcement }) => {
                             <IconContainer>
                                 <>
                                     {isDesktop ? (
-                                        <Icon>
+                                        <Icon isDarkTheme={isDarkTheme}>
                                             {post?.like?.is_like === false ? (
                                                 <FavoriteBorder />
                                             ) : (
@@ -79,7 +92,7 @@ const SearchBoardBox = ({ postList, fixedList, boardName, announcement }) => {
                                         </Icon>
                                     ) : null}
                                     {isDesktop ? (
-                                        <Icon>
+                                        <Icon isDarkTheme={isDarkTheme}>
                                             <MdComment />
                                             <IconSpan isDarkTheme={isDarkTheme}>
                                                 {post.comment_count}
@@ -87,7 +100,7 @@ const SearchBoardBox = ({ postList, fixedList, boardName, announcement }) => {
                                         </Icon>
                                     ) : null}
                                 </>
-                                <Icon>
+                                <Icon isDarkTheme={isDarkTheme}>
                                     <VisibilityIcon />
                                     <IconSpan isDarkTheme={isDarkTheme}>
                                         {post.view_count}
@@ -166,6 +179,10 @@ const Icon = styled.div`
         font-size: ${({ theme }) => theme.fontSize["12"]};
     }
     svg {
+        color: ${props =>
+            props.isDarkTheme
+                ? props.theme.color.gray2
+                : props.theme.color.gray3};
         margin-right: 2px;
         font-size: 20px;
     }

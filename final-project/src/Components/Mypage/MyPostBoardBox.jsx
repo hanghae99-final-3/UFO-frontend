@@ -11,6 +11,7 @@ import TimeCounting from "time-counting"; // 타임 카운팅(게시물 작성�
 //아이콘
 import { MdComment } from "react-icons/md"; // 댓글 아이콘
 import VisibilityIcon from "@material-ui/icons/Visibility"; // 조회수 아이콘
+import AccessTimeIcon from "@material-ui/icons/AccessTime"; // 작성일 아이콘
 
 //컴포넌트
 import InfinityScroll from "../Shared/InfinityScroll"; // 무한 스크롤 컴포넌트
@@ -38,6 +39,8 @@ const MyPostBoardBox = ({
     // 데스크탑 사이즈인지 아닌지 판별하는 변수
     const isMobile =
         document.documentElement.clientWidth <= 1080 ? true : false;
+    const isDesktop =
+        document.documentElement.clientWidth >= 1080 ? true : false;
     const isDarkTheme = useSelector(state => state.user.isDarkTheme);
 
     const timeOption = {
@@ -88,7 +91,10 @@ const MyPostBoardBox = ({
                                             isDarkTheme={isDarkTheme}
                                         >
                                             <>
-                                                <Icon>
+                                                <Icon
+                                                    isDesktop={isDesktop}
+                                                    isDarkTheme={isDarkTheme}
+                                                >
                                                     <MdComment />
                                                     <IconSpan
                                                         isDarkTheme={
@@ -98,7 +104,10 @@ const MyPostBoardBox = ({
                                                         {post.comment_count}
                                                     </IconSpan>
                                                 </Icon>
-                                                <Icon>
+                                                <Icon
+                                                    isDesktop={isDesktop}
+                                                    isDarkTheme={isDarkTheme}
+                                                >
                                                     <VisibilityIcon />
                                                     <IconSpan
                                                         isDarkTheme={
@@ -108,7 +117,11 @@ const MyPostBoardBox = ({
                                                         {post.view_count}
                                                     </IconSpan>
                                                 </Icon>
-                                                <Icon>
+                                                <Icon
+                                                    isDesktop={isDesktop}
+                                                    isDarkTheme={isDarkTheme}
+                                                >
+                                                    <AccessTimeIcon />
                                                     <IconSpan
                                                         isDarkTheme={
                                                             isDarkTheme
@@ -127,7 +140,7 @@ const MyPostBoardBox = ({
                                 {!Comment && isMobile && (
                                     <IconContainer isDarkTheme={isDarkTheme}>
                                         <>
-                                            <Icon>
+                                            <Icon isDarkTheme={isDarkTheme}>
                                                 <MdComment />
                                                 <IconSpan
                                                     isDarkTheme={isDarkTheme}
@@ -135,7 +148,7 @@ const MyPostBoardBox = ({
                                                     {post.comment_count}
                                                 </IconSpan>
                                             </Icon>
-                                            <Icon>
+                                            <Icon isDarkTheme={isDarkTheme}>
                                                 <VisibilityIcon />
                                                 <IconSpan
                                                     isDarkTheme={isDarkTheme}
@@ -143,7 +156,8 @@ const MyPostBoardBox = ({
                                                     {post.view_count}
                                                 </IconSpan>
                                             </Icon>
-                                            <Icon>
+                                            <Icon isDarkTheme={isDarkTheme}>
+                                                <AccessTimeIcon />
                                                 <IconSpan
                                                     isDarkTheme={isDarkTheme}
                                                 >
@@ -184,7 +198,7 @@ const CommentContent = styled.div`
         ${props =>
             mixin.outline(
                 "1px solid",
-                props.isDarkTheme ? "gray1" : "mainGray",
+                props.isDarkTheme ? "darkLine" : "mainGray",
                 "bottom",
             )};
     }
@@ -241,7 +255,7 @@ const IconContainer = styled.div`
         ${props =>
             mixin.outline(
                 "1px solid",
-                props.isDarkTheme ? "gray1" : "mainGray",
+                props.isDarkTheme ? "darkLine" : "mainGray",
                 "bottom",
             )};
         margin-bottom: ${({ theme }) => theme.calRem(16)};
@@ -256,12 +270,16 @@ const IconContainer = styled.div`
 const Icon = styled.div`
     display: flex;
     align-items: center;
+    width: ${props => (props.isDesktop ? "100px" : null)};
     span {
         line-height: 1;
         font-size: ${({ theme }) => theme.fontSize["12"]};
     }
     svg {
-        color: white;
+        color: ${props =>
+            props.isDarkTheme
+                ? props.theme.color.gray2
+                : props.theme.color.gray3};
         font-size: ${props => (props.title || props.tag ? "17px" : "20px")};
     }
     @media ${({ theme }) => theme.mobile} {

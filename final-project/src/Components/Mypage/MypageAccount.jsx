@@ -109,7 +109,7 @@ const MypageAccount = props => {
                     setAuthCode(res.data.authCode);
                     setInputEmail(email);
                     setEmailAuthMsg("인증번호가 전송되었습니다.");
-                    console.log(res.data.authCode);
+                    
                     actions.resetForm(authCodeFormik.initialValues);
                 })
                 .catch(error => {
@@ -609,7 +609,7 @@ const TitleWrapper = styled.div`
     ${props =>
         mixin.outline(
             "1.5px solid",
-            props.isDarkTheme ? "gray1" : "gray4",
+            props.isDarkTheme ? "darkLine" : "gray4",
             "bottom",
         )};
 `;
@@ -657,7 +657,7 @@ const ControlButton = styled.button`
     ${props =>
         mixin.outline(
             "2px solid",
-            props.selected === props.name ? "mainMint" : "blue3",
+            props.selected === props.name ? "mainMint" : "blue2",
         )};
     ${props => {
         if (props.isDarkTheme) {

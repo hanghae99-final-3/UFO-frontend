@@ -94,7 +94,7 @@ const BoardComment = ({ boardName }) => {
                     value={content} //나중에 댓글을 추가하고 value 값을 지울 때, state를 활용하여 지우기 위해 value props를 설정!
                     placeholder="여러분의 의견을 남겨주세요:)"
                 />
-                <AddButton onClick={addComment}>등록</AddButton>
+                <AddButton onClick={addComment} isDarkTheme={isDarkTheme}>등록</AddButton>
             </CommentWrite>
             {/* 자유게시판일 때 렌더링 */}
             {commentList && (
@@ -135,7 +135,12 @@ const CommentWrite = styled.div`
             "bottom",
         )};
     :hover {
-        ${mixin.outline("2px solid", "gray1", "bottom")};
+        ${props =>
+            mixin.outline(
+                "2px solid",
+                props.isDarkTheme ? "mainGray" : "gray1",
+                "bottom",
+            )};
     }
 
     @media ${({ theme }) => theme.mobile} {
@@ -305,6 +310,7 @@ const Comment = ({ comment, boardName, postId }) => {
                     {/* 수정모드면 input이 나타나고, 아니면 text가 나타납니다. */}
                     {isEdit ? (
                         <EditInput
+                            isDarkTheme={isDarkTheme}
                             type="text"
                             value={content}
                             placeholder="여러분의 의견을 남겨주세요:)"
@@ -452,12 +458,24 @@ const EditInput = styled.input`
     transition: border-bottom 0.5s ease;
     all: unset;
     width: 40%;
-    ${mixin.outline("2px solid", "mainGray", "bottom")}
+    ${props =>
+        props.isDarkTheme
+            ? mixin.textProps(18, "semiBold", "white")
+            : mixin.textProps(18, "semiBold", "black")};
+    ${props =>
+        mixin.outline(
+            "2px solid",
+            props.isDarkTheme ? "gray1" : "mainGray",
+            "bottom",
+        )}
     :hover {
         ${mixin.outline("2px solid", "gray1", "bottom")}
     }
     ::placeholder {
-        ${mixin.textProps(20, "regular", "gray4")}
+        ${props =>
+            props.isDarkTheme
+                ? mixin.textProps(18, "semiBold", "gray2")
+                : mixin.textProps(18, "semiBold", "gray3")}
     }
 
     @media ${({ theme }) => theme.mobile} {
@@ -487,6 +505,12 @@ const CommentContent = styled.span`
 const AddButton = styled.button`
     background: none;
     padding: 0 10px;
+    ${props =>
+        mixin.textProps(
+            16,
+            "regular",
+            props.isDarkTheme ? "mainGray" : "black",
+        )};
     @media ${({ theme }) => theme.mobile} {
         width: ${({ theme }) => theme.calRem(30)};
         ${mixin.textProps(14, "gray1", "gray3")}

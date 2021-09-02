@@ -66,7 +66,12 @@ body{
     } 
 }
 
+
 /* swal css 설정 */
+#root{
+    width:100vw;
+}
+
 .swal2-popup.swal2-modal.swal2-icon-warning.swal2-show{
   border-radius:50px;
   border: solid 3px;
@@ -80,7 +85,7 @@ body{
   border-radius: 20px;
   background-color: ${({ theme }) => theme.color.blue1};
   width : 90px;
-  /* ${mixin.textProps(11, "semiBold", "white")} */
+
 }
 
 .swal2-cancel.swal2-styled{
@@ -99,7 +104,11 @@ body{
   border-color: ${({ theme }) => theme.color.mainMint};
 }
 
-
-
+.swal2-popup.swal2-modal.swal2-icon-warning.swal2-show .swal2-title{
+      ${mixin.textProps(22, "semiBold", "black")};
+ @media ${({ theme }) => theme.mobile} {
+      ${mixin.textProps(16, "semiBold", "black")};
+ }
+}
 }
 `;

@@ -38,7 +38,7 @@ const HeadingWrapper = styled.div`
     ${props =>
         mixin.outline(
             "1px solid",
-            props.isDarkTheme ? "gray1" : "mainGray",
+            props.isDarkTheme ? "darkLine" : "mainGray",
             "bottom",
         )}
 

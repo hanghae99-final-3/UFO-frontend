@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { history } from "../../Redux/configureStore";
 import theme from "../../Styles/theme";
+import Swal from "sweetalert2";
 
 //통신
 import { onLogout } from "../../Redux/Modules/univBoardSlice";
@@ -201,6 +202,11 @@ const Header = ({ isDarkTheme }) => {
                                             <Link
                                                 to=""
                                                 onClick={() => {
+                                                    Swal.fire(
+                                                        "🛸",
+                                                        "로그아웃 되었습니다!",
+                                                        "success",
+                                                    );
                                                     dispatch(logoutUser());
                                                     dispatch(onLogout());
                                                     localStorage.removeItem(
@@ -248,10 +254,15 @@ const Header = ({ isDarkTheme }) => {
                                         </Control>
                                     </>
                                 )}
+                                <AboutUs>
+                                    <a
+                                        href="https://yzkim9501.notion.site/yzkim9501/UFO-32105e9124b94b4faae28574d416cb72"
+                                        target="_blank"
+                                    >
+                                        about us
+                                    </a>
+                                </AboutUs>
                             </Controls>
-                            {/* <AboutUs>
-                                <span>about us</span>
-                            </AboutUs> */}
                         </Menu>
                     </MenuContainer>
                 </RightColumn>
@@ -380,7 +391,6 @@ const MenuContainer = styled.div`
 
 const Menu = styled.div`
     z-index: 10;
-    padding-top: 80px;
     padding-left: 60px;
     ${props =>
         props.menuOn ? mixin.flexBox("space-between", null, "column") : ""};
@@ -397,26 +407,38 @@ const Menu = styled.div`
 `;
 
 const SelecterBox = styled.div`
-    margin-bottom: ${({ theme }) => theme.calRem(20)};
+    @media ${({ theme }) => theme.mobile} {
+        margin-bottom: ${({ theme }) => theme.calRem(20)};
+    }
 `;
 
 const SelectCountryTitle = styled.span`
     display: inline-block;
     ${mixin.textProps(40, "extraBold", "blue3")};
-    margin-bottom: ${({ theme }) => theme.calRem(8)};
+    margin-bottom: ${({ theme }) => theme.calRem(4)};
     @media ${({ theme }) => theme.mobile} {
         ${mixin.textProps(28, "extraBold", "blue3")}
         margin-bottom: ${({ theme }) => theme.calRem(8)};
     }
 `;
 
-const Controls = styled.ul``;
+const Controls = styled.ul`
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    height: 100%;
+    @media ${({ theme }) => theme.mobile} {
+        display: block;
+    }
+`;
 
 const Control = styled.li`
     cursor: pointer;
-    /* Link의 state를 활용하여 조건부 렌더링을 해보았습니다. */
-    margin-bottom: ${({ theme }) => theme.calRem(20)};
+    @media ${({ theme }) => theme.mobile} {
+        margin-bottom: ${({ theme }) => theme.calRem(20)};
+    }
 
+    /* Link의 state를 활용하여 조건부 렌더링을 해보았습니다. */
     a {
         ${({ children }) =>
             children.props.to?.state?.isMatchPathname
@@ -433,7 +455,8 @@ const Control = styled.li`
 `;
 
 const AboutUs = styled.div`
-    span {
+    text-decoration: none;
+    a {
         ${mixin.textProps(40, "extraBold", "blue3")}
         @media ${({ theme }) => theme.mobile} {
             ${mixin.textProps(28, "extraBold", "blue3")};

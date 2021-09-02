@@ -6,22 +6,32 @@ import Swal from "sweetalert2";
 import { useSelector } from "react-redux";
 
 const SocialLogin = ({ toggleLoginMode }) => {
-    const isDarkTheme = useSelector(state=>state.user.isDarkTheme)
+    const isDarkTheme = useSelector(state => state.user.isDarkTheme);
     return (
         <React.Fragment>
-            <ButtonBox variant="outlined" onClick={toggleLoginMode}>
+            <ButtonBox
+                isDarkTheme={isDarkTheme}
+                variant="outlined"
+                onClick={toggleLoginMode}
+            >
                 이메일로 로그인
             </ButtonBox>
             <KakaoButtonBox
+                isDarkTheme={isDarkTheme}
                 variant="outlined"
                 onClick={() => Swal.fire("서비스 준비중입니다!")}
             >
-                <KakaoSpan href="https://yzkim9501.site/auth/kakao" isDarkTheme={isDarkTheme}>
+                <KakaoSpan
+                    href={process.env.REACT_APP_API_URL + "auth/kakao"}
+                    isDarkTheme={isDarkTheme}
+                >
                     카카오 로그인
                 </KakaoSpan>
             </KakaoButtonBox>
             <MemberCheckBox>
-                <DoYouHaveID isDarkTheme={isDarkTheme}>UFO와 함께하실래요?</DoYouHaveID>
+                <DoYouHaveID isDarkTheme={isDarkTheme}>
+                    UFO와 함께하실래요?
+                </DoYouHaveID>
                 <GoSignUp
                     isDarkTheme={isDarkTheme}
                     onClick={() => {
@@ -42,7 +52,8 @@ const ButtonBox = styled.button`
     border-radius: 50px;
     ${mixin.textProps(20, "extraBold", "white")}
     background-color : ${({ theme }) => theme.color.mainBlue};
-    box-shadow: 0px 1px 1px 1px #ececec;
+    ${props =>
+        props.isDarkTheme ? null : "box-shadow: 0px 1px 1px 1px #ececec"};
 
     @media ${({ theme }) => theme.mobile} {
         ${mixin.textProps(16, "extraBold", "white")}
@@ -57,21 +68,33 @@ const KakaoButtonBox = styled.button`
     height: 46px;
     border-radius: 50px;
     background-color: #fee500;
-    box-shadow: 0px 1px 1px 1px #ececec;
+    ${props =>
+        props.isDarkTheme ? null : "box-shadow: 0px 1px 1px 1px #ececec"};
     @media ${({ theme }) => theme.mobile} {
-        ${props=>mixin.textProps(16, "extraBold", props.isDarkTheme?"black":"white")}
+        ${props =>
+            mixin.textProps(
+                16,
+                "extraBold",
+                props.isDarkTheme ? "black" : "white",
+            )}
         width: 264px;
         height: 40px;
     }
 `;
 const KakaoSpan = styled.span`
-    ${props=>mixin.textProps(20, "extraBold", props.isDarkTheme?"black":"white")}
+    ${props =>
+        mixin.textProps(20, "extraBold", props.isDarkTheme ? "black" : "white")}
     @media ${({ theme }) => theme.mobile} {
-        ${props=>mixin.textProps(16, "extraBold", props.isDarkTheme?"black":"white")}
+        ${props =>
+            mixin.textProps(
+                16,
+                "extraBold",
+                props.isDarkTheme ? "black" : "white",
+            )}
         width: 264px;
         height: 40px;
     }
-`
+`;
 
 const MemberCheckBox = styled.div`
     width: 344px;
@@ -84,17 +107,33 @@ const MemberCheckBox = styled.div`
     }
 `;
 const DoYouHaveID = styled.p`
-    ${props=>mixin.textProps(20, "semiBold", props.isDarkTheme?"gray2":"gray3")}
+    ${props =>
+        mixin.textProps(20, "semiBold", props.isDarkTheme ? "gray2" : "gray3")}
     @media ${({ theme }) => theme.mobile} {
-        ${props=>mixin.textProps(16, "semiBold", props.isDarkTheme?"gray2":"gray3")}
+        ${props =>
+            mixin.textProps(
+                16,
+                "semiBold",
+                props.isDarkTheme ? "gray2" : "gray3",
+            )}
     }
 `;
 const GoSignUp = styled.button`
-    background : none;
-    ${props=>mixin.textProps(20, "semiBold", props.isDarkTheme?"mainMint":"mainBlue")}
+    background: none;
+    ${props =>
+        mixin.textProps(
+            20,
+            "semiBold",
+            props.isDarkTheme ? "mint" : "mainBlue",
+        )}
     //모바일 사이즈
      @media ${({ theme }) => theme.mobile} {
-        ${props=>mixin.textProps(16, "semiBold", props.isDarkTheme?"mainMint":"mainBlue")}
+        ${props =>
+            mixin.textProps(
+                16,
+                "semiBold",
+                props.isDarkTheme ? "mint" : "mainBlue",
+            )}
     }
 `;
 

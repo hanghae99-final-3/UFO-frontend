@@ -102,7 +102,7 @@ const FreeBoard = () => {
     const [nextPage, setNextPage] = useState(1); // 다음 페이지가 있는지 확인, 만약 total page보다 작다면 무한스크롤 해제
     const [infinityPage, setInfinityPage] = useState(2); // pagination의  현재 페이지 값 설정
     const [is_Loading, setIsLoading] = useState(false); // loading 상태 값
-    const [InfinitySelectedTag, setInfinitySelectedTag] = useState(0);
+
     // 무한스크롤 (mobile)일 경우 쿼리 데이터
     const infinityPostListQueryData = {
         pageSize: 10,
@@ -223,6 +223,9 @@ const PaginationContainer = styled.div`
             props.isDarkTheme
                 ? props.theme.color.white
                 : props.theme.color.black};
+    }
+    .MuiPaginationItem-root.MuiPaginationItem-ellipsis {
+        color: ${props => (props.isDarkTheme ? "white" : "black")};
     }
 `;
 

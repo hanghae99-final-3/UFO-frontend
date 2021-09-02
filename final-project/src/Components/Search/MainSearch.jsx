@@ -101,7 +101,7 @@ const Input = styled.input`
             mixin.textProps(
                 30,
                 "extraBold",
-                props.isDarkTheme ? "mainGray" : "gray3",
+                props.isDarkTheme ? "gray1" : "gray3",
             )};
     }
     ${mixin.outline("none")}
@@ -119,7 +119,7 @@ const Input = styled.input`
                 mixin.textProps(
                     22,
                     "extraBold",
-                    props.isDarkTheme ? "mainGray" : "gray3",
+                    props.isDarkTheme ? "gray1" : "gray3",
                 )};
         }
     }

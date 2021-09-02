@@ -4,7 +4,7 @@ import Swal from "sweetalert2";
 
 // Axios 인스턴스 설정
 const instance = axios.create({
-    baseURL: "https://yzkim9501.site/",
+    baseURL: process.env.REACT_APP_API_URL,
     // baseURL: "https://api.ufo.town/",
 });
 
@@ -324,6 +324,12 @@ export const voteApi = {
     getResult: ({ election_id }) =>
         instance.get(`election/${election_id}/result`, {
             params: { election_id },
+        }),
+
+    //사용팁을 본 유저의 호응도 측정
+    addLikeUnlike: ({ vote_num }) =>
+        instance.post("util/vote", {
+            vote_num,
         }),
 };
 

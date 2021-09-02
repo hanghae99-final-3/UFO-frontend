@@ -12,8 +12,7 @@ import { getUnivBoardDB } from "../../Redux/Async/univBoard";
 
 //머테리얼 ui
 import Pagination from "@material-ui/lab/Pagination";
-import { makeStyles, MuiThemeProvider } from "@material-ui/core";
-import { MuiTheme } from "../../Styles/MuiTheme";
+import { makeStyles } from "@material-ui/core";
 
 //컴포넌트
 import SearchBox from "../../Components/Board/SearchBox";
@@ -154,24 +153,23 @@ const UnivBoard = () => {
                     </InfinityScroll>
                 )}
             </BoardContentContainer>
-            <MuiThemeProvider theme={MuiTheme}>
-                {isDesktop && (
-                    <PaginationContainer>
-                        <div className={classes.root}>
-                            <Pagination
-                                count={totalUnivPage && totalUnivPage}
-                                page={page}
-                                onChange={handlePage}
-                            />
-                        </div>
-                        <DefaultButton
-                            onClick={() => history.push("univboard/write")}
-                        >
-                            글쓰기
-                        </DefaultButton>
-                    </PaginationContainer>
-                )}
-            </MuiThemeProvider>
+
+            {isDesktop && (
+                <PaginationContainer isDarkTheme={isDarkTheme}>
+                    <div className={classes.root}>
+                        <Pagination
+                            count={totalUnivPage && totalUnivPage}
+                            page={page}
+                            onChange={handlePage}
+                        />
+                    </div>
+                    <DefaultButton
+                        onClick={() => history.push("univboard/write")}
+                    >
+                        글쓰기
+                    </DefaultButton>
+                </PaginationContainer>
+            )}
         </>
     );
 };
@@ -213,6 +211,9 @@ const PaginationContainer = styled.div`
             props.isDarkTheme
                 ? props.theme.color.white
                 : props.theme.color.black};
+    }
+    .MuiPaginationItem-root.MuiPaginationItem-ellipsis {
+        color: ${props => (props.isDarkTheme ? "white" : "black")};
     }
 `;
 
