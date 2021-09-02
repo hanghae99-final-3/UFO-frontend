@@ -25,8 +25,6 @@ import Link from "@ckeditor/ckeditor5-link/src/link";
 import Image from "@ckeditor/ckeditor5-image/src/image";
 import ImageUpload from "@ckeditor/ckeditor5-image/src/imageupload";
 import ImageResize from "@ckeditor/ckeditor5-image/src/imageresize";
-import { classDeclaration } from "@babel/types";
-import { CallReceived } from "@material-ui/icons";
 
 /**
  * @author jiyeong
