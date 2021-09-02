@@ -71,7 +71,7 @@ const SelecterBox = styled.ul`
     grid-template-columns: repeat(3, 1fr);
     position: static;
     padding: 0;
-    width: 90%;
+    width: 80%;
 `;
 
 const Option = styled.li`
@@ -79,8 +79,8 @@ const Option = styled.li`
     cursor: pointer;
     ${props =>
         props.isSelected
-            ? mixin.textProps(30, "extraBold", "mainMint")
-            : mixin.textProps(30, "extraBold", "blue1")};
+            ? mixin.textProps(22, "extraBold", "mainMint")
+            : mixin.textProps(22, "extraBold", "blue1")};
     :not(:last-child) {
         margin-bottom: ${({ theme }) => theme.calRem(7)};
     }

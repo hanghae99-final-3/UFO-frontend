@@ -407,13 +407,15 @@ const Menu = styled.div`
 `;
 
 const SelecterBox = styled.div`
-    margin-bottom: ${({ theme }) => theme.calRem(20)};
+    @media ${({ theme }) => theme.mobile} {
+        margin-bottom: ${({ theme }) => theme.calRem(20)};
+    }
 `;
 
 const SelectCountryTitle = styled.span`
     display: inline-block;
     ${mixin.textProps(40, "extraBold", "blue3")};
-    margin-bottom: ${({ theme }) => theme.calRem(8)};
+    margin-bottom: ${({ theme }) => theme.calRem(4)};
     @media ${({ theme }) => theme.mobile} {
         ${mixin.textProps(28, "extraBold", "blue3")}
         margin-bottom: ${({ theme }) => theme.calRem(8)};
@@ -423,7 +425,7 @@ const SelectCountryTitle = styled.span`
 const Controls = styled.ul`
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-evenly;
     height: 100%;
     @media ${({ theme }) => theme.mobile} {
         display: block;
@@ -432,9 +434,11 @@ const Controls = styled.ul`
 
 const Control = styled.li`
     cursor: pointer;
-    /* Link의 state를 활용하여 조건부 렌더링을 해보았습니다. */
-    margin-bottom: ${({ theme }) => theme.calRem(20)};
+    @media ${({ theme }) => theme.mobile} {
+        margin-bottom: ${({ theme }) => theme.calRem(20)};
+    }
 
+    /* Link의 state를 활용하여 조건부 렌더링을 해보았습니다. */
     a {
         ${({ children }) =>
             children.props.to?.state?.isMatchPathname
