@@ -20,14 +20,12 @@ import FloatSelectCountry from "../Shared/FloatSelectCountry";
 import useSound from "use-sound";
 import boopSfx from "../../Assets/Sound/darkModeSwitch.mp3";
 
-const Float = ({ isDarkTheme }) => {
-    const [play] = useSound(boopSfx);
-
+const Float = ({ isDarkTheme, ...props }) => {
     const dispatch = useDispatch();
     const { pathname } = useLocation();
+    const [play] = useSound(boopSfx);
     const [isWriteBntOn, setIsWriteBntOn] = useState(false); //작성버튼을 보여줄지 말지에 대한 판별값, 자유게시판, 국가게시판이면 글쓰기버튼이 생긴다.
     const [isScrollTopBtnOn, setIsScrollTopBtnOn] = useState(false); //위로가기 버튼을 보여줄지 말지에 대한 판별값
-
     const isDesktop =
         document.documentElement.clientWidth >= 1080 ? true : false;
 
@@ -76,6 +74,14 @@ const Float = ({ isDarkTheme }) => {
         //대학게시판이나, 자유게시판페이지면 isWriteBntOn을 true로 바꿔서 글쓰기 플루팅버튼을 보이게 합니다.
         if (pathname === "/univboard" || pathname === "/freeboard")
             setIsWriteBntOn(true);
+
+        //메인페이지에서 자유게시판 태그별게시판으로 들어왔을때에도 글쓰기플루팅 버튼을 보이게 합니다.
+        if (
+            pathname.includes("/freeboard") &&
+            typeof (pathname.split("/")[2] * 1) === "number"
+        )
+            setIsWriteBntOn(true);
+        //그 이외의 상황에서는 모두 글쓰기 버튼을 보이게 하지 않습니다.
         else setIsWriteBntOn(false);
     }, [pathname]);
 
