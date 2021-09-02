@@ -102,29 +102,31 @@ const Float = ({ isDarkTheme, ...props }) => {
         <FloatContainer>
             <FloatBox>
                 {/* 국가 선택 */}
-                {isCountryBtnOn && (
+                {!pathname.includes("write") && isCountryBtnOn && (
                     <FloatSelectCountry isDarkTheme={isDarkTheme} />
                 )}
 
-                {!isDesktop && isWriteBntOn && (
+                {!pathname.includes("write") && !isDesktop && isWriteBntOn && (
                     <Button isDarkTheme={isDarkTheme} onClick={goToWrite}>
                         ✍{/* <GrEdit /> */}
                     </Button>
                 )}
 
                 {/* 다크모드 */}
-                <Button isDarkTheme={isDarkTheme} onClick={switchDarkTheme}>
-                    {
-                        isDarkTheme
-                            ? // <FaRegMoon />
-                              "🌛"
-                            : "🌞"
-                        // <FaRegSun />
-                    }
-                </Button>
+                {!pathname.includes("write") && (
+                    <Button isDarkTheme={isDarkTheme} onClick={switchDarkTheme}>
+                        {
+                            isDarkTheme
+                                ? // <FaRegMoon />
+                                  "🌛"
+                                : "🌞"
+                            // <FaRegSun />
+                        }
+                    </Button>
+                )}
 
                 {/* 위로가기 */}
-                {isScrollTopBtnOn && (
+                {!pathname.includes("write") && isScrollTopBtnOn && (
                     <Button isDarkTheme={isDarkTheme} onClick={scrollToTop}>
                         {/* <BiArrowToTop /> */}
                         🚀

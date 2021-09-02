@@ -38,6 +38,27 @@ const Election = () => {
     const currentList = isOngoing ? ongoingElectionList : finishedElectionList;
     const currentListName = isOngoing ? "ongoing" : "finished";
 
+    // 비로그인 회원의 경우에는 체험하기를 하게한다.
+    if (!isLogin)
+        <Message
+            message="로그인 후, 대학 인증을 하면
+                    선거함을 이용할 수 있어요."
+            link="election/test"
+            buttonValue="체험하기"
+        />;
+
+    // 비학교인증 회원의 경우에는 체험하기를 하게한다.
+    {
+        isLogin && !isSchoolAuth && (
+            <Message
+                message="대학 인증을 하면
+                    선거함을 이용할 수 있어요."
+                link="election/test"
+                buttonValue="체험하기"
+            />
+        );
+    }
+
     return (
         <ElectionContainer>
             <Helmet>
@@ -64,86 +85,66 @@ const Election = () => {
                     추가하기
                 </DefaultButton>
             </Controls>
-            {/* 비로그인 회원의 경우에는 체험하기를 하게한다. */}
-            {!isLogin && (
-                <Message
-                    message="로그인 후, 대학 인증을 하면
-                    선거함을 이용할 수 있어요."
-                    link="election/test"
-                    buttonValue="체험하기"
-                />
-            )}
-            {/* 비학교인증 회원의 경우에는 체험하기를 하게한다. */}
-            {isLogin && !isSchoolAuth && (
-                <Message
-                    message="대학 인증을 하면
-                    선거함을 이용할 수 있어요."
-                    link="election/test"
-                    buttonValue="체험하기"
-                />
-            )}
+
             {/* 로그인회원, 학교인증 회원, 선거게시글이 있는 경우에는 선거목록을 보여준다. */}
             {isLogin &&
-                isSchoolAuth &&
-                currentList &&
-                currentList.length < 1 && (
-                    <Message
-                        message="아직 선거가 없습니다"
-                        link="election/test"
-                        buttonValue="체험하기"
-                    />
-                )}
-            {/* 학교인증을 받은 유저+진행중선거를 클릭한 유저는 진행중선거를 보여준다. */}
-            <GridContainer>
-                {isLogin &&
-                    isSchoolAuth &&
-                    currentList.length > 1 &&
-                    currentListName === "ongoing" &&
-                    currentList.map(ele => (
-                        <OngoingPost
-                            isDarkTheme={isDarkTheme}
-                            key={ele.election_id}
-                            isVoted={ele.votes.length > 0}
-                            onClick={() =>
-                                history.push(
-                                    `/election/detail/${ele.election_id}`,
-                                )
-                            }
-                        >
-                            <span>{ele.name}</span>
-                            {ele.votes.length > 0 && (
-                                <VotingComplete isDarkTheme={isDarkTheme}>
-                                    투표 완료!
-                                </VotingComplete>
-                            )}
-                        </OngoingPost>
-                    ))}
-
-                {/* 학교인증을 받은 유저+종료된선거를 클릭한 유저는 종료된선거를 보여준다. */}
-                {isLogin &&
-                    isSchoolAuth &&
-                    currentList.length > 1 &&
-                    currentListName !== "ongoing" &&
-                    currentList.map(ele => (
-                        <FinishedPost
-                            isDarkTheme={isDarkTheme}
-                            key={ele.election_id}
-                            isVoted={ele.votes.length > 0}
-                            onClick={() =>
-                                history.push(
-                                    `/election/detail/${ele.election_id}`,
-                                )
-                            }
-                        >
-                            <span>{ele.name}</span>
-                            {ele.votes.length > 0 && (
-                                <VotingComplete isDarkTheme={isDarkTheme}>
-                                    투표 완료!
-                                </VotingComplete>
-                            )}
-                        </FinishedPost>
-                    ))}
-            </GridContainer>
+            isSchoolAuth &&
+            currentList &&
+            currentList.length < 1 ? (
+                <Message
+                    message="아직 선거가 없습니다"
+                    link="election/test"
+                    buttonValue="체험하기"
+                />
+            ) : (
+                <>
+                    <GridContainer>
+                        {currentListName === "ongoing"
+                            ? currentList.map(ele => (
+                                  <OngoingPost
+                                      isDarkTheme={isDarkTheme}
+                                      key={ele.election_id}
+                                      isVoted={ele.votes.length > 0}
+                                      onClick={() =>
+                                          history.push(
+                                              `/election/detail/${ele.election_id}`,
+                                          )
+                                      }
+                                  >
+                                      <span>{ele.name}</span>
+                                      {ele.votes.length > 0 && (
+                                          <VotingComplete
+                                              isDarkTheme={isDarkTheme}
+                                          >
+                                              투표 완료!
+                                          </VotingComplete>
+                                      )}
+                                  </OngoingPost>
+                              ))
+                            : currentList.map(ele => (
+                                  <FinishedPost
+                                      isDarkTheme={isDarkTheme}
+                                      key={ele.election_id}
+                                      isVoted={ele.votes.length > 0}
+                                      onClick={() =>
+                                          history.push(
+                                              `/election/detail/${ele.election_id}`,
+                                          )
+                                      }
+                                  >
+                                      <span>{ele.name}</span>
+                                      {ele.votes.length > 0 && (
+                                          <VotingComplete
+                                              isDarkTheme={isDarkTheme}
+                                          >
+                                              투표 완료!
+                                          </VotingComplete>
+                                      )}
+                                  </FinishedPost>
+                              ))}
+                    </GridContainer>
+                </>
+            )}
         </ElectionContainer>
     );
 };
