@@ -72,7 +72,7 @@ const GridContainer = styled.div`
     gap: ${({ theme }) => theme.calRem(16)};
     ${props =>
         props.isDesktop
-            ? `grid-template-columns: repeat(2, 1fr);`
+            ? `grid-template-columns: repeat(4, 1fr);`
             : `grid-template-columns: repeat(1, 1fr);`}
 `;
 
