@@ -38,7 +38,7 @@ const color = {
     gray2: "#757b80",
     gray3: "#a6abb2",
     gray4: "#e5e5e5",
-    darkline: "#3F4448",
+    darkLine: "#3F4448",
     danger: "#ff8b6f",
 };
 

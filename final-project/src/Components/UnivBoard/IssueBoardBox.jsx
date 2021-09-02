@@ -135,8 +135,8 @@ const Icon = styled.div`
     svg {
         color: ${props =>
             props.isDarkTheme
-                ? props.theme.color.white
-                : props.theme.color.black};
+                ? props.theme.color.gray2
+                : props.theme.color.blue2};
         font-size: 20px;
         margin-right: 10px;
     }

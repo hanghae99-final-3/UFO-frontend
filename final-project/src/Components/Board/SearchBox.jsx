@@ -283,7 +283,7 @@ const TitleContainer = styled.div`
     ${props =>
         mixin.outline(
             "1.5px solid",
-            props.isDarkTheme ? "gray1" : "gray4",
+            props.isDarkTheme ? "darkLine" : "gray4",
             "bottom",
         )}
 

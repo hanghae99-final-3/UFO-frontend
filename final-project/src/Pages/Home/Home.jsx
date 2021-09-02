@@ -64,14 +64,6 @@ const Home = () => {
         setModalVisible(!modalVisible);
     };
 
-    const goToSupportUniv = () => {
-        const location = supportUnivRef.current.offsetTop;
-        window.scrollTo({
-            top: location - 100,
-            behavior: "smooth",
-        });
-    };
-
     //자유 게시판 요청 쿼리 데이터
     const postListQueryData = {
         pageSize: 200,
@@ -317,7 +309,7 @@ const Header = styled.div`
     ${props =>
         mixin.outline(
             "1.5px solid",
-            props.isDarkTheme ? "gray1" : "gray4",
+            props.isDarkTheme ? "darkLine" : "gray4",
             "bottom",
         )};
     ${mixin.flexBox("space-between", "flex-end", null, null)};

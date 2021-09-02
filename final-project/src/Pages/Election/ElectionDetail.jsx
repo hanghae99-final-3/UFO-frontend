@@ -312,7 +312,7 @@ const Title = styled.h5`
         !props.borderNone &&
         mixin.outline(
             "1px solid",
-            props.isDarkTheme ? "darkline" : "gray4",
+            props.isDarkTheme ? "darkLine" : "gray4",
             "bottom",
         )}
     padding-bottom: ${({ theme }) => theme.calRem(10)};
@@ -357,7 +357,7 @@ const ElectionTitle = styled.div`
     ${props =>
         mixin.outline(
             "1px solid",
-            props.isDarkTheme ? "darkline" : "gray4",
+            props.isDarkTheme ? "darkLine" : "gray4",
             "bottom",
         )};
     ${mixin.flexBox("space-between", "center")};

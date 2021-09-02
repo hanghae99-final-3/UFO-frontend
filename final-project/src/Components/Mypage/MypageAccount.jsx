@@ -609,7 +609,7 @@ const TitleWrapper = styled.div`
     ${props =>
         mixin.outline(
             "1.5px solid",
-            props.isDarkTheme ? "gray1" : "gray4",
+            props.isDarkTheme ? "darkLine" : "gray4",
             "bottom",
         )};
 `;
@@ -657,7 +657,7 @@ const ControlButton = styled.button`
     ${props =>
         mixin.outline(
             "2px solid",
-            props.selected === props.name ? "mainMint" : "blue3",
+            props.selected === props.name ? "mainMint" : "blue2",
         )};
     ${props => {
         if (props.isDarkTheme) {

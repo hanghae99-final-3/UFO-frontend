@@ -20,7 +20,12 @@ import FloatSelectCountry from "../Shared/FloatSelectCountry";
 import useSound from "use-sound";
 import boopSfx from "../../Assets/Sound/darkModeSwitch.mp3";
 
-const Float = ({ isDarkTheme, ...props }) => {
+//safari smooth scroll top enabler
+import smoothscroll from "smoothscroll-polyfill";
+
+const Float = ({ isDarkTheme }) => {
+    const [play] = useSound(boopSfx);
+
     const dispatch = useDispatch();
     const { pathname } = useLocation();
     const [play] = useSound(boopSfx);
@@ -37,6 +42,9 @@ const Float = ({ isDarkTheme, ...props }) => {
     };
 
     const scrollToTop = () => {
+        // 사파리 smooth top behavior enabler
+        smoothscroll.polyfill();
+
         //스크롤을 위로 올리는 함수
         window.scrollTo({
             top: 0,

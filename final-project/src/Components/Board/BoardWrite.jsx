@@ -553,7 +553,7 @@ const Controls = styled.div`
     display: flex;
     justify-content: center;
     @media ${({ theme }) => theme.mobile} {
-        margin-top: ${theme.calRem(24)};
+        margin-top: ${theme.calRem(16)};
     }
 `;
 
