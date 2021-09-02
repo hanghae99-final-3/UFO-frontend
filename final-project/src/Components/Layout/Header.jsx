@@ -254,15 +254,15 @@ const Header = ({ isDarkTheme }) => {
                                         </Control>
                                     </>
                                 )}
+                                <AboutUs>
+                                    <a
+                                        href="https://yzkim9501.notion.site/yzkim9501/UFO-32105e9124b94b4faae28574d416cb72"
+                                        target="_blank"
+                                    >
+                                        about us
+                                    </a>
+                                </AboutUs>
                             </Controls>
-                            <AboutUs>
-                                <a
-                                    href="https://yzkim9501.notion.site/yzkim9501/UFO-32105e9124b94b4faae28574d416cb72"
-                                    target="_blank"
-                                >
-                                    about us
-                                </a>
-                            </AboutUs>
                         </Menu>
                     </MenuContainer>
                 </RightColumn>
@@ -391,7 +391,6 @@ const MenuContainer = styled.div`
 
 const Menu = styled.div`
     z-index: 10;
-    padding-top: 80px;
     padding-left: 60px;
     ${props =>
         props.menuOn ? mixin.flexBox("space-between", null, "column") : ""};
@@ -421,7 +420,15 @@ const SelectCountryTitle = styled.span`
     }
 `;
 
-const Controls = styled.ul``;
+const Controls = styled.ul`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+    @media ${({ theme }) => theme.mobile} {
+        display: block;
+    }
+`;
 
 const Control = styled.li`
     cursor: pointer;
