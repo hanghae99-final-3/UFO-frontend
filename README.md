@@ -62,7 +62,6 @@ http://ufo.town/
 -   lodash
 -   ckeditor5
 -   react-slick
--   material-ui
 -   use-sound
 
 <br/>
