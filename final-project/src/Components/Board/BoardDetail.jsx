@@ -395,7 +395,7 @@ const Icon = styled.div`
         color: ${props =>
             props.isDarkTheme
                 ? props.theme.color.gray2
-                : props.theme.color.blue2};
+                : props.theme.color.gray3};
     }
     margin-top: 10px;
 
@@ -461,7 +461,7 @@ const ButtonWrapper = styled.div`
         color: ${props =>
             props.isDarkTheme
                 ? props.theme.color.gray2
-                : props.theme.color.blue2};
+                : props.theme.color.gray3};
     }
 `;
 

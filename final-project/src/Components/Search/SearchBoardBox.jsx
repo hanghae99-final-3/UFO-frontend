@@ -182,7 +182,7 @@ const Icon = styled.div`
         color: ${props =>
             props.isDarkTheme
                 ? props.theme.color.gray2
-                : props.theme.color.blue2};
+                : props.theme.color.gray3};
         margin-right: 2px;
         font-size: 20px;
     }
