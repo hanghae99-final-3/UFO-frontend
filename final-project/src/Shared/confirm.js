@@ -71,6 +71,35 @@ const mobileEditConfirm = (editProcess, deleteProcess) => {
     });
 };
 
-const confirm = { deleteConfirm, addEditConfirm, mobileEditConfirm };
+/**
+ * @author kwonjiyeong
+ * @param confirmProcess : 확인을 눌렀을 때 후처리함수
+ * @param dismissProcess: 취소를 눌렀을 때 후처리함수,
+ * @역할 확인을 누르면 사용팁을 본다.
+ * @필수값 confirmProcess
+ */
+const useTipsConfirm = (confirmProcess, dismissProcess) => {
+    Swal.fire({
+        title: "잠깐!",
+        text: "사용팁을 보시겠어요?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "네",
+        cancelButtonText: "아니오",
+    }).then(result => {
+        if (result.isConfirmed) {
+            confirmProcess();
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+            if (dismissProcess) dismissProcess();
+        }
+    });
+};
+
+const confirm = {
+    deleteConfirm,
+    addEditConfirm,
+    mobileEditConfirm,
+    useTipsConfirm,
+};
 
 export default confirm;

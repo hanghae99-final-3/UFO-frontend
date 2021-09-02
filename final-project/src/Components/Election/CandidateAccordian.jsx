@@ -60,7 +60,7 @@ const CandidateAccordian = ({
                                 <span>{ele?.name}</span>
                             </CandidateTitle>
                             <DefaultButton onClick={() => deleteCard(idx)}>
-                                삭제
+                                후보자 삭제
                             </DefaultButton>
                         </AccordionSummary>
                         {/* 아코디언 디자인의 상세내용 부분입니다. */}
@@ -160,25 +160,55 @@ const StyledAccordion = styled.div`
             `background-color: ${props.theme.color.black};`};
     }
 
-    .MuiAccordionSummary-content {
-        ${mixin.flexBox("space-between", "center")}
-    }
-
     .MuiPaper-elevation1 {
         box-shadow: none;
+    }
+
+    //아코디언 헤드
+    .MuiAccordionSummary-root {
+        min-height: auto;
+        padding: 0;
+        &.Mui-expanded {
+            min-height: auto;
+        }
+        .MuiAccordionSummary-content {
+            ${mixin.flexBox("space-between", "center")}
+            &.Mui-expanded {
+                margin: ${({ theme }) => theme.calRem(16)} 0;
+                min-height: auto;
+                @media ${({ theme }) => theme.mobile} {
+                    margin: ${({ theme }) => theme.calRem(12)} 0;
+                }
+            }
+        }
+    }
+
+    //아코디언 콘텐츠
+    .MuiAccordionDetails-root {
+        padding: ${({ theme }) => theme.calRem(16)} 0 0 0;
     }
 `;
 
 const CandidateTitle = styled.span`
-    ${mixin.textProps(30, "extraBold", "gray2")}
-    span:first-child {
+    span {
         ${props =>
             mixin.textProps(
                 30,
                 "extraBold",
                 props.isDarkTheme ? "white" : "gray2",
-            )}
-        margin-right: ${({ theme }) => theme.calRem(10)};
+            )};
+        &:first-child {
+            margin-right: ${({ theme }) => theme.calRem(10)};
+        }
+
+        @media ${({ theme }) => theme.mobile} {
+            ${props =>
+                mixin.textProps(
+                    16,
+                    "extraBold",
+                    props.isDarkTheme ? "white" : "gray2",
+                )}
+        }
     }
 `;
 
@@ -206,6 +236,9 @@ const Freeview = styled.div`
     ${mixin.flexBox("center", "center", null, `${theme.calRem(250)}`)}
     ${props => (props.isDarkTheme ? mixin.darkBoxShadow() : mixin.boxShadow())};
     margin-right: ${theme.calRem(80)};
+    @media ${({ theme }) => theme.mobile} {
+        margin-right: 0;
+    }
     img {
         width: 100%;
         height: 100%;
@@ -218,6 +251,14 @@ const Freeview = styled.div`
                 "regular",
                 props.isDarkTheme ? "gray3" : "gray1",
             )}
+        @media ${({ theme }) => theme.mobile} {
+            ${props =>
+                mixin.textProps(
+                    16,
+                    "regular",
+                    props.isDarkTheme ? "gray3" : "gray1",
+                )}
+        }
     }
 `;
 const CandidateWriteBox = styled.div`
@@ -225,8 +266,17 @@ const CandidateWriteBox = styled.div`
     justify-content: space-between;
     width: 100%;
     padding: ${({ theme }) => `${theme.calRem(30)} ${theme.calRem(70)}`};
+    @media ${({ theme }) => theme.mobile} {
+        flex-direction: column-reverse;
+        padding: 0;
+    }
 `;
-const CandidateImage = styled.div``;
+const CandidateImage = styled.div`
+    @media ${({ theme }) => theme.mobile} {
+        display: flex;
+        justify-content: center;
+    }
+`;
 
 const Uploader = styled.input`
     ${mixin.floatBox("absolute", "0", null, null, "0")}
@@ -234,6 +284,7 @@ const Uploader = styled.input`
     height: 100%;
     z-index: 99;
     opacity: 0;
+    cursor: pointer;
 `;
 
 const CandidateContent = styled.div`
@@ -242,13 +293,28 @@ const CandidateContent = styled.div`
     gap: ${({ theme }) => `${theme.calRem(40)} ${theme.calRem(10)}`};
     width: 100%;
     align-items: flex-start;
+    @media ${({ theme }) => theme.mobile} {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+    }
+
     span {
         ${props =>
             mixin.textProps(
                 20,
                 "semiBold",
                 props.isDarkTheme ? "white" : "gray1",
-            )}//이름,전공,소개를 작성해주세요
+            )};
+        @media ${({ theme }) => theme.mobile} {
+            margin-bottom: ${({ theme }) => theme.calRem(16)};
+            ${props =>
+                mixin.textProps(
+                    16,
+                    "semiBold",
+                    props.isDarkTheme ? "white" : "gray1",
+                )};
+        }
     }
     input,
     textarea {
@@ -263,13 +329,27 @@ const CandidateContent = styled.div`
             )}
         ${mixin.textProps(20, "regular", "gray2")}
         transition: border-bottom 1s ease;
+        @media ${({ theme }) => theme.mobile} {
+            width: 100%;
+            margin-bottom: ${({ theme }) => theme.calRem(24)};
+            ${mixin.textProps(14, "regular", "gray2")}
+        }
+
         ::placeholder {
             ${props =>
                 mixin.textProps(
                     20,
                     "regular",
                     props.isDarkTheme ? "gray3" : "gray4",
-                )}
+                )};
+            @media ${({ theme }) => theme.mobile} {
+                ${props =>
+                    mixin.textProps(
+                        14,
+                        "regular",
+                        props.isDarkTheme ? "gray3" : "gray4",
+                    )};
+            }
         }
         :focus {
             ${mixin.outline("1px solid", "gray1", "bottom")}

@@ -10,6 +10,7 @@ const CandidateIntroBox = ({ candidates, idx, isDarkTheme, isTest }) => {
         <Container>
             <Top>
                 <CandidateImage
+                    isDarkTheme={isDarkTheme}
                     src={
                         isTest
                             ? candidates[idx].photo
@@ -76,7 +77,7 @@ const CandidateImage = styled.img`
     object-fit: cover;
     margin-right: ${({ theme }) => theme.calRem(30)};
     border-radius: 50%;
-    ${mixin.boxShadow()}
+    ${props => (props.isDarkTheme ? mixin.darkBoxShadow() : mixin.boxShadow())}
     @media ${({ theme }) => theme.mobile} {
         width: ${({ theme }) => theme.calRem(100)};
         height: ${({ theme }) => theme.calRem(100)};
@@ -123,6 +124,23 @@ const CandidateName = styled.div`
     }
 `;
 const CandidateIntro = styled.div`
+    > p:first-child {
+        margin-bottom: 8px;
+        ${props =>
+            mixin.textProps(
+                20,
+                "extraBold",
+                props.isDarkTheme ? "mainGray" : "gray1",
+            )}
+        @media ${({ theme }) => theme.mobile} {
+            ${props =>
+                mixin.textProps(
+                    16,
+                    "extraBold",
+                    props.isDarkTheme ? "mainGray" : "gray1",
+                )}
+        }
+    }
     ${props =>
         mixin.textProps(
             20,
@@ -131,7 +149,9 @@ const CandidateIntro = styled.div`
         )}
     @media ${({ theme }) => theme.mobile} {
         ${props =>
-            mixin.textProps(16, "regular", props =>
+            mixin.textProps(
+                16,
+                "regular",
                 props.isDarkTheme ? "mainGray" : "gray1",
             )}
     }

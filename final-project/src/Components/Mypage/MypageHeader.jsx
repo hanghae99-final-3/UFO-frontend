@@ -10,18 +10,17 @@ import mixin from "../../Styles/Mixin";
 
 import Swal from "sweetalert2";
 
-
 const MypageHeader = props => {
     const isDarkTheme = useSelector(state => state.user.isDarkTheme);
     const dispatch = useDispatch();
     const user = useSelector(state => state.user.user);
 
     const handleLogout = () => {
-        Swal.fire("🛸","로그아웃 되었습니다!","success")
+        Swal.fire("🛸", "로그아웃 되었습니다!", "success");
         dispatch(logoutUser());
         dispatch(onLogout());
         localStorage.removeItem("token");
-        
+
         history.replace("/");
     };
 
@@ -157,7 +156,7 @@ const MyActivityContainer = styled.div`
     ${props =>
         mixin.outline(
             "1.5px solid",
-            props.isDarkTheme ? "gray1" : "gray4",
+            props.isDarkTheme ? "darkLine" : "gray4",
             "bottom",
         )};
 `;
@@ -196,7 +195,7 @@ const ActivityButton = styled.button`
     background: none;
     ${props => (props.isDarkTheme ? null : mixin.boxShadow())};
     ${mixin.flexBox("center", "center", null, "40px")};
-    ${mixin.outline("2px solid", "blue3")};
+    ${mixin.outline("2px solid", "blue2")};
     ${props =>
         mixin.textProps(18, "semiBold", props.isDarkTheme ? "gray2" : "gray3")};
 

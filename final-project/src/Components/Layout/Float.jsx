@@ -20,14 +20,18 @@ import FloatSelectCountry from "../Shared/FloatSelectCountry";
 import useSound from "use-sound";
 import boopSfx from "../../Assets/Sound/darkModeSwitch.mp3";
 
+//safari smooth scroll top enabler
+import smoothscroll from "smoothscroll-polyfill";
+
 const Float = ({ isDarkTheme }) => {
     const [play] = useSound(boopSfx);
 
     const dispatch = useDispatch();
     const { pathname } = useLocation();
+    const [play] = useSound(boopSfx);
     const [isWriteBntOn, setIsWriteBntOn] = useState(false); //작성버튼을 보여줄지 말지에 대한 판별값, 자유게시판, 국가게시판이면 글쓰기버튼이 생긴다.
+    const [isCountryBtnOn, setIsCountryBtnOn] = useState(false); //국가선택버튼을 보여줄지 말지에 대한 판별값
     const [isScrollTopBtnOn, setIsScrollTopBtnOn] = useState(false); //위로가기 버튼을 보여줄지 말지에 대한 판별값
-
     const isDesktop =
         document.documentElement.clientWidth >= 1080 ? true : false;
 
@@ -38,6 +42,9 @@ const Float = ({ isDarkTheme }) => {
     };
 
     const scrollToTop = () => {
+        // 사파리 smooth top behavior enabler
+        smoothscroll.polyfill();
+
         //스크롤을 위로 올리는 함수
         window.scrollTo({
             top: 0,
@@ -73,36 +80,61 @@ const Float = ({ isDarkTheme }) => {
     }, []);
 
     useEffect(() => {
-        //대학게시판이나, 자유게시판페이지면 isWriteBntOn을 true로 바꿔서 글쓰기 플루팅버튼을 보이게 합니다.
-        if (pathname === "/univboard" || pathname === "/freeboard")
+        if (pathname === "/univboard") {
+            //대학게시판이면 글쓰기 플루팅버튼을 보이게 합니다.
             setIsWriteBntOn(true);
-        else setIsWriteBntOn(false);
+        }
+
+        if (pathname === "/freeboard") {
+            //자유게시판이면 글쓰기, 국가선택버튼을 보이게 합니다.
+            setIsWriteBntOn(true);
+            setIsCountryBtnOn(true);
+        }
+
+        //메인페이지에서 자유게시판 태그별게시판으로 들어왔을때에도 글쓰기플루팅 버튼을 보이게 합니다.
+        if (
+            pathname.includes("/freeboard") &&
+            typeof (pathname.split("/")[2] * 1) === "number"
+        ) {
+            setIsWriteBntOn(true);
+            setIsCountryBtnOn(true);
+        }
+        //그 이외의 상황에서는 모두 글쓰기 버튼을 보이게 하지 않습니다.
+        else {
+            setIsWriteBntOn(false);
+            setIsCountryBtnOn(false);
+        }
     }, [pathname]);
 
     return (
         <FloatContainer>
             <FloatBox>
                 {/* 국가 선택 */}
-                <FloatSelectCountry isDarkTheme={isDarkTheme} />
-                {!isDesktop && isWriteBntOn && (
+                {!pathname.includes("write") && isCountryBtnOn && (
+                    <FloatSelectCountry isDarkTheme={isDarkTheme} />
+                )}
+
+                {!pathname.includes("write") && !isDesktop && isWriteBntOn && (
                     <Button isDarkTheme={isDarkTheme} onClick={goToWrite}>
                         ✍{/* <GrEdit /> */}
                     </Button>
                 )}
 
                 {/* 다크모드 */}
-                <Button isDarkTheme={isDarkTheme} onClick={switchDarkTheme}>
-                    {
-                        isDarkTheme
-                            ? // <FaRegMoon />
-                              "🌛"
-                            : "🌞"
-                        // <FaRegSun />
-                    }
-                </Button>
+                {!pathname.includes("write") && (
+                    <Button isDarkTheme={isDarkTheme} onClick={switchDarkTheme}>
+                        {
+                            isDarkTheme
+                                ? // <FaRegMoon />
+                                  "🌛"
+                                : "🌞"
+                            // <FaRegSun />
+                        }
+                    </Button>
+                )}
 
                 {/* 위로가기 */}
-                {isScrollTopBtnOn && (
+                {!pathname.includes("write") && isScrollTopBtnOn && (
                     <Button isDarkTheme={isDarkTheme} onClick={scrollToTop}>
                         {/* <BiArrowToTop /> */}
                         🚀
@@ -138,7 +170,6 @@ const Button = styled.button`
     width: ${({ theme }) => theme.calRem(60)};
     height: ${({ theme }) => theme.calRem(60)};
     ${mixin.flexBox("center", "center", null, null)};
-    ${mixin.outline("1px solid", "gray3")}
     ${mixin.textProps(40, "regular", "mainMint")}
     border-radius: 50%;
     line-height: 1;

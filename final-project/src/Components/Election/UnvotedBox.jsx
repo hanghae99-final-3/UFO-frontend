@@ -135,7 +135,7 @@ const UnvotedCard = styled.div`
         props.isDarkTheme
             ? props.theme.color.black
             : props.theme.color.mainGray};
-    ${mixin.boxShadow()}
+    ${props => (props.isDarkTheme ? mixin.darkBoxShadow() : mixin.boxShadow())}
 
     span {
         ${mixin.textboxOverflow(1)}

@@ -128,7 +128,6 @@ const Slide = styled.div`
 
 const ArrowContainer = styled.div`
     cursor: pointer;
-    z-index: 99;
     ${props =>
         mixin.textProps(20, "regular", props.isDarkTheme ? "white" : "black")}
     :hover {

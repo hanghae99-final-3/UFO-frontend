@@ -10,8 +10,7 @@ const GlobalThemeProvider = ({ children }) => {
     const isDarkTheme = useSelector(state => state.user.isDarkTheme);
     return (
         <ThemeProvider theme={{ ...theme, ...media }}>
-            <GlobalStyle />
-            {isDarkTheme && <DarkGlobalStyle />}
+            {isDarkTheme ? <DarkGlobalStyle /> : <GlobalStyle />}
             {children}
         </ThemeProvider>
     );

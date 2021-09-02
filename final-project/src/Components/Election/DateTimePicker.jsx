@@ -10,7 +10,6 @@ import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 
 const useStyles = makeStyles(theme => {
-    
     return {
         textField: {
             fontSize: `${18 / 16}rem`, //폰트크기
@@ -30,7 +29,7 @@ const DateTimePicker = ({
     defaultDate,
     getDateInfo,
 }) => {
-    const isDarkTheme = useSelector(state=>state.user.isDarkTheme)
+    const isDarkTheme = useSelector(state => state.user.isDarkTheme);
     const classes = useStyles();
     return (
         <Container>
@@ -39,7 +38,6 @@ const DateTimePicker = ({
                 <span>선거시작일</span>
 
                 <TextField
-                
                     name="start_date"
                     id="datetime-local"
                     type="datetime-local"
@@ -75,8 +73,6 @@ const DateTimePicker = ({
     );
 };
 
-
-
 const Container = styled.div`
     ${mixin.flexBox("center", "center", "column")};
 `;
@@ -89,17 +85,27 @@ const DateBox = styled.div`
         margin: ${theme.calRem(8)} 0;
     }
     span {
-        ${props=>mixin.textProps(20, "extraBold", props.isDarkTheme?"mainGray":"gray1")};
+        ${props =>
+            mixin.textProps(
+                20,
+                "extraBold",
+                props.isDarkTheme ? "mainGray" : "gray1",
+            )};
         margin-right: ${theme.calRem(10)};
         @media ${({ theme }) => theme.mobile} {
-            ${props=>mixin.textProps(16, "extraBold", props.isDarkTheme?"mainGray":"gray1")};
+            ${props =>
+                mixin.textProps(
+                    16,
+                    "extraBold",
+                    props.isDarkTheme ? "mainGray" : "gray1",
+                )};
         }
     }
 
     /* Mui input에 cursor 주기 / 색깔넣기 */
     .MuiInputBase-input {
         cursor: pointer;
-        color: ${props => props.isDarkTheme ? 'white' : 'black'}
+        color: ${props => (props.isDarkTheme ? "white" : "black")};
     }
 
     /* Mui input 창에서 안쪽 여백주기 */
@@ -112,7 +118,6 @@ const DateBox = styled.div`
     .MuiInput-underline:before,
     .MuiInput-underline:after {
         display: none;
-        
     }
 `;
 

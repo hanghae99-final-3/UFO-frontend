@@ -13,6 +13,9 @@ import CongratulationMessageBox from "./CongratulationMessageBox";
 const ElectedCard = ({ electionPostId, candidates, testResult }) => {
     const dispatch = useDispatch();
     const result = useSelector(state => state.election.resultList); //result안에는 투표에 대한 정보가 들어있고, 투표를 한 사람이 없으면 result는 빈 배열입니다.
+    //데스크탑 사이즈인지 아닌지에 대한 판별값입니다.
+    const isDesktop =
+        document.documentElement.clientWidth >= 1080 ? true : false;
 
     //electedPerson은 당선자의 ID와 최대득표수에 대한 정보입니다.
     const electedPerson =
@@ -73,10 +76,12 @@ const ElectedCard = ({ electionPostId, candidates, testResult }) => {
                         <ElectedMajor>{testResult[0].major}</ElectedMajor>
 
                         {/* 당선축하메세지 박스 */}
-                        <CongratulationMessageBox
-                            electionPostId={electionPostId}
-                            isTest
-                        />
+                        {isDesktop && (
+                            <CongratulationMessageBox
+                                electionPostId={electionPostId}
+                                isTest
+                            />
+                        )}
                     </ElectedInfo>
                 </ElectedBox>
             </Container>
@@ -103,15 +108,17 @@ const ElectedCard = ({ electionPostId, candidates, testResult }) => {
                     </ElectedImage>
                     <ElectedInfo>
                         <ElectedName>
-                            기호 {electedInfo.election_num}번{" "}
-                            {electedInfo?.name}
+                            <span>기호 {electedInfo.election_num}번 </span>
+                            <span>{electedInfo?.name}</span>
                         </ElectedName>
                         <ElectedMajor>{electedInfo?.major}</ElectedMajor>
 
                         {/* 당선축하메세지 박스 */}
-                        <CongratulationMessageBox
-                            electionPostId={electionPostId}
-                        />
+                        {isDesktop && (
+                            <CongratulationMessageBox
+                                electionPostId={electionPostId}
+                            />
+                        )}
                     </ElectedInfo>
                 </ElectedBox>
             )}
@@ -122,8 +129,11 @@ const ElectedCard = ({ electionPostId, candidates, testResult }) => {
 const Container = styled.div`
     ${mixin.floatBox("relative")}
     background: ${({ theme }) => theme.color.mainBlue};
-    min-height: 480px;
+    min-height: ${({ theme }) => theme.calRem(480)};
     border-radius: 25px;
+    @media ${({ theme }) => theme.mobile} {
+        min-height: auto;
+    }
 `;
 
 const NotElected = styled.div`
@@ -133,29 +143,53 @@ const NotElected = styled.div`
 `;
 const ElectedBox = styled.div`
     ${mixin.flexBox("space-between")}
-    padding: 15px;
-    gap: 40px;
+    padding: 16px;
+    gap: ${({ theme }) => theme.calRem(40)};
+    @media ${({ theme }) => theme.mobile} {
+        gap: ${({ theme }) => theme.calRem(16)};
+    }
 `;
 const ElectedImage = styled.div`
     ${mixin.flexBox("center", "center", null, null)}
     ${mixin.textProps(20, "regular", "white")}
-    width: 380px;
+    width: ${({ theme }) => theme.calRem(380)};
+    @media ${({ theme }) => theme.mobile} {
+        width: ${({ theme }) => theme.calRem(140)};
+    }
     img {
-        width: 380px;
-        height: 450px;
+        width: ${({ theme }) => theme.calRem(380)};
+        height: ${({ theme }) => theme.calRem(450)};
         object-fit: cover;
         border-radius: 25px;
+        @media ${({ theme }) => theme.mobile} {
+            width: ${({ theme }) => theme.calRem(140)};
+            height: ${({ theme }) => theme.calRem(167)};
+        }
     }
 `;
 const ElectedInfo = styled.div`
     width: 100%;
 `;
-const ElectedName = styled.h5`
-    ${mixin.textProps(30, "extraBold", "white")}
+const ElectedName = styled.div`
     padding: 5px 0;
+    @media ${({ theme }) => theme.mobile} {
+        ${mixin.flexBox(null, null, "column", null)}
+    }
+    span {
+        ${mixin.textProps(30, "extraBold", "white")}
+        @media ${({ theme }) => theme.mobile} {
+            ${mixin.textProps(22, "extraBold", "white")}
+            &:first-child {
+                margin-bottom: ${({ theme }) => theme.calRem(8)};
+            }
+            &:last-child {
+                margin-bottom: ${({ theme }) => theme.calRem(16)};
+            }
+        }
+    }
 `;
 const ElectedMajor = styled.p`
-    ${mixin.textProps(20, "regular", "white")}
+    ${mixin.textProps(16, "regular", "blue3")}
 `;
 
 export default ElectedCard;

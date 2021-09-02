@@ -4,24 +4,45 @@ import mixin from "../../Styles/Mixin";
 import theme from "../../Styles/theme";
 import { history } from "../../Redux/configureStore";
 import { Helmet } from "react-helmet";
-import Swal from "sweetalert2";
 import { useSelector } from "react-redux";
+
+//alert
+import Swal from "sweetalert2";
+import confirm from "../../Shared/confirm";
 
 //컴포넌트
 import Message from "../../Components/Shared/Message";
 import DefaultButton from "../../Elements/Buttons/DefaultButton";
 import DefaultSelector from "../../Elements/Buttons/DefaultSelector";
+import Modal from "../../Components/Shared/Modal";
+import ElectionUseTips from "../../Components/Election/ElectionUseTips";
 
 const ElectionTest = () => {
     const isDarkTheme = useSelector(state => state.user.isDarkTheme);
-    const [isOngoing, setIsOngoing] = useState(true);
-    const [isVoted, setIsVoted] = useState(false);
+    const [isOngoing, setIsOngoing] = useState(true); //유저가 진행중 선거를 클릭했는지, 종료된 선거를 클릭했는지 알 수 있는 판별값입니다.
+    const [isUseTipsVisible, setIsUseTipsVisible] = useState(false); //true면 사용팁모달을 띄웁니다.
+
+    const openUseTips = () => {
+        //사용팁모달을 여는 함수입니다.
+        setIsUseTipsVisible(!isUseTipsVisible);
+    };
+
+    const closeUseTips = () => {
+        //사용팁모달을 닫는 함수입니다.
+        setIsUseTipsVisible(!isUseTipsVisible);
+    };
+
+    useEffect(() => {
+        //팝업을 통해 사용팁을 볼 것이냐 아니냐를 유저에게 묻습니다.
+        confirm.useTipsConfirm(() => openUseTips());
+    }, []);
+
     return (
         <ElectionTestContainer>
             <Helmet>
                 <title>UFO - 투표함</title>
             </Helmet>
-            <Title isDarkTheme={isDarkTheme}>투표함</Title>
+            <Title isDarkTheme={isDarkTheme}>체험용 투표함</Title>
             <Controls isDarkTheme={isDarkTheme}>
                 <Selecter>
                     <DefaultSelector
@@ -52,18 +73,12 @@ const ElectionTest = () => {
             </Controls>
             <GridContainer>
                 {/* 진행중 선거 */}
-                {isOngoing && !isVoted && (
+                {isOngoing && (
                     <OngoingPost
                         isDarkTheme={isDarkTheme}
-                        isVoted={isVoted}
                         onClick={() => history.push(`/election/test/detail`)}
                     >
                         <span>체험용선거</span>
-                        {isVoted && (
-                            <VotingComplete isDarkTheme={isDarkTheme}>
-                                투표 완료!
-                            </VotingComplete>
-                        )}
                     </OngoingPost>
                 )}
 
@@ -76,6 +91,19 @@ const ElectionTest = () => {
                     />
                 )}
             </GridContainer>
+
+            {isUseTipsVisible && (
+                <Modal
+                    visible={isUseTipsVisible}
+                    closable={true}
+                    maskClosable={true}
+                    onClose={closeUseTips}
+                    extend
+                    isDarkTheme={isDarkTheme}
+                >
+                    <ElectionUseTips isDarkTheme={isDarkTheme} />
+                </Modal>
+            )}
         </ElectionTestContainer>
     );
 };

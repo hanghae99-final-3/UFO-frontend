@@ -64,7 +64,7 @@ const BoardBox = ({ postList, fixedList, boardName, announcement }) => {
                                             src={
                                                 categories
                                                     .countrySelectorFlagList[
-                                                    post.country_id-1
+                                                    post.country_id - 1
                                                 ]?.icon
                                             }
                                             alt=""
@@ -335,7 +335,7 @@ const IconContainer = styled.div`
         ${props =>
             mixin.outline(
                 "1px solid",
-                props.isDarkTheme ? "gray1" : "gray4",
+                props.isDarkTheme ? "darkLine" : "gray4",
                 "bottom",
             )};
         padding-bottom: 16px;
@@ -353,8 +353,8 @@ const Icon = styled.div`
     svg {
         color: ${props =>
             props.isDarkTheme
-                ? props.theme.color.white
-                : props.theme.color.black};
+                ? props.theme.color.gray2
+                : props.theme.color.blue2};
         margin-right: 2px;
         font-size: 20px;
     }

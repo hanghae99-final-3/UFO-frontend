@@ -8,6 +8,7 @@ import Cookies from "js-cookie";
 import { useCookies } from "react-cookie"; // 쿠키 훅스
 import { useParams } from "react-router-dom"; // 쿼리 스트링 훅스
 import categories from "../../Shared/categories"; // 태그 카테고리
+import smoothscroll from "smoothscroll-polyfill";
 
 //통신
 import { setUnivViewReducer } from "../../Redux/Modules/univBoardSlice";
@@ -64,7 +65,11 @@ const BoardDetail = ({ page }) => {
         page === "freeboard" ? state.freeBoard.post : state.univBoard.post,
     );
     // 게시물 국가
-    const postCountry = useSelector(state=>page === "freeboard" ? state.freeBoard.post?.country_id : state.univBoard.post?.country_id)
+    const postCountry = useSelector(state =>
+        page === "freeboard"
+            ? state.freeBoard.post?.country_id
+            : state.univBoard.post?.country_id,
+    );
     // 좋아요 유무
     const isLike = useSelector(state =>
         page === "freeboard"
@@ -130,6 +135,9 @@ const BoardDetail = ({ page }) => {
     useEffect(() => {
         //첫 렌더링시에 스크롤이 내려와있으면 올려준다.
         const scrollToTop = () => {
+            // 사파리 smooth top behavior enabler
+            smoothscroll.polyfill();
+
             //스크롤을 위로 올리는 함수
             window.scrollTo({
                 top: 0,
@@ -199,19 +207,21 @@ const BoardDetail = ({ page }) => {
             <ContentHeaderContainer isDarkTheme={isDarkTheme}>
                 {page === "freeboard" ? (
                     <DefaultTag>
-                        {<img
-                            style={{
-                                width: "20px",
-                                marginRight: "1px",
-                            }}
-                            src={
-                                categories
-                                .countrySelectorFlagList[
-                                postCountry-1
-                                ]?.icon
-                            }
-                            alt=""
-                        />}{post && categories.freeBoardTags[post.category]}
+                        {
+                            <img
+                                style={{
+                                    width: "20px",
+                                    marginRight: "1px",
+                                }}
+                                src={
+                                    categories.countrySelectorFlagList[
+                                        postCountry - 1
+                                    ]?.icon
+                                }
+                                alt=""
+                            />
+                        }
+                        {post && categories.freeBoardTags[post.category]}
                     </DefaultTag>
                 ) : (
                     <DefaultTag>
@@ -267,16 +277,19 @@ const BoardDetail = ({ page }) => {
             </ContentBodyContainer>
 
             <ButtonContainer>
-                <ButtonWrapper>
-                    <LikeBtn onClick={handleLikeButton} isDarkTheme={isDarkTheme}>
+                <ButtonWrapper isDarkTheme={isDarkTheme}>
+                    <LikeBtn
+                        onClick={handleLikeButton}
+                        isDarkTheme={isDarkTheme}
+                    >
                         {isLike ? (
-                                <FavoriteIcon style={{ fill: "#FF5372" }} />
-                            ) : (
-                                <FavoriteBorder />
-                            )}
+                            <FavoriteIcon style={{ fill: "#FF5372" }} />
+                        ) : (
+                            <FavoriteBorder />
+                        )}
                     </LikeBtn>
                 </ButtonWrapper>
-                <ButtonWrapper>
+                <ButtonWrapper isDarkTheme={isDarkTheme}>
                     <DefaultButton onClick={handleGoToList}>목록</DefaultButton>
                     <DefaultButton
                         leftGap={theme.calRem(7)}
@@ -318,8 +331,9 @@ const MainContentContainer = styled.div`
 `;
 
 const LikeBtn = styled.button`
-    background-color: ${(props) =>props.isDarkTheme?theme.color.black:theme.color.white};
-`
+    background-color: ${props =>
+        props.isDarkTheme ? theme.color.black : theme.color.white};
+`;
 
 const Title = styled.h3`
     display: block;
@@ -380,8 +394,8 @@ const Icon = styled.div`
         margin: 0 5px 0 10px;
         color: ${props =>
             props.isDarkTheme
-                ? props.theme.color.white
-                : props.theme.color.black};
+                ? props.theme.color.gray2
+                : props.theme.color.blue2};
     }
     margin-top: 10px;
 
@@ -405,13 +419,15 @@ const ContentHeaderContainer = styled.div`
     ${props =>
         mixin.outline(
             "1.5px solid",
-            props.isDarkTheme ? "gray1" : "gray4",
+            props.isDarkTheme ? "darkLine" : "gray4",
             "bottom",
         )}
 `;
 const ContentBody = styled.div`
     padding: 30px 0;
-
+    img {
+        max-width: 100% !important;
+    }
     //모바일 사이즈
     @media ${({ theme }) => theme.mobile} {
         padding: 24px 0;
@@ -423,7 +439,7 @@ const ContentBodyContainer = styled.div`
     ${props =>
         mixin.outline(
             "1.5px solid",
-            props.isDarkTheme ? "gray1" : "gray4",
+            props.isDarkTheme ? "darkLine" : "gray4",
             "bottom",
         )}
 `;
@@ -438,7 +454,16 @@ const ButtonContainer = styled.div`
     }
 `;
 
-const ButtonWrapper = styled.div``;
+const ButtonWrapper = styled.div`
+    svg {
+        /* font-size: 20px; */
+        /* margin: 0 5px 0 10px; */
+        color: ${props =>
+            props.isDarkTheme
+                ? props.theme.color.gray2
+                : props.theme.color.blue2};
+    }
+`;
 
 const Page = styled.span`
     display: inline-block;

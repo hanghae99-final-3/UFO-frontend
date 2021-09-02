@@ -12,10 +12,6 @@ import { getUnivBoardDB } from "../../Redux/Async/univBoard"; // 대학 게시�
 import { getFreeListDB, getIssuePostListDB } from "../../Redux/Async/freeBoard"; // 자유 게시판 thunks
 
 //배너
-import bnr1_mobile from "../../Assets/Banner/event1_mobile.png";
-import bnr1_pc from "../../Assets/Banner/event1_pc.png";
-import bnr2_pc from "../../Assets/Banner/event2_pc.png";
-import bnr2_mobile from "../../Assets/Banner/event2_mobile.png";
 import bnr3_pc from "../../Assets/Banner/event3_pc.png";
 import bnr3_mobile from "../../Assets/Banner/event3_mobile.png";
 
@@ -66,14 +62,6 @@ const Home = () => {
     const closeModal = () => {
         //모달을 닫는 함수입니다.
         setModalVisible(!modalVisible);
-    };
-
-    const goToSupportUniv = () => {
-        const location = supportUnivRef.current.offsetTop;
-        window.scrollTo({
-            top: location - 100,
-            behavior: "smooth",
-        });
     };
 
     //자유 게시판 요청 쿼리 데이터
@@ -321,7 +309,7 @@ const Header = styled.div`
     ${props =>
         mixin.outline(
             "1.5px solid",
-            props.isDarkTheme ? "gray1" : "gray4",
+            props.isDarkTheme ? "darkLine" : "gray4",
             "bottom",
         )};
     ${mixin.flexBox("space-between", "flex-end", null, null)};

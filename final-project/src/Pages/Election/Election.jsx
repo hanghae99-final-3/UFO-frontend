@@ -19,12 +19,12 @@ const Election = () => {
     const dispatch = useDispatch();
     const isDarkTheme = useSelector(state => state.user.isDarkTheme);
     const electionList = useSelector(state => state.election.list);
-    const user = useSelector(state => state.user.user); //유저정보
     const isLogin = useSelector(state => state.user.isLoggedIn); //login을 했는지 안했는지 판별값으로 사용합니다.
     const isSchoolAuth = useSelector(state => state.user.user.school_auth)
         ? true
         : false; //학교인증을 했는지 안했는지 판별값
     const [isOngoing, setIsOngoing] = useState(true);
+
     useEffect(() => {
         if (isLogin) dispatch(getElectionListDB());
     }, [isLogin]);
@@ -38,27 +38,26 @@ const Election = () => {
     const currentList = isOngoing ? ongoingElectionList : finishedElectionList;
     const currentListName = isOngoing ? "ongoing" : "finished";
 
-    //로그인한 유저만 볼 수 있도록 예외처리를 합니다.
-    // if (!user.user_id)
-    //     return (
-    //         <Message
-    //             strong="로그인"
-    //             message="을 해야만 선거함을 볼 수 있어요!"
-    //             link="/login"
-    //             buttonValue="로그인하러가기"
-    //         />
-    //     );
+    // 비로그인 회원의 경우에는 체험하기를 하게한다.
+    if (!isLogin)
+        <Message
+            message="로그인 후, 대학 인증을 하면
+                    선거함을 이용할 수 있어요."
+            link="election/test"
+            buttonValue="체험하기"
+        />;
 
-    // //대학 인증을 한 사람만 볼 수 있도록 예외처리를 합니다.
-    // if (!user.univ_id || !user.country_id)
-    //     return (
-    //         <Message
-    //             strong="대학인증"
-    //             message="을 해야만 선거함을 볼 수 있어요!"
-    //             link="/mypage"
-    //             buttonValue="대학인증하러가기"
-    //         />
-    //     );
+    // 비학교인증 회원의 경우에는 체험하기를 하게한다.
+    {
+        isLogin && !isSchoolAuth && (
+            <Message
+                message="대학 인증을 하면
+                    선거함을 이용할 수 있어요."
+                link="election/test"
+                buttonValue="체험하기"
+            />
+        );
+    }
 
     return (
         <ElectionContainer>
@@ -86,26 +85,6 @@ const Election = () => {
                     추가하기
                 </DefaultButton>
             </Controls>
-
-            {/* 비로그인 회원의 경우에는 체험하기를 하게한다. */}
-            {!isLogin && (
-                <Message
-                    message="로그인 후, 대학 인증을 하면
-                    선거함을 이용할 수 있어요."
-                    link="election/test"
-                    buttonValue="체험하기"
-                />
-            )}
-
-            {/* 비학교인증 회원의 경우에는 체험하기를 하게한다. */}
-            {isLogin && !isSchoolAuth && (
-                <Message
-                    message="대학 인증을 하면
-                    선거함을 이용할 수 있어요."
-                    link="election/test"
-                    buttonValue="체험하기"
-                />
-            )}
 
             {/* 로그인회원, 학교인증 회원, 선거게시글이 있는 경우에는 선거목록을 보여준다. */}
             {isLogin &&

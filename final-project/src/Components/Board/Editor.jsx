@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import mixin from "../../Styles/Mixin";
 import theme from "../../Styles/theme";
@@ -20,10 +20,13 @@ import FontBackgroundColor from "@ckeditor/ckeditor5-font/src/fontbackgroundcolo
 import Essentials from "@ckeditor/ckeditor5-essentials/src/essentials.js"; //undo
 import BlockQuote from "@ckeditor/ckeditor5-block-quote/src/blockquote.js";
 import PasteFromOffice from "@ckeditor/ckeditor5-paste-from-office/src/pastefromoffice";
+import Link from "@ckeditor/ckeditor5-link/src/link";
 
 import Image from "@ckeditor/ckeditor5-image/src/image";
 import ImageUpload from "@ckeditor/ckeditor5-image/src/imageupload";
 import ImageResize from "@ckeditor/ckeditor5-image/src/imageresize";
+import { classDeclaration } from "@babel/types";
+import { CallReceived } from "@material-ui/icons";
 
 /**
  * @author jiyeong
@@ -96,7 +99,7 @@ const editorConfiguration = {
         Underline,
         FontColor,
         FontBackgroundColor,
-
+        Link,
         BlockQuote,
         PasteFromOffice,
         Essentials,
@@ -118,6 +121,7 @@ const editorConfiguration = {
             "|",
             "blockQuote",
             "imageUpload",
+            "link",
             "|",
             "undo",
             "redo",
@@ -152,10 +156,35 @@ const editorConfiguration = {
 };
 
 const Editor = ({ getContentFromEditor, originContent, isDarkTheme }) => {
+    const EditorRef = useRef(null);
+    const [editorHeight, setEditorHeight] = useState(null);
+    const viewportHeight = document.body.clientHeight;
+    //데스크탑 사이즈인지 아닌지에 대한 판별값입니다.
+    const isDesktop =
+        document.documentElement.clientWidth >= 1080 ? true : false;
+
+    useEffect(() => {
+        if (isDesktop)
+            return setEditorHeight(
+                viewportHeight -
+                    EditorRef.current.getBoundingClientRect().top -
+                    170,
+            );
+        setEditorHeight(
+            viewportHeight -
+                EditorRef.current.getBoundingClientRect().top -
+                120,
+        );
+    }, []);
+
     //수정모드
     if (originContent)
         return (
-            <StyledEditor isDarkTheme={isDarkTheme}>
+            <StyledEditor
+                ref={EditorRef}
+                height={editorHeight}
+                isDarkTheme={isDarkTheme}
+            >
                 <CKEditor
                     editor={ClassicEditor}
                     config={editorConfiguration}
@@ -185,7 +214,11 @@ const Editor = ({ getContentFromEditor, originContent, isDarkTheme }) => {
 
     return (
         //작성모드
-        <StyledEditor isDarkTheme={isDarkTheme}>
+        <StyledEditor
+            ref={EditorRef}
+            height={editorHeight}
+            isDarkTheme={isDarkTheme}
+        >
             <CKEditor
                 editor={ClassicEditor}
                 config={editorConfiguration}
@@ -348,7 +381,7 @@ const StyledEditor = styled.div`
 
     /* 콘텐츠 안쪽영역 스타일링 */
     .ck-content {
-        min-height: ${theme.calRem(530)};
+        ${props => props.height && `min-height:${props.height}px`};
         padding: ${theme.calRem(30)} ${theme.calRem(10)};
         border: none;
         ${props =>
@@ -356,7 +389,6 @@ const StyledEditor = styled.div`
             `background:${props.theme.color.black} !important;`};
         transition: all 0.7s ease;
         @media ${({ theme }) => theme.mobile} {
-            min-height: ${theme.calRem(414)};
             padding: ${theme.calRem(24)} ${theme.calRem(10)};
         }
 

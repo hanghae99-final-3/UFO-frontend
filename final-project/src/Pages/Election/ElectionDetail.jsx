@@ -33,7 +33,7 @@ import CandidateBox from "../../Components/Election/CandidateBox";
 import CandidateCard from "../../Components/Election/CandidateCard";
 import UnvotedBox from "../../Components/Election/UnvotedBox";
 import ElectedCard from "../../Components/Election/ElectedCard";
-import CustomSlider from "../../Components/Election/CustomSlider";
+import CongratulationMessageBox from "../../Components/Election/CongratulationMessageBox";
 
 const ElectionDetail = () => {
     const dispatch = useDispatch();
@@ -106,6 +106,7 @@ const ElectionDetail = () => {
     };
 
     const controlOnMobile = () => {
+        //모바일에서 유저의 선택에 따라 수정과 삭제 함수를 연결시켜줍니다.
         confirm.mobileEditConfirm(
             () => goEditPage(),
             () => deleteElection(),
@@ -146,16 +147,6 @@ const ElectionDetail = () => {
 
     return (
         <ElectionDetailContainer>
-            <UnvotedContainer>
-                {/* 현재 진행중이지만, 투표를 하지 않은 게시글을 보여줍니다. */}
-                <Title isDarkTheme={isDarkTheme}>
-                    선택을 기다리는 투표함이 있어요
-                </Title>
-                <UnvotedBox
-                    isDarkTheme={isDarkTheme}
-                    list={unvotedElectionList}
-                />
-            </UnvotedContainer>
             <ElectionInfoContainer isDarkTheme={isDarkTheme}>
                 <ElectionTitle isDarkTheme={isDarkTheme}>
                     <h5>{post?.name}</h5>
@@ -188,20 +179,20 @@ const ElectionDetail = () => {
                 <p>{post?.content}</p>
             </ElectionInfoContainer>
             <CountdownContainer>
-                <Title isDarkTheme={isDarkTheme}>투표까지 남은 시간</Title>
+                <Title isDarkTheme={isDarkTheme}>선거 종료까지 남은 시간</Title>
                 {/* 투표진행기간이면 카운트다운을 실행시키고, 진행전이면 투표 시작 전 문구를 렌더링, 끝났으면 투표 종료 문구를 렌더링합니다. */}
                 <TimeBox
                     isCountdown={!isBefore && !isFinished}
                     isFinished={isFinished}
                 >
                     {/* 시작전 */}
-                    {isBefore && <span>투표 시작 전</span>}
+                    {isBefore && <span>선거 시작 전</span>}
                     {/* 시작 */}
                     {!isBefore && !isFinished && (
                         <Count deadline={post?.end_date && post.end_date} />
                     )}
                     {/* 종료 */}
-                    {isFinished && <span>투표 종료</span>}
+                    {isFinished && <span>선거 종료</span>}
                 </TimeBox>
                 <ProgressBar
                     start={post?.start_date && post.start_date}
@@ -262,11 +253,12 @@ const ElectionDetail = () => {
                             rightGap={theme.calRem(8)}
                             onClick={addVote}
                         >
-                            제출하기
+                            투표제출
                         </DefaultButton>
                     </Controls>
                 </>
             ) : (
+                // 투표 결과
                 <ElectedContainer>
                     <Title isDarkTheme={isDarkTheme}>당선자</Title>
                     <ElectedCard
@@ -274,8 +266,24 @@ const ElectionDetail = () => {
                         candidates={post?.candidates}
                         electionPostId={electionPostId}
                     />
+                    {/* 데스크탑이 아니면 축하메세지댓글을 밖으로 빼서 보여준다. */}
+                    {!isDesktop && (
+                        <CongratulationMessageBox
+                            electionPostId={electionPostId}
+                        />
+                    )}
                 </ElectedContainer>
             )}
+            <UnvotedContainer>
+                {/* 현재 진행중이지만, 선거를 하지 않은 게시글을 보여줍니다. */}
+                <Title isDarkTheme={isDarkTheme}>
+                    선택을 기다리는 선거함이 있어요
+                </Title>
+                <UnvotedBox
+                    isDarkTheme={isDarkTheme}
+                    list={unvotedElectionList}
+                />
+            </UnvotedContainer>
         </ElectionDetailContainer>
     );
 };
@@ -287,9 +295,9 @@ const ElectionDetailContainer = styled.div`
 
 const UnvotedContainer = styled.div`
     width: 100%;
-    margin-bottom: ${({ theme }) => theme.calRem(80)};
+    margin-top: ${({ theme }) => theme.calRem(80)};
     @media ${({ theme }) => theme.mobile} {
-        margin-bottom: ${({ theme }) => theme.calRem(48)};
+        margin-top: ${({ theme }) => theme.calRem(48)};
     }
 `;
 
@@ -304,7 +312,7 @@ const Title = styled.h5`
         !props.borderNone &&
         mixin.outline(
             "1px solid",
-            props.isDarkTheme ? "gray1" : "gray4",
+            props.isDarkTheme ? "darkLine" : "gray4",
             "bottom",
         )}
     padding-bottom: ${({ theme }) => theme.calRem(10)};
@@ -349,7 +357,7 @@ const ElectionTitle = styled.div`
     ${props =>
         mixin.outline(
             "1px solid",
-            props.isDarkTheme ? "gray1" : "gray4",
+            props.isDarkTheme ? "darkLine" : "gray4",
             "bottom",
         )};
     ${mixin.flexBox("space-between", "center")};
@@ -480,6 +488,7 @@ const VoteBox = styled.div`
     grid-template-columns: repeat(5, 1fr);
     flex-wrap: wrap;
     gap: ${({ theme }) => theme.calRem(12)};
+    justify-content: center;
 
     @media ${({ theme }) => theme.mobile} {
         display: flex;
