@@ -53,7 +53,6 @@ const Container = styled.div`
     width: ${({ theme }) => theme.calRem(210)};
     height: ${({ theme }) => theme.calRem(300)};
     border-radius: 25px;
-    ${props => console.log(props.isDarkTheme)}
     ${props => (props.isDarkTheme ? mixin.darkBoxShadow() : mixin.boxShadow())};
     ${props =>
         props.isVote &&
