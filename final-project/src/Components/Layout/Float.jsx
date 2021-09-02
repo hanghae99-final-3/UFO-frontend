@@ -28,7 +28,7 @@ const Float = ({ isDarkTheme }) => {
 
     const dispatch = useDispatch();
     const { pathname } = useLocation();
-    const [play] = useSound(boopSfx);
+
     const [isWriteBntOn, setIsWriteBntOn] = useState(false); //작성버튼을 보여줄지 말지에 대한 판별값, 자유게시판, 국가게시판이면 글쓰기버튼이 생긴다.
     const [isCountryBtnOn, setIsCountryBtnOn] = useState(false); //국가선택버튼을 보여줄지 말지에 대한 판별값
     const [isScrollTopBtnOn, setIsScrollTopBtnOn] = useState(false); //위로가기 버튼을 보여줄지 말지에 대한 판별값

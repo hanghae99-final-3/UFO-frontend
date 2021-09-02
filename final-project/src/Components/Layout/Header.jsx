@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { history } from "../../Redux/configureStore";
 import theme from "../../Styles/theme";
-import Swal from "sweetalert2"; 
+import Swal from "sweetalert2";
 
 //통신
 import { onLogout } from "../../Redux/Modules/univBoardSlice";
@@ -202,7 +202,11 @@ const Header = ({ isDarkTheme }) => {
                                             <Link
                                                 to=""
                                                 onClick={() => {
-                                                    Swal.fire("🛸","로그아웃 되었습니다!","success")
+                                                    Swal.fire(
+                                                        "🛸",
+                                                        "로그아웃 되었습니다!",
+                                                        "success",
+                                                    );
                                                     dispatch(logoutUser());
                                                     dispatch(onLogout());
                                                     localStorage.removeItem(
@@ -251,9 +255,14 @@ const Header = ({ isDarkTheme }) => {
                                     </>
                                 )}
                             </Controls>
-                            {/* <AboutUs>
-                                <span>about us</span>
-                            </AboutUs> */}
+                            <AboutUs>
+                                <a
+                                    href="https://yzkim9501.notion.site/yzkim9501/UFO-32105e9124b94b4faae28574d416cb72"
+                                    target="_blank"
+                                >
+                                    about us
+                                </a>
+                            </AboutUs>
                         </Menu>
                     </MenuContainer>
                 </RightColumn>
@@ -435,7 +444,8 @@ const Control = styled.li`
 `;
 
 const AboutUs = styled.div`
-    span {
+    text-decoration: none;
+    a {
         ${mixin.textProps(40, "extraBold", "blue3")}
         @media ${({ theme }) => theme.mobile} {
             ${mixin.textProps(28, "extraBold", "blue3")};
