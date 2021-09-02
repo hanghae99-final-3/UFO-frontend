@@ -279,7 +279,7 @@ const Icon = styled.div`
         color: ${props =>
             props.isDarkTheme
                 ? props.theme.color.gray2
-                : props.theme.color.blue2};
+                : props.theme.color.gray3};
         font-size: ${props => (props.title || props.tag ? "17px" : "20px")};
     }
     @media ${({ theme }) => theme.mobile} {

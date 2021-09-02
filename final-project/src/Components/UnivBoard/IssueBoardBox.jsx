@@ -136,7 +136,7 @@ const Icon = styled.div`
         color: ${props =>
             props.isDarkTheme
                 ? props.theme.color.gray2
-                : props.theme.color.blue2};
+                : props.theme.color.gray3};
         font-size: 20px;
         margin-right: 10px;
     }
