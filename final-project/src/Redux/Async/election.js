@@ -2,6 +2,9 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { history } from "../configureStore";
 import { electionApi, voteApi, CongratulationApi } from "../../Shared/api";
 
+//error loging
+import * as Sentry from "@sentry/react";
+
 //alert
 import Swal from "sweetalert2";
 
@@ -19,6 +22,7 @@ export const getElectionListDB = createAsyncThunk(
             const response = await electionApi.getElectionList();
             if (response.data.ok) return response.data.result;
         } catch (err) {
+            Sentry.captureException(`error, 선거게시글목록 로드 : ${err}`);
             return thunkAPI.rejectWithValue(err.response.message);
         }
     },
@@ -38,6 +42,7 @@ export const getElectionDB = createAsyncThunk(
             const response = await electionApi.getElection(data);
             if (response.data.ok) return response.data.result;
         } catch (err) {
+            Sentry.captureException(`error, 특정 선거게시글 로드 : ${err}`);
             return thunkAPI.rejectWithValue(err.response.message);
         }
     },
@@ -69,6 +74,7 @@ export const addElectionDB = createAsyncThunk(
                 return response.data.result;
             }
         } catch (err) {
+            Sentry.captureException(`error, 선거게시글 추가 : ${err}`);
             Swal.fire("오류", "게시글을 추가할 수 없어요!", "error");
             return thunkAPI.rejectWithValue(err.response.message);
         }
@@ -87,6 +93,7 @@ export const editElectionDB = createAsyncThunk(
                 return history.push(`/election/detail/${electionId}`);
             }
         } catch (err) {
+            Sentry.captureException(`error, 선거게시글 수정 : ${err}`);
             Swal.fire("오류", "게시글을 수정할 수 없어요!", "error");
             return thunkAPI.rejectWithValue(err.response.message);
         }
@@ -111,6 +118,7 @@ export const deleteElectionDB = createAsyncThunk(
                 return data.election_id;
             }
         } catch (err) {
+            Sentry.captureException(`error, 선거게시글 삭제 : ${err}`);
             Swal.fire("에러", "게시글을 삭제할 수 없어요!", "error");
             return thunkAPI.rejectWithValue(err.response.message);
         }
@@ -138,6 +146,7 @@ export const addVoteDB = createAsyncThunk(
                 history.push("/election");
             }
         } catch (err) {
+            Sentry.captureException(`error, 투표 추가 : ${err}`);
             Swal.fire("에러", "투표가 처리되지 않았습니다.", "error");
             return thunkAPI.rejectWithValue(err.response.message);
         }
@@ -158,6 +167,7 @@ export const getElectionResultDB = createAsyncThunk(
             const response = await voteApi.getResult(data);
             if (response.data.ok) return response.data.result;
         } catch (err) {
+            Sentry.captureException(`error, 선거결과 로드 : ${err}`);
             return thunkAPI.rejectWithValue(err.response.message);
         }
     },
@@ -177,6 +187,9 @@ export const getCongratulationDB = createAsyncThunk(
             const response = await CongratulationApi.getCongratulation(data);
             if (response.data.ok) return response.data.result;
         } catch (err) {
+            Sentry.captureException(
+                `error, 당선자 축하메세지목록 로드 : ${err}`,
+            );
             return thunkAPI.rejectWithValue(err.response.message);
         }
     },
@@ -197,6 +210,7 @@ export const addCongratulationDB = createAsyncThunk(
             const user = thunkAPI.getState().user;
             if (response.data.ok) return { ...response.data.result, ...user };
         } catch (err) {
+            Sentry.captureException(`error, 당선자 축하메세지 추가 : ${err}`);
             return thunkAPI.rejectWithValue(err.response.message);
         }
     },
@@ -216,6 +230,7 @@ export const editCongratulationDB = createAsyncThunk(
             const response = await CongratulationApi.editCongratulation(data);
             if (response.data.ok) return response.data.result;
         } catch (err) {
+            Sentry.captureException(`error, 당선자 축하메세지 수정 : ${err}`);
             return thunkAPI.rejectWithValue(err.response.message);
         }
     },
@@ -234,6 +249,7 @@ export const deleteCongratulationDB = createAsyncThunk(
             const response = await CongratulationApi.deleteCongratulation(data);
             if (response.data.ok) return data.comment_id;
         } catch (err) {
+            Sentry.captureException(`error, 당선자 축하메세지 삭제 : ${err}`);
             return thunkAPI.rejectWithValue(err.response.message);
         }
     },

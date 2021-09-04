@@ -5,6 +5,9 @@ import moment from "moment";
 import { increaseLike, decreaseLike } from "../Modules/freeBoardSlice";
 import Swal from "sweetalert2";
 
+//error loging
+import * as Sentry from "@sentry/react";
+
 /**
  * @author kwonjiyeong
  * @param 없음
@@ -21,6 +24,7 @@ export const getFreeListDB = createAsyncThunk(
                 return response.data;
             }
         } catch (err) {
+            Sentry.captureException(`error, 자유게시판목록 로드 : ${err}`);
             Swal.fire("에러", "네트워크 연결 상태를 확인해주세요.!", "error");
             return thunkAPI.rejectWithValue(err.response.message);
         }
@@ -36,6 +40,9 @@ export const getFreeListDBInfinity = createAsyncThunk(
                 return response.data;
             }
         } catch (err) {
+            Sentry.captureException(
+                `error, 자유게시판목록(무한스크롤) 로드 : ${err}`,
+            );
             Swal.fire("에러", "네트워크 연결 상태를 확인해주세요.!", "error");
             return thunkAPI.rejectWithValue(err.response.message);
         }
@@ -57,6 +64,9 @@ export const getFreePostDB = createAsyncThunk(
             if (response.data.ok)
                 return { ...response.data.like, ...response.data.result };
         } catch (err) {
+            Sentry.captureException(
+                `error, 자유게시판 게시글상세 로드 : ${err}`,
+            );
             Swal.fire("에러", "네트워크 연결 상태를 확인해주세요.!", "error");
             return thunkAPI.rejectWithValue(err.response.message);
         }
@@ -79,6 +89,7 @@ export const addFreePostDB = createAsyncThunk(
 
             if (response.data.ok) return response.data.result;
         } catch (err) {
+            Sentry.captureException(`error, 자유게시판 게시글 추가 : ${err}`);
             Swal.fire(
                 "에러",
                 "게시글 등록에 실패하였습니다. 다시 시도해주세요!",
@@ -106,6 +117,7 @@ export const editFreePostDB = createAsyncThunk(
                 return response.data.result[0]; //서버에서 온 값이 배열로 묶여져서 들어와서 인덱스 처리했음.
             }
         } catch (err) {
+            Sentry.captureException(`error, 자유게시판 게시글 수정 : ${err}`);
             Swal.fire("에러", "수정하지 못했어요! 다시 시도해주세요!", "error");
             return thunkAPI.rejectWithValue(err.response.message);
         }
@@ -130,6 +142,7 @@ export const deleteFreePostDB = createAsyncThunk(
                 return data.post_id;
             }
         } catch (err) {
+            Sentry.captureException(`error, 자유게시판 게시글 삭제 : ${err}`);
             Swal.fire("에러", "삭제하지 못했어요! 다시 시도해주세요.", "error");
             return thunkAPI.rejectWithValue(err.response.message);
         }
@@ -150,6 +163,7 @@ export const getFreeCommentListDB = createAsyncThunk(
             const response = await freeCommentApi.getPostCommentList(data);
             if (response.data.ok) return response.data.result;
         } catch (err) {
+            Sentry.captureException(`error, 자유게시판 댓글목록 로드 : ${err}`);
             Swal.fire("에러", "네트워크 연결 상태를 확인해주세요.!", "error");
             return thunkAPI.rejectWithValue(err.response.message);
         }
@@ -176,6 +190,7 @@ export const addFreeCommentDB = createAsyncThunk(
                     createdAt: moment().format(`YYYY-MM-DD HH:mm:ss`),
                 };
         } catch (err) {
+            Sentry.captureException(`error, 자유게시판 댓글추가 : ${err}`);
             Swal.fire(
                 "에러",
                 "댓글 등록에 실패하였습니다. 다시 시도해주세요!",
@@ -202,6 +217,7 @@ export const editFreeCommentDB = createAsyncThunk(
                 return response.data.result;
             }
         } catch (err) {
+            Sentry.captureException(`error, 자유게시판 댓글수정 : ${err}`);
             Swal.fire(
                 "에러",
                 "댓글 수정에 실패하였습니다. 다시 시도해주세요!",
@@ -229,6 +245,7 @@ export const deleteFreeCommentDB = createAsyncThunk(
                 return data.comment_id;
             }
         } catch (err) {
+            Sentry.captureException(`error, 자유게시판 댓글삭제 : ${err}`);
             Swal.fire(
                 "에러",
                 "댓글 삭제에 실패하였습니다. 다시 시도해주세요!",
@@ -254,6 +271,7 @@ export const postLikeToggleDB = createAsyncThunk(
                 }
             }
         } catch (err) {
+            Sentry.captureException(`error, 자유게시판 좋아요토글 : ${err}`);
             Swal.fire(
                 "에러",
                 "좋아요 등록에 실패하였습니다. 다시 시도해주세요!",
@@ -281,6 +299,9 @@ export const getIssuePostListDB = createAsyncThunk(
                 return response.data.result;
             }
         } catch (err) {
+            Sentry.captureException(
+                `error, 자유게시판 이슈게시글 목록로드 : ${err}`,
+            );
             Swal.fire("에러", "네트워크 연결 상태를 확인해주세요.!", "error");
             return thunkAPI.rejectWithValue(err.response.message);
         }
@@ -295,8 +316,9 @@ export const getSearchResult = createAsyncThunk(
             if (response.data.ok) {
                 return response.data.result;
             }
-        } catch (error) {
-            thunkAPI.rejectWithValue(error.response.data.errorMessage);
+        } catch (err) {
+            Sentry.captureException(`error, 자유게시판 검색결과 로드 : ${err}`);
+            thunkAPI.rejectWithValue(err.response.data.errorMessage);
         }
     },
 );

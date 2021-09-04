@@ -8,7 +8,6 @@ import { connectRouter } from "connected-react-router";
 import freeBoardSlice from "./Modules/freeBoardSlice";
 import userSlice from "./Modules/userSlice";
 import univBoardSlice from "./Modules/univBoardSlice";
-import searchSlice from "./Modules/searchSlice";
 import electionSlice from "./Modules/electionSlice";
 
 export const history = createBrowserHistory();
@@ -20,7 +19,6 @@ const reducer = combineReducers({
     univBoard: univBoardSlice.reducer,
     user: userSlice.reducer,
     election: electionSlice.reducer,
-    search: searchSlice.reducer,
 });
 
 const middlewares = [];
