@@ -4,6 +4,9 @@ import { userApi } from "../../Shared/api";
 import jwt from "jwt-decode";
 import Swal from "sweetalert2";
 
+//error loging
+import * as Sentry from "@sentry/react";
+
 /**
  * @author jangheesung
  * @param data= {email, nickname, password}
@@ -21,19 +24,21 @@ export const signupUserDB = createAsyncThunk(
                 // 회원가입 성공시 리듀서로 성공 여부 반환
                 return true;
             }
-        } catch (error) {
+        } catch (err) {
             // 에러 메세지 반환
-            if (!error.response.data.ok) {
+            if (!err.response.data.ok) {
                 // 이메일 중복 등  서버 pre set 에러 메세지 반환
-                return thunkAPI.rejectWithValue(error.response.data.message);
+                Sentry.captureException(`error, 회원가입 서버 : ${err}`);
+                return thunkAPI.rejectWithValue(err.response.data.message);
             } else {
+                Sentry.captureException(`error, 회원가입 통신 : ${err}`);
                 // 서버 또는 api 통신중 발생하는 에러 메세지 반환
                 Swal.fire(
                     "에러",
                     "회원가입에 실패하였습니다. 다시 시도해주세요!",
                     "error",
                 );
-                return thunkAPI.rejectWithValue(error.response.errorMessage);
+                return thunkAPI.rejectWithValue(err.response.errorMessage);
             }
         }
     },
@@ -68,15 +73,16 @@ export const loginUserDB = createAsyncThunk(
                     return user;
                 }
             }
-        } catch (error) {
+        } catch (err) {
             // api요청중 일어나는 에러 메세지 반환
+            Sentry.captureException(`error, 로그인 : ${err}`);
             Swal.fire({
                 icon: "error",
                 title: "아이디 또는 비밀번호를 다시 확인해주세요.",
                 showConfirmButton: false,
                 timer: 2000,
             });
-            return thunkAPI.rejectWithValue(error.response.data.message);
+            return thunkAPI.rejectWithValue(err.response.data.message);
         }
     },
 );
@@ -105,9 +111,10 @@ export const checkLoggedInUser = createAsyncThunk(
             } else {
                 return thunkAPI.rejectWithValue(loggedInUser.data.errorMessage);
             }
-        } catch (error) {
+        } catch (err) {
             // 에러 발생시 에러 메세지 반환
-            return thunkAPI.rejectWithValue(error.response.data.message);
+            Sentry.captureException(`error, 유저로그인유무 : ${err}`);
+            return thunkAPI.rejectWithValue(err.response.data.message);
         }
     },
 );
@@ -135,8 +142,9 @@ export const editUserProfileDB = createAsyncThunk(
                     return updatedUser;
                 }
             }
-        } catch (error) {
-            return thunkAPI.rejectWithValue(error.response.data.message);
+        } catch (err) {
+            Sentry.captureException(`error, 유저프로필 수정 : ${err}`);
+            return thunkAPI.rejectWithValue(err.response.data.message);
         }
     },
 );

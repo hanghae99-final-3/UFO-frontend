@@ -4,6 +4,9 @@ import { history } from "../configureStore";
 import { increaseLike, decreaseLike } from "../Modules/univBoardSlice";
 import Swal from "sweetalert2";
 
+//error loging
+import * as Sentry from "@sentry/react";
+
 /**
  * @author heesung & junghoo
  * @param none
@@ -22,10 +25,11 @@ export const getUnivBoardDB = createAsyncThunk(
             } else if (!response.data.ok) {
                 return thunkAPI.rejectWithValue(response.data.message);
             }
-        } catch (error) {
+        } catch (err) {
+            Sentry.captureException(`error, 대학게시판 목록 로드 : ${err}`);
             Swal.fire("에러", "네트워크 연결 상태를 확인해주세요.", "error");
             history.push("/");
-            return thunkAPI.rejectWithValue(error.response.data.message);
+            return thunkAPI.rejectWithValue(err.response.data.message);
         }
     },
 );
@@ -41,10 +45,13 @@ export const getUnivBoardDBInfinity = createAsyncThunk(
             } else if (!response.data.ok) {
                 return thunkAPI.rejectWithValue(response.data.message);
             }
-        } catch (error) {
+        } catch (err) {
+            Sentry.captureException(
+                `error, 대학게시판 목록(인피니티스크롤) 로드 : ${err}`,
+            );
             Swal.fire("에러", "네트워크 연결 상태를 확인해주세요.", "error");
             history.push("/");
-            return thunkAPI.rejectWithValue(error.response.data.message);
+            return thunkAPI.rejectWithValue(err.response.data.message);
         }
     },
 );
@@ -69,9 +76,10 @@ export const addUnivBoardPostDB = createAsyncThunk(
             } else if (!response.data.ok) {
                 return thunkAPI.rejectWithValue(response.data.message);
             }
-        } catch (error) {
+        } catch (err) {
+            Sentry.captureException(`error, 대학게시판 게시글추가 : ${err}`);
             Swal.fire("에러", "인증된 회원만 사용 가능합니다.", "error");
-            return thunkAPI.rejectWithValue(error.response.data.message);
+            return thunkAPI.rejectWithValue(err.response.data.message);
         }
     },
 );
@@ -96,10 +104,10 @@ export const editUnivBoardPostDB = createAsyncThunk(
             } else if (!response.data.ok) {
                 return thunkAPI.rejectWithValue(response.data.message);
             }
-        } catch (error) {
+        } catch (err) {
+            Sentry.captureException(`error, 대학게시판 게시글수정 : ${err}`);
             Swal.fire("에러", "수정하지 못했어요! 다시 시도해주세요!", "error");
-
-            return thunkAPI.rejectWithValue(error.response.data.message);
+            return thunkAPI.rejectWithValue(err.response.data.message);
         }
     },
 );
@@ -120,10 +128,13 @@ export const detailUnivBoardPostDB = createAsyncThunk(
             if (response.data.ok) {
                 return { ...response.data.like, ...response.data.result };
             }
-        } catch (error) {
+        } catch (err) {
+            Sentry.captureException(
+                `error, 대학게시판 게시글상세 로드 : ${err}`,
+            );
             Swal.fire("에러", "네트워크 연결 상태를 확인해주세요.!", "error");
             history.push("/univboard");
-            return thunkAPI.rejectWithValue(error.response.data.message);
+            return thunkAPI.rejectWithValue(err.response.data.message);
         }
     },
 );
@@ -149,11 +160,11 @@ export const deleteUnivBoardPostDB = createAsyncThunk(
                 // 삭제 실패시  에러 메세지 반환
                 return thunkAPI.rejectWithValue(response.data.message);
             }
-        } catch (error) {
+        } catch (err) {
+            Sentry.captureException(`error, 대학게시판 게시글 삭제 : ${err}`);
             // 요청 및 서버 에러 반환
             Swal.fire("에러", "삭제하지 못했어요! 다시 시도해주세요.", "error");
-
-            return thunkAPI.rejectWithValue(error.response.data.message);
+            return thunkAPI.rejectWithValue(err.response.data.message);
         }
     },
 );
@@ -175,9 +186,10 @@ export const getUnivBoardCommentDB = createAsyncThunk(
                 // 요청 성공시 댓글 리스트(배열) 반환
                 return response.data.result;
             }
-        } catch (error) {
+        } catch (err) {
+            Sentry.captureException(`error, 대학게시판 댓글목록로드 : ${err}`);
             Swal.fire("에러", "네트워크 연결 상태를 확인해주세요.!", "error");
-            return thunkAPI.rejectWithValue(error.response.data.message);
+            return thunkAPI.rejectWithValue(err.response.data.message);
         }
     },
 );
@@ -203,13 +215,14 @@ export const addUnivBoardCommentDB = createAsyncThunk(
                 // 댓글 작성 실패시 메세지 반환
                 return thunkAPI.rejectWithValue(response.data.message);
             }
-        } catch (error) {
+        } catch (err) {
+            Sentry.captureException(`error, 대학게시판 댓글추가 : ${err}`);
             Swal.fire(
                 "에러",
                 "게시글 등록에 실패하였습니다. 다시 시도해주세요!",
                 "error",
             );
-            return thunkAPI.rejectWithValue(error.response.data.errorMessage);
+            return thunkAPI.rejectWithValue(err.response.data.errorMessage);
         }
     },
 );
@@ -231,13 +244,14 @@ export const editUnivBoardCommentDB = createAsyncThunk(
             } else if (!response.data.ok) {
                 return thunkAPI.rejectWithValue(response.data.message);
             }
-        } catch (error) {
-            return Swal.fire(
+        } catch (err) {
+            Sentry.captureException(`error, 대학게시판 댓글수정 : ${err}`);
+            Swal.fire(
                 "에러",
                 "댓글 수정에 실패하였습니다. 다시 시도해주세요.",
                 "error",
             );
-            return thunkAPI.rejectWithValue(error.response.data.message);
+            return thunkAPI.rejectWithValue(err.response.data.message);
         }
     },
 );
@@ -261,13 +275,14 @@ export const deleteUnivBoardCommentDB = createAsyncThunk(
             } else if (!response.data.ok) {
                 return thunkAPI.rejectWithValue(response.data.message);
             }
-        } catch (error) {
+        } catch (err) {
+            Sentry.captureException(`error, 대학게시판 댓글삭제 : ${err}`);
             Swal.fire(
                 "에러",
                 "댓글 삭제에 실패하였습니다. 다시 시도해주세요",
                 "error",
             );
-            return thunkAPI.rejectWithValue(error.response.data.message);
+            return thunkAPI.rejectWithValue(err.response.data.message);
         }
     },
 );
@@ -286,6 +301,7 @@ export const univLikeToggleDB = createAsyncThunk(
                 }
             }
         } catch (err) {
+            Sentry.captureException(`error, 대학게시판 좋아요토글 : ${err}`);
             Swal.fire(
                 "에러",
                 "좋아요 등록에 실패하였습니다. 다시 시도해주세요",
@@ -304,8 +320,10 @@ export const getUnivSearchResult = createAsyncThunk(
             if (response.data.ok) {
                 return response.data.result;
             }
-        } catch (error) {
-            thunkAPI.rejectWithValue(error.response.data.errorMessage);
+        } catch (err) {
+            Sentry.captureException(`error, 대학게시판 검색결과로드 : ${err}`);
+            Swal.fire("에러", "네트워크 연결 상태를 확인해주세요.!", "error");
+            thunkAPI.rejectWithValue(err.response.data.errorMessage);
         }
     },
 );
