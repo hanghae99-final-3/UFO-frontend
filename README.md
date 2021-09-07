@@ -87,20 +87,20 @@
 
 # 👽 멤버소개
 
-### Front
+### Front ([저장소](https://github.com/hanghae99-final-3/UFO-frontend))
 
--   권지영
--   김정후
--   장희성
+-   권지영 ([Github](https://github.com/che-ri))
+-   김정후 ([Github](https://github.com/Kim-junghoo))
+-   장희성 ([Github](https://github.com/heesungjang))
 
-### Back
+### Back  ([저장소](https://github.com/hanghae99-final-3/ufo-backend))
 
--   김예지
--   장상현
+-   김예지 ([Github](https://github.com/yzkim9501))
+-   장상현 ([Github](https://github.com/firstquarter-J))
 
 ### Design
 
--   이소희
+-   이소희 ([Behance](https://www.behance.net/esop06012f8b))
 
 <br/>
 
