@@ -80,15 +80,9 @@ const Float = ({ isDarkTheme }) => {
     }, []);
 
     useEffect(() => {
-        if (pathname === "/univboard") {
-            //대학게시판이면 글쓰기 플루팅버튼을 보이게 합니다.
-            setIsWriteBntOn(true);
-        }
-
-        if (pathname === "/freeboard") {
-            //자유게시판이면 글쓰기, 국가선택버튼을 보이게 합니다.
-            setIsWriteBntOn(true);
-            setIsCountryBtnOn(true);
+        if (pathname === "/") {
+            //메인페이지에서는 국가선택버튼을 보이게 합니다.
+            return setIsCountryBtnOn(true);
         }
 
         //메인페이지에서 자유게시판 태그별게시판으로 들어왔을때에도 글쓰기플루팅 버튼을 보이게 합니다.
@@ -97,13 +91,23 @@ const Float = ({ isDarkTheme }) => {
             typeof (pathname.split("/")[2] * 1) === "number"
         ) {
             setIsWriteBntOn(true);
-            setIsCountryBtnOn(true);
+            return setIsCountryBtnOn(true);
         }
+
+        if (pathname === "/univboard") {
+            //대학게시판이면 글쓰기 플루팅버튼을 보이게 합니다.
+            return setIsWriteBntOn(true);
+        }
+
+        if (pathname === "/freeboard") {
+            //자유게시판이면 글쓰기, 국가선택버튼을 보이게 합니다.
+            setIsWriteBntOn(true);
+            return setIsCountryBtnOn(true);
+        }
+
         //그 이외의 상황에서는 모두 글쓰기 버튼을 보이게 하지 않습니다.
-        else {
-            setIsWriteBntOn(false);
-            setIsCountryBtnOn(false);
-        }
+        setIsWriteBntOn(false);
+        setIsCountryBtnOn(false);
     }, [pathname]);
 
     return (
