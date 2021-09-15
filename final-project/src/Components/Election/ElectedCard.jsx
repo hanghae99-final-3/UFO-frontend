@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import mixin from "../../Styles/Mixin";
 
@@ -16,35 +16,7 @@ const ElectedCard = ({ electionPostId, candidates, testResult }) => {
     //데스크탑 사이즈인지 아닌지에 대한 판별값입니다.
     const isDesktop =
         document.documentElement.clientWidth >= 1080 ? true : false;
-
-    //electedPerson은 당선자의 ID와 최대득표수에 대한 정보입니다.
-    const electedPerson =
-        result &&
-        result.length > 0 &&
-        result.reduce(
-            (acc, cur) => {
-                if (acc && acc.count < cur.count) {
-                    acc.count = cur.count;
-                    acc.candidateId = cur.candidate_id;
-                    return acc;
-                }
-            },
-            { count: 0 },
-        );
-
-    // 당선자의 정보가 들어있습니다.
-    let electedInfo =
-        electedPerson &&
-        candidates &&
-        candidates.reduce((acc, cur, idx) => {
-            //여기서 idx를 넣는 이유는 당선자의 기호번호를 알기위함입니다.
-            const election_num = idx + 1;
-            return { ...cur, election_num };
-        });
-
-    //출마한 후보자가 1명이고, 투표를 한 사람이없으면 무투표당선입니다.
-    if (result && result.length === 0 && candidates.length === 1)
-        electedInfo = { ...candidates[0], election_num: 1 };
+    const [electedInfo, setElectedInfo] = useState(null);
 
     //notElected가 true면 당선자가 없습니다.
     const notElected = !electedInfo ? true : false;
@@ -56,6 +28,37 @@ const ElectedCard = ({ electionPostId, candidates, testResult }) => {
         };
         dispatch(getElectionResultDB(req));
     }, [dispatch]);
+    console.log(electedInfo);
+
+    useEffect(() => {
+        //electedPerson은 당선자의 ID와 최대득표수에 대한 정보입니다.
+        const electedPerson = result.reduce(
+            (acc, cur) => {
+                if (acc && acc.count < cur.count) {
+                    acc.count = cur.count;
+                    acc.candidateId = cur.candidate_id;
+                    return acc;
+                }
+            },
+            { count: 0 },
+        );
+
+        console.log("🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥");
+        console.log(electedPerson && candidates);
+        // 당선자의 정보가 들어있습니다.
+        if (electedPerson && candidates)
+            setElectedInfo(
+                candidates.reduce((acc, cur, idx) => {
+                    //여기서 idx를 넣는 이유는 당선자의 기호번호를 알기위함입니다.
+                    const election_num = idx + 1;
+                    return { ...cur, election_num };
+                }),
+            );
+
+        //출마한 후보자가 1명이고, 투표를 한 사람이없으면 무투표당선입니다.
+        if (result && result.length === 0 && candidates.length === 1)
+            setElectedInfo({ ...candidates[0], election_num: 1 });
+    }, [result]);
 
     //테스트용 결과페이지입니다.
     if (testResult) {
